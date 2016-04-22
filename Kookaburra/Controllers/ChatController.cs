@@ -3,27 +3,35 @@ using Microsoft.AspNet.Identity;
 using Kookaburra.Domain.Repository;
 using Kookaburra.Repository;
 using Kookaburra.ViewModels.Chat;
+using System.Web;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Kookaburra.Controllers
 {
     [Authorize]
     public class ChatController : Controller
     {
-       
+        private ApplicationUserManager _userManager;
+
         public IAccountRepository AccountRepository { get; set; }
 
         public IOperatorRepository OperatorRepository { get; set; }
 
-        private readonly ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
 
         public ChatController()
         {
-
-        }
-
-        public ChatController(ApplicationUserManager userManager)
-        {
-            _userManager = userManager;
             AccountRepository = new AccountRepository(new KookaburraContext("name=DefaultConnection"));
             OperatorRepository = new OperatorRepository(new KookaburraContext("name=DefaultConnection"));
         }
