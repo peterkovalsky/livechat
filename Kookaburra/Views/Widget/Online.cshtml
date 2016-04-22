@@ -1,0 +1,143 @@
+﻿@model Kookaburra.ViewModels.Widget.OnlineBoxViewModel
+@{   
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/signalr/jquery.signalR.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <link rel="stylesheet" href="~/css/widget.css">
+</head>
+<body>
+    <div>
+        <div class="chatbox">
+
+            <div class="online">
+                <div class="chat-body">
+
+                    <div id="online-intro" class="introduction">
+                        <div class="heading">
+                            Please intoduce yourself
+                        </div>
+                        <div class="name">
+                            @Html.TextBoxFor(m => m.VisitorName, new { id = "visitor-name", placeholder = "Name", autocomplete = "off" })
+                        </div>
+                        <div class="email">
+                            @Html.TextBoxFor(m => m.VisitorEmail, new { placeholder = "Email (optional)", autocomplete = "off" })
+                        </div>
+                        <div>
+                            <input class="submit" id="start-chat" type="button" name="startChat" value="Start Chat" />
+                        </div>
+                    </div>
+
+                    <div id="online-chat" style="display: none;" class="chatting">
+                        <div class="heading">
+                            <div class="operator-pic"></div>
+                            <div class="operator-name"></div>
+                        </div>
+                        <div class="chat-window">
+                            <ul id="discussion"></ul>
+                        </div>
+                        <div class="message-box">
+                            <textarea id="message" class="message"></textarea>
+                            <input type="hidden" id="displayname" />
+                        </div>
+                    </div>
+
+                    <div id="online-message">
+
+                    </div>
+
+                </div>
+
+                <div class="box-footer">
+                    <label>Powered by <strong><a>OnlineChat</a></strong></label>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+    var companyId = '@Model.ClientKey';
+    var operatorId = null;
+    var currentPage = 'http://local.chat.com/chat/client';
+
+    $(document).ready(function () {
+
+        // Start live chat
+        $('#start-chat').click(function () {
+            initChat();
+        });
+    });
+
+    // This optional function html-encodes messages for display in the page.
+    function htmlEncode(value) {
+        var encodedValue = $('<div />').text(value).html();
+        return encodedValue;
+    }
+
+    function initChat() {
+        var clientName = $('#visitor-name').val();
+
+        var chatHubProxy = $.connection.chatHub;
+        // Create a function that the hub can call back to display messages.
+        chatHubProxy.client.addNewMessageToPage = function (name, message, time, sender) {
+            // Add the message to the page.
+            $('#discussion').append('<li><strong>' + htmlEncode(name)
+                + '</strong>: ' + htmlEncode(message) + '       ' + htmlEncode(time) + '</li>');
+        };
+
+        chatHubProxy.client.orderToDisconnect = function () {
+            $.connection.hub.stop();
+            $('#discussion').append('<li><strong>' + htmlEncode(name)
+            + '</strong>: You were disconnected by the operator       ' + htmlEncode(time) + '</li>');
+        };
+
+        // Start the connection.
+        $.connection.hub.start().done(function () {
+            chatHubProxy.server.connectClient(clientName, companyId, currentPage).done(function (_operatorId) {
+                if (_operatorId == null) {
+                    $('#online-message').html('Operator has gone offline. Click the button if you wish leave a message');
+                }
+                else {
+                    // show chat window
+                    $('#online-intro').hide();
+                    $('#online-chat').show();
+
+                    operatorId = _operatorId;
+
+                    // Get the user name and store it to prepend to messages.
+                    $('#displayname').val(clientName);
+                    // Set initial focus to message input box.
+                    $('#message').focus();
+
+                    // SEND MESSAGE ON ENTER PRESS
+                    $(document).keypress(function (e) {
+                        if (e.which == 13) {
+                            var message = $('#message').val();
+                            // Call the Send method on the hub.
+                            chatHubProxy.server.sendToOperator($('#displayname').val(), $('#message').val(), _operatorId);
+
+                            e.preventDefault();
+                            // Clear text box and reset focus for next comment.
+                            $('#message').val('').focus();
+                            return false;
+                        }
+                    });
+                }
+            });
+        });
+    }
+        </script>
+    </div>
+</body>
+</html>

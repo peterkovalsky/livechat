@@ -1,0 +1,198 @@
+﻿/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/* ---------------- CHATS --------------------*/
+
+.operator-chats .chat-window{
+    width: 580px;
+}
+
+.operator-chats .chat-window .chat {   
+    height: 300px;
+}
+
+.operator-chats .chat-window .panel-title {    
+    font-weight: bold;
+    text-align: center;    
+}
+
+.operator-chats .chat-window .message-box textarea{
+    font-size: 14px;
+    line-height: 1.5em;
+    display: block;
+    width: 578px;
+    max-width: 578px;
+    height: 50px;
+    padding: 0 5px;
+    margin: 0; 
+    outline: 0;
+    resize: none;
+    white-space: pre-wrap;
+    border-color: #bce8f1;
+    border-width: 1px 0 0 0;
+    -moz-border-radius-bottomright: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -khtml-border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    -khtml-border-bottom-left-radius: 3px;
+    border-bottom-left-radius: 3px;    
+}
+
+.operator-chats .all-chats {
+    width: 580px;
+    float:left;
+}
+
+.operator-chats .chat-switcher {
+    width: 300px;
+    float:right;
+    margin-top: 30px;
+}
+
+.operator-chats .chat-message-item-continue.my,
+.operator-chats .chat-message-item.my {
+    background-color: #F8F8F8;
+}
+
+
+.operator-chats .chat-message-item.chat-alert
+{
+    font-size: 12px;
+    background-color: antiquewhite;
+
+}
+.operator-chats .chat-message-item.chat-alert .chat-message {
+    clear:none;
+    color: firebrick;
+    font-weight: bold;
+}
+
+.operator-chats .chat-message-item {
+    list-style-type: none;
+    padding: 2px 5px 3px 5px;   
+}
+
+.operator-chats .chat-message-item.my .chat-name {
+    color: black;
+}
+
+.operator-chats .chat-message-item .chat-name {
+    float: left;
+    color: #2AB3E9;
+    font-weight:bold;
+}
+
+.operator-chats .chat-message-item .chat-time {
+    float: right;
+    font-size:10px;
+    color: lightgray;
+}
+
+.operator-chats .chat-message-item.continue .chat-message{
+    float: left;
+    clear: none;
+    word-wrap:break-word;
+    width:500px;
+}
+
+.operator-chats .chat-message-item .chat-message {
+    clear: both;
+    word-wrap:break-word;
+    width:500px;
+}
+
+.operator-chats .no-chat{    
+    margin-top: 40px;    
+}
+
+.operator-chats .no-chat h1 {
+    color: lightgray;
+    text-align: center;   
+    line-height: 300px;
+    height: 300px;
+}
+
+.operator-chats .client-info {
+    border-bottom:1px solid #eee;
+    margin: 30px 0;
+}
+
+.operator-chats .client-info label {
+    color: lightgray;
+    width: 100px;
+    font-weight: normal;
+}
+
+.operator-chats .client-info .client-name{
+    border-bottom:1px solid #eee;
+}
+
+/*-------------- GLOBAL -----------------*/
+#global-alert {
+    margin-top:15px;
+    margin-bottom: 0;
+}
+
+/* ----------- Chat window ----------------*/
+.chat .chat-header {
+
+}
+
+.chat .panel-body {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.chat .panel-body .conversation-messages{
+    padding: 0;
+    height: 300px;
+    overflow: auto;
+    
+}
+
+.chat .chat-message textarea {
+    width: 100%;
+}
+
+.chat .panel-body ul
+{
+    list-style-type: none;
+}
+
+.chat .panel-body .chat-message textarea{
+    font-size: 14px;
+    line-height: 1.5em;
+    display: block;
+    height: 50px;
+    padding: 0 5px;
+    margin: 0; 
+    outline: 0;
+    resize: none;
+    white-space: pre-wrap;
+    border-color: #b4b4b4;
+    border-width: 1px 0 0 0;   
+}

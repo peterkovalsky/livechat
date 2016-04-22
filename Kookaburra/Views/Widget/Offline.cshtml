@@ -1,0 +1,57 @@
+﻿@model Kookaburra.ViewModels.Widget.OfflineBoxViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+    <link rel="stylesheet" href="~/css/widget.css">
+</head>
+<body>
+    <div>
+        <div class="chatbox">
+
+            <div id="chat-area">
+                <div class="chat-body">
+                    @using (Html.BeginForm("Offline", "Chat"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div id="offline-box" class="offline">
+                            <div class="heading">
+                                Hey there! We’re currently out but don’t worry we’ll be back, just leave us a message for now and we’ll get back to you asap.
+                            </div>
+                            <div class="name">
+                                @Html.TextBoxFor(m => m.Name, new { placeholder = "Name", autocomplete = "off" })
+                            </div>
+                            <div class="email">
+                                @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", autocomplete = "off" })
+                            </div>
+                            <div class="message">
+                                @Html.TextAreaFor(m => m.Message, new { placeholder = "Message", autocomplete = "off" })
+                            </div>
+                            <div class="submit">
+                                <input type="submit" value="SEND" />
+                            </div>
+                        </div>
+                        @Html.HiddenFor(m => m.Key)
+                    }
+                </div>
+
+                <div class="box-footer">
+                    <label>Powered by <strong><a>OnlineChat</a></strong></label>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

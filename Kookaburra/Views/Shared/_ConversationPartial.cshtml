@@ -1,0 +1,11 @@
+﻿@model Kookaburra.ViewModels.ConversationViewModel
+
+@foreach (var message in Model.Messages)
+{
+    <div class="user">
+        @message.User
+    </div>
+    <div class="message">
+        @message.Message
+    </div>
+}
