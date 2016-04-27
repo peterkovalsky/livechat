@@ -6,7 +6,7 @@ declare var jQuery: any;
     selector: 'chat-window',
     templateUrl: '/app/chat/chat-window.component.html'
 })
-
+    
 export class ChatWindowComponent implements OnInit {
 
     elementRef: ElementRef;

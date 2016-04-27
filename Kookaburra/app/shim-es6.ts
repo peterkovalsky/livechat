@@ -6,7 +6,7 @@
     has(key: K): boolean;
     set(key: K, value: V): Map<K, V>;
     size: number;
-}
+} 
 interface MapConstructor {
     new (): Map<any, any>;
     new <K, V>(): Map<K, V>;

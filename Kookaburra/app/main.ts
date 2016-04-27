@@ -2,4 +2,4 @@
 import {bootstrap}  from 'angular2/platform/browser';
 import {ChatRoom} from './chat/chat-room';
 
-bootstrap(ChatRoom);
+bootstrap(ChatRoom); 
