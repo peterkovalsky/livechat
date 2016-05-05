@@ -1,5 +1,6 @@
-﻿
-<chat-room></chat-room>
+﻿@model Kookaburra.ViewModels.Chat.RoomViewModel
+
+<chat-room data-account-id="@Model.CompanyId" data-operator-name="@Model.OperatorName"></chat-room>
 
 @section scripts
 {

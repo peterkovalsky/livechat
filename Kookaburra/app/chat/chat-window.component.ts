@@ -1,4 +1,6 @@
 ﻿import {Component, ElementRef, OnInit} from 'angular2/core';
+import {ConversationModel} from '../models/conversation.model';
+import {MessageModel} from '../models/message.model';
 
 declare var jQuery: any;
 
@@ -10,17 +12,16 @@ declare var jQuery: any;
 export class ChatWindowComponent implements OnInit {
 
     elementRef: ElementRef;
-    messages: Message[];
-    clientName: string;
-    clientId: string;
+    conversation: ConversationModel;
+  
     currentMessage: string;
-    conversationStartTime: Date;
+  
     chatHubProxy: any;
     hub: any;
 
     constructor(elementRef: ElementRef) {
         this.elementRef = elementRef;
-        this.messages = new Array<Message>();
+        //this.messages = new Array<Message>();
         
         this.chatHubProxy = jQuery.connection.chatHub;
         this.hub = jQuery.connection.hub;
@@ -44,38 +45,17 @@ export class ChatWindowComponent implements OnInit {
             var jsTime = new Date();
             jsTime.setTime(time);
 
-            var msg: Message = { id: 1, author: name, text: message, sender: sender, time: jsTime };
-            this.messages.push(msg);
+            var msg: MessageModel = { id: 1, author: name, text: message, sender: sender, time: jsTime };
+            this.conversation.messages.push(msg);
 
         }, this);
 
-        this.chatHubProxy.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {
-            var jsTime = new Date();
-            jsTime.setTime(time);
 
-            this.clientName = name;
-            this.conversationStartTime = jsTime;
-
-        }, this);
-
-        // Start the connection.
-        this.hub.start().done(jQuery.proxy(function () {
-
-            this.chatHubProxy.server.connectOperator('John Dou', '086FBDC2-14F3-4F68-B3C6-9EA42D257061').done(function () { })
-
-        }, this));
+   
     }
 
     onEnter(event: any) {
         this.chatHubProxy.server.sendToClient('John Dou', this.currentMessage, this.clientId);
         this.currentMessage = '';
     }
-}
-
-class Message {
-    public id: number;
-    public author: string;
-    public sender: string;
-    public text: string;
-    public time: Date;
 }
