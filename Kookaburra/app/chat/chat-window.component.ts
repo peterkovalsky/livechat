@@ -55,7 +55,7 @@ export class ChatWindowComponent implements OnInit {
     }
 
     onEnter(event: any) {
-        this.chatHubProxy.server.sendToClient('John Dou', this.currentMessage, this.clientId);
-        this.currentMessage = '';
+        //this.chatHubProxy.server.sendToClient('John Dou', this.currentMessage, this.clientId);
+        //this.currentMessage = '';
     }
 }

@@ -36,6 +36,7 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet]
+        [Route("chatboxstyle/{key}")]
         public ActionResult ChatBoxStyle(string key)
         {
             var model = new ChatBoxStyleViewModel { Key = key };

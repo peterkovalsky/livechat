@@ -12,7 +12,7 @@ var core_1 = require('angular2/core');
 var ChatWindowComponent = (function () {
     function ChatWindowComponent(elementRef) {
         this.elementRef = elementRef;
-        this.messages = new Array();
+        //this.messages = new Array<Message>();
         this.chatHubProxy = jQuery.connection.chatHub;
         this.hub = jQuery.connection.hub;
         // test
@@ -32,22 +32,12 @@ var ChatWindowComponent = (function () {
             var jsTime = new Date();
             jsTime.setTime(time);
             var msg = { id: 1, author: name, text: message, sender: sender, time: jsTime };
-            this.messages.push(msg);
+            this.conversation.messages.push(msg);
         }, this);
-        this.chatHubProxy.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {
-            var jsTime = new Date();
-            jsTime.setTime(time);
-            this.clientName = name;
-            this.conversationStartTime = jsTime;
-        }, this);
-        // Start the connection.
-        this.hub.start().done(jQuery.proxy(function () {
-            this.chatHubProxy.server.connectOperator('John Dou', '086FBDC2-14F3-4F68-B3C6-9EA42D257061').done(function () { });
-        }, this));
     };
     ChatWindowComponent.prototype.onEnter = function (event) {
-        this.chatHubProxy.server.sendToClient('John Dou', this.currentMessage, this.clientId);
-        this.currentMessage = '';
+        //this.chatHubProxy.server.sendToClient('John Dou', this.currentMessage, this.clientId);
+        //this.currentMessage = '';
     };
     ChatWindowComponent = __decorate([
         core_1.Component({
@@ -59,9 +49,4 @@ var ChatWindowComponent = (function () {
     return ChatWindowComponent;
 }());
 exports.ChatWindowComponent = ChatWindowComponent;
-var Message = (function () {
-    function Message() {
-    }
-    return Message;
-}());
 //# sourceMappingURL=chat-window.component.js.map

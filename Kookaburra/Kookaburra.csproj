@@ -207,6 +207,7 @@
     <Compile Include="Models\Chat\DashboardViewModel.cs" />
     <Compile Include="Models\Chat\RoomViewModel.cs" />
     <Compile Include="Models\ConversationViewModel.cs" />
+    <Compile Include="Models\Home\PreviewViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Widget\ChatBoxStyleViewModel.cs" />
@@ -455,6 +456,7 @@
     <Content Include="Scripts\system-polyfills.js.map" />
     <Content Include="Scripts\system-register-only.js.map" />
     <Content Include="Scripts\system.js.map" />
+    <Content Include="Views\Home\Preview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -464,7 +466,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>

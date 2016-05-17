@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Code.cs" />
     <Compile Include="Common\OperatorType.cs" />
     <Compile Include="Model\Account.cs" />
     <Compile Include="Model\Operator.cs" />
