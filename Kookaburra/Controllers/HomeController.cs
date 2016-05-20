@@ -1,7 +1,6 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Repository;
 using Kookaburra.Models.Home;
-using Kookaburra.Repository;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web;
@@ -13,9 +12,9 @@ namespace Kookaburra.Controllers
     {
         private ApplicationUserManager _userManager;
 
-        public IAccountRepository AccountRepository { get; set; }
+        private readonly IAccountRepository _accountRepository;
 
-        public IOperatorRepository OperatorRepository { get; set; }
+        private readonly IOperatorRepository _operatorRepository;
 
         public ApplicationUserManager UserManager
         {
@@ -29,10 +28,11 @@ namespace Kookaburra.Controllers
             }
         }
 
-        public HomeController()
+
+        public HomeController(IAccountRepository accountRepository, IOperatorRepository operatorRepository)
         {
-            AccountRepository = new AccountRepository(new KookaburraContext("name=DefaultConnection"));
-            OperatorRepository = new OperatorRepository(new KookaburraContext("name=DefaultConnection"));
+            _accountRepository = accountRepository;
+            _operatorRepository = operatorRepository;           
         }
 
 
@@ -58,7 +58,7 @@ namespace Kookaburra.Controllers
         [Route("preview")]
         public ActionResult Preview()
         {
-            var currentOperator = OperatorRepository.Get(User.Identity.GetUserId());
+            var currentOperator = _operatorRepository.Get(User.Identity.GetUserId());
 
             var model = new PreviewViewModel
             {
