@@ -6,7 +6,7 @@ namespace Kookaburra.Controllers
     public class WidgetController : Controller
     {
         [HttpGet]
-        [Route("chat/{key}")]
+        [Route("chatbox/{key}")]
         public ActionResult ChatBox(string key)
         {
             bool isOnline = true;
@@ -40,6 +40,8 @@ namespace Kookaburra.Controllers
         public ActionResult ChatBoxStyle(string key)
         {
             var model = new ChatBoxStyleViewModel { Key = key };
+
+            model.ChatServerHost = "http://local.kookaburra.com";
 
             HttpContext.Response.ContentType = "application/javascript";
 
