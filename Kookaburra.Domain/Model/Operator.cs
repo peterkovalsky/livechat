@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kookaburra.Domain.Model
 {
@@ -23,6 +24,8 @@ namespace Kookaburra.Domain.Model
 
 
         public int AccountId { get; set; }
+
+        public DateTime? LastActivity { get; set; }
 
         public virtual Account Account { get; set; }
     }

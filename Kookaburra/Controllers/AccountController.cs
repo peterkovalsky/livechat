@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Kookaburra.Models;
+using Kookaburra.Domain.Repository;
 
 namespace Kookaburra.Controllers
 {
@@ -15,8 +16,11 @@ namespace Kookaburra.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController()
+        private readonly IOperatorRepository _operatorRepository;
+
+        public AccountController(IOperatorRepository operatorRepository)
         {
+            _operatorRepository = operatorRepository;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -49,6 +53,7 @@ namespace Kookaburra.Controllers
             }
         }
 
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -76,6 +81,7 @@ namespace Kookaburra.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    _operatorRepository.RecordOperatorActivity(User.Identity.GetUserId());
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -388,6 +394,8 @@ namespace Kookaburra.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            _operatorRepository.ResetOperatorActivity(User.Identity.GetUserId());
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }

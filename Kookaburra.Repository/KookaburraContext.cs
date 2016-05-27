@@ -7,7 +7,7 @@ namespace Kookaburra.Repository
     {
         public KookaburraContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {           
-            //Database.SetInitializer<KookaburraContext>(null);
+            Database.SetInitializer<KookaburraContext>(null);
         }
 
         public DbSet<Account> Accounts { get; set; }
