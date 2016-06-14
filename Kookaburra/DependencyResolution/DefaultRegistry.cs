@@ -17,6 +17,7 @@
 
 namespace Kookaburra.DependencyResolution
 {
+    using Controllers;
     using Repository;
     using StructureMap;
     using StructureMap.Graph;
@@ -35,6 +36,7 @@ namespace Kookaburra.DependencyResolution
                 });
    
             For<KookaburraContext>().Use<KookaburraContext>().Ctor<string>().Is("name=DefaultConnection");
+            ForConcreteType<AccountController>().Configure.SelectConstructor(() => new AccountController(null));
         }
 
         #endregion

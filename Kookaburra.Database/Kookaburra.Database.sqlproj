@@ -65,4 +65,7 @@
     <Build Include="dbo\Tables\Operators.sql" />
     <Build Include="dbo\Tables\Accounts.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="HomeSchemaCompare.scmp" />
+  </ItemGroup>
 </Project>

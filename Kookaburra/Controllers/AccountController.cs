@@ -23,7 +23,7 @@ namespace Kookaburra.Controllers
             _operatorRepository = operatorRepository;
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(IOperatorRepository operatorRepository, ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
