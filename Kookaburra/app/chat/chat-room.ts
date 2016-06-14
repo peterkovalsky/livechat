@@ -14,29 +14,35 @@ declare var jQuery: any;
 export class ChatRoom implements OnInit {
 
     accountId: string;
-    operatorName: string;    
+    operatorName: string;
+    operatorId: number;
 
-    chatHubProxy: any;
-    hub: any;
-
-    conversations: ConversationModel[];
+    conversations: ConversationModel[] = [];
 
     constructor(private elementRef: ElementRef) {
         var native = this.elementRef.nativeElement;
         this.accountId = native.getAttribute("data-account-id");
         this.operatorName = native.getAttribute("data-operator-name");
+        this.operatorId = native.getAttribute("data-operator-id");
     }
 
     ngOnInit() {
 
-        // Start the connection.
-        this.hub.start().done(jQuery.proxy(function () {
+        // Visitor sent message
+        jQuery.connection.chatHub.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, clientId) {
+            console.log(message);
 
-            this.chatHubProxy.server.connectOperator(this.operatorName, this.accountId).done(function () { })
+            var jsTime = new Date();
+            jsTime.setTime(time);
 
-        }, this));
+            var msg: MessageModel = { id: 1, author: name, text: message, sender: sender, time: jsTime };
+            this.conversation.messages.push(msg);
 
-        this.chatHubProxy.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {
+        }, this);
+
+        // Visitor initiated conversation
+        jQuery.connection.chatHub.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {         
+
             var jsTime = new Date();
             jsTime.setTime(time);
 
@@ -47,11 +53,21 @@ export class ChatRoom implements OnInit {
                     conversationStartTime: jsTime,
                     location: location,
                     visitorUrl: currentUrl,
-                    messages:[]
+                    messages: []
                 };
 
             this.conversations.push(conversation);          
 
         }, this);
+
+        // Start the connection.
+        jQuery.connection.hub.start().done(jQuery.proxy(function () {
+            this.chatHubProxy.server.connectOperator(this.operatorName, this.accountId).done(function () { })
+        }, this));
+    }
+
+    // Send message to visitor
+    enterNewMessage(message: string) {
+        jQuery.connection.chatHub.server.sendToVisitor(operatorName, message, clientId);
     }
 }

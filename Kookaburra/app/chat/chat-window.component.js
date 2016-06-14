@@ -9,12 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('angular2/core');
+var conversation_model_1 = require('../models/conversation.model');
 var ChatWindowComponent = (function () {
     function ChatWindowComponent(elementRef) {
         this.elementRef = elementRef;
+        this.onEnterMessage = new core_1.EventEmitter();
+        this.elementRef = elementRef;
         //this.messages = new Array<Message>();
-        this.chatHubProxy = jQuery.connection.chatHub;
-        this.hub = jQuery.connection.hub;
         // test
         //var date = new Date();
         //this.clientName = "Peter Kovalskyy";
@@ -28,17 +29,18 @@ var ChatWindowComponent = (function () {
         //];
     }
     ChatWindowComponent.prototype.ngOnInit = function () {
-        this.chatHubProxy.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, clientId) {
-            var jsTime = new Date();
-            jsTime.setTime(time);
-            var msg = { id: 1, author: name, text: message, sender: sender, time: jsTime };
-            this.conversation.messages.push(msg);
-        }, this);
     };
     ChatWindowComponent.prototype.onEnter = function (event) {
-        //this.chatHubProxy.server.sendToClient('John Dou', this.currentMessage, this.clientId);
-        //this.currentMessage = '';
+        this.onEnterMessage.emit(this.currentMessage);
     };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', conversation_model_1.ConversationModel)
+    ], ChatWindowComponent.prototype, "conversation", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], ChatWindowComponent.prototype, "onEnterMessage", void 0);
     ChatWindowComponent = __decorate([
         core_1.Component({
             selector: 'chat-window',

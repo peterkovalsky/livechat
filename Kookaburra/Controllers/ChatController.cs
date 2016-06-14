@@ -44,9 +44,12 @@ namespace Kookaburra.Controllers
         {            
             var currentOperator = OperatorRepository.Get(User.Identity.GetUserId());
 
-            var model = new RoomViewModel();
-            model.CompanyId = currentOperator.Account.Identifier;
-            model.OperatorName = currentOperator.FirstName;
+            var model = new RoomViewModel
+            {
+                CompanyId = currentOperator.Account.Identifier,
+                OperatorName = currentOperator.FirstName,
+                OperatorId = currentOperator.Id
+            };
 
             return View(model);
         }

@@ -15,7 +15,7 @@ namespace Kookaburra.Services
                 .addNewMessageToPage(name, message, DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds, "client", Context.ConnectionId);
         }
 
-        public void SendToClient(string name, string message, string clientId)
+        public void SendToVisitor(string name, string message, string clientId)
         {
             Clients.Clients(new List<string>() { Context.ConnectionId, clientId })
                 .addNewMessageToPage(name, message, DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds, "operator", clientId);
@@ -31,6 +31,9 @@ namespace Kookaburra.Services
             ChatOperation.ConnectOperator(companyId, Context.ConnectionId, operatorName);
         }
 
+        /// <summary>
+        /// A visitor connects
+        /// </summary>        
         public string ConnectClient(string clientName, string companyId, string currentPage)
         {
             var location = "Sydney, Australia";

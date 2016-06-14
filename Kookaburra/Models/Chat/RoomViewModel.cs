@@ -10,5 +10,7 @@ namespace Kookaburra.ViewModels.Chat
         public string CompanyId { get; set; }
 
         public string OperatorName { get; set; }
+
+        public int OperatorId { get; set; }
     }
 }
