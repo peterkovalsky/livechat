@@ -1,4 +1,4 @@
-﻿import {Component, ElementRef, OnInit} from 'angular2/core';
+﻿import {Component, ElementRef, OnInit, Input, Output, EventEmitter} from 'angular2/core';
 import {ConversationModel} from '../models/conversation.model';
 import {MessageModel} from '../models/message.model';
 
@@ -9,22 +9,17 @@ declare var jQuery: any;
     templateUrl: '/app/chat/chat-window.component.html'
 })
     
-export class ChatWindowComponent implements OnInit {
+export class ChatWindowComponent implements OnInit {  
 
-    elementRef: ElementRef;
-    conversation: ConversationModel;
-  
+    @Input() conversation: ConversationModel;
+    @Output() onEnterMessage: EventEmitter<string> = new EventEmitter();
+
     currentMessage: string;
   
-    chatHubProxy: any;
-    hub: any;
 
-    constructor(elementRef: ElementRef) {
+    constructor(private elementRef: ElementRef) {
         this.elementRef = elementRef;
         //this.messages = new Array<Message>();
-        
-        this.chatHubProxy = jQuery.connection.chatHub;
-        this.hub = jQuery.connection.hub;
 
         // test
         //var date = new Date();
@@ -40,22 +35,10 @@ export class ChatWindowComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.chatHubProxy.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, clientId) {
-
-            var jsTime = new Date();
-            jsTime.setTime(time);
-
-            var msg: MessageModel = { id: 1, author: name, text: message, sender: sender, time: jsTime };
-            this.conversation.messages.push(msg);
-
-        }, this);
-
-
-   
+         
     }
 
     onEnter(event: any) {
-        //this.chatHubProxy.server.sendToClient('John Dou', this.currentMessage, this.clientId);
-        //this.currentMessage = '';
+        this.onEnterMessage.emit(this.currentMessage);        
     }
 }

@@ -12,16 +12,15 @@ var chat_window_component_1 = require('./chat-window.component');
 var ChatRoom = (function () {
     function ChatRoom(elementRef) {
         this.elementRef = elementRef;
+        this.conversations = [];
         var native = this.elementRef.nativeElement;
         this.accountId = native.getAttribute("data-account-id");
         this.operatorName = native.getAttribute("data-operator-name");
+        this.chatHubProxy = jQuery.connection.chatHub;
+        this.hub = jQuery.connection.hub;
     }
     ChatRoom.prototype.ngOnInit = function () {
-        // Start the connection.
-        this.hub.start().done(jQuery.proxy(function () {
-            this.chatHubProxy.server.connectOperator(this.operatorName, this.accountId).done(function () { });
-        }, this));
-        this.chatHubProxy.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {
+        jQuery.connection.chatHub.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {
             var jsTime = new Date();
             jsTime.setTime(time);
             var conversation = {
@@ -34,6 +33,11 @@ var ChatRoom = (function () {
             };
             this.conversations.push(conversation);
         }, this);
+        // Start the connection.
+        this.hub.start().done(jQuery.proxy(function () {
+            this.chatHubProxy.server.connectOperator(this.operatorName, this.accountId).done(function () {
+            });
+        }, this));
     };
     ChatRoom = __decorate([
         core_1.Component({
