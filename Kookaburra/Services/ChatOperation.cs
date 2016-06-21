@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Kookaburra.Services
 {
@@ -13,62 +11,62 @@ namespace Kookaburra.Services
         private static Dictionary<string, string> Operators = new Dictionary<string, string>();
 
 
-        public static void ConnectOperator(string companyId, string operatorId, string name)
+        public static void ConnectOperator(string accountKey, int operatorId, string operatorConnectionId, string operatorName)
         {
-            Operators.Add(operatorId, name);
-            CurrentState.Add(new ChatSession { CompanyId = companyId, OperatorId = operatorId });
+            Operators.Add(operatorConnectionId, operatorName);
+            CurrentState.Add(new ChatSession { AccountKey = accountKey, OperatorId = operatorId, OperatorConnectionId = operatorConnectionId });
         }
 
-        public static void DisconnectOperator(string operatorId)
+        public static void DisconnectOperator(string operatorConnectionId)
         {
-            Operators.Remove(operatorId);
-            CurrentState.RemoveAll(s => s.OperatorId == operatorId);
+            Operators.Remove(operatorConnectionId);
+            CurrentState.RemoveAll(s => s.OperatorConnectionId == operatorConnectionId);
         }
 
-        public static void ConnectClient(string clientId, string operatorId, string clientName)
+        public static void ConnectVisitor(string visitorConnectionId, string operatorConnectionId, string visitorName)
         {
-            Clients.Add(clientId, clientName);
-            var connectedOperator = CurrentState.Where(s => s.OperatorId == operatorId).SingleOrDefault();
+            Clients.Add(visitorConnectionId, visitorName);
+            var connectedOperator = CurrentState.Where(s => s.OperatorConnectionId == operatorConnectionId).SingleOrDefault();
             if (connectedOperator != null)
             {
-                if (!connectedOperator.Clients.Any(c => c == clientId))
-                    connectedOperator.Clients.Add(clientId);
+                if (!connectedOperator.Visitos.Any(c => c == visitorConnectionId))
+                    connectedOperator.Visitos.Add(visitorConnectionId);
             }
         }
 
-        public static void DisconnectClient(string clientId)
+        public static void DisconnectVisitor(string visitorId)
         {
-            Clients.Remove(clientId);
-            var currentOperator = CurrentState.Where(s => s.Clients.Any(c => c == clientId)).SingleOrDefault();
+            Clients.Remove(visitorId);
+            var currentOperator = CurrentState.Where(s => s.Visitos.Any(c => c == visitorId)).SingleOrDefault();
             if (currentOperator != null)
             {
-                currentOperator.Clients.Remove(clientId);
+                currentOperator.Visitos.Remove(visitorId);
             }
         }
 
         public static void Disconnect(string connectionId)
         {
-            DisconnectClient(connectionId);
+            DisconnectVisitor(connectionId);
             DisconnectOperator(connectionId);
         }
 
-        public static string GetFirstAvailableOperator(string companyId)
+        public static string GetFirstAvailableOperator(string accountKey)
         {
-            var operators = CurrentState.Where(s => s.CompanyId == companyId).ToList();
+            var operators = CurrentState.Where(s => s.AccountKey == accountKey).ToList();
             if (operators.Any())
             {
-                var operatorsWithClients = operators.Select(o => new { OperatorId = o.OperatorId, NumOfClients = o.Clients.Count() });
+                var operatorsWithClients = operators.Select(o => new { OperatorConnectionId = o.OperatorConnectionId, NumOfClients = o.Visitos.Count() });
                 var lessLoadedOperator = operatorsWithClients.OrderBy(llo => llo.NumOfClients).FirstOrDefault();
 
-                return lessLoadedOperator.OperatorId;
+                return lessLoadedOperator.OperatorConnectionId;
             }
 
             return null;
         }
 
-        public static string GetOperatorId(string clientId)
+        public static string GetOperatorConnectionId(string visitorConnectionId)
         {
-            return CurrentState.Where(s => s.Clients.Any(c => c == clientId)).Select(c => c.OperatorId).SingleOrDefault();
+            return CurrentState.Where(s => s.Visitos.Any(c => c == visitorConnectionId)).Select(c => c.OperatorConnectionId).SingleOrDefault();
         }
 
         public static string GetOperatorName(string operatorId)
@@ -92,13 +90,15 @@ namespace Kookaburra.Services
     {
         public ChatSession()
         {
-            Clients = new List<string>();
+            Visitos = new List<string>();
         }
 
-        public string CompanyId { get; set; }
+        public string AccountKey { get; set; }
 
-        public string OperatorId { get; set; }
+        public int OperatorId { get; set; }
 
-        public List<string> Clients { get; set; }
+        public string OperatorConnectionId { get; set; }
+
+        public List<string> Visitos { get; set; }
     }
 }

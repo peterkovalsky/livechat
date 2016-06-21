@@ -13,23 +13,18 @@ declare var jQuery: any;
 
 export class ChatRoom implements OnInit {
 
-    accountId: string;
     operatorName: string;
-    operatorId: number;
-
     conversations: ConversationModel[] = [];
 
     constructor(private elementRef: ElementRef) {
         var native = this.elementRef.nativeElement;
-        this.accountId = native.getAttribute("data-account-id");
         this.operatorName = native.getAttribute("data-operator-name");
-        this.operatorId = native.getAttribute("data-operator-id");
     }
 
     ngOnInit() {
 
         // Visitor sent message
-        jQuery.connection.chatHub.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, clientId) {
+        jQuery.connection.chatHub.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, visitorConnectionId) {
             console.log(message);
 
             var jsTime = new Date();
@@ -60,14 +55,14 @@ export class ChatRoom implements OnInit {
 
         }, this);
 
-        // Start the connection.
+        // Operator starts the connection.
         jQuery.connection.hub.start().done(jQuery.proxy(function () {
-            this.chatHubProxy.server.connectOperator(this.operatorName, this.accountId).done(function () { })
+            this.chatHubProxy.server.connectOperator().done(function () { })
         }, this));
     }
 
     // Send message to visitor
-    enterNewMessage(message: string) {
-        jQuery.connection.chatHub.server.sendToVisitor(operatorName, message, clientId);
+    enterNewMessage(message: string, visitorConnectionId: string) {
+        jQuery.connection.chatHub.server.sendToVisitor(message, visitorConnectionId);
     }
 }

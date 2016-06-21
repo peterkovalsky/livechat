@@ -14,12 +14,18 @@ var ChatRoom = (function () {
         this.elementRef = elementRef;
         this.conversations = [];
         var native = this.elementRef.nativeElement;
-        this.accountId = native.getAttribute("data-account-id");
         this.operatorName = native.getAttribute("data-operator-name");
-        this.chatHubProxy = jQuery.connection.chatHub;
-        this.hub = jQuery.connection.hub;
     }
     ChatRoom.prototype.ngOnInit = function () {
+        // Visitor sent message
+        jQuery.connection.chatHub.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, visitorConnectionId) {
+            console.log(message);
+            var jsTime = new Date();
+            jsTime.setTime(time);
+            var msg = { id: 1, author: name, text: message, sender: sender, time: jsTime };
+            this.conversation.messages.push(msg);
+        }, this);
+        // Visitor initiated conversation
         jQuery.connection.chatHub.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {
             var jsTime = new Date();
             jsTime.setTime(time);
@@ -33,11 +39,14 @@ var ChatRoom = (function () {
             };
             this.conversations.push(conversation);
         }, this);
-        // Start the connection.
-        this.hub.start().done(jQuery.proxy(function () {
-            this.chatHubProxy.server.connectOperator(this.operatorName, this.accountId).done(function () {
-            });
+        // Operator starts the connection.
+        jQuery.connection.hub.start().done(jQuery.proxy(function () {
+            this.chatHubProxy.server.connectOperator().done(function () { });
         }, this));
+    };
+    // Send message to visitor
+    ChatRoom.prototype.enterNewMessage = function (message, visitorConnectionId) {
+        jQuery.connection.chatHub.server.sendToVisitor(message, visitorConnectionId);
     };
     ChatRoom = __decorate([
         core_1.Component({

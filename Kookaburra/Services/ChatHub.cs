@@ -4,11 +4,29 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
+using Kookaburra.Domain.Repository;
+using Microsoft.AspNet.Identity;
 
 namespace Kookaburra.Services
 {
     public class ChatHub : Hub
     {
+        private readonly IOperatorRepository _operatorRepository;
+
+        public ChatHub(IOperatorRepository operatorRepository)
+        {
+            _operatorRepository = operatorRepository;
+        }
+
+
+        [Authorize]
+        public void ConnectOperator()
+        {
+            var operatorObj = _operatorRepository.Get(Context.User.Identity.GetUserId());
+
+            ChatOperation.ConnectOperator(operatorObj.Account.Identifier, operatorObj.Id, Context.ConnectionId, operatorObj.FirstName);
+        }
+
         public void SendToOperator(string name, string message, string operatorId)
         {
             Clients.Clients(new List<string>() { Context.ConnectionId, operatorId })
@@ -26,10 +44,7 @@ namespace Kookaburra.Services
             return Guid.NewGuid().ToString();
         }
 
-        public void ConnectOperator(string operatorName, string companyId)
-        {
-            ChatOperation.ConnectOperator(companyId, Context.ConnectionId, operatorName);
-        }
+      
 
         /// <summary>
         /// A visitor connects
@@ -68,7 +83,7 @@ namespace Kookaburra.Services
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            var operatorId = ChatOperation.GetOperatorId(Context.ConnectionId);
+            var operatorId = ChatOperation.GetOperatorConnectionId(Context.ConnectionId);
 
             // Operator was disconnected
             if (!string.IsNullOrEmpty(operatorId))
