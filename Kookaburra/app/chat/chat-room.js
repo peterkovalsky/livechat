@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -15,10 +16,12 @@ var ChatRoom = (function () {
         this.conversations = [];
         var native = this.elementRef.nativeElement;
         this.operatorName = native.getAttribute("data-operator-name");
+        this.chatHubProxy = jQuery.connection.chatHub;
+        this.hub = jQuery.connection.hub;
     }
     ChatRoom.prototype.ngOnInit = function () {
         // Visitor sent message
-        jQuery.connection.chatHub.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, visitorConnectionId) {
+        this.chatHubProxy.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, visitorConnectionId) {
             console.log(message);
             var jsTime = new Date();
             jsTime.setTime(time);
@@ -26,7 +29,7 @@ var ChatRoom = (function () {
             this.conversation.messages.push(msg);
         }, this);
         // Visitor initiated conversation
-        jQuery.connection.chatHub.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {
+        this.chatHubProxy.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {
             var jsTime = new Date();
             jsTime.setTime(time);
             var conversation = {
@@ -40,13 +43,15 @@ var ChatRoom = (function () {
             this.conversations.push(conversation);
         }, this);
         // Operator starts the connection.
-        jQuery.connection.hub.start().done(jQuery.proxy(function () {
-            this.chatHubProxy.server.connectOperator().done(function () { });
+        this.hub.start().done(jQuery.proxy(function () {
+            this.chatHubProxy.server.connectOperator().done(function () {
+                console.log('start');
+            });
         }, this));
     };
     // Send message to visitor
     ChatRoom.prototype.enterNewMessage = function (message, visitorConnectionId) {
-        jQuery.connection.chatHub.server.sendToVisitor(message, visitorConnectionId);
+        this.chatHubProxy.server.sendToVisitor(message, visitorConnectionId);
     };
     ChatRoom = __decorate([
         core_1.Component({
@@ -57,6 +62,6 @@ var ChatRoom = (function () {
         __metadata('design:paramtypes', [core_1.ElementRef])
     ], ChatRoom);
     return ChatRoom;
-})();
+}());
 exports.ChatRoom = ChatRoom;
 //# sourceMappingURL=chat-room.js.map

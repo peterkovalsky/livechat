@@ -1,1 +1,1 @@
-{"version":3,"file":"conversation.model.js","sourceRoot":"","sources":["conversation.model.ts"],"names":["ConversationModel","ConversationModel.constructor"],"mappings":"AAEA;IAAAA;IAQAC,CAACA;IAADD,wBAACA;AAADA,CAACA,AARD,IAQC;AARY,yBAAiB,oBAQ7B,CAAA"}
+{"version":3,"file":"conversation.model.js","sourceRoot":"","sources":["conversation.model.ts"],"names":[],"mappings":";AAEA;IAAA;IAQA,CAAC;IAAD,wBAAC;AAAD,CAAC,AARD,IAQC;AARY,yBAAiB,oBAQ7B,CAAA"}

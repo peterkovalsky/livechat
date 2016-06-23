@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR.Hosting.AspNet;
+using Microsoft.AspNet.SignalR.Infrastructure;
 
 namespace Kookaburra
 {
@@ -19,6 +21,8 @@ namespace Kookaburra
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            AspNetHost.SetResolver(StructureMap.ObjectFactory.GetInstance<IDependencyResolver>());
         }
 
         protected void Application_AuthorizeRequest(Object sender, EventArgs e)

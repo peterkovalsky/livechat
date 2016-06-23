@@ -16,15 +16,21 @@ export class ChatRoom implements OnInit {
     operatorName: string;
     conversations: ConversationModel[] = [];
 
+    chatHubProxy: any;
+    hub: any;
+
     constructor(private elementRef: ElementRef) {
         var native = this.elementRef.nativeElement;
         this.operatorName = native.getAttribute("data-operator-name");
+
+        this.chatHubProxy = jQuery.connection.chatHub;
+        this.hub = jQuery.connection.hub;
     }
 
     ngOnInit() {
 
         // Visitor sent message
-        jQuery.connection.chatHub.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, visitorConnectionId) {
+        this.chatHubProxy.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, visitorConnectionId) {
             console.log(message);
 
             var jsTime = new Date();
@@ -36,7 +42,7 @@ export class ChatRoom implements OnInit {
         }, this);
 
         // Visitor initiated conversation
-        jQuery.connection.chatHub.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {         
+        this.chatHubProxy.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {         
 
             var jsTime = new Date();
             jsTime.setTime(time);
@@ -56,13 +62,15 @@ export class ChatRoom implements OnInit {
         }, this);
 
         // Operator starts the connection.
-        jQuery.connection.hub.start().done(jQuery.proxy(function () {
-            this.chatHubProxy.server.connectOperator().done(function () { })
+        this.hub.start().done(jQuery.proxy(function () {
+            this.chatHubProxy.server.connectOperator().done(function () {
+                console.log('start');
+            })
         }, this));
     }
 
     // Send message to visitor
     enterNewMessage(message: string, visitorConnectionId: string) {
-        jQuery.connection.chatHub.server.sendToVisitor(message, visitorConnectionId);
+        this.chatHubProxy.server.sendToVisitor(message, visitorConnectionId);
     }
 }

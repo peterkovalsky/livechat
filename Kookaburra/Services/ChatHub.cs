@@ -11,20 +11,20 @@ namespace Kookaburra.Services
 {
     public class ChatHub : Hub
     {
-        private readonly IOperatorRepository _operatorRepository;
+        //private readonly IOperatorRepository _operatorRepository;
 
-        public ChatHub(IOperatorRepository operatorRepository)
-        {
-            _operatorRepository = operatorRepository;
-        }
+        //public ChatHub(IOperatorRepository operatorRepository)
+        //{
+        //    _operatorRepository = operatorRepository;
+        //}
 
 
         [Authorize]
         public void ConnectOperator()
         {
-            var operatorObj = _operatorRepository.Get(Context.User.Identity.GetUserId());
+            //var operatorObj = _operatorRepository.Get(Context.User.Identity.GetUserId());
 
-            ChatOperation.ConnectOperator(operatorObj.Account.Identifier, operatorObj.Id, Context.ConnectionId, operatorObj.FirstName);
+            //ChatOperation.ConnectOperator(operatorObj.Account.Identifier, operatorObj.Id, Context.ConnectionId, operatorObj.FirstName);
         }
 
         public void SendToOperator(string name, string message, string operatorId)
@@ -56,7 +56,7 @@ namespace Kookaburra.Services
             var operatorId = ChatOperation.GetFirstAvailableOperator(companyId);
             if (!string.IsNullOrEmpty(operatorId))
             {
-                ChatOperation.ConnectClient(Context.ConnectionId, operatorId, clientName);
+                ChatOperation.ConnectVisitor(Context.ConnectionId, operatorId, clientName);
 
                 Clients.Clients(new List<string>() { operatorId })
                     .clientConnected(Context.ConnectionId, clientName, DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds, location, currentPage);
