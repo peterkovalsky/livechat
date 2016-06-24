@@ -11,20 +11,20 @@ namespace Kookaburra.Services
 {
     public class ChatHub : Hub
     {
-        //private readonly IOperatorRepository _operatorRepository;
+        private readonly IOperatorRepository _operatorRepository;
 
-        //public ChatHub(IOperatorRepository operatorRepository)
-        //{
-        //    _operatorRepository = operatorRepository;
-        //}
+        public ChatHub(IOperatorRepository operatorRepository)
+        {
+            _operatorRepository = operatorRepository;
+        }
 
 
         [Authorize]
         public void ConnectOperator()
         {
-            //var operatorObj = _operatorRepository.Get(Context.User.Identity.GetUserId());
+            var operatorObj = _operatorRepository.Get(Context.User.Identity.GetUserId());
 
-            //ChatOperation.ConnectOperator(operatorObj.Account.Identifier, operatorObj.Id, Context.ConnectionId, operatorObj.FirstName);
+            ChatOperation.ConnectOperator(operatorObj.Account.Identifier, operatorObj.Id, Context.ConnectionId, operatorObj.FirstName);
         }
 
         public void SendToOperator(string name, string message, string operatorId)

@@ -23,15 +23,15 @@ using WebActivatorEx;
 [assembly: ApplicationShutdownMethod(typeof(StructuremapMvc), "End")]
 
 namespace Kookaburra.App_Start {
-	using System.Web.Mvc;
+    using System.Web.Mvc;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
-	using Kookaburra.DependencyResolution;
+    using Kookaburra.DependencyResolution;
 
     using StructureMap;
-    
-	public static class StructuremapMvc {
+    using Microsoft.AspNet.SignalR;
+    public static class StructuremapMvc {
         #region Public Properties
 
         public static StructureMapDependencyScope StructureMapDependencyScope { get; set; }
@@ -46,6 +46,9 @@ namespace Kookaburra.App_Start {
 		
         public static void Start() {
             IContainer container = IoC.Initialize();
+
+            GlobalHost.DependencyResolver = new StructureMapSignalRDependencyResolver(container); // for signalR
+
             StructureMapDependencyScope = new StructureMapDependencyScope(container);
             DependencyResolver.SetResolver(StructureMapDependencyScope);
             DynamicModuleUtility.RegisterModule(typeof(StructureMapScopeModule));
