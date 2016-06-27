@@ -13,8 +13,11 @@ namespace Kookaburra.Services
 
         public static void ConnectOperator(string accountKey, int operatorId, string operatorConnectionId, string operatorName)
         {
-            Operators.Add(operatorConnectionId, operatorName);
-            CurrentState.Add(new ChatSession { AccountKey = accountKey, OperatorId = operatorId, OperatorConnectionId = operatorConnectionId });
+            if (!Operators.ContainsKey(operatorConnectionId))
+            {
+                Operators.Add(operatorConnectionId, operatorName);
+                CurrentState.Add(new ChatSession { AccountKey = accountKey, OperatorId = operatorId, OperatorConnectionId = operatorConnectionId });
+            }
         }
 
         public static void DisconnectOperator(string operatorConnectionId)

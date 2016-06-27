@@ -29,28 +29,30 @@ var ChatRoom = (function () {
         }, this);
         // Visitor initiated conversation
         this.chatHubProxy.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {
-            var jsTime = new Date();
-            jsTime.setTime(time);
-            var conversation = {
-                visitorId: clientId,
-                visitorName: name,
-                conversationStartTime: jsTime,
-                location: location,
-                visitorUrl: currentUrl,
-                messages: []
-            };
-            this.conversations.push(conversation);
+            this.updateConversations(clientId, name, time, location, currentUrl);
         }, this);
         // Operator starts the connection.
         this.hub.start().done(jQuery.proxy(function () {
             this.chatHubProxy.server.connectOperator().done(function () {
-                console.log('start');
             });
         }, this));
     };
     // Send message to visitor
     ChatRoom.prototype.enterNewMessage = function (message, visitorConnectionId) {
         this.chatHubProxy.server.sendToVisitor(message, visitorConnectionId);
+    };
+    ChatRoom.prototype.updateConversations = function (clientId, name, time, location, currentUrl) {
+        var jsTime = new Date();
+        jsTime.setTime(time);
+        var conversation = {
+            visitorId: clientId,
+            visitorName: name,
+            conversationStartTime: jsTime,
+            location: location,
+            visitorUrl: currentUrl,
+            messages: []
+        };
+        this.conversations.push(conversation);
     };
     ChatRoom = __decorate([
         core_1.Component({

@@ -44,27 +44,13 @@ export class ChatRoom implements OnInit {
         // Visitor initiated conversation
         this.chatHubProxy.client.clientConnected = jQuery.proxy(function (clientId, name, time, location, currentUrl) {         
 
-            var jsTime = new Date();
-            jsTime.setTime(time);
-
-            var conversation: ConversationModel =
-                {
-                    visitorId: clientId,
-                    visitorName: name,
-                    conversationStartTime: jsTime,
-                    location: location,
-                    visitorUrl: currentUrl,
-                    messages: []
-                };
-
-            this.conversations.push(conversation);          
+            this.updateConversations(clientId, name, time, location, currentUrl);
 
         }, this);
 
         // Operator starts the connection.
         this.hub.start().done(jQuery.proxy(function () {
-            this.chatHubProxy.server.connectOperator().done(function () {
-                console.log('start');
+            this.chatHubProxy.server.connectOperator().done(function () {              
             })
         }, this));
     }
@@ -72,5 +58,22 @@ export class ChatRoom implements OnInit {
     // Send message to visitor
     enterNewMessage(message: string, visitorConnectionId: string) {
         this.chatHubProxy.server.sendToVisitor(message, visitorConnectionId);
+    }
+
+    updateConversations(clientId: number, name: string, time: number, location: string, currentUrl: string) {
+        var jsTime = new Date();
+        jsTime.setTime(time);
+
+        var conversation: ConversationModel =
+            {
+                visitorId: clientId,
+                visitorName: name,
+                conversationStartTime: jsTime,
+                location: location,
+                visitorUrl: currentUrl,
+                messages: []
+            };
+
+        this.conversations.push(conversation);  
     }
 }
