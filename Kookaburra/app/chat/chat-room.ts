@@ -71,7 +71,8 @@ export class ChatRoom implements OnInit {
                 conversationStartTime: jsTime,
                 location: location,
                 visitorUrl: currentUrl,
-                messages: []
+                messages: [],
+                isCurrent: this.conversations.length == 0
             };
 
         this.conversations.push(conversation);  

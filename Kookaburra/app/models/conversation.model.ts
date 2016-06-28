@@ -8,4 +8,5 @@ export class ConversationModel {
     public location: string;
     public visitorUrl: string;
     public messages: MessageModel[];
+    public isCurrent: boolean;
 }

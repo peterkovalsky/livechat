@@ -1,7 +1,16 @@
 ﻿<h1>chat room</h1>
 
-<div class="row">
+<div class="row" *ngIf="conversations.length > 0">
     <div class="col-sm-6 col-sm-offset-3">
-        <chat-window *ngIf="conversations.length > 0" (onEnterMessage)="enterNewMessage()"></chat-window> 
+        <chat-window (onEnterMessage)="enterNewMessage()"></chat-window> 
+    </div>
+    <div class="col-sm-6">
+        <chat-list [conversations]="conversations"></chat-list>
+    </div>
+</div>
+
+<div class="row" *ngIf="conversations.length == 0">
+    <div class="col-sm-12">
+        <h1>There is currently no chats</h1>
     </div>
 </div>

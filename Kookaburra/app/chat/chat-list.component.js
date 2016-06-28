@@ -9,14 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('angular2/core');
-var ChatService = (function () {
-    function ChatService() {
+var ChatListComponent = (function () {
+    function ChatListComponent(elementRef) {
+        this.elementRef = elementRef;
     }
-    ChatService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], ChatService);
-    return ChatService;
+    ChatListComponent.prototype.ngOnInit = function () {
+    };
+    ChatListComponent.prototype.switch = function (event) {
+    };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Array)
+    ], ChatListComponent.prototype, "conversations", void 0);
+    ChatListComponent = __decorate([
+        core_1.Component({
+            selector: 'chat-list',
+            templateUrl: '/app/chat/chat-list.component.html'
+        }), 
+        __metadata('design:paramtypes', [core_1.ElementRef])
+    ], ChatListComponent);
+    return ChatListComponent;
 }());
-exports.ChatService = ChatService;
-//# sourceMappingURL=chat.service.js.map
+exports.ChatListComponent = ChatListComponent;
+//# sourceMappingURL=chat-list.component.js.map

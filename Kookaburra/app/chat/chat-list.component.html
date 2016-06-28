@@ -1,0 +1,39 @@
+﻿<div class="xe-widget xe-conversations">
+    <div class="xe-bg-icon">
+        <i class="linecons-comment"></i>
+    </div>
+    <div class="xe-header">
+        <div class="xe-icon">
+            <i class="linecons-comment"></i>
+        </div>
+        <div class="xe-label">
+            <h3>
+                Conversations
+                <small>Chatting arround</small>
+            </h3>
+        </div>
+    </div>
+    <div class="xe-body">
+
+        <ul class="list-unstyled">
+
+            <li *ngFor="#conversation of conversations">
+                <div class="xe-comment-entry">
+                    <a href="#" class="xe-user-img">
+                        <img src="/images/user-2.png" class="img-circle" width="40">
+                    </a>
+
+                    <div class="xe-comment">
+                        <a href="#" class="xe-user-name">
+                            <strong>{{conversation.visitorName}}</strong>
+                        </a>
+
+                        <p>In it except to so temper mutual tastes mother. Interested cultivated its continuing now yet are. <br>Out interested acceptance our partiality affronting unpleasant why add. Esteem garden me...</p>
+                    </div>
+                </div>
+            </li>
+       
+        </ul>
+
+    </div>
+</div>
