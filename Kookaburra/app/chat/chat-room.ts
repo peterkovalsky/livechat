@@ -1,5 +1,6 @@
 ﻿import {Component, OnInit, ElementRef} from 'angular2/core';
 import {ChatWindowComponent} from './chat-window.component';
+import {ChatListComponent} from './chat-list.component';
 import {ConversationModel} from '../models/conversation.model';
 import {MessageModel} from '../models/message.model';
 
@@ -8,7 +9,7 @@ declare var jQuery: any;
 @Component({ 
     selector: 'chat-room',
     templateUrl: '/app/chat/chat-room.html',
-    directives: [ChatWindowComponent]
+    directives: [ChatWindowComponent, ChatListComponent]
 })
 
 export class ChatRoom implements OnInit {

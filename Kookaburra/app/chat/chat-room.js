@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var chat_window_component_1 = require('./chat-window.component');
+var chat_list_component_1 = require('./chat-list.component');
 var ChatRoom = (function () {
     function ChatRoom(elementRef) {
         this.elementRef = elementRef;
@@ -60,7 +61,7 @@ var ChatRoom = (function () {
         core_1.Component({
             selector: 'chat-room',
             templateUrl: '/app/chat/chat-room.html',
-            directives: [chat_window_component_1.ChatWindowComponent]
+            directives: [chat_window_component_1.ChatWindowComponent, chat_list_component_1.ChatListComponent]
         }), 
         __metadata('design:paramtypes', [core_1.ElementRef])
     ], ChatRoom);

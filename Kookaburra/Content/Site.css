@@ -196,3 +196,16 @@ input[type="checkbox"].input-validation-error {
     border-color: #b4b4b4;
     border-width: 1px 0 0 0;   
 }
+
+li.conversation-item:hover, li.conversation-item:focus {
+    text-decoration: none;
+    color: #555;
+    background-color: #f5f5f5;
+}
+
+li.conversation-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #2c2e2f;
+    border-color: #2c2e2f;
+}
