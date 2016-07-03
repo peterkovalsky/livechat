@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -15,7 +14,12 @@ var ChatListComponent = (function () {
     }
     ChatListComponent.prototype.ngOnInit = function () {
     };
-    ChatListComponent.prototype.switch = function (event) {
+    ChatListComponent.prototype.selectChat = function (selectedConversation) {
+        for (var _i = 0, _a = this.conversations; _i < _a.length; _i++) {
+            var conversation = _a[_i];
+            conversation.isCurrent = false;
+        }
+        selectedConversation.isCurrent = true;
     };
     __decorate([
         core_1.Input(), 
@@ -29,6 +33,6 @@ var ChatListComponent = (function () {
         __metadata('design:paramtypes', [core_1.ElementRef])
     ], ChatListComponent);
     return ChatListComponent;
-}());
+})();
 exports.ChatListComponent = ChatListComponent;
 //# sourceMappingURL=chat-list.component.js.map

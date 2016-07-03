@@ -22,7 +22,11 @@ export class ChatListComponent implements OnInit {
 
     }
 
-    switch(event: any) {
-        
+    selectChat(selectedConversation: ConversationModel) {
+        for (let conversation of this.conversations) {
+            conversation.isCurrent = false;
+        }
+
+        selectedConversation.isCurrent = true;
     }
 }

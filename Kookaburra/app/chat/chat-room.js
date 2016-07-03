@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -19,11 +18,11 @@ var ChatRoom = (function () {
         this.operatorName = native.getAttribute("data-operator-name");
         this.chatHubProxy = jQuery.connection.chatHub;
         this.hub = jQuery.connection.hub;
+        this.currentChat = null;
     }
     ChatRoom.prototype.ngOnInit = function () {
         // Visitor sent message
         this.chatHubProxy.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, visitorConnectionId) {
-            console.log(message);
             var jsTime = new Date();
             jsTime.setTime(time);
             var msg = { id: 1, author: name, text: message, sender: sender, time: jsTime };
@@ -56,6 +55,17 @@ var ChatRoom = (function () {
             isCurrent: this.conversations.length == 0
         };
         this.conversations.push(conversation);
+        this.updateCurrentChat();
+    };
+    ChatRoom.prototype.updateCurrentChat = function () {
+        if (this.conversations.length > 0) {
+            var currentConversation = this.conversations.filter(function (element) {
+                return element.isCurrent;
+            });
+            if (currentConversation.length > 0) {
+                this.currentChat = currentConversation[0];
+            }
+        }
     };
     ChatRoom = __decorate([
         core_1.Component({
@@ -66,6 +76,6 @@ var ChatRoom = (function () {
         __metadata('design:paramtypes', [core_1.ElementRef])
     ], ChatRoom);
     return ChatRoom;
-}());
+})();
 exports.ChatRoom = ChatRoom;
 //# sourceMappingURL=chat-room.js.map

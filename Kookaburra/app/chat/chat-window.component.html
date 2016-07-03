@@ -2,16 +2,16 @@
     <!-- Add class "collapsed" to minimize the panel -->
     <div class="panel-heading text-center">
         <h3 class="panel-title col-sm-12">
-            Chat with {{clientName | uppercase}}
+            Chat with {{conversation.visitorName | uppercase}}
             <br />
-            <small> Started at {{conversationStartTime | date:'shortTime'}} on {{conversationStartTime | date:'yMMMMd'}} </small>
+            <small> Started at {{conversation.conversationStartTime | date:'shortTime'}} on {{conversation.conversationStartTime | date:'yMMMMd'}} </small>
         </h3>        
     </div>
 
     <div class="panel-body"> 
 
         <ul class="conversation-messages ps-scrollbar ps-scroll-down ps-container ps-active-y">     
-            <li *ngFor="#message of messages">
+            <li *ngFor="#message of conversation.messages">
 
                 <div class="row">                    
                     <div class="col-sm-2 chat-author ">

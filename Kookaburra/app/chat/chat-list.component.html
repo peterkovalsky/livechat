@@ -13,7 +13,7 @@
 
         <ul class="list-unstyled">
 
-            <li *ngFor="#conversation of conversations" class="conversation-item">
+            <li *ngFor="#conversation of conversations" class="conversation-item" (onclick)="selectChat(conversation)">
                 <a href="#" class="xe-user-name">
                     <div class="xe-comment-entry">                       
                         <img src="/images/user-2.png" class="img-circle" width="40">

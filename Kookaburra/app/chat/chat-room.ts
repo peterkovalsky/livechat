@@ -16,6 +16,7 @@ export class ChatRoom implements OnInit {
 
     operatorName: string;
     conversations: ConversationModel[] = [];
+    currentChat: ConversationModel;
 
     chatHubProxy: any;
     hub: any;
@@ -26,13 +27,13 @@ export class ChatRoom implements OnInit {
 
         this.chatHubProxy = jQuery.connection.chatHub;
         this.hub = jQuery.connection.hub;
+        this.currentChat = null;
     }
 
     ngOnInit() {
 
         // Visitor sent message
-        this.chatHubProxy.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, visitorConnectionId) {
-            console.log(message);
+        this.chatHubProxy.client.addNewMessageToPage = jQuery.proxy(function (name, message, time, sender, visitorConnectionId) {            
 
             var jsTime = new Date();
             jsTime.setTime(time);
@@ -76,6 +77,20 @@ export class ChatRoom implements OnInit {
                 isCurrent: this.conversations.length == 0
             };
 
-        this.conversations.push(conversation);  
+        this.conversations.push(conversation);
+
+        this.updateCurrentChat();
+    }
+
+    updateCurrentChat() {
+        if (this.conversations.length > 0) {
+            var currentConversation = this.conversations.filter(function (element) {
+                return element.isCurrent;
+            });
+
+            if (currentConversation.length > 0) {
+                this.currentChat = currentConversation[0];
+            }
+        }
     }
 }
