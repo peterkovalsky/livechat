@@ -55,6 +55,22 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet]
+        [Route("chat")]     
+        public ActionResult ChatRoomKnockout()
+        {
+            var currentOperator = OperatorRepository.Get(User.Identity.GetUserId());
+
+            var model = new RoomViewModel
+            {
+                CompanyId = currentOperator.Account.Identifier,
+                OperatorName = currentOperator.FirstName,
+                OperatorId = currentOperator.Id
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
         [Route("chat-room-old")]
         public ActionResult RoomOld()
         {

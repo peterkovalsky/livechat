@@ -1,0 +1,179 @@
+﻿@model Kookaburra.ViewModels.Chat.RoomViewModel
+
+<h1>chat room</h1>
+
+<div class="row" *ngIf="conversations.length > 0">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="panel panel-color panel-success chat">
+            <!-- Add class "collapsed" to minimize the panel -->
+            <div class="panel-heading text-center">
+                <h3 class="panel-title col-sm-12">
+                    Chat with {{conversation.visitorName | uppercase}}
+                    <br />
+                    <small> Started at {{conversation.conversationStartTime | date:'shortTime'}} on {{conversation.conversationStartTime | date:'yMMMMd'}} </small>
+                </h3>
+            </div>
+
+            <div class="panel-body">
+
+                <ul class="conversation-messages ps-scrollbar ps-scroll-down ps-container ps-active-y">
+                    <li *ngFor="#message of conversation.messages">
+
+                        <div class="row">
+                            <div class="col-sm-2 chat-author ">
+                                {{message.author}}:
+                            </div>
+                            <div class="col-sm-8 chat-message ">
+                                {{message.text}}
+                            </div>
+                            <div class="col-sm-2 chat-time">
+                                {{message.time | date:'shortTime'}}
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+
+                <div class="chat-message">
+                    <textarea [(ngModel)]="currentMessage" (keyup.enter)="onEnter($event)" class="form-control" placeholder="Enter your message..."></textarea>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2 col-sm-offset-1">
+        <div class="xe-widget xe-conversations">
+            <div class="xe-header">
+                <div class="xe-icon">
+                    <i class="linecons-comment"></i>
+                </div>
+                <div class="xe-label">
+                    <h3>
+                        Conversations
+                    </h3>
+                </div>
+            </div>
+            <div class="xe-body">
+
+                <ul class="list-unstyled">
+
+                    <li data-bind="foreach: conversations, visible: conversations().length > 0" class="conversation-item" >
+                        <a href="#" class="xe-user-name">
+                            <div class="xe-comment-entry">
+                                <img src="/images/user-2.png" class="img-circle" width="40">
+
+                                <div class="xe-comment">
+                                    <strong data-bind="text: visitorName"></strong>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="conversations.length == 0">
+    <div class="col-sm-12">
+        <h1>There is currently no chats</h1>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function Message(data) {
+        this.id = ko.observable(data.id);
+        this.author = ko.observable(data.author);
+        this.sender = ko.observable(data.sender);
+        this.text = ko.observable(data.text);
+        this.time = ko.observable(data.time);
+    }
+
+    function Conversation(data) {
+        this.visitorId = ko.observable(data.visitorId);
+        this.visitorName = ko.observable(data.visitorName);
+        this.conversationStartTime = ko.observable(data.conversationStartTime);
+        this.location = ko.observable(data.location);
+        this.visitorUrl = ko.observable(data.visitorUrl);
+        this.messages = ko.observableArray([]);
+        this.isCurrent = ko.observable(data.isCurrent);
+    }
+
+    function ChatViewModel() {
+
+        var self = this;
+
+        self.operatorName = '@Model.OperatorName';
+        self.conversations = ko.observableArray([]);
+
+        var chatHubProxy = $.connection.chatHub;
+
+        //------------------- INCOMMING MESSAGE --------------------
+        chatHubProxy.client.addNewMessageToPage = function (name, message, time, sender, clientId) {
+            // Add the message to the chat.
+
+        };
+
+        //------------------- Visitor CONNECTED --------------------
+        chatHubProxy.client.clientConnected = function (clientId, name, time, location, currentUrl) {
+            self.conversations.push(new Conversation(
+                {
+                    visitorId: clientId,
+                    visitorName: name,
+                    conversationStartTime: time,
+                    location: location,
+                    visitorUrl: currentUrl,
+                    isCurrent: true
+                }))
+
+        };
+
+        //------------------- Visitor DISCONNECTED --------------------
+        chatHubProxy.client.clientDisconnected = function (clientId, name, time) {
+
+        };
+
+        // ---------------------- OPERATOR DISCONNECTED -------------------
+        $.connection.hub.disconnected(function () {
+            showError('You were disconnected from the messaging server. Please refresh the page.');
+        });
+
+        // Start the connection.
+        $.connection.hub.start().done(function () {
+            chatHubProxy.server.connectOperator().done(function () { });
+
+            // SEND MESSAGE ON ENTER PRESS
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+
+                }
+            });
+
+            // DISCONNECT A Visitor
+            $("body").on("click", "button.disconnect", function (e) {
+                var _clientId = $(this).closest('.chat-client[data-client-id]').attr('data-client-id');
+                var name = $(this).closest('.client-info .client-name').val();
+
+                if (confirm("Are you sure you want to disconnect " + name + "?")) {
+                    chatHubProxy.server.disconnectClient(_clientId);
+                }
+            });
+        });
+    }
+
+    ko.applyBindings(new chatViewModel());
+
+</script>
+
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/knockout-3.4.0.js"></script>
+}
