@@ -2,32 +2,32 @@
 
 <h1>chat room</h1>
 
-<div class="row" *ngIf="conversations.length > 0">
-    <div class="col-sm-6 col-sm-offset-3">
+<div class="row" data-bind="visible: currentChat != null">
+    <div class="col-sm-6 col-sm-offset-3" data-bind="with: currentChat">
         <div class="panel panel-color panel-success chat">
             <!-- Add class "collapsed" to minimize the panel -->
             <div class="panel-heading text-center">
                 <h3 class="panel-title col-sm-12">
-                    Chat with {{conversation.visitorName | uppercase}}
+                    Chat with <span data-bind="text: visitorName"></span>
                     <br />
-                    <small> Started at {{conversation.conversationStartTime | date:'shortTime'}} on {{conversation.conversationStartTime | date:'yMMMMd'}} </small>
+                    <small> Started at <span data-bind="text: conversationStartTime"></span> on <span data-bind="text: conversationStartTime"></span> </small>
                 </h3>
             </div>
 
             <div class="panel-body">
 
                 <ul class="conversation-messages ps-scrollbar ps-scroll-down ps-container ps-active-y">
-                    <li *ngFor="#message of conversation.messages">
+                    <li data-bind="foreach: messages">
 
                         <div class="row">
-                            <div class="col-sm-2 chat-author ">
-                                {{message.author}}:
+                            <div class="col-sm-2 chat-author" data-bind="text: author">
+                                
                             </div>
-                            <div class="col-sm-8 chat-message ">
-                                {{message.text}}
+                            <div class="col-sm-8 chat-message" data-bind="text: text">
+                                                                
                             </div>
-                            <div class="col-sm-2 chat-time">
-                                {{message.time | date:'shortTime'}}
+                            <div class="col-sm-2 chat-time" data-bind="text: time">
+                               
                             </div>
                         </div>
 
@@ -35,13 +35,13 @@
                 </ul>
 
                 <div class="chat-message">
-                    <textarea [(ngModel)]="currentMessage" (keyup.enter)="onEnter($event)" class="form-control" placeholder="Enter your message..."></textarea>
+                    <textarea data-bind="value: $parent.newText" class="form-control" placeholder="Enter your message..."></textarea>
                 </div>
 
             </div>
         </div>
     </div>
-    <div class="col-sm-2 col-sm-offset-1">
+    <div class="col-sm-2 col-sm-offset-1" data-bind="visible: conversations().length > 0">
         <div class="xe-widget xe-conversations">
             <div class="xe-header">
                 <div class="xe-icon">
@@ -57,7 +57,7 @@
 
                 <ul class="list-unstyled">
 
-                    <li data-bind="foreach: conversations, visible: conversations().length > 0" class="conversation-item" >
+                    <li data-bind="foreach: conversations" class="conversation-item" >
                         <a href="#" class="xe-user-name">
                             <div class="xe-comment-entry">
                                 <img src="/images/user-2.png" class="img-circle" width="40">
@@ -77,7 +77,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="conversations.length == 0">
+<div class="row" data-bind="visible: conversations().length == 0">
     <div class="col-sm-12">
         <h1>There is currently no chats</h1>
     </div>
@@ -104,12 +104,21 @@
         this.isCurrent = ko.observable(data.isCurrent);
     }
 
-    function ChatViewModel() {
+    function ViewModel() {
 
         var self = this;
 
         self.operatorName = '@Model.OperatorName';
+        self.newText = ko.observable("");
         self.conversations = ko.observableArray([]);
+        self.currentChat = ko.computed(function () {           
+            var result = $.grep(self.conversations(), function (e) { return e.isCurrent() == true; });
+            if (result.length > 0) {
+                return result[0];
+            } else {
+                return null;
+            }
+        });
 
         var chatHubProxy = $.connection.chatHub;
 
@@ -140,7 +149,7 @@
 
         // ---------------------- OPERATOR DISCONNECTED -------------------
         $.connection.hub.disconnected(function () {
-            showError('You were disconnected from the messaging server. Please refresh the page.');
+            alert('You were disconnected from the messaging server. Please refresh the page.');
         });
 
         // Start the connection.
@@ -166,7 +175,7 @@
         });
     }
 
-    ko.applyBindings(new chatViewModel());
+    ko.applyBindings(new ViewModel());
 
 </script>
 
