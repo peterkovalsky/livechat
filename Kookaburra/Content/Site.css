@@ -209,3 +209,7 @@ li.conversation-item.active {
     background-color: #2c2e2f;
     border-color: #2c2e2f;
 }
+
+.conversations .conversation-item.active{
+    background-color: darkslategrey;
+}

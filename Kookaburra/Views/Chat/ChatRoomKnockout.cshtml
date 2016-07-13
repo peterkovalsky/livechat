@@ -42,7 +42,7 @@
         </div>
     </div>
     <div class="col-sm-2 col-sm-offset-1" data-bind="visible: conversations().length > 0">
-        <div class="xe-widget xe-conversations">
+        <div class="xe-widget xe-conversations conversations">
             <div class="xe-header">
                 <div class="xe-icon">
                     <i class="linecons-comment"></i>
@@ -57,17 +57,20 @@
 
                 <ul class="list-unstyled">
 
-                    <li data-bind="foreach: conversations" class="conversation-item" >
-                        <a href="#" class="xe-user-name">
-                            <div class="xe-comment-entry">
-                                <img src="/images/user-2.png" class="img-circle" width="40">
+                    <li data-bind="foreach: conversations" >
+                        <div class="conversation-item" data-bind="css: {active: isCurrent}">
+                            <a href="#" class="xe-user-name" data-bind="click: $parent.switchChat">
+                                <div class="xe-comment-entry">
+                                    <img src="/images/user-2.png" class="img-circle" width="40">
 
-                                <div class="xe-comment">
-                                    <strong data-bind="text: visitorName"></strong>
-                                    <p></p>
+                                    <div class="xe-comment">
+                                        <strong data-bind="text: visitorName"></strong>
+                                        <p></p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
+                     
                     </li>
 
                 </ul>
@@ -119,6 +122,14 @@
                 return null;
             }
         });
+        self.switchChat = function (conversation) {
+
+            for (var i = 0; i < self.conversations().length; i++) {
+                self.conversations()[i].isCurrent(false);
+            }        
+
+            conversation.isCurrent(true);
+        };
 
         var chatHubProxy = $.connection.chatHub;
 
@@ -130,6 +141,8 @@
 
         //------------------- Visitor CONNECTED --------------------
         chatHubProxy.client.clientConnected = function (clientId, name, time, location, currentUrl) {
+
+
             self.conversations.push(new Conversation(
                 {
                     visitorId: clientId,
@@ -137,7 +150,7 @@
                     conversationStartTime: time,
                     location: location,
                     visitorUrl: currentUrl,
-                    isCurrent: true
+                    isCurrent: (self.conversations().length == 0 ? true : false)
                 }))
 
         };
