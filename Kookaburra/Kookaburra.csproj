@@ -215,6 +215,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
@@ -391,6 +392,7 @@
     <Content Include="Content\fonts\meteocons\font\meteocons.woff" />
     <Content Include="images\news-image-widget-3" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\chat-room.js" />
     <Content Include="Scripts\chatbox.js" />
     <Content Include="Scripts\es6-shim.min.js" />
     <Content Include="Scripts\handlebars.min.js" />
@@ -416,6 +418,9 @@
     <Content Include="Scripts\min\xenon-notes-min.js" />
     <Content Include="Scripts\min\xenon-toggles-min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\resizeable.js" />
     <Content Include="Scripts\respond.js" />

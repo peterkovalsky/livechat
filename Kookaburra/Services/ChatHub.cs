@@ -6,6 +6,7 @@ using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
 using Kookaburra.Domain.Repository;
 using Microsoft.AspNet.Identity;
+using Kookaburra.Common;
 
 namespace Kookaburra.Services
 {
@@ -30,13 +31,13 @@ namespace Kookaburra.Services
         public void SendToOperator(string name, string message, string operatorId)
         {
             Clients.Clients(new List<string>() { Context.ConnectionId, operatorId })
-                .addNewMessageToPage(name, message, DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds, "client", Context.ConnectionId);
+                .addNewMessageToPage(name, message, DateTime.UtcNow.JsDateTime(), "client", Context.ConnectionId);
         }
 
-        public void SendToVisitor(string name, string message, string clientId)
+        public void SendToVisitor(string message, string visitorId)
         {
-            Clients.Clients(new List<string>() { Context.ConnectionId, clientId })
-                .addNewMessageToPage(name, message, DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds, "operator", clientId);
+            Clients.Clients(new List<string>() { Context.ConnectionId, visitorId })
+                .addNewMessageToPage("REMOVE", message, DateTime.UtcNow.JsDateTime(), "operator", visitorId);
         }
 
         public string GetOperatorId(string companyId)
@@ -59,7 +60,7 @@ namespace Kookaburra.Services
                 ChatOperation.ConnectVisitor(Context.ConnectionId, operatorId, clientName);
 
                 Clients.Clients(new List<string>() { operatorId })
-                    .clientConnected(Context.ConnectionId, clientName, DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds, location, currentPage);
+                    .clientConnected(Context.ConnectionId, clientName, DateTime.UtcNow.JsDateTime(), location, currentPage);
             }
 
             return operatorId;
@@ -90,7 +91,7 @@ namespace Kookaburra.Services
             {
                 var clientName = ChatOperation.GetClientName(Context.ConnectionId);
                 Clients.Clients(new List<string>() { operatorId })
-                    .clientDisconnected(Context.ConnectionId, clientName, DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds);
+                    .clientDisconnected(Context.ConnectionId, clientName, DateTime.UtcNow.JsDateTime());
             }
 
             ChatOperation.Disconnect(Context.ConnectionId);

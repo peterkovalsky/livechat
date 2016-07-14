@@ -8,9 +8,9 @@
             <!-- Add class "collapsed" to minimize the panel -->
             <div class="panel-heading text-center">
                 <h3 class="panel-title col-sm-12">
-                    Chat with <span data-bind="text: visitorName"></span>
+                    Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
                     <br />
-                    <small> Started at <span data-bind="text: conversationStartTime"></span> on <span data-bind="text: conversationStartTime"></span> </small>
+                    <small> Started <span data-bind="text: startTimeFormatted"></span></small>
                 </h3>
             </div>
 
@@ -86,116 +86,17 @@
     </div>
 </div>
 
-
-<script type="text/javascript">
-
-    function Message(data) {
-        this.id = ko.observable(data.id);
-        this.author = ko.observable(data.author);
-        this.sender = ko.observable(data.sender);
-        this.text = ko.observable(data.text);
-        this.time = ko.observable(data.time);
-    }
-
-    function Conversation(data) {
-        this.visitorId = ko.observable(data.visitorId);
-        this.visitorName = ko.observable(data.visitorName);
-        this.conversationStartTime = ko.observable(data.conversationStartTime);
-        this.location = ko.observable(data.location);
-        this.visitorUrl = ko.observable(data.visitorUrl);
-        this.messages = ko.observableArray([]);
-        this.isCurrent = ko.observable(data.isCurrent);
-    }
-
-    function ViewModel() {
-
-        var self = this;
-
-        self.operatorName = '@Model.OperatorName';
-        self.newText = ko.observable("");
-        self.conversations = ko.observableArray([]);
-        self.currentChat = ko.computed(function () {           
-            var result = $.grep(self.conversations(), function (e) { return e.isCurrent() == true; });
-            if (result.length > 0) {
-                return result[0];
-            } else {
-                return null;
-            }
-        });
-        self.switchChat = function (conversation) {
-
-            for (var i = 0; i < self.conversations().length; i++) {
-                self.conversations()[i].isCurrent(false);
-            }        
-
-            conversation.isCurrent(true);
-        };
-
-        var chatHubProxy = $.connection.chatHub;
-
-        //------------------- INCOMMING MESSAGE --------------------
-        chatHubProxy.client.addNewMessageToPage = function (name, message, time, sender, clientId) {
-            // Add the message to the chat.
-
-        };
-
-        //------------------- Visitor CONNECTED --------------------
-        chatHubProxy.client.clientConnected = function (clientId, name, time, location, currentUrl) {
-
-
-            self.conversations.push(new Conversation(
-                {
-                    visitorId: clientId,
-                    visitorName: name,
-                    conversationStartTime: time,
-                    location: location,
-                    visitorUrl: currentUrl,
-                    isCurrent: (self.conversations().length == 0 ? true : false)
-                }))
-
-        };
-
-        //------------------- Visitor DISCONNECTED --------------------
-        chatHubProxy.client.clientDisconnected = function (clientId, name, time) {
-
-        };
-
-        // ---------------------- OPERATOR DISCONNECTED -------------------
-        $.connection.hub.disconnected(function () {
-            alert('You were disconnected from the messaging server. Please refresh the page.');
-        });
-
-        // Start the connection.
-        $.connection.hub.start().done(function () {
-            chatHubProxy.server.connectOperator().done(function () { });
-
-            // SEND MESSAGE ON ENTER PRESS
-            $(document).keypress(function (e) {
-                if (e.which == 13) {
-
-                }
-            });
-
-            // DISCONNECT A Visitor
-            $("body").on("click", "button.disconnect", function (e) {
-                var _clientId = $(this).closest('.chat-client[data-client-id]').attr('data-client-id');
-                var name = $(this).closest('.client-info .client-name').val();
-
-                if (confirm("Are you sure you want to disconnect " + name + "?")) {
-                    chatHubProxy.server.disconnectClient(_clientId);
-                }
-            });
-        });
-    }
-
-    ko.applyBindings(new ViewModel());
-
+<script>
+    var operatorName = '@Model.OperatorName';
 </script>
+
+<script src="~/Scripts/chat-room.js"></script>
 
 
 @section scripts
 {
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="~/signalr/hubs"></script>
-    <script src="~/Scripts/knockout-3.4.0.js"></script>
+    <script src="~/Scripts/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/knockout-3.4.0.js"></script>    
 }
