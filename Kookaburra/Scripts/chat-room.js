@@ -1,33 +1,7 @@
-﻿function Message(data) {
-    this.id = ko.observable(data.id);
-    this.author = ko.observable(data.author);
-    this.sender = ko.observable(data.sender);
-    this.text = ko.observable(data.text);
-    this.time = ko.observable(data.time);
-}
-
-function Conversation(data) {
-    var self = this;
-
-    self.visitorId = ko.observable(data.visitorId);
-    self.visitorName = ko.observable(data.visitorName);
-    self.startTime = ko.observable(data.startTime);
-    self.location = ko.observable(data.location);
-    self.visitorUrl = ko.observable(data.visitorUrl);
-    self.messages = ko.observableArray([]);
-    self.isCurrent = ko.observable(data.isCurrent);
-    self.startTimeFormatted = ko.computed(function () {
-        return moment(self.startTime()).calendar();
-    });
-    self.visitorNameFormatted = ko.computed(function () {
-        return self.visitorName().toUpperCase();
-    });
-}
-
-function ViewModel() {
+﻿function ChatRoomViewModel(operatorName) {
 
     var self = this;
-   
+
     self.operatorName = operatorName;
     self.newText = ko.observable("");
     self.conversations = ko.observableArray([]);
@@ -51,14 +25,24 @@ function ViewModel() {
     var chatHubProxy = $.connection.chatHub;
 
     //------------------- INCOMMING MESSAGE --------------------
-    chatHubProxy.client.addNewMessageToPage = function (name, message, time, sender, clientId) {
-        // Add the message to the chat.
+    chatHubProxy.client.sendMessageToOperator = function (name, message, time, visitorId) {       
 
+        var conversation = ko.utils.arrayFirst(self.conversations(), function (c) {
+            return c.visitorId() == visitorId;
+        });
+
+        if (conversation)
+        {
+            conversation.messages.push(new Message({
+                author: name,
+                text: message,
+                time: moment(time).format('LT')
+            }));
+        }       
     };
 
     //------------------- Visitor CONNECTED --------------------
     chatHubProxy.client.clientConnected = function (clientId, name, time, location, currentUrl) {
-
 
         self.conversations.push(new Conversation(
             {
@@ -69,7 +53,6 @@ function ViewModel() {
                 visitorUrl: currentUrl,
                 isCurrent: (self.conversations().length == 0 ? true : false)
             }))
-
     };
 
     //------------------- Visitor DISCONNECTED --------------------
@@ -94,7 +77,9 @@ function ViewModel() {
                     text: self.newText(),
                     time: moment().format('LT')
                 }));
-                chatHubProxy.server.sendToVisitor(self.newText(), self.currentChat().visitorId());
+                chatHubProxy.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().visitorId());
+
+                self.newText(''); // clear input area
             }
         });
 
@@ -110,4 +95,28 @@ function ViewModel() {
     });
 }
 
-ko.applyBindings(new ViewModel());
+function Message(data) {
+    this.id = ko.observable(data.id);
+    this.author = ko.observable(data.author);
+    this.sender = ko.observable(data.sender);
+    this.text = ko.observable(data.text);
+    this.time = ko.observable(data.time);
+}
+
+function Conversation(data) {
+    var self = this;
+
+    self.visitorId = ko.observable(data.visitorId);
+    self.visitorName = ko.observable(data.visitorName);
+    self.startTime = ko.observable(data.startTime);
+    self.location = ko.observable(data.location);
+    self.visitorUrl = ko.observable(data.visitorUrl);
+    self.messages = ko.observableArray([]);
+    self.isCurrent = ko.observable(data.isCurrent);
+    self.startTimeFormatted = ko.computed(function () {
+        return moment(self.startTime()).calendar();
+    });
+    self.visitorNameFormatted = ko.computed(function () {
+        return self.visitorName().toUpperCase();
+    });
+}

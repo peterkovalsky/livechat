@@ -35,7 +35,8 @@
                 </ul>
 
                 <div class="chat-message">
-                    <textarea data-bind="value: $parent.newText" class="form-control" placeholder="Enter your message..."></textarea>
+                    <textarea data-bind="textInput: $parent.newText" 
+                              class="form-control" placeholder="Enter your message..."></textarea>
                 </div>
 
             </div>
@@ -86,12 +87,11 @@
     </div>
 </div>
 
-<script>
-    var operatorName = '@Model.OperatorName';
-</script>
-
 <script src="~/Scripts/chat-room.js"></script>
 
+<script>
+    ko.applyBindings(new ChatRoomViewModel('@Model.OperatorName'));
+</script>
 
 @section scripts
 {

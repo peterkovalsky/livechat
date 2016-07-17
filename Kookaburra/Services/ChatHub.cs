@@ -31,13 +31,13 @@ namespace Kookaburra.Services
         public void SendToOperator(string name, string message, string operatorId)
         {
             Clients.Clients(new List<string>() { Context.ConnectionId, operatorId })
-                .addNewMessageToPage(name, message, DateTime.UtcNow.JsDateTime(), "client", Context.ConnectionId);
+                .sendMessageToOperator(name, message, DateTime.UtcNow.JsDateTime(), Context.ConnectionId);
         }
 
-        public void SendToVisitor(string message, string visitorId)
+        public void SendToVisitor(string operatorName, string message, string visitorId)
         {
             Clients.Clients(new List<string>() { Context.ConnectionId, visitorId })
-                .addNewMessageToPage("REMOVE", message, DateTime.UtcNow.JsDateTime(), "operator", visitorId);
+                .addNewMessageToPage(operatorName, message, DateTime.UtcNow.JsDateTime(), "operator", visitorId);
         }
 
         public string GetOperatorId(string companyId)

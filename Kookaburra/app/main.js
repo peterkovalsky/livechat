@@ -1,4 +1,3 @@
-"use strict";
 ///<reference path="node_modules/angular2/platform/browser.d.ts"/>
 var browser_1 = require('angular2/platform/browser');
 var chat_room_1 = require('./chat/chat-room');
