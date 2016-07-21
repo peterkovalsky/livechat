@@ -27,13 +27,10 @@
             $.connection.hub.stop();
 
             self.messages.push(new Message({
-                author: name,
+                author: 'System',
                 text: 'You were disconnected by the operator',
-                time: moment(time).format('LT')
-            }));
-
-            $('#discussion').append('<li><strong>' + htmlEncode(name)
-            + '</strong>: You were disconnected by the operator       ' + htmlEncode(time) + '</li>');
+                time: moment().format('LT')
+            }));          
         };
 
         // Start the connection.
@@ -56,14 +53,16 @@
                     // SEND MESSAGE ON ENTER PRESS
                     $(document).keypress(function (e) {
                         if (e.which == 13) {
-                            var message = $('#message').val();
-                            // Call the Send method on the hub.
-                            chatHubProxy.server.sendToOperator($('#displayname').val(), $('#message').val(), _operatorId);
 
-                            e.preventDefault();
-                            // Clear text box and reset focus for next comment.
-                            $('#message').val('').focus();
-                            return false;
+                            self.currentChat().messages.push(new Message({
+                                author: self.visitorName(),
+                                text: self.newMessage(),
+                                time: moment().format('LT')
+                            }));
+
+                            chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage(), _operatorId);                         
+                            
+                            self.newMessage('');                        
                         }
                     });
                 }
