@@ -35,7 +35,8 @@ namespace Kookaburra.Controllers
             _operatorRepository = operatorRepository;           
         }
 
-
+        [HttpGet]
+        [Route("")]
         public ActionResult Index()
         {
             return View();

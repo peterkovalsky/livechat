@@ -23,22 +23,24 @@
             <div class="online">
                 <div class="chat-body">
 
-                    <div id="online-intro" class="introduction">
+                    <div class="introduction" data-bind="if: conversationStarted == false" >
                         <div class="heading">
                             Please intoduce yourself
                         </div>
                         <div class="name">
-                            @Html.TextBoxFor(m => m.VisitorName, new { id = "visitor-name", placeholder = "Name", autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.VisitorName, 
+                                new { id = "visitor-name", placeholder = "Name", autocomplete = "off", data_bind = "value: visitorName" })
                         </div>
                         <div class="email">
-                            @Html.TextBoxFor(m => m.VisitorEmail, new { placeholder = "Email (optional)", autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.VisitorEmail, 
+                                new { placeholder = "Email (optional)", autocomplete = "off", data_bind = "value: visitorEmail" })
                         </div>
                         <div>
-                            <input class="submit" id="start-chat" type="button" name="startChat" value="Start Chat" />
+                            <input class="submit" type="button" value="Start Chat" data-bind="click: startConversation" />
                         </div>
                     </div>
 
-                    <div id="online-chat" style="display: none;" class="chatting">
+                    <div class="chatting" data-bind="if: conversationStarted == true">
                         <div class="heading">
                             <div class="operator-pic"></div>
                             <div class="operator-name"></div>
@@ -52,8 +54,8 @@
                         </div>
                     </div>
 
-                    <div id="online-message">
-
+                    <div data-bind="if: goneOffline">
+                        Operator has gone offline. Click the button if you wish leave a message
                     </div>
 
                 </div>
@@ -66,18 +68,16 @@
         </div>
 
 
-        <script>
+        <script type="text/javascript">
+
+
+            ko.applyBindings(new ChatRoomViewModel('@Model.ClientKey', 'http://local.chat.com/chat/client'));
+
     var companyId = '@Model.ClientKey';
     var operatorId = null;
-    var currentPage = 'http://local.chat.com/chat/client';
+    
 
-    $(document).ready(function () {
 
-        // Start live chat
-        $('#start-chat').click(function () {
-            initChat();
-        });
-    });
 
     // This optional function html-encodes messages for display in the page.
     function htmlEncode(value) {
@@ -85,58 +85,6 @@
         return encodedValue;
     }
 
-    function initChat() {
-        var clientName = $('#visitor-name').val();
-
-        var chatHubProxy = $.connection.chatHub;
-        // Create a function that the hub can call back to display messages.
-        chatHubProxy.client.addNewMessageToPage = function (name, message, time, sender) {
-            // Add the message to the page.
-            $('#discussion').append('<li><strong>' + htmlEncode(name)
-                + '</strong>: ' + htmlEncode(message) + '       ' + htmlEncode(time) + '</li>');
-        };
-
-        chatHubProxy.client.orderToDisconnect = function () {
-            $.connection.hub.stop();
-            $('#discussion').append('<li><strong>' + htmlEncode(name)
-            + '</strong>: You were disconnected by the operator       ' + htmlEncode(time) + '</li>');
-        };
-
-        // Start the connection.
-        $.connection.hub.start().done(function () {
-            chatHubProxy.server.connectClient(clientName, companyId, currentPage).done(function (_operatorId) {
-                if (_operatorId == null) {
-                    $('#online-message').html('Operator has gone offline. Click the button if you wish leave a message');
-                }
-                else {
-                    // show chat window
-                    $('#online-intro').hide();
-                    $('#online-chat').show();
-
-                    operatorId = _operatorId;
-
-                    // Get the user name and store it to prepend to messages.
-                    $('#displayname').val(clientName);
-                    // Set initial focus to message input box.
-                    $('#message').focus();
-
-                    // SEND MESSAGE ON ENTER PRESS
-                    $(document).keypress(function (e) {
-                        if (e.which == 13) {
-                            var message = $('#message').val();
-                            // Call the Send method on the hub.
-                            chatHubProxy.server.sendToOperator($('#displayname').val(), $('#message').val(), _operatorId);
-
-                            e.preventDefault();
-                            // Clear text box and reset focus for next comment.
-                            $('#message').val('').focus();
-                            return false;
-                        }
-                    });
-                }
-            });
-        });
-    }
         </script>
     </div>
 </body>

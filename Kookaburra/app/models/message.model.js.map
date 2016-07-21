@@ -1,1 +1,1 @@
-{"version":3,"file":"message.model.js","sourceRoot":"","sources":["message.model.ts"],"names":["MessageModel","MessageModel.constructor"],"mappings":"AAAA;IAAAA;IAOAC,CAACA;IAADD,mBAACA;AAADA,CAACA,AAPD,IAOC;AAPY,oBAAY,eAOxB,CAAA"}
+{"version":3,"file":"message.model.js","sourceRoot":"","sources":["message.model.ts"],"names":[],"mappings":";AAAC;IAAA;IAOD,CAAC;IAAD,mBAAC;AAAD,CAAC,AAPA,IAOA;AAPa,oBAAY,eAOzB,CAAA"}

@@ -37,7 +37,7 @@ namespace Kookaburra.Services
         public void SendToVisitor(string operatorName, string message, string visitorId)
         {
             Clients.Clients(new List<string>() { Context.ConnectionId, visitorId })
-                .addNewMessageToPage(operatorName, message, DateTime.UtcNow.JsDateTime(), "operator", visitorId);
+                .sendMessageToVisitor(operatorName, message, DateTime.UtcNow.JsDateTime());
         }
 
         public string GetOperatorId(string companyId)

@@ -1,10 +1,9 @@
-﻿using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Kookaburra.Domain.Repository;
-using Kookaburra.Repository;
+﻿using Kookaburra.Domain.Repository;
 using Kookaburra.ViewModels.Chat;
-using System.Web;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Kookaburra.Controllers
 {
@@ -13,9 +12,7 @@ namespace Kookaburra.Controllers
     {
         private ApplicationUserManager _userManager;
 
-        public IAccountRepository AccountRepository { get; set; }
-
-        public IOperatorRepository OperatorRepository { get; set; }
+        private readonly IOperatorRepository _operatorRepositor;
 
         public ApplicationUserManager UserManager
         {
@@ -30,19 +27,17 @@ namespace Kookaburra.Controllers
         }
 
 
-        public ChatController()
+        public ChatController(IOperatorRepository operatorRepositor)
         {
-            AccountRepository = new AccountRepository(new KookaburraContext("name=DefaultConnection"));
-            OperatorRepository = new OperatorRepository(new KookaburraContext("name=DefaultConnection"));
+            _operatorRepositor = operatorRepositor;
         }
-
+    
 
         [HttpGet]
         [Route("chat-room")]
-        [Route("")]
-        public ActionResult Room()
-        {            
-            var currentOperator = OperatorRepository.Get(User.Identity.GetUserId());
+        public ActionResult ChatRoom()
+        {
+            var currentOperator = _operatorRepositor.Get(User.Identity.GetUserId());
 
             var model = new RoomViewModel
             {
@@ -50,33 +45,6 @@ namespace Kookaburra.Controllers
                 OperatorName = currentOperator.FirstName,
                 OperatorId = currentOperator.Id
             };
-
-            return View(model);
-        }
-
-        [HttpGet]
-        [Route("chat")]     
-        public ActionResult ChatRoomKnockout()
-        {
-            var currentOperator = OperatorRepository.Get(User.Identity.GetUserId());
-
-            var model = new RoomViewModel
-            {
-                CompanyId = currentOperator.Account.Identifier,
-                OperatorName = currentOperator.FirstName,
-                OperatorId = currentOperator.Id
-            };
-
-            return View(model);
-        }
-
-        [HttpGet]
-        [Route("chat-room-old")]
-        public ActionResult RoomOld()
-        {
-            var model = new RoomViewModel();
-            model.CompanyId = "086FBDC2-14F3-4F68-B3C6-9EA42D257061";
-            model.OperatorName = "John Dou";
 
             return View(model);
         }
