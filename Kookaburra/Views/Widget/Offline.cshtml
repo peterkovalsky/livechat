@@ -8,11 +8,9 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title></title>
 
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    @Scripts.Render("~/bundles/js/form")    
 
     <link rel="stylesheet" href="~/css/widget.css">
 </head>
@@ -42,7 +40,7 @@
                                 <input type="submit" value="SEND" />
                             </div>
                         </div>
-                        @Html.HiddenFor(m => m.Key)
+                        @Html.HiddenFor(m => m.AccountKey)
                     }
                 </div>
 

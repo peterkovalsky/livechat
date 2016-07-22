@@ -10,28 +10,30 @@
     self.messages = ko.observableArray([]);
     self.operatorId = null;
 
+    var chatHubProxy = $.connection.chatHub;
+
+    // Create a function that the hub can call back to display messages.
+    chatHubProxy.client.sendMessageToVisitor = function (name, message, time) {
+        self.messages.push(new Message({
+            author: name,
+            text: message,
+            time: moment(time).format('LT')
+        }));
+    };
+
+    chatHubProxy.client.orderToDisconnect = function () {
+        $.connection.hub.stop();
+
+        self.messages.push(new Message({
+            author: 'System',
+            text: 'You were disconnected by the operator',
+            time: moment().format('LT')
+        }));
+    };
+
     self.startConversation = function () {
-        
-        var chatHubProxy = $.connection.chatHub;
-
-        // Create a function that the hub can call back to display messages.
-        chatHubProxy.client.sendMessageToVisitor = function (name, message, time) {
-            self.messages.push(new Message({
-                author: name,
-                text: message,
-                time: moment(time).format('LT')
-            }));
-        };
-
-        chatHubProxy.client.orderToDisconnect = function () {
-            $.connection.hub.stop();
-
-            self.messages.push(new Message({
-                author: 'System',
-                text: 'You were disconnected by the operator',
-                time: moment().format('LT')
-            }));          
-        };
+              
+        self.goneOffline(false);
 
         // Start the connection.
         $.connection.hub.start().done(function () {
@@ -42,13 +44,7 @@
                 else {
                     // show chat window
                     self.conversationStarted(true);
-
-                    self.operatorId = _operatorId;
-
-                    // Get the user name and store it to prepend to messages.
-                    $('#displayname').val(clientName);
-                    // Set initial focus to message input box.
-                    $('#message').focus();
+                    self.operatorId = _operatorId;             
 
                     // SEND MESSAGE ON ENTER PRESS
                     $(document).keypress(function (e) {

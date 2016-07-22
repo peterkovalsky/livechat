@@ -8,6 +8,11 @@ namespace Kookaburra
         {
             #region JS
 
+            bundles.Add(new ScriptBundle("~/bundles/js/form")
+                .Include("~/Scripts/jquery-{version}.js")                
+                .Include("~/Scripts/jquery.validate*")                
+                );
+
             bundles.Add(new ScriptBundle("~/bundles/js/widget")
                 .Include("~/Scripts/jquery-{version}.js")
                 .Include("~/Scripts/jquery.signalR-{version}.js")
@@ -26,11 +31,15 @@ namespace Kookaburra
 
             #endregion
 
+
             #region CSS
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/css/widget")
+                .Include("~/Content/widget.css"));
 
             #endregion
         }

@@ -13,12 +13,21 @@ namespace Kookaburra.Controllers
 
             if (isOnline)
             {
-                var onlineModel = new OnlineBoxViewModel { ClientKey = key.ToUpper() };
+                var onlineModel = new OnlineBoxViewModel { AccountKey = key.ToUpper() };
 
                 return View("Online", onlineModel);
             }
 
-            var model = new OfflineBoxViewModel { Key = key };
+            var model = new OfflineBoxViewModel { AccountKey = key };
+
+            return View("Offline", model);
+        }
+
+        [HttpGet]
+        [Route("chatbox/offline/{key}")]
+        public ActionResult Offline(string key)
+        {    
+            var model = new OfflineBoxViewModel { AccountKey = key };
 
             return View("Offline", model);
         }

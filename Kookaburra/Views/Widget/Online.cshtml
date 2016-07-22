@@ -1,5 +1,5 @@
 ﻿@model Kookaburra.ViewModels.Widget.OnlineBoxViewModel
-@{   
+@{
     Layout = null;
 }
 
@@ -23,24 +23,22 @@
             <div class="online">
                 <div class="chat-body">
 
-                    <div class="introduction" data-bind="if: conversationStarted == false" >
+                    <div class="introduction" data-bind="if: !conversationStarted()">
                         <div class="heading">
                             Please intoduce yourself
                         </div>
                         <div class="name">
-                            @Html.TextBoxFor(m => m.VisitorName, 
-                                new { id = "visitor-name", placeholder = "Name", autocomplete = "off", data_bind = "value: visitorName" })
+                            <input type="text" placeholder="Name" autocomplete="off" data-bind="value: visitorName"/>                            
                         </div>
                         <div class="email">
-                            @Html.TextBoxFor(m => m.VisitorEmail, 
-                                new { placeholder = "Email (optional)", autocomplete = "off", data_bind = "value: visitorEmail" })
+                            <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="value: visitorEmail" />                          
                         </div>
                         <div>
                             <input class="submit" type="button" value="Start Chat" data-bind="click: startConversation" />
                         </div>
                     </div>
 
-                    <div class="chatting" data-bind="if: conversationStarted == true">
+                    <div class="chatting" data-bind="if: conversationStarted">
                         <div class="heading">
                             <div class="operator-pic"></div>
                             <div class="operator-name"></div>
@@ -55,7 +53,7 @@
                     </div>
 
                     <div data-bind="if: goneOffline">
-                        Operator has gone offline. Click the button if you wish leave a message
+                        Operator has gone offline. Click <a href="/chatbox/offline/@(Model.AccountKey)">here</a> if you wish leave a message.
                     </div>
 
                 </div>
@@ -67,24 +65,8 @@
             </div>
         </div>
 
-
         <script type="text/javascript">
-
-
-            ko.applyBindings(new ChatRoomViewModel('@Model.ClientKey', 'http://local.chat.com/chat/client'));
-
-    var companyId = '@Model.ClientKey';
-    var operatorId = null;
-    
-
-
-
-    // This optional function html-encodes messages for display in the page.
-    function htmlEncode(value) {
-        var encodedValue = $('<div />').text(value).html();
-        return encodedValue;
-    }
-
+            ko.applyBindings(new ChatWidgetViewModel('@Model.AccountKey', 'http://local.chat.com/chat/client'));
         </script>
     </div>
 </body>
