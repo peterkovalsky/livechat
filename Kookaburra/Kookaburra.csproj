@@ -250,9 +250,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\chat\chat-list.component.html" />
-    <Content Include="app\chat\chat-room.html" />
-    <Content Include="app\chat\chat-window.component.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
@@ -369,9 +366,6 @@
     <Content Include="images\user-3.png" />
     <Content Include="images\user-4.png" />
     <Content Include="images\user-5.png" />
-    <Content Include="Scripts\angular2-polyfills.js" />
-    <Content Include="Scripts\angular2.dev.js" />
-    <Content Include="Scripts\angular2.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\fonts\elusive\font\elusive.eot" />
@@ -395,11 +389,7 @@
     <Content Include="Scripts\chat-room.js" />
     <Content Include="Scripts\chat-widget.js" />
     <Content Include="Scripts\chatbox.js" />
-    <Content Include="Scripts\es6-shim.min.js" />
     <Content Include="Scripts\handlebars.min.js" />
-    <Content Include="Scripts\http.dev.js" />
-    <Content Include="Scripts\http.min.js" />
-    <Content Include="Scripts\index.html" />
     <Content Include="Scripts\joinable.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -425,19 +415,7 @@
     <Content Include="Scripts\resizeable.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\router.dev.js" />
-    <Content Include="Scripts\router.min.js" />
-    <Content Include="Scripts\Rx.js" />
-    <Content Include="Scripts\shims_for_IE.js" />
     <Content Include="Scripts\site.js" />
-    <Content Include="Scripts\system-csp-production.js" />
-    <Content Include="Scripts\system-csp-production.src.js" />
-    <Content Include="Scripts\system-polyfills.js" />
-    <Content Include="Scripts\system-polyfills.src.js" />
-    <Content Include="Scripts\system-register-only.js" />
-    <Content Include="Scripts\system-register-only.src.js" />
-    <Content Include="Scripts\system.js" />
-    <Content Include="Scripts\system.src.js" />
     <Content Include="Scripts\TweenLite.min.js" />
     <Content Include="Scripts\TweenMax.min.js" />
     <Content Include="Scripts\typeahead.bundle.js" />
@@ -489,33 +467,16 @@
     <Content Include="Views\Widget\ChatBoxStyle.cshtml" />
     <Content Include="Views\Widget\Offline.cshtml" />
     <Content Include="Views\Widget\Online.cshtml" />
-    <Content Include="Scripts\system-csp-production.js.map" />
-    <Content Include="Scripts\system-polyfills.js.map" />
-    <Content Include="Scripts\system-register-only.js.map" />
-    <Content Include="Scripts\system.js.map" />
     <Content Include="Views\Home\Preview.cshtml" />
     <Content Include="Views\Chat\ChatRoom.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="app\chat\chat-list.component.ts" />
-    <TypeScriptCompile Include="app\chat\chat-room.ts" />
-    <TypeScriptCompile Include="app\chat\chat-window.component.ts" />
-    <TypeScriptCompile Include="app\main.ts" />
-    <TypeScriptCompile Include="app\models\conversation.model.ts" />
-    <TypeScriptCompile Include="app\models\message.model.ts" />
-    <TypeScriptCompile Include="app\services\chat.service.ts" />
-    <TypeScriptCompile Include="app\shim-es6.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
