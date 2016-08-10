@@ -9,6 +9,7 @@
     self.newMessage = ko.observable("");
     self.messages = ko.observableArray([]);
     self.operatorId = null;
+    self.operatorName = ko.observable("");
 
     var chatHubProxy = $.connection.chatHub;
 
@@ -37,7 +38,7 @@
 
         // Start the connection.
         $.connection.hub.start().done(function () {
-            chatHubProxy.server.connectClient(self.visitorName, accountKey, currentPage).done(function (_operatorId) {
+            chatHubProxy.server.connectClient(self.visitorName(), accountKey, currentPage).done(function (_operatorId) {
                 if (_operatorId == null) {
                     self.goneOffline(true) 
                 }
@@ -50,7 +51,7 @@
                     $(document).keypress(function (e) {
                         if (e.which == 13) {
 
-                            self.currentChat().messages.push(new Message({
+                            self.messages.push(new Message({
                                 author: self.visitorName(),
                                 text: self.newMessage(),
                                 time: moment().format('LT')
@@ -58,9 +59,11 @@
 
                             chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage(), _operatorId);                         
                             
-                            self.newMessage('');                        
+                            self.newMessage('');
+
+                            e.preventDefault();
                         }
-                    });
+                    });               
                 }
             });
         });

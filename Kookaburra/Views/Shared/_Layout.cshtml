@@ -40,14 +40,16 @@
 
     @RenderSection("scripts", required: false)
 </head>
-<body class="page-body">
+<body class="page-body skin-navy">
    
-    @Html.Partial("_Menu")
-
+   
     <div class="page-container">
+        @Html.Partial("_SideMenu")
         <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
 
         <div class="main-content">
+
+            @Html.Partial("_TopNavBar")
 
             @RenderBody()
 

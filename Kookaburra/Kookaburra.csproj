@@ -386,9 +386,9 @@
     <Content Include="Content\fonts\meteocons\font\meteocons.woff" />
     <Content Include="images\news-image-widget-3" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\chat-room.js" />
-    <Content Include="Scripts\chat-widget.js" />
-    <Content Include="Scripts\chatbox.js" />
+    <Content Include="Scripts\chat\chat-room.js" />
+    <Content Include="Scripts\chat\chat-widget.js" />
+    <Content Include="Scripts\chat\chatbox.js" />
     <Content Include="Scripts\handlebars.min.js" />
     <Content Include="Scripts\joinable.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -463,12 +463,14 @@
     <Content Include="Views\History\List.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Shared\_ConversationPartial.cshtml" />
-    <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Widget\ChatBoxStyle.cshtml" />
     <Content Include="Views\Widget\Offline.cshtml" />
     <Content Include="Views\Widget\Online.cshtml" />
     <Content Include="Views\Home\Preview.cshtml" />
     <Content Include="Views\Chat\ChatRoom.cshtml" />
+    <Content Include="Views\Widget\Modern.cshtml" />
+    <Content Include="Views\Shared\_SideMenu.cshtml" />
+    <Content Include="Views\Shared\_TopNavBar.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

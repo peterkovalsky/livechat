@@ -80,6 +80,8 @@
                 chatHubProxy.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().visitorId());
 
                 self.newText(''); // clear input area
+
+                e.preventDefault();
             }
         });
 

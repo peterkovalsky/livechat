@@ -1,0 +1,73 @@
+﻿<!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+<!-- Add "fixed" class to make the sidebar fixed always to the browser viewport. -->
+<!-- Adding class "toggle-others" will keep only one menu item open at a time. -->
+<!-- Adding class "collapsed" collapse sidebar root elements and show only icons. -->
+<div class="sidebar-menu toggle-others">
+
+    <div class="sidebar-menu-inner">
+
+        <header class="logo-env">
+
+            <!-- logo -->
+            <div class="logo">
+                <a href="/" class="logo-expanded">
+                    <img src="~/images/logo-small.png" height="50" alt="" />
+                </a>
+
+                <a href="/" class="logo-collapsed">
+                    <img src="~/images/logo-small.png" height="40" alt="" />
+                </a>
+            </div>
+
+            <!-- This will toggle the mobile menu and will be visible only on mobile devices -->
+            <div class="mobile-menu-toggle visible-xs">
+                <a href="#" data-toggle="user-info-menu">
+                    <i class="fa-bell-o"></i>
+                    <span class="badge badge-success">7</span>
+                </a>
+
+                <a href="#" data-toggle="mobile-menu">
+                    <i class="fa-bars"></i>
+                </a>
+            </div>
+        </header>
+
+
+        <ul id="main-menu" class="main-menu">
+            <!-- add class "multiple-expanded" to allow multiple submenus to open -->
+            <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
+       
+            <li class="opened active">
+                <a href="/chat-room">
+                    <i class="fa-dashboard"></i>
+                    <span class="title">Dashboard</span>
+                </a>    
+            </li>
+            <li class="opened active">
+                <a href="/chat-room">
+                    <i class="fa-comments-o"></i>
+                    <span class="title">Chats</span>
+                </a>
+            </li>
+            <li class="opened active">
+                <a href="/history">
+                    <i class="fa-archive"></i>
+                    <span class="title">History</span>
+                </a>
+            </li>
+            <li class="opened active">
+                <a href="/preview">
+                    <i class="fa-comment-o"></i>
+                    <span class="title">Preview</span>
+                </a>
+            </li>
+            <li class="opened active">
+                <a href="/settings">
+                    <i class="fa-gears"></i>
+                    <span class="title">Settings</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</div>
