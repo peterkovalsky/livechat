@@ -9,7 +9,7 @@
 
 <div class="row" data-bind="visible: conversations().length > 0">
     <div class="col-sm-9" data-bind="with: currentChat">
-        <div class="panel panel-color panel-purple chat">
+        <div class="panel panel-color panel-gray chat">
             <!-- Add class "collapsed" to minimize the panel -->
             <div class="panel-heading text-center">
                 <h3 class="panel-title col-sm-12">
@@ -24,7 +24,7 @@
                 <ul class="conversation-messages ps-scrollbar ps-scroll-down ps-container ps-active-y">
                     <li data-bind="foreach: messages">
 
-                        <div class="row">
+                        <div class="row" data-bind="css: {mymessage: me}">
                             <div class="col-sm-2 chat-author" data-bind="text: author">
                                 
                             </div>
@@ -80,41 +80,17 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <div class="xe-widget xe-conversations conversations">
-                    <div class="xe-header">
-                        <div class="xe-icon">
-                            <i class="linecons-comment"></i>
-                        </div>
-                        <div class="xe-label">
-                            <h3>
-                                Conversations
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="xe-body">
-
-                        <ul class="list-unstyled">
-
-                            <li data-bind="foreach: conversations">
-                                <div class="conversation-item" data-bind="css: {active: isCurrent}">
-                                    <a href="#" class="xe-user-name" data-bind="click: $parent.switchChat">
-                                        <div class="xe-comment-entry">
-                                            <img src="/images/user-2.png" class="img-circle" width="40">
-
-                                            <div class="xe-comment">
-                                                <strong data-bind="text: visitorName"></strong>
-                                                <p></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-
-                            </li>
-
-                        </ul>
-
-                    </div>
+                <div>
+                    Current Conversations
                 </div>
+                <div class="list-group list-group-minimal">        
+                    <div data-bind="foreach: conversations">
+                        <a href="#" class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
+                            <span class="badge badge badge-yellow" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
+                            <strong data-bind="text: visitorName"></strong>
+                        </a>
+                    </div>
+                </div>   
             </div>
         </div>        
     </div>

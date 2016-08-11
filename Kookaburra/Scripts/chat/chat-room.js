@@ -20,6 +20,11 @@
         }
 
         conversation.isCurrent(true);
+
+        // mark all messages as READ in the current conversation
+        ko.utils.arrayForEach(conversation.messages(), function (item) {
+            item.read(true);
+        });
     };
 
     var chatHubProxy = $.connection.chatHub;
@@ -36,7 +41,9 @@
             conversation.messages.push(new Message({
                 author: name,
                 text: message,
-                time: moment(time).format('LT')
+                time: moment(time).format('LT'),
+                read: conversation.isCurrent(),
+                me: false
             }));
         }       
     };
@@ -75,7 +82,9 @@
                 self.currentChat().messages.push(new Message({
                     author: self.operatorName,
                     text: self.newText(),
-                    time: moment().format('LT')
+                    time: moment().format('LT'),
+                    read: true,
+                    me: true
                 }));
                 chatHubProxy.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().visitorId());
 
@@ -103,6 +112,8 @@ function Message(data) {
     this.sender = ko.observable(data.sender);
     this.text = ko.observable(data.text);
     this.time = ko.observable(data.time);
+    this.read = ko.observable(data.read);
+    this.me = ko.observable(data.me);
 }
 
 function Conversation(data) {
@@ -120,5 +131,12 @@ function Conversation(data) {
     });
     self.visitorNameFormatted = ko.computed(function () {
         return self.visitorName().toUpperCase();
+    });
+    self.unreadMessages = ko.computed(function () {
+        var unreadMessages = ko.utils.arrayFilter(self.messages(), function (item) {
+            return !item.read();
+        });
+
+        return unreadMessages.length;
     });
 }
