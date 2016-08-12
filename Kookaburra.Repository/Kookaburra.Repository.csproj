@@ -51,6 +51,11 @@
   <ItemGroup>
     <Compile Include="AccountRepository.cs" />
     <Compile Include="KookaburraContext.cs" />
+    <Compile Include="Migrations\201608120647168_MessagesTable.cs" />
+    <Compile Include="Migrations\201608120647168_MessagesTable.Designer.cs">
+      <DependentUpon>201608120647168_MessagesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OperatorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,6 +67,11 @@
       <Project>{1f955ef9-25d2-4a38-be51-c81aebfdb41c}</Project>
       <Name>Kookaburra.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201608120647168_MessagesTable.resx">
+      <DependentUpon>201608120647168_MessagesTable.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

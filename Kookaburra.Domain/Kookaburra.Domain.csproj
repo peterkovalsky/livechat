@@ -44,6 +44,7 @@
     <Compile Include="Common\Code.cs" />
     <Compile Include="Common\OperatorType.cs" />
     <Compile Include="Model\Account.cs" />
+    <Compile Include="Model\Message.cs" />
     <Compile Include="Model\Operator.cs" />
     <Compile Include="Model\Visitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
