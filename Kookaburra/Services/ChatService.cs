@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using System.Web;
+using Kookaburra.Domain.Model;
 
 namespace Kookaburra.Services
 {
@@ -29,9 +30,27 @@ namespace Kookaburra.Services
             _currentSession.AddOperator(operatorEntity.Id, operatorEntity.FirstName, operatorEntity.Account.Identifier, connectionId);
         }
 
-        public void ConnectVisitor(string name, string email, string location, string connectionId)
+        public void ConnectVisitor(string name, string email, string location, string sessionId, string connectionId, string accountKey)
         {
-            _visitorRepository.CheckForVisitor()
+            // record new/returning visitor
+            var returningVisitor = _visitorRepository.CheckForVisitor(name, email, sessionId);
+            if (returningVisitor == null)
+            {
+                returningVisitor = _visitorRepository.AddVisitor(new Visitor {
+                    Name = name,
+                    Email = email,
+                    Location = location,
+                    SessionId = sessionId                    
+                });
+            }
+
+            // get available operator
+            var operatorConnectionId = _currentSession.GetFirstAvailableOperator(accountKey);
+            if (operatorConnectionId != null)
+            {
+                // add visitor to session
+                _currentSession.AddVisitor(operatorConnectionId, connectionId, returningVisitor.Id, returningVisitor.Name);
+            }
         }
     }
 }

@@ -21,10 +21,10 @@ namespace Kookaburra.Repository
             return visitor;
         }
 
-        public Visitor CheckForVisitor(Visitor visitor)
+        public Visitor CheckForVisitor(string name, string email, string sessionId)
         {
             var existingVisitor = _context.Visitors
-                .Where(v => (v.Name == visitor.Name && v.Email == visitor.Email) || (v.SessionId == visitor.SessionId))
+                .Where(v => (v.Name == name && v.Email == email) || (v.SessionId == sessionId))
                 .SingleOrDefault();
 
             return existingVisitor;

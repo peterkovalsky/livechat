@@ -6,6 +6,6 @@ namespace Kookaburra.Domain.Repository
     {
         Visitor AddVisitor(Visitor visitor);
 
-        Visitor CheckForVisitor(Visitor visitor);
+        Visitor CheckForVisitor(string name, string email, string sessionId);
     }
-} 
+}

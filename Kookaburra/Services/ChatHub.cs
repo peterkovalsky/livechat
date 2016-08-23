@@ -59,6 +59,12 @@ namespace Kookaburra.Services
         }
 
       
+        public string ConnectVisitor(string name, )
+        {
+            //http://freegeoip.net/json/rio-matras.com
+
+            _chatService.ConnectVisitor()
+        }
 
         /// <summary>
         /// A visitor connects
