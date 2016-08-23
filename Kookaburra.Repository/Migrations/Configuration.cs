@@ -9,7 +9,7 @@ namespace Kookaburra.Repository.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(Kookaburra.Repository.KookaburraContext context)
@@ -25,7 +25,7 @@ namespace Kookaburra.Repository.Migrations
             //      new Person { FullName = "Brice Lambson" },
             //      new Person { FullName = "Rowan Miller" }
             //    );
-            //
-        }
+            //  
+        } 
     }
 }

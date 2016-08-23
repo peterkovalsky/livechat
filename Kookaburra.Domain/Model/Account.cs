@@ -15,4 +15,4 @@ namespace Kookaburra.Domain.Model
 
         public virtual ICollection<Operator> Operators { get; set; }
     }
-}
+} 

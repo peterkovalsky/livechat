@@ -3,6 +3,7 @@
 
 namespace Kookaburra.Controllers
 {
+    [Authorize]
     public class HistoryController : Controller
     {
         [HttpGet]

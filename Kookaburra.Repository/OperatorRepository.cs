@@ -15,7 +15,7 @@ namespace Kookaburra.Repository
             _context = context;
         }
 
-        public Operator Get(string identity)
+        public Operator Get(string identity) 
         {
             return _context.Operators.Where(o => o.Identity == identity).SingleOrDefault();
         }

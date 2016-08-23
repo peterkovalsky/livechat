@@ -3,7 +3,7 @@ namespace Kookaburra.Repository.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class MessagesTable : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -27,12 +27,28 @@ namespace Kookaburra.Repository.Migrations
                         LastName = c.String(maxLength: 100),
                         Email = c.String(maxLength: 100),
                         Type = c.String(maxLength: 50),
-                        AccountId = c.Int(nullable: false),
+                        AccountId = c.Int(nullable: false), 
                         LastActivity = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Accounts", t => t.AccountId, cascadeDelete: true)
                 .Index(t => t.AccountId);
+            
+            CreateTable(
+                "dbo.Messages",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        Text = c.String(),
+                        DateSent = c.DateTime(nullable: false),
+                        VisitorId = c.Int(),
+                        OperatorId = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Operators", t => t.OperatorId)
+                .ForeignKey("dbo.Visitors", t => t.VisitorId)
+                .Index(t => t.VisitorId)
+                .Index(t => t.OperatorId);
             
             CreateTable(
                 "dbo.Visitors",
@@ -49,9 +65,14 @@ namespace Kookaburra.Repository.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.Messages", "VisitorId", "dbo.Visitors");
+            DropForeignKey("dbo.Messages", "OperatorId", "dbo.Operators");
             DropForeignKey("dbo.Operators", "AccountId", "dbo.Accounts");
+            DropIndex("dbo.Messages", new[] { "OperatorId" });
+            DropIndex("dbo.Messages", new[] { "VisitorId" });
             DropIndex("dbo.Operators", new[] { "AccountId" });
             DropTable("dbo.Visitors");
+            DropTable("dbo.Messages");
             DropTable("dbo.Operators");
             DropTable("dbo.Accounts");
         }

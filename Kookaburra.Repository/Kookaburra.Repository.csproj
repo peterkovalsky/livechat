@@ -51,13 +51,15 @@
   <ItemGroup>
     <Compile Include="AccountRepository.cs" />
     <Compile Include="KookaburraContext.cs" />
-    <Compile Include="Migrations\201608120647168_MessagesTable.cs" />
-    <Compile Include="Migrations\201608120647168_MessagesTable.Designer.cs">
-      <DependentUpon>201608120647168_MessagesTable.cs</DependentUpon>
+    <Compile Include="MessageRepository.cs" />
+    <Compile Include="Migrations\201608160436048_Initial.cs" />
+    <Compile Include="Migrations\201608160436048_Initial.Designer.cs">
+      <DependentUpon>201608160436048_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OperatorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisitorRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -69,8 +71,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608120647168_MessagesTable.resx">
-      <DependentUpon>201608120647168_MessagesTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608160436048_Initial.resx">
+      <DependentUpon>201608160436048_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

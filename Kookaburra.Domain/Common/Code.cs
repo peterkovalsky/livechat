@@ -23,4 +23,4 @@ namespace Kookaburra.Domain.Common
             return code.ToString();
         }
     }
-}
+} 

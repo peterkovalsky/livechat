@@ -4,6 +4,7 @@
 
 namespace Kookaburra.Controllers
 {
+    [Authorize]
     public class SettingsController : Controller
     {
         [HttpGet]

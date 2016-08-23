@@ -246,6 +246,7 @@
     <Compile Include="Services\ChatHub.cs" />
     <Compile Include="Services\ChatOperation.cs" />
     <Compile Include="Services\ChatService.cs" />
+    <Compile Include="Services\ChatSession.cs" />
     <Compile Include="Services\OperatorService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -472,7 +473,6 @@
     <Content Include="Views\Shared\_SideMenu.cshtml" />
     <Content Include="Views\Shared\_TopNavBar.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

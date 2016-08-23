@@ -7,4 +7,4 @@ namespace Kookaburra.Domain.Repository
     {
         Account Get(string identifier);   
     }
-}
+} 

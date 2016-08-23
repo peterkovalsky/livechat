@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Kookaburra.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private ApplicationUserManager _userManager;

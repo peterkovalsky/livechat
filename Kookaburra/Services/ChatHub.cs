@@ -7,31 +7,44 @@ using System.Threading.Tasks;
 using Kookaburra.Domain.Repository;
 using Microsoft.AspNet.Identity;
 using Kookaburra.Common;
+using Kookaburra.Domain.Model;
 
 namespace Kookaburra.Services
 {
     public class ChatHub : Hub
     {
         private readonly IOperatorRepository _operatorRepository;
+        private readonly IMessageRepository _messageRepository;
+        private readonly ChatService _chatService;
 
-        public ChatHub(IOperatorRepository operatorRepository)
+        public ChatHub(IOperatorRepository operatorRepository, IMessageRepository messageRepository)
         {
             _operatorRepository = operatorRepository;
-        }
+            _messageRepository = messageRepository;
+        } 
 
 
         [Authorize]
         public void ConnectOperator()
         {
-            var operatorObj = _operatorRepository.Get(Context.User.Identity.GetUserId());
-
-            ChatOperation.ConnectOperator(operatorObj.Account.Identifier, operatorObj.Id, Context.ConnectionId, operatorObj.FirstName);
+            _chatService.ConnectOperator(Context.ConnectionId, Context.User.Identity.GetUserId());
         }
 
-        public void SendToOperator(string name, string message, string operatorId)
+        public void SendToOperator(string name, string text, string operatorId)
         {
+            var sentDate = DateTime.UtcNow;
+
             Clients.Clients(new List<string>() { Context.ConnectionId, operatorId })
-                .sendMessageToOperator(name, message, DateTime.UtcNow.JsDateTime(), Context.ConnectionId);
+                .sendMessageToOperator(name, text, sentDate.JsDateTime(), Context.ConnectionId);
+           
+            _messageRepository.AddMessage(
+                new Message
+                {
+                    OperatorId = 0,
+                    VisitorId = 0,
+                    Text = text,
+                    DateSent = sentDate
+                });
         }
 
         public void SendToVisitor(string operatorName, string message, string visitorId)

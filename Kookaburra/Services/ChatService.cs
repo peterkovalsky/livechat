@@ -1,34 +1,37 @@
 ﻿using Kookaburra.Domain.Repository;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 using System.Web;
 
 namespace Kookaburra.Services
 {
     public class ChatService
     {
-        private ApplicationUserManager _userManager;
-
-        private readonly IAccountRepository _accountRepository;
-
         private readonly IOperatorRepository _operatorRepository;
+        private readonly IMessageRepository _messageRepository;
+        private readonly IVisitorRepository _visitorRepository;
+        private readonly ChatSession _currentSession;     
+     
 
-
-        public ApplicationUserManager UserManager
+        public ChatService(ChatSession currentSession, IOperatorRepository operatorRepository, IMessageRepository messageRepository, IVisitorRepository visitorRepository)
         {
-            get
-            {                
-                return _userManager ?? HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            _currentSession = currentSession;
+            _operatorRepository = operatorRepository;
+            _messageRepository = messageRepository;
+            _visitorRepository = visitorRepository;
         }
 
-        public ChatService(IAccountRepository accountRepository, IOperatorRepository operatorRepository)
+         
+        public void ConnectOperator(string connectionId, string operatorKey)
         {
-            _accountRepository = accountRepository;
-            _operatorRepository = operatorRepository;
-        }       
+            var operatorEntity = _operatorRepository.Get(operatorKey);
+
+            _currentSession.AddOperator(operatorEntity.Id, operatorEntity.FirstName, operatorEntity.Account.Identifier, connectionId);
+        }
+
+        public void ConnectVisitor(string name, string email, string location, string connectionId)
+        {
+            _visitorRepository.CheckForVisitor()
+        }
     }
 }

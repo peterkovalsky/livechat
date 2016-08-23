@@ -3,15 +3,17 @@ using System.Linq;
 
 namespace Kookaburra.Services
 {
-    public static class ChatOperation
+    public class ChatOperation
     {
-        public static List<ChatSession> CurrentState = new List<ChatSession>();
+       
 
-        private static Dictionary<string, string> Clients = new Dictionary<string, string>();
-        private static Dictionary<string, string> Operators = new Dictionary<string, string>();
+        public ChatOperation(ChatSession currentSession)
+        {
+            _currentSession = currentSession;
+        } 
 
 
-        public static void ConnectOperator(string accountKey, int operatorId, string operatorConnectionId, string operatorName)
+        public void ConnectOperator(string accountKey, int operatorId, string operatorConnectionId, string operatorName)
         {
             if (!Operators.ContainsKey(operatorConnectionId))
             {
@@ -89,19 +91,5 @@ namespace Kookaburra.Services
         }
     }
 
-    public class ChatSession
-    {
-        public ChatSession()
-        {
-            Visitos = new List<string>();
-        }
 
-        public string AccountKey { get; set; }
-
-        public int OperatorId { get; set; }
-
-        public string OperatorConnectionId { get; set; }
-
-        public List<string> Visitos { get; set; }
-    }
 }

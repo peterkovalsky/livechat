@@ -14,7 +14,7 @@ namespace Kookaburra.Services
         {
             _operatorRepository = operatorRepository;
         }
-
+         
 
         public bool IsOnline(string operatorIdentifier)
         {

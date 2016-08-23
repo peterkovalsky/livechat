@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kookaburra.Domain.Model
 {
     public class Message
     {
+        [Key]
         public long Id { get; set; }
 
         public string Text { get; set; }
@@ -19,4 +21,4 @@ namespace Kookaburra.Domain.Model
 
         public virtual Operator Operator { get; set; }
     }
-}
+} 

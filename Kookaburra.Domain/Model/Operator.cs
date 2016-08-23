@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Kookaburra.Domain.Model
@@ -28,5 +29,7 @@ namespace Kookaburra.Domain.Model
         public DateTime? LastActivity { get; set; }
 
         public virtual Account Account { get; set; }
+
+        public virtual IEnumerable<Message> Messages { get; set; }
     }
-}
+} 

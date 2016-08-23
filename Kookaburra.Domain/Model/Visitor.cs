@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kookaburra.Domain.Model
 {
@@ -14,5 +15,10 @@ namespace Kookaburra.Domain.Model
 
         [StringLength(200)]
         public string Location { get; set; }
+
+        [StringLength(1000)]
+        public string SessionId { get; set; }
+
+        public virtual IEnumerable<Message> Messages { get; set; }
     }
-}
+} 

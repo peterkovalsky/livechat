@@ -5,7 +5,7 @@ namespace Kookaburra.Repository
 {
     public class KookaburraContext : DbContext
     {
-        public KookaburraContext() : base()
+        public KookaburraContext() : base("DefaultConnection")
         {
         }
 

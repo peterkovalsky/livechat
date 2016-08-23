@@ -1,7 +1,6 @@
-﻿using Kookaburra.Domain.Repository;
-using System;
+﻿using Kookaburra.Domain.Model;
+using Kookaburra.Domain.Repository;
 using System.Linq;
-using Kookaburra.Domain.Model;
 
 namespace Kookaburra.Repository
 {
@@ -20,4 +19,4 @@ namespace Kookaburra.Repository
             return _context.Accounts.Where(a => a.Identifier == identifier).SingleOrDefault();
         }
     }
-}
+} 

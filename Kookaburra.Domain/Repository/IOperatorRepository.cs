@@ -18,4 +18,4 @@ namespace Kookaburra.Domain.Repository
 
         DateTime? GetLastActivity(string operatorIdentity);
     }
-}
+} 
