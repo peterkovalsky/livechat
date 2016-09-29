@@ -30,7 +30,7 @@ namespace Kookaburra.Services
             _currentSession.AddOperator(operatorEntity.Id, operatorEntity.FirstName, operatorEntity.Account.Identifier, connectionId);
         }
 
-        public void ConnectVisitor(string name, string email, string location, string sessionId, string connectionId, string accountKey)
+        public string ConnectVisitor(string name, string email, string location, string sessionId, string connectionId, string accountKey)
         {
             // record new/returning visitor
             var returningVisitor = _visitorRepository.CheckForVisitor(name, email, sessionId);
@@ -51,6 +51,8 @@ namespace Kookaburra.Services
                 // add visitor to session
                 _currentSession.AddVisitor(operatorConnectionId, connectionId, returningVisitor.Id, returningVisitor.Name);
             }
+
+            return operatorConnectionId;
         }
     }
 }

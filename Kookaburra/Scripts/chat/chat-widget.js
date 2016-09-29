@@ -38,7 +38,7 @@
 
         // Start the connection.
         $.connection.hub.start().done(function () {
-            chatHubProxy.server.connectClient(self.visitorName(), accountKey, currentPage).done(function (_operatorId) {
+            chatHubProxy.server.connectVisitor(self.visitorName(), self.visitorEmail(), currentPage, accountKey).done(function (_operatorId) {
                 if (_operatorId == null) {
                     self.goneOffline(true) 
                 }

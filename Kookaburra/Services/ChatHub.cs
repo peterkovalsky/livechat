@@ -59,11 +59,13 @@ namespace Kookaburra.Services
         }
 
       
-        public string ConnectVisitor(string name, )
+        public string ConnectVisitor(string name, string email, string page, string accountKey)
         {
             //http://freegeoip.net/json/rio-matras.com
+            //string name, string email, string location, string sessionId, string connectionId, string accountKey
 
-            _chatService.ConnectVisitor()
+            string location = "Sydney, Australia";
+            return _chatService.ConnectVisitor(name, email, location, Guid.NewGuid().ToString(), Context.ConnectionId, page, accountKey);
         }
 
         /// <summary>
