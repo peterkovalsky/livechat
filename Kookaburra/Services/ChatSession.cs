@@ -28,7 +28,7 @@ namespace Kookaburra.Services
                 Sessions.Add(newOperator);
             }
         }
-         
+
         public void AddVisitor(string operatorConnectionId, string visitorConnectionId, long visitorId, string visitorName)
         {
             if (!Sessions.Any(s => s.ConnectionId == operatorConnectionId && s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)))
@@ -49,6 +49,16 @@ namespace Kookaburra.Services
             }
         }
 
+        public void RemoveVisitor(string visitorConnectionId)
+        {
+            Sessions.SelectMany(s => s.Visitors).ToList().RemoveAll(i => i.ConnectionId == visitorConnectionId);
+        }
+
+        public void RemoveOperator(string operatorConnectionId)
+        {
+            Sessions.RemoveAll(i => i.ConnectionId == operatorConnectionId);
+        }
+
         public string GetFirstAvailableOperator(string accountKey)
         {
             // get current active operators for an account
@@ -63,11 +73,11 @@ namespace Kookaburra.Services
             {
                 // return less loaded operator
                 return activeOperators.OrderBy(o => o.NumOfVisitors).First().OperatorConnectionId;
-            }     
+            }
 
             return null;
         }
-    }  
+    }
 
     public class OperatorSession
     {
@@ -83,7 +93,7 @@ namespace Kookaburra.Services
         public string AccountKey { get; set; }
 
         public string ConnectionId { get; set; }
-    
+
         public List<VisitorSession> Visitors { get; set; }
     }
 

@@ -11,8 +11,8 @@ namespace Kookaburra.Services
         private readonly IOperatorRepository _operatorRepository;
         private readonly IMessageRepository _messageRepository;
         private readonly IVisitorRepository _visitorRepository;
-        private readonly ChatSession _currentSession;     
-     
+        private readonly ChatSession _currentSession;
+
 
         public ChatService(ChatSession currentSession, IOperatorRepository operatorRepository, IMessageRepository messageRepository, IVisitorRepository visitorRepository)
         {
@@ -22,7 +22,7 @@ namespace Kookaburra.Services
             _visitorRepository = visitorRepository;
         }
 
-         
+
         public void ConnectOperator(string connectionId, string operatorKey)
         {
             var operatorEntity = _operatorRepository.Get(operatorKey);
@@ -30,17 +30,19 @@ namespace Kookaburra.Services
             _currentSession.AddOperator(operatorEntity.Id, operatorEntity.FirstName, operatorEntity.Account.Identifier, connectionId);
         }
 
-        public string ConnectVisitor(string name, string email, string location, string sessionId, string connectionId, string accountKey)
+        public string ConnectVisitor(string name, string email, string location, string sessionId, string connectionId, string page, string accountKey)
         {
             // record new/returning visitor
             var returningVisitor = _visitorRepository.CheckForVisitor(name, email, sessionId);
             if (returningVisitor == null)
             {
-                returningVisitor = _visitorRepository.AddVisitor(new Visitor {
+                returningVisitor = _visitorRepository.AddVisitor(new Visitor
+                {
                     Name = name,
                     Email = email,
                     Location = location,
-                    SessionId = sessionId                    
+                    SessionId = sessionId,
+                    Page = page
                 });
             }
 
@@ -53,6 +55,16 @@ namespace Kookaburra.Services
             }
 
             return operatorConnectionId;
+        }
+
+        public void DisconnectVisitor(string connectionId)
+        {
+            _currentSession.RemoveVisitor(connectionId);
+        }
+
+        public void DisconnectOperator(string connectionId)
+        {
+            _currentSession.RemoveOperator(connectionId);
         }
     }
 }
