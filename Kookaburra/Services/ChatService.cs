@@ -29,7 +29,7 @@ namespace Kookaburra.Services
 
             _currentSession.AddOperator(operatorEntity.Id, operatorEntity.FirstName, operatorEntity.Account.Identifier, connectionId);
         }
-
+         
         public string ConnectVisitor(string name, string email, string location, string sessionId, string connectionId, string accountKey)
         {
             // record new/returning visitor
