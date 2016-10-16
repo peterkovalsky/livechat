@@ -21,7 +21,7 @@ namespace Kookaburra.Services
         {
             _operatorRepository = operatorRepository;
             _messageRepository = messageRepository;
-        } 
+        }
 
 
         [Authorize]
@@ -36,7 +36,7 @@ namespace Kookaburra.Services
 
             Clients.Clients(new List<string>() { Context.ConnectionId, operatorId })
                 .sendMessageToOperator(name, text, sentDate.JsDateTime(), Context.ConnectionId);
-           
+
             _messageRepository.AddMessage(
                 new Message
                 {
@@ -58,39 +58,48 @@ namespace Kookaburra.Services
             return Guid.NewGuid().ToString();
         }
 
-      
+
         public string ConnectVisitor(string name, string email, string page, string accountKey)
         {
             //http://freegeoip.net/json/rio-matras.com
             //string name, string email, string location, string sessionId, string connectionId, string accountKey
 
             string location = "Sydney, Australia";
-            return _chatService.ConnectVisitor(name, email, location, Guid.NewGuid().ToString(), Context.ConnectionId, page, accountKey);
+            var availableOperatorId = _chatService.ConnectVisitor(name, email, location, Guid.NewGuid().ToString(), Context.ConnectionId, page, accountKey);
+
+            return availableOperatorId;
         }
 
         /// <summary>
         /// A visitor connects
         /// </summary>        
-        public string ConnectClient(string clientName, string companyId, string currentPage)
+        //public string ConnectClient(string clientName, string companyId, string currentPage)
+        //{
+        //    var location = "Sydney, Australia";
+
+        //    var operatorId = ChatOperation.GetFirstAvailableOperator(companyId);
+        //    if (!string.IsNullOrEmpty(operatorId))
+        //    {
+        //        ChatOperation.ConnectVisitor(Context.ConnectionId, operatorId, clientName);
+
+        //        Clients.Clients(new List<string>() { operatorId })
+        //            .clientConnected(Context.ConnectionId, clientName, DateTime.UtcNow.JsDateTime(), location, currentPage);
+        //    }
+
+        //    return operatorId;
+        //}
+
+        public void DisconnectVisitor(string visitorConnectionId)
         {
-            var location = "Sydney, Australia";
+            _chatService.DisconnectVisitor(visitorConnectionId);
 
-            var operatorId = ChatOperation.GetFirstAvailableOperator(companyId);
-            if (!string.IsNullOrEmpty(operatorId))
-            {
-                ChatOperation.ConnectVisitor(Context.ConnectionId, operatorId, clientName);
-
-                Clients.Clients(new List<string>() { operatorId })
-                    .clientConnected(Context.ConnectionId, clientName, DateTime.UtcNow.JsDateTime(), location, currentPage);
-            }
-
-            return operatorId;
+            Clients.Clients(new List<string>() { visitorConnectionId }).orderToDisconnect();
         }
 
-        public void DisconnectClient(string clientId)
-        {
-            Clients.Clients(new List<string>() { clientId }).orderToDisconnect();
-        }
+        //public void DisconnectClient(string clientId)
+        //{
+        //    Clients.Clients(new List<string>() { clientId }).orderToDisconnect();
+        //}
 
         public override Task OnConnected()
         {

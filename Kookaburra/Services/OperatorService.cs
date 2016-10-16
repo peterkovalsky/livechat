@@ -14,7 +14,7 @@ namespace Kookaburra.Services
         {
             _operatorRepository = operatorRepository;
         }
-         
+
 
         public bool IsOnline(string operatorIdentifier)
         {
@@ -33,6 +33,6 @@ namespace Kookaburra.Services
             var operators = _operatorRepository.GetList(accountKey);
 
             return operators.Where(o => IsOnline(o)).ToList();
-        }      
+        }
     }
 }
