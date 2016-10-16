@@ -19,6 +19,8 @@ namespace Kookaburra.Domain.Model
         [StringLength(1000)]
         public string SessionId { get; set; }
 
+        public string Page { get; set; }
+
         public virtual IEnumerable<Message> Messages { get; set; }
     }
 } 

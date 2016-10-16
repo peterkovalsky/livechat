@@ -17,10 +17,11 @@ namespace Kookaburra.Services
         private readonly IMessageRepository _messageRepository;
         private readonly ChatService _chatService;
 
-        public ChatHub(IOperatorRepository operatorRepository, IMessageRepository messageRepository)
+        public ChatHub(IOperatorRepository operatorRepository, IMessageRepository messageRepository, ChatService chatService)
         {
             _operatorRepository = operatorRepository;
             _messageRepository = messageRepository;
+            _chatService = chatService;
         }
 
 
@@ -112,22 +113,22 @@ namespace Kookaburra.Services
             return base.OnConnected();
         }
 
-        public override Task OnDisconnected(bool stopCalled)
-        {
-            var operatorId = ChatOperation.GetOperatorConnectionId(Context.ConnectionId);
+        //public override Task OnDisconnected(bool stopCalled)
+        //{
+        //    var operatorId = ChatOperation.GetOperatorConnectionId(Context.ConnectionId);
 
-            // Operator was disconnected
-            if (!string.IsNullOrEmpty(operatorId))
-            {
-                var clientName = ChatOperation.GetClientName(Context.ConnectionId);
-                Clients.Clients(new List<string>() { operatorId })
-                    .clientDisconnected(Context.ConnectionId, clientName, DateTime.UtcNow.JsDateTime());
-            }
+        //    // Operator was disconnected
+        //    if (!string.IsNullOrEmpty(operatorId))
+        //    {
+        //        var clientName = ChatOperation.GetClientName(Context.ConnectionId);
+        //        Clients.Clients(new List<string>() { operatorId })
+        //            .clientDisconnected(Context.ConnectionId, clientName, DateTime.UtcNow.JsDateTime());
+        //    }
 
-            ChatOperation.Disconnect(Context.ConnectionId);
+        //    ChatOperation.Disconnect(Context.ConnectionId);
 
-            return base.OnDisconnected(stopCalled);
-        }
+        //    return base.OnDisconnected(stopCalled);
+        //}
 
         public override Task OnReconnected()
         {

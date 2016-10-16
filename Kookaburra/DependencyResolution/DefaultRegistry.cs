@@ -20,6 +20,7 @@ namespace Kookaburra.DependencyResolution
     using Controllers;
     using Microsoft.AspNet.SignalR;
     using Repository;
+    using Services;
     using StructureMap;
     using StructureMap.Graph;
 
@@ -39,6 +40,7 @@ namespace Kookaburra.DependencyResolution
             For<KookaburraContext>().Use<KookaburraContext>().Ctor<string>().Is("name=DefaultConnection");
             ForConcreteType<AccountController>().Configure.SelectConstructor(() => new AccountController(null));
             For<IDependencyResolver>().Add<StructureMapSignalRDependencyResolver>();
+            ForSingletonOf<ChatSession>();
         }
 
         #endregion

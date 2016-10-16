@@ -52,9 +52,9 @@
     <Compile Include="AccountRepository.cs" />
     <Compile Include="KookaburraContext.cs" />
     <Compile Include="MessageRepository.cs" />
-    <Compile Include="Migrations\201608160436048_Initial.cs" />
-    <Compile Include="Migrations\201608160436048_Initial.Designer.cs">
-      <DependentUpon>201608160436048_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201610160105106_InitialCreate.cs" />
+    <Compile Include="Migrations\201610160105106_InitialCreate.Designer.cs">
+      <DependentUpon>201610160105106_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OperatorRepository.cs" />
@@ -71,8 +71,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608160436048_Initial.resx">
-      <DependentUpon>201608160436048_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610160105106_InitialCreate.resx">
+      <DependentUpon>201610160105106_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

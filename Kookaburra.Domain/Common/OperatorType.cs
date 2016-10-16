@@ -2,6 +2,7 @@
 {
     public enum OperatorType
     {
-        OWNER
+        OWNER,
+        INDIVIDUAL
     }
 } 

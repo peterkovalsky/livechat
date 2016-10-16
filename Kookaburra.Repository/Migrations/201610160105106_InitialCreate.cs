@@ -3,7 +3,7 @@ namespace Kookaburra.Repository.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class InitialCreate : DbMigration
     {
         public override void Up()
         {
@@ -27,7 +27,7 @@ namespace Kookaburra.Repository.Migrations
                         LastName = c.String(maxLength: 100),
                         Email = c.String(maxLength: 100),
                         Type = c.String(maxLength: 50),
-                        AccountId = c.Int(nullable: false), 
+                        AccountId = c.Int(nullable: false),
                         LastActivity = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -58,6 +58,8 @@ namespace Kookaburra.Repository.Migrations
                         Name = c.String(maxLength: 200),
                         Email = c.String(maxLength: 200),
                         Location = c.String(maxLength: 200),
+                        SessionId = c.String(maxLength: 1000),
+                        Page = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
