@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kookaburra.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -76,6 +77,28 @@ namespace Kookaburra.Services
             }
 
             return null;
+        }
+
+        public int GetMyOperatorId(string visitorConnectionId)
+        {
+            var myOperator = Sessions.Where(s => s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)).SingleOrDefault();
+            if (myOperator == null)
+            {
+                throw new OperatorDisconnectedException("Operator has been disconnected from visitor id " + visitorConnectionId);
+            }
+
+            return myOperator.Id;
+        }
+
+        public long GetVisitorId(string visitorConnectionId)
+        {
+            var visitor = Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.ConnectionId == visitorConnectionId);
+            if (visitor == null)
+            {
+                throw new VisitorDisconnectedException("Visitor has been disconnected. ID: " + visitorConnectionId);
+            }
+
+            return visitor.Id;
         }
     }
 

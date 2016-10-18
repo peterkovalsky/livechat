@@ -229,6 +229,8 @@
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="DependencyResolution\StructureMapSignalRDependencyResolver.cs" />
+    <Compile Include="Exceptions\OperatorDisconnectedException.cs" />
+    <Compile Include="Exceptions\VisitorDisconnectedException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

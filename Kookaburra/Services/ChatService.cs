@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using System.Web;
 using Kookaburra.Domain.Model;
+using System;
 
 namespace Kookaburra.Services
 {
@@ -65,6 +66,20 @@ namespace Kookaburra.Services
         public void DisconnectOperator(string connectionId)
         {
             _currentSession.RemoveOperator(connectionId);
+        }
+
+        public void LogMessage(string visitorConnectionId, string message, DateTime utcTimeSent)
+        {
+            var operatorId = _currentSession.GetMyOperator(visitorConnectionId);
+
+            _messageRepository.AddMessage(
+                new Message
+                {
+                    OperatorId = operatorId,
+                    VisitorId = 0,
+                    Text = message,
+                    DateSent = utcTimeSent
+                });
         }
     }
 }

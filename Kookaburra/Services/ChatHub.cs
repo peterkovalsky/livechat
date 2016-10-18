@@ -38,14 +38,8 @@ namespace Kookaburra.Services
             Clients.Clients(new List<string>() { Context.ConnectionId, operatorId })
                 .sendMessageToOperator(name, text, sentDate.JsDateTime(), Context.ConnectionId);
 
-            _messageRepository.AddMessage(
-                new Message
-                {
-                    OperatorId = 0,
-                    VisitorId = 0,
-                    Text = text,
-                    DateSent = sentDate
-                });
+            _chatService.
+            
         }
 
         public void SendToVisitor(string operatorName, string message, string visitorId)
@@ -67,6 +61,12 @@ namespace Kookaburra.Services
 
             string location = "Sydney, Australia";
             var availableOperatorId = _chatService.ConnectVisitor(name, email, location, Guid.NewGuid().ToString(), Context.ConnectionId, page, accountKey);
+
+            if (!string.IsNullOrEmpty(availableOperatorId))
+            {
+                Clients.Clients(new List<string>() { availableOperatorId })
+                    .clientConnected(Context.ConnectionId, name, DateTime.UtcNow.JsDateTime(), location, page);
+            }
 
             return availableOperatorId;
         }
