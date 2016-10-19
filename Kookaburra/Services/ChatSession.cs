@@ -30,7 +30,7 @@ namespace Kookaburra.Services
             }
         }
 
-        public void AddVisitor(string operatorConnectionId, string visitorConnectionId, long visitorId, string visitorName)
+        public void AddVisitor(string operatorConnectionId, string visitorConnectionId, int visitorId, string visitorName)
         {
             if (!Sessions.Any(s => s.ConnectionId == operatorConnectionId && s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)))
             {
@@ -79,18 +79,18 @@ namespace Kookaburra.Services
             return null;
         }
 
-        public int GetMyOperatorId(string visitorConnectionId)
+        public int GetOperatorId(string operatorConnectionId)
         {
-            var myOperator = Sessions.Where(s => s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)).SingleOrDefault();
-            if (myOperator == null)
+            var operatorObj = Sessions.SingleOrDefault(s => s.ConnectionId == operatorConnectionId);
+            if (operatorObj == null)
             {
-                throw new OperatorDisconnectedException("Operator has been disconnected from visitor id " + visitorConnectionId);
+                throw new OperatorDisconnectedException("Operator has been disconnected. ID: " + operatorConnectionId);
             }
 
-            return myOperator.Id;
+            return operatorObj.Id;
         }
 
-        public long GetVisitorId(string visitorConnectionId)
+        public int GetVisitorId(string visitorConnectionId)
         {
             var visitor = Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.ConnectionId == visitorConnectionId);
             if (visitor == null)
@@ -122,7 +122,7 @@ namespace Kookaburra.Services
 
     public class VisitorSession
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

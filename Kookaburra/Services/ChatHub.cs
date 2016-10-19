@@ -8,6 +8,7 @@ using Kookaburra.Domain.Repository;
 using Microsoft.AspNet.Identity;
 using Kookaburra.Common;
 using Kookaburra.Domain.Model;
+using Kookaburra.Domain.Common;
 
 namespace Kookaburra.Services
 {
@@ -31,27 +32,26 @@ namespace Kookaburra.Services
             _chatService.ConnectOperator(Context.ConnectionId, Context.User.Identity.GetUserId());
         }
 
-        public void SendToOperator(string name, string text, string operatorId)
+        public void SendToOperator(string name, string message, string operatorId)
         {
             var sentDate = DateTime.UtcNow;
 
             Clients.Clients(new List<string>() { Context.ConnectionId, operatorId })
-                .sendMessageToOperator(name, text, sentDate.JsDateTime(), Context.ConnectionId);
+                .sendMessageToOperator(name, message, sentDate.JsDateTime(), Context.ConnectionId);
 
-            _chatService.
-            
+            _chatService.LogMessage(Context.ConnectionId, operatorId, UserType.Visitor, message, sentDate);            
         }
+
 
         public void SendToVisitor(string operatorName, string message, string visitorId)
         {
-            Clients.Clients(new List<string>() { Context.ConnectionId, visitorId })
-                .sendMessageToVisitor(operatorName, message, DateTime.UtcNow.JsDateTime());
-        }
+            var sentDate = DateTime.UtcNow;
 
-        public string GetOperatorId(string companyId)
-        {
-            return Guid.NewGuid().ToString();
-        }
+            Clients.Clients(new List<string>() { Context.ConnectionId, visitorId })
+                .sendMessageToVisitor(operatorName, message, sentDate.JsDateTime());
+
+            _chatService.LogMessage(visitorId, Context.ConnectionId, UserType.Operator, message, sentDate);
+        }     
 
 
         public string ConnectVisitor(string name, string email, string page, string accountKey)
@@ -70,25 +70,6 @@ namespace Kookaburra.Services
 
             return availableOperatorId;
         }
-
-        /// <summary>
-        /// A visitor connects
-        /// </summary>        
-        //public string ConnectClient(string clientName, string companyId, string currentPage)
-        //{
-        //    var location = "Sydney, Australia";
-
-        //    var operatorId = ChatOperation.GetFirstAvailableOperator(companyId);
-        //    if (!string.IsNullOrEmpty(operatorId))
-        //    {
-        //        ChatOperation.ConnectVisitor(Context.ConnectionId, operatorId, clientName);
-
-        //        Clients.Clients(new List<string>() { operatorId })
-        //            .clientConnected(Context.ConnectionId, clientName, DateTime.UtcNow.JsDateTime(), location, currentPage);
-        //    }
-
-        //    return operatorId;
-        //}
 
         public void DisconnectVisitor(string visitorConnectionId)
         {

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Common\Code.cs" />
     <Compile Include="Common\OperatorType.cs" />
+    <Compile Include="Common\UserType.cs" />
     <Compile Include="Model\Account.cs" />
     <Compile Include="Model\Message.cs" />
     <Compile Include="Model\Operator.cs" />

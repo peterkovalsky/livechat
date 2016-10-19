@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using System.Web;
 using Kookaburra.Domain.Model;
 using System;
+using Kookaburra.Domain.Common;
 
 namespace Kookaburra.Services
 {
@@ -68,15 +69,14 @@ namespace Kookaburra.Services
             _currentSession.RemoveOperator(connectionId);
         }
 
-        public void LogMessage(string visitorConnectionId, string message, DateTime utcTimeSent)
-        {
-            var operatorId = _currentSession.GetMyOperator(visitorConnectionId);
-
+        public void LogMessage(string visitorConnectionId, string operatorConnectionId, UserType userType, string message, DateTime utcTimeSent)
+        {            
             _messageRepository.AddMessage(
                 new Message
                 {
-                    OperatorId = operatorId,
-                    VisitorId = 0,
+                    OperatorId = _currentSession.GetOperatorId(operatorConnectionId),
+                    VisitorId = _currentSession.GetVisitorId(visitorConnectionId),
+                    SentBy = userType.ToString(),
                     Text = message,
                     DateSent = utcTimeSent
                 });

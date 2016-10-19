@@ -56,6 +56,10 @@
     <Compile Include="Migrations\201610160105106_InitialCreate.Designer.cs">
       <DependentUpon>201610160105106_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610190613143_MessageLog.cs" />
+    <Compile Include="Migrations\201610190613143_MessageLog.Designer.cs">
+      <DependentUpon>201610190613143_MessageLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OperatorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,6 +77,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201610160105106_InitialCreate.resx">
       <DependentUpon>201610160105106_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610190613143_MessageLog.resx">
+      <DependentUpon>201610190613143_MessageLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

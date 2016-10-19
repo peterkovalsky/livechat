@@ -12,6 +12,8 @@ namespace Kookaburra.Domain.Model
 
         public DateTime DateSent { get; set; }
 
+        public string SentBy { get; set; }
+
         public int? VisitorId { get; set; }
 
         public int? OperatorId { get; set; }
