@@ -1,9 +1,9 @@
 # Kookaburra #
 
-### Accounts ###
+### ACCOUNTS ###
 
 Local home
 
-#### Username #### peter.kovalskyy@gmail.com
+Username: peter.kovalskyy@gmail.com
 
-#### Password #### Peter123!
+Password: Peter123!
