@@ -3,6 +3,7 @@ using Kookaburra.Domain.Repository;
 using Kookaburra.Models.Home;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Web;
 using System.Web.Mvc;
 
@@ -61,10 +62,11 @@ namespace Kookaburra.Controllers
         public ActionResult Preview()
         {
             var currentOperator = _operatorRepository.Get(User.Identity.GetUserId());
+            string serverHost = Request.Url.Host + ":" + Request.Url.Port;
 
             var model = new PreviewViewModel
             {
-                Code = new Code().GenerateCode("local.kookaburra.com/chatboxstyle", currentOperator.Account.Identifier)
+                Code = new Code().GenerateCode(serverHost + "/chatbox", currentOperator.Account.Identifier)
             };
 
             return View(model);

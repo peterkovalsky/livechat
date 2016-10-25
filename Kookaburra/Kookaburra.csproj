@@ -466,7 +466,7 @@
     <Content Include="Views\History\List.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Shared\_ConversationPartial.cshtml" />
-    <Content Include="Views\Widget\ChatBoxStyle.cshtml" />
+    <Content Include="Views\Widget\ChatBox.cshtml" />
     <Content Include="Views\Widget\Offline.cshtml" />
     <Content Include="Views\Widget\Online.cshtml" />
     <Content Include="Views\Home\Preview.cshtml" />
@@ -474,6 +474,7 @@
     <Content Include="Views\Widget\Modern.cshtml" />
     <Content Include="Views\Shared\_SideMenu.cshtml" />
     <Content Include="Views\Shared\_TopNavBar.cshtml" />
+    <Content Include="Views\Widget\_Introduction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

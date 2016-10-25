@@ -14,7 +14,8 @@
 
     <script src="~/signalr/hubs"></script>
 
-    <link rel="stylesheet" href="~/Content/widget.css">
+    @Styles.Render("~/bundles/css/widget")
+
 </head>
 <body>
     <div>
@@ -23,20 +24,7 @@
             <div class="online">
                 <div class="chat-body">
 
-                    <div class="introduction" data-bind="if: !conversationStarted()">
-                        <div class="heading">
-                            Please intoduce yourself
-                        </div>
-                        <div class="name">
-                            <input type="text" placeholder="Name" autocomplete="off" data-bind="value: visitorName"/>                            
-                        </div>
-                        <div class="email">
-                            <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="value: visitorEmail" />                          
-                        </div>
-                        <div>
-                            <input class="btn start" type="button" value="START CHAT" data-bind="click: startConversation" />
-                        </div>
-                    </div>
+                 @Html.Partial("_Introduction")
 
                     <div class="chatting" data-bind="if: conversationStarted">
                         <div class="heading">
@@ -65,7 +53,7 @@
                 </div>
 
                 <div class="box-footer">
-                    <label>Powered by <strong><a>OnlineChat</a></strong></label>
+                    <label>Powered by <strong><a>Kookaburra</a></strong></label>
                     <div style="clear:both;"></div>
                 </div>
             </div>

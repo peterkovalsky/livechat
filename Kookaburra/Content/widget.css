@@ -120,9 +120,9 @@ input[type=text]:focus {
     }
 
 
-        .chatbox .chat-body .heading {
-            padding: 5px 0;
-        }
+.chatbox .chat-body .heading {
+    padding: 12px 0;
+}
 
         .chatbox .chat-body input[type=text],
         .chatbox .chat-body textarea {

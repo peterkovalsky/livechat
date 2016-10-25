@@ -8,7 +8,7 @@ namespace Kookaburra.Domain.Common
         {
             var code = new StringBuilder();
 
-            code.Append("<!--start of OnlinChat js code-->");
+            code.Append("<!--start of Kookaburra js code-->");
             code.Append("<script type='text/javascript'>");
             code.Append("(function ()");
             code.Append("{");
@@ -18,9 +18,9 @@ namespace Kookaburra.Domain.Common
             code.AppendFormat("oc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '{0}/{1}';", host, accountId);
             code.Append("var s = document.getElementsByTagName('script')[0];");
             code.Append(" s.parentNode.insertBefore(oc, s);");
-            code.Append("}());</script><!--end of OnlineChat js code-->");
+            code.Append("}());</script><!--end of Kookaburra js code-->");
 
             return code.ToString();
         }
     }
-} 
+}

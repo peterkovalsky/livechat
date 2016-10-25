@@ -1,0 +1,14 @@
+﻿<div class="introduction" data-bind="if: !conversationStarted()">
+    <div class="heading">
+        Please intoduce yourself
+    </div>
+    <div class="name">
+        <input type="text" placeholder="Name" autocomplete="off" data-bind="value: visitorName" />
+    </div>
+    <div class="email">
+        <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="value: visitorEmail" />
+    </div>
+    <div>
+        <input class="btn start" type="button" value="START CHAT" data-bind="click: startConversation" />
+    </div>
+</div>

@@ -32,8 +32,16 @@
         }));
     };
 
+    self.validate = function () {
+        if (self.visitorName() == '')
+        {
+
+        }
+    };
+
     self.startConversation = function () {
               
+
         self.goneOffline(false);
 
         // Start the connection.
