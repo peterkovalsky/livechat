@@ -60,7 +60,8 @@
         </div>
 
         <script type="text/javascript">
-            ko.applyBindings(new ChatWidgetViewModel('@Model.AccountKey', 'http://local.chat.com/chat/client'));
+            var chatWidgetModel = new ChatWidgetViewModel('@Model.AccountKey', 'http://local.chat.com/chat/client');
+            ko.applyBindings(chatWidgetModel);
         </script>
     </div>
 </body>

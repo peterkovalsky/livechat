@@ -7,28 +7,30 @@
 
 @*<script>*@
 
-var onlinechatiframe = document.getElementById('onlinechatiframe');
-onlinechatiframe.focus();
-
     function iframeLoad()
     {
         var el = document.getElementById('onlinechatwrapper');
         el.style.display = '';
-
-
     }
 
     function toggleChat(obj) {
         var el = document.getElementById(obj);
         var wrapper = document.getElementById('onlinechatwrapper');
 
-        if (el.style.display != 'none') {
+        if (el.style.display != 'none') { // hide chat box
             el.style.display = 'none';
             wrapper.style.height = '37px';
         }
-        else {
+        else {                               // show chat box
             el.style.display = '';
             wrapper.style.height = '355px';
+            
+            // init chat box (set focus on first input)
+            var iframe = document.getElementById('onlinechatiframe');
+            if (typeof(iframe) != 'undefined' && iframe != null)
+            {
+              iframe.contentWindow.chatWidgetModel.init();
+            }            
         }
     }
 

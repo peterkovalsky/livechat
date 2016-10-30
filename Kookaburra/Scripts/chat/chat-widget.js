@@ -31,9 +31,15 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     self.messages = ko.observableArray([]);
     self.operatorId = null;
     self.operatorName = ko.observable("");
+
     self.showErrors = ko.observable(false);
+    self.isFocus = ko.observable(true);
 
     var chatHubProxy = $.connection.chatHub;
+
+    self.init = function () {
+        self.isFocus(true);
+    };
 
     // Create a function that the hub can call back to display messages.
     chatHubProxy.client.sendMessageToVisitor = function (name, message, time) {
