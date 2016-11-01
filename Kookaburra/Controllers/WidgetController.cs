@@ -1,4 +1,5 @@
-﻿using Kookaburra.ViewModels.Widget;
+﻿using Kookaburra.Services;
+using Kookaburra.ViewModels.Widget;
 using System;
 using System.Web.Mvc;
 
@@ -6,6 +7,13 @@ namespace Kookaburra.Controllers
 {
     public class WidgetController : Controller
     {
+        private readonly ChatSession _chatSession;
+
+        public WidgetController(ChatSession chatSession)
+        {
+            _chatSession = chatSession;
+        }
+
         [HttpGet]
         [Route("chatbox/{key}")]
         public ActionResult ChatBox(string key)
@@ -22,10 +30,8 @@ namespace Kookaburra.Controllers
         [HttpGet]
         [Route("widget/{key}")]
         public ActionResult Widget(string key)
-        {
-            bool isOnline = true;
-
-            if (isOnline)
+        {                     
+            if (_chatSession.AnyOperatorAvailable(key)) // There is someone online
             {
                 var onlineModel = new OnlineBoxViewModel { AccountKey = key.ToUpper() };
 

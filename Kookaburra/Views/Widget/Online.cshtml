@@ -20,12 +20,11 @@
 <body>
     <div>
         <div class="chatbox">
+            <div class="chat-body">
 
-            <div class="online">
-                <div class="chat-body">
+                @Html.Partial("_Introduction")
 
-                 @Html.Partial("_Introduction")
-
+                <div class="online">
                     <div class="chatting" data-bind="if: conversationStarted">
                         <div class="heading">
                             <div class="operator-pic"></div>
@@ -35,7 +34,7 @@
                             <ul id="discussion" data-bind="foreach: messages">
                                 <li>
                                     <strong data-bind="text: author"></strong>:
-                                    <span data-bind="text: text"></span> 
+                                    <span data-bind="text: text"></span>
                                     <span data-bind="text: time"></span>
                                 </li>
                             </ul>
@@ -45,22 +44,24 @@
                             <input type="hidden" id="displayname" />
                         </div>
                     </div>
-
-                    <div data-bind="if: goneOffline">
-                        Operator has gone offline. Click <a href="/chatbox/offline/@(Model.AccountKey)">here</a> if you wish leave a message.
-                    </div>
-
+                </div>
+                <div data-bind="if: goneOffline">
+                    Operator has gone offline. Click <a href="/chatbox/offline/@(Model.AccountKey)">here</a> if you wish leave a message.
                 </div>
 
-                <div class="box-footer">
-                    <label>Powered by <strong><a>Kookaburra</a></strong></label>
-                    <div style="clear:both;"></div>
-                </div>
             </div>
+
+            <div class="box-footer">
+                <label>Powered by <strong><a>Kookaburra</a></strong></label>
+                <div style="clear:both;"></div>
+            </div>
+
         </div>
 
         <script type="text/javascript">
-            var chatWidgetModel = new ChatWidgetViewModel('@Model.AccountKey', 'http://local.chat.com/chat/client');
+            var url = (window.location != window.parent.location) ? document.referrer : document.location;
+
+            var chatWidgetModel = new ChatWidgetViewModel('@Model.AccountKey', url);
             ko.applyBindings(chatWidgetModel);
         </script>
     </div>

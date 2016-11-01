@@ -111,6 +111,10 @@ function ChatWidgetViewModel(accountKey, currentPage) {
                 });
             });
         }
+        else
+        {
+            self.isFocus(true);
+        }
     };
 }
 

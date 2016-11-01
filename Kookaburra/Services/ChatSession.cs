@@ -60,6 +60,19 @@ namespace Kookaburra.Services
             Sessions.RemoveAll(i => i.ConnectionId == operatorConnectionId);
         }
 
+        public bool AnyOperatorAvailable(string accountKey)
+        {
+            // get current active operators for an account
+            var activeOperators = Sessions.Where(s => s.AccountKey == accountKey)
+                .Select(s => new {
+                    OperatorConnectionId = s.ConnectionId,
+                    NumOfVisitors = s.Visitors.Count()
+                })
+                .ToList();
+
+            return activeOperators.Any();
+        }
+
         public string GetFirstAvailableOperator(string accountKey)
         {
             // get current active operators for an account
