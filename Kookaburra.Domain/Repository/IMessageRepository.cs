@@ -5,5 +5,7 @@ namespace Kookaburra.Domain.Repository
     public interface IMessageRepository
     {
         void AddMessage(Message message);
+
+        void AddOfflineMessage(OfflineMessage offlineMsg);
     }
-} 
+}

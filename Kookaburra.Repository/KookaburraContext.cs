@@ -18,5 +18,6 @@ namespace Kookaburra.Repository
         public DbSet<Operator> Operators { get; set; }
         public DbSet<Visitor> Visitors { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<OfflineMessage> OfflineMessages { get; set; }        
     }
 }

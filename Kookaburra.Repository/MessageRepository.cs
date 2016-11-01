@@ -17,5 +17,11 @@ namespace Kookaburra.Repository
             _context.Messages.Add(message);
             _context.SaveChanges();
         }
+
+        public void AddOfflineMessage(OfflineMessage offlineMsg)
+        {
+            _context.OfflineMessages.Add(offlineMsg);
+            _context.SaveChanges();
+        }
     }
-} 
+}

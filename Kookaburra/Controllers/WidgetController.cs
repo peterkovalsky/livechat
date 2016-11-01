@@ -1,4 +1,6 @@
-﻿using Kookaburra.Services;
+﻿using Kookaburra.Domain.Model;
+using Kookaburra.Domain.Repository;
+using Kookaburra.Services;
 using Kookaburra.ViewModels.Widget;
 using System;
 using System.Web.Mvc;
@@ -9,9 +11,12 @@ namespace Kookaburra.Controllers
     {
         private readonly ChatSession _chatSession;
 
-        public WidgetController(ChatSession chatSession)
+        private readonly IMessageRepository _messageRepository;
+
+        public WidgetController(ChatSession chatSession, IMessageRepository messageRepository)
         {
             _chatSession = chatSession;
+            _messageRepository = messageRepository;
         }
 
         [HttpGet]
@@ -58,6 +63,15 @@ namespace Kookaburra.Controllers
         public ActionResult Offline(OfflineBoxViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
+            var offlineMessage = new OfflineMessage
+            {
+                Message = model.Message,
+                DateSent = DateTime.UtcNow,
+                IsRead = false,
+                
+            };
+
+            _messageRepository.AddOfflineMessage()
             //var webFolder = Server.MapPath("~");
 
             //BackgroundJob.Enqueue(() => SendAndLogMesssage(model, webFolder));
