@@ -238,6 +238,9 @@
     <Compile Include="Models\Chat\DashboardViewModel.cs" />
     <Compile Include="Models\Chat\RoomViewModel.cs" />
     <Compile Include="Models\ConversationViewModel.cs" />
+    <Compile Include="Models\History\ChatHistoryViewModel.cs" />
+    <Compile Include="Models\History\HistoryViewModel.cs" />
+    <Compile Include="Models\History\MessageViewModel.cs" />
     <Compile Include="Models\Home\PreviewViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

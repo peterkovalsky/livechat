@@ -71,7 +71,7 @@ namespace Kookaburra.Controllers
                 
             };
 
-            _messageRepository.AddOfflineMessage()
+            //_messageRepository.AddOfflineMessage()
             //var webFolder = Server.MapPath("~");
 
             //BackgroundJob.Enqueue(() => SendAndLogMesssage(model, webFolder));

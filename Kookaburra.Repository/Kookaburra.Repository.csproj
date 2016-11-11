@@ -60,6 +60,10 @@
     <Compile Include="Migrations\201610190613143_MessageLog.Designer.cs">
       <DependentUpon>201610190613143_MessageLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611020606013_offline_messages.cs" />
+    <Compile Include="Migrations\201611020606013_offline_messages.Designer.cs">
+      <DependentUpon>201611020606013_offline_messages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OperatorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610190613143_MessageLog.resx">
       <DependentUpon>201610190613143_MessageLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611020606013_offline_messages.resx">
+      <DependentUpon>201611020606013_offline_messages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

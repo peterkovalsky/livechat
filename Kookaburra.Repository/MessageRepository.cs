@@ -1,5 +1,7 @@
 ﻿using Kookaburra.Domain.Model;
 using Kookaburra.Domain.Repository;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kookaburra.Repository
 {
@@ -22,6 +24,14 @@ namespace Kookaburra.Repository
         {
             _context.OfflineMessages.Add(offlineMsg);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Message> GetHistoricalChats(string operatorIdentity, int size, int page)
+        {
+            _context.Messages
+                .Where(m => m.Operator.Identity == operatorIdentity)
+                .GroupBy(m => m.VisitorId)
+                .Select(g => new { VisitorId = g.Key, Messages = g,  }).Take(size).Skip(size * page)
         }
     }
 }
