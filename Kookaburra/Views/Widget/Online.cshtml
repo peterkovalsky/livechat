@@ -59,10 +59,16 @@
         </div>
 
         <script type="text/javascript">
+         
             var url = (window.location != window.parent.location) ? document.referrer : document.location;
 
             var chatWidgetModel = new ChatWidgetViewModel('@Model.AccountKey', url);
             ko.applyBindings(chatWidgetModel);
+
+            function init() {
+                chatWidgetModel.init();
+            }
+
         </script>
     </div>
 </body>

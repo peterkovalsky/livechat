@@ -12,11 +12,18 @@ namespace Kookaburra.Controllers
         private readonly ChatSession _chatSession;
 
         private readonly IMessageRepository _messageRepository;
+        private readonly IVisitorRepository _visitorRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public WidgetController(ChatSession chatSession, IMessageRepository messageRepository)
+        public WidgetController(ChatSession chatSession, 
+            IMessageRepository messageRepository, 
+            IAccountRepository accountRepository,
+            IVisitorRepository visitorRepository)
         {
             _chatSession = chatSession;
             _messageRepository = messageRepository;
+            _accountRepository = accountRepository;
+            _visitorRepository = visitorRepository;
         }
 
         [HttpGet]
@@ -59,24 +66,37 @@ namespace Kookaburra.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("chatbox/offline/{key}")]
+        [Route("chatbox/offline")]
         public ActionResult Offline(OfflineBoxViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
-            var offlineMessage = new OfflineMessage
+
+            var account = _accountRepository.Get(model.AccountKey);
+
+            if (account != null)
             {
-                Message = model.Message,
-                DateSent = DateTime.UtcNow,
-                IsRead = false,
-                
-            };
+                var visitor = new Visitor {
+                    Name = model.Name,
+                    Email = model.Email                    
+                };
 
-            //_messageRepository.AddOfflineMessage()
-            //var webFolder = Server.MapPath("~");
+                _visitorRepository.AddVisitor(visitor);
 
-            //BackgroundJob.Enqueue(() => SendAndLogMesssage(model, webFolder));
+                var offlineMessage = new OfflineMessage
+                {
+                    Message = model.Message,
+                    DateSent = DateTime.UtcNow,
+                    IsRead = false,
+                    AccountId = account.Id,
+                    VisitorId = visitor.Id
+                };
 
-            return Content("<div class=\"heading\">Thank you! Your message has been sent. We will get back to you as soon as we can.</div>", "text/html");
+                _messageRepository.AddOfflineMessage(offlineMessage);
+            }
+
+            model.ThankYou = true;
+
+            return View("Offline", model);
         }    
     }
 }

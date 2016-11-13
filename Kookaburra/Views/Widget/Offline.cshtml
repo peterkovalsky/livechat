@@ -10,9 +10,11 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
 
-    @Scripts.Render("~/bundles/js/form")    
+    @Scripts.Render("~/bundles/js/form")
 
     @Styles.Render("~/bundles/css/widget")
+
+    <link rel="stylesheet" href="~/Content/fonts/linecons/css/linecons.css">
 </head>
 <body>
     <div>
@@ -20,27 +22,39 @@
 
             <div id="chat-area">
                 <div class="chat-body">
-                    @using (Html.BeginForm("Offline", "Chat"))
+                    @if (Model.ThankYou)
                     {
-                        @Html.AntiForgeryToken()
-                        <div id="offline-box" class="offline">
-                            <div class="heading">
-                                Hey there! We’re currently out but don’t worry we’ll be back, just leave us a message for now and we’ll get back to you asap.
-                            </div>
-                            <div class="name">
-                                @Html.TextBoxFor(m => m.Name, new { placeholder = "Name", autocomplete = "off" })
-                            </div>
-                            <div class="email">
-                                @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", autocomplete = "off" })
-                            </div>
-                            <div class="message">
-                                @Html.TextAreaFor(m => m.Message, new { placeholder = "Message", autocomplete = "off" })
-                            </div>
-                            <div class="submit">
-                                <input class="btn start" type="submit" value="SEND" />
+                        <div class="thank-you heading">
+                            Thank you! Your message has been sent. We will get back to you as soon as we can.
+                            <div class="bg-icon">
+                                <i class="linecons-comment"></i>
                             </div>
                         </div>
-                        @Html.HiddenFor(m => m.AccountKey)
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("Offline", "Widget"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div id="offline-box" class="offline">
+                                <div class="heading">
+                                    Sorry, we aren't online at the moment. Please leave a message and we'll get back to you soon.
+                                </div>
+                                <div class="name">
+                                    @Html.TextBoxFor(m => m.Name, new { placeholder = "Name", autocomplete = "off" })
+                                </div>
+                                <div class="email">
+                                    @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", autocomplete = "off" })
+                                </div>
+                                <div class="message">
+                                    @Html.TextAreaFor(m => m.Message, new { placeholder = "Message", autocomplete = "off" })
+                                </div>
+                                <div class="submit">
+                                    <input class="btn start" type="submit" value="SEND" />
+                                </div>
+                            </div>
+                            @Html.HiddenFor(m => m.AccountKey)
+                        }
                     }
                 </div>
 
@@ -51,5 +65,13 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+
+        function init() {
+            $('#@Html.IdFor(m => m.Name)').focus();
+        }
+
+    </script>
 </body>
 </html>

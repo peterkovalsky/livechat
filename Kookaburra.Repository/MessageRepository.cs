@@ -26,12 +26,12 @@ namespace Kookaburra.Repository
             _context.SaveChanges();
         }
 
-        public IEnumerable<Message> GetHistoricalChats(string operatorIdentity, int size, int page)
-        {
-            _context.Messages
-                .Where(m => m.Operator.Identity == operatorIdentity)
-                .GroupBy(m => m.VisitorId)
-                .Select(g => new { VisitorId = g.Key, Messages = g,  }).Take(size).Skip(size * page)
-        }
+        //public IEnumerable<Message> GetHistoricalChats(string operatorIdentity, int size, int page)
+        //{
+        //    _context.Messages
+        //        .Where(m => m.Operator.Identity == operatorIdentity)
+        //        .GroupBy(m => m.VisitorId)
+        //        .Select(g => new { VisitorId = g.Key, Messages = g,  }).Take(size).Skip(size * page)
+        //}
     }
 }

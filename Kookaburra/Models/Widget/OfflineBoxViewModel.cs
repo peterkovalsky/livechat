@@ -14,6 +14,9 @@ namespace Kookaburra.ViewModels.Widget
         [Required]
         public string Message { get; set; }
 
+        [Required]
         public string AccountKey { get; set; }
+
+        public bool ThankYou { get; set; }
     }
 }
