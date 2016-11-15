@@ -44,7 +44,8 @@ namespace Kookaburra.Services
                     Email = email,
                     Location = location,
                     SessionId = sessionId,
-                    Page = page
+                    Page = page,
+                    ConversationStarted = DateTime.UtcNow
                 });
             }
 

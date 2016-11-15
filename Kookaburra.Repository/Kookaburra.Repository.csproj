@@ -68,6 +68,10 @@
     <Compile Include="Migrations\201611130018548_offlinemessage2.Designer.cs">
       <DependentUpon>201611130018548_offlinemessage2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611140630286_visitor2.cs" />
+    <Compile Include="Migrations\201611140630286_visitor2.Designer.cs">
+      <DependentUpon>201611140630286_visitor2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OperatorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611130018548_offlinemessage2.resx">
       <DependentUpon>201611130018548_offlinemessage2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611140630286_visitor2.resx">
+      <DependentUpon>201611140630286_visitor2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

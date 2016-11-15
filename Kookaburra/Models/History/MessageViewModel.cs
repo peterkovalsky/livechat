@@ -8,7 +8,7 @@ namespace Kookaburra.Models.History
 
         public bool IsVisitor { get; set; }
 
-        public int Message { get; set; }
+        public int FirstMessage { get; set; }
 
         public DateTime DateSent { get; set; }
     }

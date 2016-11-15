@@ -1,6 +1,7 @@
 ﻿using Kookaburra.Domain.Model;
 using Kookaburra.Domain.Repository;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Kookaburra.Repository
@@ -14,6 +15,7 @@ namespace Kookaburra.Repository
             _context = context;
         }
 
+
         public void AddMessage(Message message)
         {
             _context.Messages.Add(message);
@@ -26,12 +28,13 @@ namespace Kookaburra.Repository
             _context.SaveChanges();
         }
 
-        //public IEnumerable<Message> GetHistoricalChats(string operatorIdentity, int size, int page)
-        //{
-        //    _context.Messages
-        //        .Where(m => m.Operator.Identity == operatorIdentity)
-        //        .GroupBy(m => m.VisitorId)
-        //        .Select(g => new { VisitorId = g.Key, Messages = g,  }).Take(size).Skip(size * page)
-        //}
+        public IEnumerable<Visitor> GetHistoricalChats(string operatorIdentity, int size, int page)
+        {
+            return _context.Visitors
+                .Include(i => i.Messages)
+                .OrderByDescending(v => v.ConversationStarted)
+                .Skip((page - 1) * size).Take(size)
+                .ToList();
+        }
     }
 }
