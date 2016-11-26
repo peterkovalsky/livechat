@@ -50,9 +50,9 @@ namespace Kookaburra.Services
             }
         }
 
-        public void FinishConversation(string visitorConnectionId)
+        public void RemoveVisitor(string visitorConnectionId)
         {
-            Sessions.SelectMany(s => s.Conversations).ToList().RemoveAll(i => i.ConnectionId == visitorConnectionId);
+            Sessions.SelectMany(s => s.Visitors).ToList().RemoveAll(i => i.ConnectionId == visitorConnectionId);
         }
 
         public void RemoveOperator(string operatorConnectionId)
@@ -66,7 +66,7 @@ namespace Kookaburra.Services
             var activeOperators = Sessions.Where(s => s.AccountKey == accountKey)
                 .Select(s => new {
                     OperatorConnectionId = s.ConnectionId,
-                    NumOfConversations = s.Conversations.Count()
+                    NumOfVisitors = s.Visitors.Count()
                 })
                 .ToList();
 
@@ -79,7 +79,7 @@ namespace Kookaburra.Services
             var activeOperators = Sessions.Where(s => s.AccountKey == accountKey)
                 .Select(s => new {
                     OperatorConnectionId = s.ConnectionId,
-                    NumOfVisitors = s.Conversations.Count()
+                    NumOfVisitors = s.Visitors.Count()
                 })
                 .ToList();
 
@@ -119,7 +119,7 @@ namespace Kookaburra.Services
     {
         public OperatorSession()
         {
-            Conversations = new List<ConversationSession>();
+            Visitors = new List<VisitorSession>();
         }
 
         public int Id { get; set; }
@@ -130,14 +130,14 @@ namespace Kookaburra.Services
 
         public string ConnectionId { get; set; }
 
-        public List<ConversationSession> Conversations { get; set; }
+        public List<VisitorSession> Visitors { get; set; }
     }
 
-    public class ConversationSession
+    public class VisitorSession
     {
         public int Id { get; set; }
 
-        public string VisitorName { get; set; }
+        public string Name { get; set; }
 
         public string ConnectionId { get; set; }
     }
