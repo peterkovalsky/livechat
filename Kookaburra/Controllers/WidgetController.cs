@@ -77,7 +77,8 @@ namespace Kookaburra.Controllers
             {
                 var visitor = new Visitor {
                     Name = model.Name,
-                    Email = model.Email                    
+                    Email = model.Email,
+                    ConversationStarted = DateTime.UtcNow
                 };
 
                 _visitorRepository.AddVisitor(visitor);

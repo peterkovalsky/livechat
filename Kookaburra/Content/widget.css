@@ -173,38 +173,35 @@ input[type="checkbox"].input-validation-error {
 }
 
 /* ONLINE */
-    .chatbox .online .chat-body {
-        padding: 0 0 10px 0;
-    }
+.chatbox .online {
+    padding: 0 0 10px 0;
+}
+ 
+.chatbox .online .chatting .heading {
+    height: 30px;
+    background-color: #e1e1e1;
+}
 
+.chatbox .online .chatting .heading .operator-pic {
+}
 
+.chatbox .online .chat-window {
+    height: 152px;
+    border-bottom: 1px solid #e1e1e1;
+    padding: 10px;
+    overflow: auto;
+    overflow-y: scroll;
+}
 
-        .chatbox .online .chat-body .chatting .heading {
-            height: 30px;
-            background-color: #e1e1e1;
-        }
+.chatbox .online .message-box textarea {
+    margin: 0;
+    border: 0;
+}
 
-            .chatbox .online .chat-body .chatting .heading .operator-pic {
-            }
-
-        .chatbox .online .chat-body .chat-window {
-            height: 152px;
-            border-bottom: 1px solid #e1e1e1;
-            padding: 10px;
-            overflow: auto;
-            overflow-y: scroll;
-        }
-
-        .chatbox .online .chat-body .message-box textarea {
-            margin: 0;
-            border: 0;
-        }
-
-    .chatbox .online .box-footer {
-        background-color: #e1e1e1;
-        padding: 4px 10px 5px 10px;
-    }
-
+.chatbox .online .box-footer {
+    background-color: #e1e1e1;
+    padding: 4px 10px 5px 10px;
+}
 
 
 /* Introduction */
