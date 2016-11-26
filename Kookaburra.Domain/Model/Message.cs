@@ -14,13 +14,8 @@ namespace Kookaburra.Domain.Model
 
         public string SentBy { get; set; }
 
-        public int? VisitorId { get; set; }
+        public int ConversationId { get; set; }
 
-        public int? OperatorId { get; set; }
-
-
-        public virtual Visitor Visitor { get; set; }
-
-        public virtual Operator Operator { get; set; }
+        public virtual Conversation Conversation { get; set; }
     }
 } 

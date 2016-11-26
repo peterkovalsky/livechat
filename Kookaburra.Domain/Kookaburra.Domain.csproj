@@ -45,6 +45,7 @@
     <Compile Include="Common\OperatorType.cs" />
     <Compile Include="Common\UserType.cs" />
     <Compile Include="Model\Account.cs" />
+    <Compile Include="Model\Conversation.cs" />
     <Compile Include="Model\Message.cs" />
     <Compile Include="Model\OfflineMessage.cs" />
     <Compile Include="Model\Operator.cs" />

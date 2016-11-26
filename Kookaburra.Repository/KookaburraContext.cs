@@ -19,6 +19,7 @@ namespace Kookaburra.Repository
         public DbSet<Visitor> Visitors { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<OfflineMessage> OfflineMessages { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
