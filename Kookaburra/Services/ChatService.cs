@@ -62,7 +62,7 @@ namespace Kookaburra.Services
 
         public void DisconnectVisitor(string connectionId)
         {
-            _currentSession.FinishConversation(connectionId);
+            _currentSession.RemoveVisitor(connectionId);
         }
 
         public void DisconnectOperator(string connectionId)

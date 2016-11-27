@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kookaburra.Services
+namespace Kookaburra.Domain
 {
     public class ChatSession
     {
@@ -30,7 +30,7 @@ namespace Kookaburra.Services
             }
         }
 
-        public void AddVisitor(string operatorConnectionId, string visitorConnectionId, int visitorId, string visitorName)
+        public void AddVisitor(int conversationId, string operatorConnectionId, string visitorConnectionId, int visitorId, string visitorName)
         {
             if (!Sessions.Any(s => s.ConnectionId == operatorConnectionId && s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)))
             {
@@ -44,7 +44,8 @@ namespace Kookaburra.Services
                 {
                     Id = visitorId,
                     ConnectionId = visitorConnectionId,
-                    Name = visitorName
+                    Name = visitorName,
+                    ConversationId = conversationId
                 };
                 operatorSession.Visitors.Add(newVisitor);
             }
@@ -136,6 +137,8 @@ namespace Kookaburra.Services
     public class VisitorSession
     {
         public int Id { get; set; }
+
+        public int ConversationId { get; set; }
 
         public string Name { get; set; }
 
