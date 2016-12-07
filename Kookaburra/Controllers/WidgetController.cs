@@ -1,6 +1,8 @@
-﻿using Kookaburra.Domain.Model;
-using Kookaburra.Domain.Repository;
-using Kookaburra.Services;
+﻿using Kookaburra.Domain.Command;
+using Kookaburra.Domain.Model;
+using Kookaburra.Domain.Query;
+using Kookaburra.Domain.Query.Model;
+using Kookaburra.Domain.Query.Result;
 using Kookaburra.ViewModels.Widget;
 using System;
 using System.Web.Mvc;
@@ -9,22 +11,15 @@ namespace Kookaburra.Controllers
 {
     public class WidgetController : Controller
     {
-        private readonly ChatSession _chatSession;
+        private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IQueryDispatcher _queryDispatcher;
 
-        private readonly IMessageRepository _messageRepository;
-        private readonly IVisitorRepository _visitorRepository;
-        private readonly IAccountRepository _accountRepository;
-
-        public WidgetController(ChatSession chatSession, 
-            IMessageRepository messageRepository, 
-            IAccountRepository accountRepository,
-            IVisitorRepository visitorRepository)
+        public WidgetController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
-            _chatSession = chatSession;
-            _messageRepository = messageRepository;
-            _accountRepository = accountRepository;
-            _visitorRepository = visitorRepository;
+            _commandDispatcher = commandDispatcher;
+            _queryDispatcher = queryDispatcher;
         }
+
 
         [HttpGet]
         [Route("chatbox/{key}")]
@@ -42,8 +37,10 @@ namespace Kookaburra.Controllers
         [HttpGet]
         [Route("widget/{key}")]
         public ActionResult Widget(string key)
-        {                     
-            if (_chatSession.AnyOperatorAvailable(key)) // There is someone online
+        {
+            var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(key));
+
+            if (operatorResult != null) // There is someone online
             {
                 var onlineModel = new OnlineBoxViewModel { AccountKey = key.ToUpper() };
 

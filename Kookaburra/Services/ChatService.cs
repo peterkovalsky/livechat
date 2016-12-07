@@ -73,14 +73,7 @@ namespace Kookaburra.Services
         public void LogMessage(string visitorConnectionId, string operatorConnectionId, UserType userType, string message, DateTime utcTimeSent)
         {            
             _messageRepository.AddMessage(
-                new Message
-                {
-                    OperatorId = _currentSession.GetOperatorId(operatorConnectionId),
-                    VisitorId = _currentSession.GetVisitorId(visitorConnectionId),
-                    SentBy = userType.ToString(),
-                    Text = message,
-                    DateSent = utcTimeSent
-                });
+                );
         }
     }
 }

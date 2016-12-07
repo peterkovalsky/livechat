@@ -9,20 +9,23 @@ using Microsoft.AspNet.Identity;
 using Kookaburra.Common;
 using Kookaburra.Domain.Model;
 using Kookaburra.Domain.Common;
+using Kookaburra.Domain.Command;
+using Kookaburra.Domain.Command.Model;
+using Kookaburra.Domain.Query;
+using Kookaburra.Domain.Query.Model;
+using Kookaburra.Domain.Query.Result;
 
 namespace Kookaburra.Services
 {
     public class ChatHub : Hub
     {
-        private readonly IOperatorRepository _operatorRepository;
-        private readonly IMessageRepository _messageRepository;
-        private readonly ChatService _chatService;
+        private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IQueryDispatcher _queryDispatcher;
 
-        public ChatHub(IOperatorRepository operatorRepository, IMessageRepository messageRepository, ChatService chatService)
+        public ChatHub(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
-            _operatorRepository = operatorRepository;
-            _messageRepository = messageRepository;
-            _chatService = chatService;
+            _commandDispatcher = commandDispatcher;
+            _queryDispatcher = queryDispatcher;
         }
 
 
@@ -39,7 +42,7 @@ namespace Kookaburra.Services
             Clients.Clients(new List<string>() { Context.ConnectionId, operatorId })
                 .sendMessageToOperator(name, message, sentDate.JsDateTime(), Context.ConnectionId);
 
-            _chatService.LogMessage(Context.ConnectionId, operatorId, UserType.Visitor, message, sentDate);            
+            _chatService.LogMessage(Context.ConnectionId, operatorId, UserType.Visitor, message, sentDate);
         }
 
 
@@ -51,24 +54,34 @@ namespace Kookaburra.Services
                 .sendMessageToVisitor(operatorName, message, sentDate.JsDateTime());
 
             _chatService.LogMessage(visitorId, Context.ConnectionId, UserType.Operator, message, sentDate);
-        }     
+        }
 
 
-        public string ConnectVisitor(string name, string email, string page, string accountKey)
+        public string ConnectVisitor(string name, string email, string page, string accountKey, string sessionId)
         {
             //http://freegeoip.net/json/rio-matras.com
-            //string name, string email, string location, string sessionId, string connectionId, string accountKey
-
             string location = "Sydney, Australia";
-            var availableOperatorId = _chatService.ConnectVisitor(name, email, location, Guid.NewGuid().ToString(), Context.ConnectionId, page, accountKey);
 
-            if (!string.IsNullOrEmpty(availableOperatorId))
+
+            var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(accountKey));
+
+            // if operator is available - establish connection
+            if (operatorResult != null)
             {
-                Clients.Clients(new List<string>() { availableOperatorId })
+                Clients.Clients(new List<string>() { operatorResult.OperatorConnectionId })
                     .clientConnected(Context.ConnectionId, name, DateTime.UtcNow.JsDateTime(), location, page);
+
+                var command = new StartConversationCommand(Context.ConnectionId, name, sessionId, accountKey);
+                command.Page = page;
+                command.Location = location;
+                command.VisitorEmail = email;
+
+                _commandDispatcher.Execute(command);
+
+                return operatorResult.OperatorConnectionId;
             }
 
-            return availableOperatorId;
+            return null;
         }
 
         public void DisconnectVisitor(string visitorConnectionId)

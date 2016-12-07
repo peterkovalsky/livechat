@@ -29,18 +29,17 @@ namespace Kookaburra.Domain.Command.Handler
                     Name = command.VisitorName,
                     Email = command.VisitorEmail,
                     Location = command.Location,
-                    SessionId = command.SessionId,
-                    Page = command.Page,
-                    ConversationStarted = DateTime.UtcNow
+                    SessionId = command.SessionId                                     
                 };
                 _context.Visitors.Add(returningVisitor);
-            }
+            }          
 
             var conversation = new Conversation
             {
-                OperatorId = command.OperatorId,
+                OperatorId = _chatSession.GetOperatorId(command.OperatorConnectionId),
                 Visitor = returningVisitor,
-                TimeStarted = DateTime.UtcNow
+                TimeStarted = DateTime.UtcNow,
+                Page = command.Page
             };
             _context.Conversations.Add(conversation);
 

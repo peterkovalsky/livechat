@@ -18,9 +18,16 @@
 namespace Kookaburra.DependencyResolution
 {
     using Controllers;
+    using Domain;
+    using Domain.Command;
+    using Domain.Command.Handler;
+    using Domain.Command.Model;
+    using Domain.Query;
+    using Domain.Query.Handler;
+    using Domain.Query.Model;
+    using Domain.Query.Result;
     using Microsoft.AspNet.SignalR;
     using Repository;
-    using Services;
     using StructureMap;
     using StructureMap.Graph;
 
@@ -40,6 +47,13 @@ namespace Kookaburra.DependencyResolution
             For<KookaburraContext>().Use<KookaburraContext>().Ctor<string>().Is("name=DefaultConnection");
             ForConcreteType<AccountController>().Configure.SelectConstructor(() => new AccountController(null));
             For<IDependencyResolver>().Add<StructureMapSignalRDependencyResolver>();
+
+            // Commands
+            For<ICommandHandler<StartConversationCommand>>().Add<StartConversationCommandHandler>();
+
+            // Queries
+            For<IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>>().Add<AvailableOperatorQueryHandler>();
+
             ForSingletonOf<ChatSession>();
         }
 

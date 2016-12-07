@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kookaburra.Domain.Command;
+using System;
+using System.Web.Mvc;
 
-namespace Kookaburra.Domain.Command
+namespace Kookaburra.DependencyResolution
 {
     public class CommandDispatcher : ICommandDispatcher
     {
         private readonly IDependencyResolver _resolver;
 
-        public CommandDispatcher(IDependencyResolver resolver)
+        public CommandDispatcher()
         {
-            _resolver = resolver;
+            _resolver = DependencyResolver.Current;
         }
 
         public void Execute<TCommand>(TCommand command)
@@ -20,10 +18,10 @@ namespace Kookaburra.Domain.Command
         {
             if (command == null)
             {
-                throw new ArgumentNullException("command");
+                throw new ArgumentNullException("Command doesn't have a reference to an instance of an object");
             }
 
-            var handler = _resolver.Resolve<ICommandHandler<TCommand>>();
+            var handler = _resolver.GetService<ICommandHandler<TCommand>>();
 
             if (handler == null)
             {

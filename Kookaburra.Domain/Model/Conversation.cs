@@ -21,6 +21,8 @@ namespace Kookaburra.Domain.Model
 
         public DateTime? TimeFinished { get; set; }
 
+        public string Page { get; set; }
+
         public virtual ICollection<Message> Messages { get; set; }
     }
 }

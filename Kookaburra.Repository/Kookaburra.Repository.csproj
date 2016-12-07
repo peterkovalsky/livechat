@@ -75,7 +75,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OperatorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VisitorRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

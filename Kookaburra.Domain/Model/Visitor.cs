@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Kookaburra.Domain.Model
@@ -18,12 +17,8 @@ namespace Kookaburra.Domain.Model
         public string Location { get; set; }
 
         [StringLength(1000)]
-        public string SessionId { get; set; }
+        public string SessionId { get; set; }      
 
-        public string Page { get; set; }
-
-        public DateTime ConversationStarted { get; set; }
-
-        public virtual IEnumerable<Message> Messages { get; set; }
+        public virtual IEnumerable<Conversation> Conversations { get; set; }
     }
-} 
+}

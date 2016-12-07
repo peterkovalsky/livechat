@@ -114,6 +114,17 @@ namespace Kookaburra.Domain
 
             return visitor.Id;
         }
+
+        public int GetConversationId(string visitorConnectionId)
+        {
+            var visitor = Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.ConnectionId == visitorConnectionId);
+            if (visitor == null)
+            {
+                throw new VisitorDisconnectedException("Visitor has been disconnected. ID: " + visitorConnectionId);
+            }
+
+            return visitor.ConversationId;
+        }
     }
 
     public class OperatorSession

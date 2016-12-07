@@ -223,9 +223,13 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
+    <Compile Include="DependencyResolution\CommandDispatcher.cs" />
+    <Compile Include="DependencyResolution\CommandHandlerNotFoundException.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
+    <Compile Include="DependencyResolution\QueryDispatcher.cs" />
+    <Compile Include="DependencyResolution\QueryHandlerNotFoundException.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="DependencyResolution\StructureMapSignalRDependencyResolver.cs" />
@@ -486,6 +490,14 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kookaburra.Domain.Command\Kookaburra.Domain.Command.csproj">
+      <Project>{6CD9A1DD-7FCD-40D4-8319-39779424CDD5}</Project>
+      <Name>Kookaburra.Domain.Command</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kookaburra.Domain.Query\Kookaburra.Domain.Query.csproj">
+      <Project>{bbe61298-bba7-4902-81e0-f5460a54d7e0}</Project>
+      <Name>Kookaburra.Domain.Query</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kookaburra.Domain\Kookaburra.Domain.csproj">
       <Project>{1f955ef9-25d2-4a38-be51-c81aebfdb41c}</Project>
       <Name>Kookaburra.Domain</Name>
