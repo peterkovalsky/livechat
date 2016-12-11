@@ -1,8 +1,9 @@
 ﻿using Kookaburra.Domain.Command.Model;
-using Kookaburra.Domain.Model;
+using Kookaburra.Domain;
 using Kookaburra.Repository;
 using System;
 using System.Linq;
+using Kookaburra.Domain.Model;
 
 namespace Kookaburra.Domain.Command.Handler
 {

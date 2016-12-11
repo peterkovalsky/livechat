@@ -125,6 +125,17 @@ namespace Kookaburra.Domain
 
             return visitor.ConversationId;
         }
+
+        public OperatorSession GetOperatorSession(string visitorConnectionId)
+        {
+            var operatorSession = Sessions.Where(s => s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)).SingleOrDefault();
+            if (operatorSession == null)
+            {
+                throw new ArgumentException("Visitor doen't have an operator");
+            }
+
+            return operatorSession;
+        }
     }
 
     public class OperatorSession

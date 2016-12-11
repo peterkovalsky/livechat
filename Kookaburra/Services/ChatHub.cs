@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.AspNet.SignalR;
-using System.Threading.Tasks;
-using Kookaburra.Domain.Repository;
-using Microsoft.AspNet.Identity;
-using Kookaburra.Common;
-using Kookaburra.Domain.Model;
-using Kookaburra.Domain.Common;
+﻿using Kookaburra.Common;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.Model;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Services
 {
@@ -32,28 +27,29 @@ namespace Kookaburra.Services
         [Authorize]
         public void ConnectOperator()
         {
-            _chatService.ConnectOperator(Context.ConnectionId, Context.User.Identity.GetUserId());
+            _commandDispatcher.Execute(new ConnectOperatorCommand(Context.ConnectionId, Context.User.Identity.GetUserId()));            
         }
 
-        public void SendToOperator(string name, string message, string operatorId)
+        public void SendToOperator(string name, string message)
         {
-            var sentDate = DateTime.UtcNow;
+            var dateSent = DateTime.UtcNow;
 
-            Clients.Clients(new List<string>() { Context.ConnectionId, operatorId })
-                .sendMessageToOperator(name, message, sentDate.JsDateTime(), Context.ConnectionId);
-
-            _chatService.LogMessage(Context.ConnectionId, operatorId, UserType.Visitor, message, sentDate);
+            var visitorSession = _queryDispatcher.Execute<VisitorSessionQuery, VisitorSessionQueryResult>(new VisitorSessionQuery(Context.ConnectionId));
+            
+            Clients.Clients(new List<string>() { Context.ConnectionId, visitorSession.OperatorConnectionId })
+                .sendMessageToOperator(name, message, dateSent.JsDateTime(), Context.ConnectionId);
+            
+            _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
         }
-
 
         public void SendToVisitor(string operatorName, string message, string visitorId)
         {
-            var sentDate = DateTime.UtcNow;
+            var dateSent = DateTime.UtcNow;
 
             Clients.Clients(new List<string>() { Context.ConnectionId, visitorId })
-                .sendMessageToVisitor(operatorName, message, sentDate.JsDateTime());
+                .sendMessageToVisitor(operatorName, message, dateSent.JsDateTime());
 
-            _chatService.LogMessage(visitorId, Context.ConnectionId, UserType.Operator, message, sentDate);
+            _commandDispatcher.Execute(new OperatorMessagedCommand(visitorId, message, dateSent));
         }
 
 
@@ -86,7 +82,7 @@ namespace Kookaburra.Services
 
         public void DisconnectVisitor(string visitorConnectionId)
         {
-            _chatService.DisconnectVisitor(visitorConnectionId);
+            _commandDispatcher.Execute(new StopConversationCommand(visitorConnectionId));
 
             Clients.Clients(new List<string>() { visitorConnectionId }).orderToDisconnect();
         }

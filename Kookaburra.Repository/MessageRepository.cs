@@ -27,11 +27,11 @@ namespace Kookaburra.Repository
             _context.SaveChanges();
         }
 
-        public IEnumerable<Visitor> GetHistoricalChats(string operatorIdentity, int size, int page)
+        public IEnumerable<Conversation> GetHistoricalChats(string operatorIdentity, int size, int page)
         {
-            return _context.Visitors
+            return _context.Conversations
                 .Include(i => i.Messages)
-                .OrderByDescending(v => v.ConversationStarted)
+                .OrderByDescending(v => v.TimeStarted)
                 .Skip((page - 1) * size).Take(size)
                 .ToList();
         }

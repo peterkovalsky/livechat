@@ -9,6 +9,6 @@ namespace Kookaburra.Domain.Repository
 
         void AddOfflineMessage(OfflineMessage offlineMsg);
 
-        IEnumerable<Visitor> GetHistoricalChats(string operatorIdentity, int size, int page);
+        IEnumerable<Conversation> GetHistoricalChats(string operatorIdentity, int size, int page);
     }
 }

@@ -49,10 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handler\ConnectOperatorCommandHandler.cs" />
+    <Compile Include="Handler\OperatorMessagedCommandHandler.cs" />
     <Compile Include="Handler\StartConversationCommandHandler.cs" />
+    <Compile Include="Handler\StopConversationCommandHandler.cs" />
     <Compile Include="Handler\VisitorMessagedCommandHandler.cs" />
     <Compile Include="ICommand.cs" />
+    <Compile Include="Model\ConnectOperatorCommand.cs" />
+    <Compile Include="Model\OperatorMessagedCommand.cs" />
     <Compile Include="Model\StartConversationCommand.cs" />
+    <Compile Include="Model\StopConversationCommand.cs" />
     <Compile Include="Model\VisitorMessagedCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
