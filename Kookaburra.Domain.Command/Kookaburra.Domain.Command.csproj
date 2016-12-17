@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kookaburra.Domain.Command</RootNamespace>
     <AssemblyName>Kookaburra.Domain.Command</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,12 +51,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handler\ConnectOperatorCommandHandler.cs" />
+    <Compile Include="Handler\LeaveMessageCommandHandler.cs" />
     <Compile Include="Handler\OperatorMessagedCommandHandler.cs" />
     <Compile Include="Handler\StartConversationCommandHandler.cs" />
     <Compile Include="Handler\StopConversationCommandHandler.cs" />
     <Compile Include="Handler\VisitorMessagedCommandHandler.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="Model\ConnectOperatorCommand.cs" />
+    <Compile Include="Model\LeaveMessageCommand.cs" />
     <Compile Include="Model\OperatorMessagedCommand.cs" />
     <Compile Include="Model\StartConversationCommand.cs" />
     <Compile Include="Model\StopConversationCommand.cs" />

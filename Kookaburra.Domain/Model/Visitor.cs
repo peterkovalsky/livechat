@@ -20,5 +20,7 @@ namespace Kookaburra.Domain.Model
         public string SessionId { get; set; }      
 
         public virtual IEnumerable<Conversation> Conversations { get; set; }
+
+        public virtual IEnumerable<OfflineMessage> OfflineMessages { get; set; }
     }
 }

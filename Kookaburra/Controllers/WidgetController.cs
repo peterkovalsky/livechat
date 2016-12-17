@@ -1,5 +1,5 @@
 ﻿using Kookaburra.Domain.Command;
-using Kookaburra.Domain.Model;
+using Kookaburra.Domain.Command.Model;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
@@ -68,29 +68,9 @@ namespace Kookaburra.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var account = _accountRepository.Get(model.AccountKey);
+            var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message);
 
-            if (account != null)
-            {
-                var visitor = new Visitor {
-                    Name = model.Name,
-                    Email = model.Email,
-                    ConversationStarted = DateTime.UtcNow
-                };
-
-                _visitorRepository.AddVisitor(visitor);
-
-                var offlineMessage = new OfflineMessage
-                {
-                    Message = model.Message,
-                    DateSent = DateTime.UtcNow,
-                    IsRead = false,
-                    AccountId = account.Id,
-                    VisitorId = visitor.Id
-                };
-
-                _messageRepository.AddOfflineMessage(offlineMessage);
-            }
+            _commandDispatcher.Execute(command);
 
             model.ThankYou = true;
 

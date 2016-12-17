@@ -40,6 +40,8 @@ namespace Kookaburra.DependencyResolution
                     scan.TheCallingAssembly();
                     scan.Assembly("Kookaburra.Domain");
                     scan.Assembly("Kookaburra.Repository");
+                    scan.Assembly("Kookaburra.Domain.Command");
+                    scan.Assembly("Kookaburra.Domain.Query");
                     scan.WithDefaultConventions();
 					scan.With(new ControllerConvention());
                 });
@@ -50,9 +52,15 @@ namespace Kookaburra.DependencyResolution
 
             // Commands
             For<ICommandHandler<StartConversationCommand>>().Add<StartConversationCommandHandler>();
+            For<ICommandHandler<ConnectOperatorCommand>>().Add<ConnectOperatorCommandHandler>();
+            For<ICommandHandler<LeaveMessageCommand>>().Add<LeaveMessageCommandHandler>();
+            For<ICommandHandler<OperatorMessagedCommand>>().Add<OperatorMessagedCommandHandler>();
+            For<ICommandHandler<StopConversationCommand>>().Add<StopConversationCommandHandler>();
+            For<ICommandHandler<VisitorMessagedCommand>>().Add<VisitorMessagedCommandHandler>();
 
             // Queries
             For<IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>>().Add<AvailableOperatorQueryHandler>();
+            For<IQueryHandler<VisitorSessionQuery, VisitorSessionQueryResult>>().Add<VisitorSessionQueryHandler>();
 
             ForSingletonOf<ChatSession>();
         }
