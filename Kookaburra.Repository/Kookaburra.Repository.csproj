@@ -72,6 +72,10 @@
     <Compile Include="Migrations\201611140630286_visitor2.Designer.cs">
       <DependentUpon>201611140630286_visitor2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612180028165_Visitor_Conversation.cs" />
+    <Compile Include="Migrations\201612180028165_Visitor_Conversation.Designer.cs">
+      <DependentUpon>201612180028165_Visitor_Conversation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OperatorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -100,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611140630286_visitor2.resx">
       <DependentUpon>201611140630286_visitor2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612180028165_Visitor_Conversation.resx">
+      <DependentUpon>201612180028165_Visitor_Conversation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

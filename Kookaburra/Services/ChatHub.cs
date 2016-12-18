@@ -67,7 +67,7 @@ namespace Kookaburra.Services
                 Clients.Clients(new List<string>() { operatorResult.OperatorConnectionId })
                     .clientConnected(Context.ConnectionId, name, DateTime.UtcNow.JsDateTime(), location, page);
 
-                var command = new StartConversationCommand(Context.ConnectionId, name, sessionId, accountKey);
+                var command = new StartConversationCommand(operatorResult.OperatorConnectionId, Context.ConnectionId, name, sessionId);
                 command.Page = page;
                 command.Location = location;
                 command.VisitorEmail = email;

@@ -30,6 +30,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     self.newMessage = ko.observable("");
     self.messages = ko.observableArray([]);
     self.operatorId = null;
+    self.sessionId = "hello";
     self.operatorName = ko.observable("");
 
     self.showErrors = ko.observable(false);
@@ -73,15 +74,13 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     }
 
     self.startConversation = function () {
-              
-        self.showErrors(true);
-
+                      
         if (!self.visitorName.hasError()) {
             self.goneOffline(false);
 
             // Start the connection.
             $.connection.hub.start().done(function () {
-                chatHubProxy.server.connectVisitor(self.visitorName(), self.visitorEmail(), currentPage, accountKey).done(function (_operatorId) {
+                chatHubProxy.server.connectVisitor(self.visitorName(), self.visitorEmail(), currentPage.href, accountKey, self.sessionId).done(function (_operatorId) {
                     if (_operatorId == null) {
                         self.goneOffline(true)
                     }
@@ -100,7 +99,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
                                     time: moment().format('LT')
                                 }));
 
-                                chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage(), _operatorId);
+                                chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage());
 
                                 self.newMessage('');
 
@@ -113,6 +112,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
         }
         else
         {
+            self.showErrors(true);
             self.isFocus(true);
         }
     };

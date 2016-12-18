@@ -17,7 +17,8 @@
         public string Page { get; set; }
 
         public StartConversationCommand(string operatorConnectionId, string visitorConnectionId, string visitorName, string sessionId)
-        {            
+        {
+            OperatorConnectionId = operatorConnectionId;
             VisitorConnectionId = visitorConnectionId;            
             SessionId = sessionId;
             VisitorName = visitorName;
