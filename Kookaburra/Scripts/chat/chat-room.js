@@ -1,5 +1,6 @@
 ﻿function ChatRoomViewModel(operatorName) {
 
+    var chatHubProxy = $.connection.chatHub;
     var self = this;
 
     self.operatorName = operatorName;
@@ -13,6 +14,15 @@
             return null;
         }
     });
+
+    self.disconnect = function () {
+        if (confirm("Are you sure you want to disconnect " + self.currentChat().visitorName() + "?")) {
+            chatHubProxy.server.disconnectVisitor(self.currentChat().visitorId());
+
+            ko.utils.arrayRemoveItem(self.conversations(), self.currentChat());
+        }        
+    };
+
     self.switchChat = function (conversation) {
 
         for (var i = 0; i < self.conversations().length; i++) {
@@ -27,7 +37,7 @@
         });
     };
 
-    var chatHubProxy = $.connection.chatHub;
+    
 
     //------------------- INCOMMING MESSAGE --------------------
     chatHubProxy.client.sendMessageToOperator = function (name, message, time, visitorId) {       

@@ -85,12 +85,7 @@ namespace Kookaburra.Services
             _commandDispatcher.Execute(new StopConversationCommand(visitorConnectionId));
 
             Clients.Clients(new List<string>() { visitorConnectionId }).orderToDisconnect();
-        }
-
-        //public void DisconnectClient(string clientId)
-        //{
-        //    Clients.Clients(new List<string>() { clientId }).orderToDisconnect();
-        //}
+        }    
 
         public override Task OnConnected()
         {
