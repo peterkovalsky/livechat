@@ -1,20 +1,20 @@
-﻿ko.extenders.required = function(target, overrideMessage) {
+﻿ko.extenders.required = function (target, overrideMessage) {
     //add some sub-observables to our observable
     target.hasError = ko.observable();
     target.validationMessage = ko.observable();
- 
+
     //define a function to do validation
     function validate(newValue) {
-       target.hasError(newValue ? false : true);
-       target.validationMessage(newValue ? "" : overrideMessage || "This field is required");
+        target.hasError(newValue ? false : true);
+        target.validationMessage(newValue ? "" : overrideMessage || "This field is required");
     }
- 
+
     //initial validation
     validate(target());
- 
+
     //validate whenever the value changes
     target.subscribe(validate);
- 
+
     //return the original observable
     return target;
 };
@@ -39,6 +39,10 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     var chatHubProxy = $.connection.chatHub;
 
     self.init = function () {
+        chatHubProxy.start().done(function () {
+
+        });
+
         self.isFocus(true);
     };
 
@@ -61,7 +65,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
         }));
     };
 
-    self.StartChatOnEnter = function(data, event) {
+    self.StartChatOnEnter = function (data, event) {
         try {
             if (event.which == 13) {
                 self.startConversation();
@@ -74,44 +78,41 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     }
 
     self.startConversation = function () {
-                      
+
         if (!self.visitorName.hasError()) {
             self.goneOffline(false);
 
             // Start the connection.
-            $.connection.hub.start().done(function () {
-                chatHubProxy.server.connectVisitor(self.visitorName(), self.visitorEmail(), currentPage.href, accountKey, self.sessionId).done(function (_operatorId) {
-                    if (_operatorId == null) {
-                        self.goneOffline(true)
-                    }
-                    else {
-                        // show chat window
-                        self.conversationStarted(true);
-                        self.operatorId = _operatorId;
+            chatHubProxy.server.connectVisitor(self.visitorName(), self.visitorEmail(), currentPage.href, accountKey, self.sessionId).done(function (_operatorId) {
+                if (_operatorId == null) {
+                    self.goneOffline(true)
+                }
+                else {
+                    // show chat window
+                    self.conversationStarted(true);
+                    self.operatorId = _operatorId;
 
-                        // SEND MESSAGE ON ENTER PRESS
-                        $(document).keypress(function (e) {
-                            if (e.which == 13) {
+                    // SEND MESSAGE ON ENTER PRESS
+                    $(document).keypress(function (e) {
+                        if (e.which == 13) {
 
-                                self.messages.push(new Message({
-                                    author: self.visitorName(),
-                                    text: self.newMessage(),
-                                    time: moment().format('LT')
-                                }));
+                            self.messages.push(new Message({
+                                author: self.visitorName(),
+                                text: self.newMessage(),
+                                time: moment().format('LT')
+                            }));
 
-                                chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage());
+                            chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage());
 
-                                self.newMessage('');
+                            self.newMessage('');
 
-                                e.preventDefault();
-                            }
-                        });
-                    }
-                });
+                            e.preventDefault();
+                        }
+                    });
+                }
             });
         }
-        else
-        {
+        else {
             self.showErrors(true);
             self.isFocus(true);
         }

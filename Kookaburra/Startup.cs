@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using Kookaburra.App_Start;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(Kookaburra.Startup))]
@@ -9,6 +10,8 @@ namespace Kookaburra
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            AutoMapperConfig.Initialize();
+
             app.MapSignalR();            
         }
     }

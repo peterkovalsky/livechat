@@ -1,17 +1,14 @@
 ﻿using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
-using Kookaburra.Repository;
 
 namespace Kookaburra.Domain.Query.Handler
 {
     public class AvailableOperatorQueryHandler : IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>
-    {
-        private readonly KookaburraContext _context;
+    {      
         private readonly ChatSession _chatSession;
 
-        public AvailableOperatorQueryHandler(KookaburraContext context, ChatSession chatSession)
-        {
-            _context = context;
+        public AvailableOperatorQueryHandler(ChatSession chatSession)
+        {           
             _chatSession = chatSession;
         }
 

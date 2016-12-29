@@ -19,6 +19,7 @@ namespace Kookaburra
                 .Include("~/Scripts/knockout-{version}.js")
                 .Include("~/Scripts/chat/chat-widget.js")
                 .Include("~/Scripts/moment-with-locales.min.js")
+                .Include("~/Scripts/jquery.cookie.js")
                 );
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(

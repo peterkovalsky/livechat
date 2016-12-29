@@ -7,11 +7,13 @@ namespace Kookaburra.Repository
     {
         public KookaburraContext() : base("DefaultConnection")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public KookaburraContext(string nameOrConnectionString) : base(nameOrConnectionString)
-        {           
+        {
             //Database.SetInitializer<KookaburraContext>(null);
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<Account> Accounts { get; set; }

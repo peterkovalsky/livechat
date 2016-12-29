@@ -54,9 +54,9 @@
 
                 <div class="xe-widget xe-progress-counter xe-progress-counter-turquoise current-chat">
 
-                    <div class="xe-background">
+                    @*<div class="xe-background">
                         <i class="linecons-comment"></i>
-                    </div>
+                    </div>*@
 
                     <div class="xe-upper">
                         <div class="xe-icon">
@@ -66,13 +66,21 @@
                             <strong class="num" data-bind="text: visitorNameFormatted"></strong>
                         </div>
                     </div>
-
+               
                     <div class="xe-lower">
                         <div class="border"></div>
+                      
+                        <button class="btn btn-purple btn-icon" data-bind="click: $parent.disconnect">
+                            <i class="fa-times-circle"></i>
+                            DISCONNECT
+                        </button>
+                     
+                        <div class="border"></div>
+
                         <span data-bind="text: location"></span>
                         <strong data-bind="text: visitorUrl"></strong>
-                        <div class="border"></div>
-                        <button name="Disconnect" class="btn" data-bind="click: $parent.disconnect">Disconnect</button>
+
+                        <div class="border"></div>                                             
                     </div>
 
                 </div>

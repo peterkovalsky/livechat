@@ -61,7 +61,8 @@ namespace Kookaburra.DependencyResolution
             // Queries
             For<IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>>().Add<AvailableOperatorQueryHandler>();
             For<IQueryHandler<VisitorSessionQuery, VisitorSessionQueryResult>>().Add<VisitorSessionQueryHandler>();
-
+            For<IQueryHandler<ContinueConversationQuery, ContinueConversationQueryResult>>().Add<ContinueConversationQueryHandler>();
+            
             ForSingletonOf<ChatSession>();
         }
 

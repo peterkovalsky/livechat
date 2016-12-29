@@ -1,9 +1,11 @@
-﻿using Kookaburra.Common;
+﻿using AutoMapper;
+using Kookaburra.Common;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.Model;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
+using Kookaburra.Models.Widget;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using System;
@@ -52,6 +54,17 @@ namespace Kookaburra.Services
             _commandDispatcher.Execute(new OperatorMessagedCommand(visitorId, message, dateSent));
         }
 
+        public ConversationViewModel CheckVisitorSession(string sessionId)
+        {            
+            var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(new ContinueConversationQuery(sessionId));
+
+            if (resumedConversation != null)
+            {
+                return Mapper.Map<ConversationViewModel>(resumedConversation);            
+            }
+
+            return null;
+        }
 
         public string ConnectVisitor(string name, string email, string page, string accountKey, string sessionId)
         {
