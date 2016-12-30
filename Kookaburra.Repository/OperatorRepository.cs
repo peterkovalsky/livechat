@@ -3,6 +3,7 @@ using Kookaburra.Domain.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 
 namespace Kookaburra.Repository
 {
@@ -17,7 +18,7 @@ namespace Kookaburra.Repository
 
         public Operator Get(string identity) 
         {
-            return _context.Operators.Where(o => o.Identity == identity).SingleOrDefault();
+            return _context.Operators.Include(i => i.Account).Where(o => o.Identity == identity).SingleOrDefault();
         }
 
         public IEnumerable<Operator> GetList(string accountKey)

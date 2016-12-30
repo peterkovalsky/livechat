@@ -3,15 +3,15 @@
 namespace Kookaburra
 {
     public class BundleConfig
-    {       
+    {
         public static void RegisterBundles(BundleCollection bundles)
         {
             #region JS
 
             bundles.Add(new ScriptBundle("~/bundles/js/form")
-                .Include("~/Scripts/jquery-{version}.js")                
-                .Include("~/Scripts/jquery.validate*")                
-                );
+                .Include("~/Scripts/jquery-{version}.js")
+                .Include("~/Scripts/jquery.validate*")
+            );
 
             bundles.Add(new ScriptBundle("~/bundles/js/widget")
                 .Include("~/Scripts/jquery-{version}.js")
@@ -20,13 +20,19 @@ namespace Kookaburra
                 .Include("~/Scripts/chat/chat-widget.js")
                 .Include("~/Scripts/moment-with-locales.min.js")
                 .Include("~/Scripts/jquery.cookie.js")
-                );
+            );
+
+            bundles.Add(new ScriptBundle("~/bundles/js/chatroom")
+                .Include("~/Scripts/jquery.signalR-{version}.js")
+                .Include("~/Scripts/knockout-{version}.js")
+                .Include("~/Scripts/moment-with-locales.min.js")
+            );
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));         
+                        "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",

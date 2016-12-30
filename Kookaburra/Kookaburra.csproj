@@ -253,6 +253,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Widget\ChatBoxStyleViewModel.cs" />
     <Compile Include="Models\Widget\ConversationViewModel.cs" />
+    <Compile Include="Models\Widget\MessageViewModel.cs" />
     <Compile Include="Models\Widget\OfflineBoxViewModel.cs" />
     <Compile Include="Models\Widget\OnlineBoxViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

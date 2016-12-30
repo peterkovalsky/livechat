@@ -66,7 +66,7 @@ namespace Kookaburra.Services
             return null;
         }
 
-        public string ConnectVisitor(string name, string email, string page, string accountKey, string sessionId)
+        public string ConnectVisitor(string name, string email, string page, string accountKey)
         {
             //http://freegeoip.net/json/rio-matras.com
             string location = "Sydney, Australia";
@@ -77,6 +77,8 @@ namespace Kookaburra.Services
             // if operator is available - establish connection
             if (operatorResult != null)
             {
+                var sessionId = Guid.NewGuid().ToString();
+
                 Clients.Clients(new List<string>() { operatorResult.OperatorConnectionId })
                     .clientConnected(Context.ConnectionId, name, DateTime.UtcNow.JsDateTime(), location, page);
 
@@ -87,7 +89,7 @@ namespace Kookaburra.Services
 
                 _commandDispatcher.Execute(command);
 
-                return operatorResult.OperatorConnectionId;
+                return sessionId;
             }
 
             return null;

@@ -1,6 +1,7 @@
 ﻿using Kookaburra.Domain.Command.Model;
 using Kookaburra.Repository;
 using System.Linq;
+using System.Data.Entity;
 
 namespace Kookaburra.Domain.Command.Handler
 {
@@ -18,7 +19,7 @@ namespace Kookaburra.Domain.Command.Handler
 
         public void Execute(ConnectOperatorCommand command)
         {
-            var operatorEntity = _context.Operators.Where(o => o.Identity == command.OperatorKey).SingleOrDefault();
+            var operatorEntity = _context.Operators.Include(i => i.Account).Where(o => o.Identity == command.OperatorKey).SingleOrDefault();
 
             _chatSession.AddOperator(operatorEntity.Id, operatorEntity.FirstName, operatorEntity.Account.Identifier, command.OperatorConnectionId);
         }

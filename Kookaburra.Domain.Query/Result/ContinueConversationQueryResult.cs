@@ -10,10 +10,10 @@ namespace Kookaburra.Domain.Query.Result
 
     public class ConversationItem
     {
-        public string Name { get; set; }
+        public string Author { get; set; }
 
-        public string Message { get; set; }
+        public string Text { get; set; }
 
-        public DateTime TimeSent { get; set; }
+        public DateTime Time { get; set; }
     }
 }

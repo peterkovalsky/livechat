@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Domain.Command",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Domain.Query", "Kookaburra.Domain.Query\Kookaburra.Domain.Query.csproj", "{BBE61298-BBA7-4902-81E0-F5460A54D7E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Tests", "Kookaburra.Tests\Kookaburra.Tests.csproj", "{979EDE0C-970A-4B85-B1CD-1E7AD4FFE20A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{BBE61298-BBA7-4902-81E0-F5460A54D7E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBE61298-BBA7-4902-81E0-F5460A54D7E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBE61298-BBA7-4902-81E0-F5460A54D7E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{979EDE0C-970A-4B85-B1CD-1E7AD4FFE20A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979EDE0C-970A-4B85-B1CD-1E7AD4FFE20A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979EDE0C-970A-4B85-B1CD-1E7AD4FFE20A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979EDE0C-970A-4B85-B1CD-1E7AD4FFE20A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -29,8 +29,6 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     self.goneOffline = ko.observable(false);
     self.newMessage = ko.observable("");
     self.messages = ko.observableArray([]);
-    self.operatorId = null;
-    self.sessionId = "hello";
     self.operatorName = ko.observable("");
 
     self.showErrors = ko.observable(false);
@@ -39,8 +37,16 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     var chatHubProxy = $.connection.chatHub;
 
     self.init = function () {
-        chatHubProxy.start().done(function () {
+        $.connection.hub.start().done(function () {
 
+            var sessionId = $.cookie('kookaburra.visitor.sessionid');
+
+            if (sessionId) {
+                chatHubProxy.server.checkVisitorSession(sessionId).done(function (conversationViewModel) {
+                    self.messages(conversationViewModel.Conversation);
+                    self.conversationStarted(true);
+                });
+            }
         });
 
         self.isFocus(true);
@@ -83,14 +89,15 @@ function ChatWidgetViewModel(accountKey, currentPage) {
             self.goneOffline(false);
 
             // Start the connection.
-            chatHubProxy.server.connectVisitor(self.visitorName(), self.visitorEmail(), currentPage.href, accountKey, self.sessionId).done(function (_operatorId) {
-                if (_operatorId == null) {
+            chatHubProxy.server.connectVisitor(self.visitorName(), self.visitorEmail(), currentPage.href, accountKey).done(function (_sessionId) {
+                if (_sessionId == null) {
                     self.goneOffline(true)
                 }
                 else {
                     // show chat window
                     self.conversationStarted(true);
-                    self.operatorId = _operatorId;
+                          
+                    $.cookie('kookaburra.visitor.sessionid', _sessionId);
 
                     // SEND MESSAGE ON ENTER PRESS
                     $(document).keypress(function (e) {

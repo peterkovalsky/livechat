@@ -36,9 +36,9 @@ namespace Kookaburra.Domain.Query.Handler
             {
                 var conversationItems = conversation.Messages.Select(m => new ConversationItem
                 {
-                    Name = m.SentBy == UserType.Visitor.ToString() ? conversation.Visitor.Name : conversation.Operator.FirstName,
-                    Message = m.Text,
-                    TimeSent = m.DateSent
+                    Author = m.SentBy == UserType.Visitor.ToString() ? conversation.Visitor.Name : conversation.Operator.FirstName,
+                    Text = m.Text,
+                    Time = m.DateSent
                 }).ToList();
 
                 return new ContinueConversationQueryResult { Conversation = conversationItems };

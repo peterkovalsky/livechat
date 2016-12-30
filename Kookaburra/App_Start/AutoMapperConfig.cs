@@ -9,8 +9,8 @@ namespace Kookaburra.App_Start
         public static void Initialize()
         {
             Mapper.Initialize(cfg => {              
-                cfg.CreateMap<ConversationItemViewModel, ConversationItem>();
-                cfg.CreateMap<ConversationViewModel, ContinueConversationQueryResult>();
+                cfg.CreateMap<ConversationItem, MessageViewModel>();
+                cfg.CreateMap<ContinueConversationQueryResult, ConversationViewModel>();
             });
         }
     }
