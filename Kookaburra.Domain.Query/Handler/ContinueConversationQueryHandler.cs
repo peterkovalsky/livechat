@@ -32,8 +32,18 @@ namespace Kookaburra.Domain.Query.Handler
                 .Where(c => c.Visitor.SessionId == query.SessionId && c.TimeFinished == null)
                 .SingleOrDefault();
 
+            // check if operator still there            
             if (conversation != null)
-            {
+            {            
+                if (_chatSession.IsConversationAlive(query.SessionId))
+                {
+                    _chatSession.UpdateVisitor(query.SessionId, query.VisitorConnectionId);
+                }
+                else
+                {
+                    return null;
+                }
+
                 var conversationItems = conversation.Messages.Select(m => new ConversationItem
                 {
                     Author = m.SentBy == UserType.Visitor.ToString() ? conversation.Visitor.Name : conversation.Operator.FirstName,

@@ -43,10 +43,28 @@ function ChatWidgetViewModel(accountKey, currentPage) {
 
             if (sessionId) {
                 chatHubProxy.server.checkVisitorSession(sessionId).done(function (conversationViewModel) {
-                    self.messages(conversationViewModel.Conversation);
+                    self.messages(conversationViewModel.conversation);
                     self.conversationStarted(true);
                 });
             }
+
+            // SEND MESSAGE ON ENTER PRESS
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+
+                    self.messages.push(new Message({
+                        author: self.visitorName(),
+                        text: self.newMessage(),
+                        time: moment().format('LT')
+                    }));
+
+                    chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage());
+
+                    self.newMessage('');
+
+                    e.preventDefault();
+                }
+            });
         });
 
         self.isFocus(true);
@@ -98,24 +116,6 @@ function ChatWidgetViewModel(accountKey, currentPage) {
                     self.conversationStarted(true);
                           
                     $.cookie('kookaburra.visitor.sessionid', _sessionId);
-
-                    // SEND MESSAGE ON ENTER PRESS
-                    $(document).keypress(function (e) {
-                        if (e.which == 13) {
-
-                            self.messages.push(new Message({
-                                author: self.visitorName(),
-                                text: self.newMessage(),
-                                time: moment().format('LT')
-                            }));
-
-                            chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage());
-
-                            self.newMessage('');
-
-                            e.preventDefault();
-                        }
-                    });
                 }
             });
         }

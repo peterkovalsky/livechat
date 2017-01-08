@@ -3,5 +3,7 @@
     public class VisitorSessionQueryResult
     {
         public string OperatorConnectionId { get; set; }
+
+        public string Visitor { get; set; }
     }
 }

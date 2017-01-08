@@ -30,7 +30,7 @@ namespace Kookaburra.Domain
             }
         }
 
-        public void AddVisitor(int conversationId, string operatorConnectionId, string visitorConnectionId, int visitorId, string visitorName)
+        public void AddVisitor(int conversationId, string operatorConnectionId, string visitorConnectionId, int visitorId, string visitorName, string visitorSessionId)
         {
             if (!Sessions.Any(s => s.ConnectionId == operatorConnectionId && s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)))
             {
@@ -45,7 +45,8 @@ namespace Kookaburra.Domain
                     Id = visitorId,
                     ConnectionId = visitorConnectionId,
                     Name = visitorName,
-                    ConversationId = conversationId
+                    ConversationId = conversationId,
+                    SessionId = visitorSessionId
                 };
                 operatorSession.Visitors.Add(newVisitor);
             }
@@ -59,6 +60,15 @@ namespace Kookaburra.Domain
         public void RemoveOperator(string operatorConnectionId)
         {
             Sessions.RemoveAll(i => i.ConnectionId == operatorConnectionId);
+        }
+
+        public void UpdateVisitor(string visitorSessionId, string newConnectionId)
+        {
+            var visitor = Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.SessionId == visitorSessionId);
+            if (visitor != null)
+            {
+                visitor.ConnectionId = newConnectionId;
+            }
         }
 
         public bool AnyOperatorAvailable(string accountKey)
@@ -93,6 +103,11 @@ namespace Kookaburra.Domain
             return null;
         }
 
+        public OperatorSession GetOperator(int id)
+        {
+            return Sessions.Where(s => s.Id == id).SingleOrDefault();
+        }
+
         public int GetOperatorId(string operatorConnectionId)
         {
             var operatorObj = Sessions.SingleOrDefault(s => s.ConnectionId == operatorConnectionId);
@@ -124,6 +139,13 @@ namespace Kookaburra.Domain
             }
 
             return visitor.ConversationId;
+        }
+
+        public bool IsConversationAlive(string visitorSessionId)
+        {
+            var visitor = Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.SessionId == visitorSessionId);
+
+            return visitor != null;
         }
 
         public OperatorSession GetOperatorSession(string visitorConnectionId)
@@ -165,5 +187,7 @@ namespace Kookaburra.Domain
         public string Name { get; set; }
 
         public string ConnectionId { get; set; }
+
+        public string SessionId { get; set; }
     }
 }

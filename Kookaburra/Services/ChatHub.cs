@@ -55,8 +55,9 @@ namespace Kookaburra.Services
         }
 
         public ConversationViewModel CheckVisitorSession(string sessionId)
-        {            
-            var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(new ContinueConversationQuery(sessionId));
+        {
+            var query = new ContinueConversationQuery(sessionId, Context.ConnectionId);
+            var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(query);
 
             if (resumedConversation != null)
             {
