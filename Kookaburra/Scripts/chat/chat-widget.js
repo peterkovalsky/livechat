@@ -36,73 +36,89 @@ function ChatWidgetViewModel(accountKey, currentPage) {
 
     var chatHubProxy = $.connection.chatHub;
 
+
+    // init widget
+    // -----------
     self.init = function () {
+        // connect to SignalR
         $.connection.hub.start().done(function () {
 
             var sessionId = $.cookie('kookaburra.visitor.sessionid');
 
+            // if visitor session valid - resume chat
             if (sessionId) {
                 chatHubProxy.server.checkVisitorSession(sessionId).done(function (conversationViewModel) {
-                    self.messages(conversationViewModel.conversation);
-                    self.conversationStarted(true);
+                    if (conversationViewModel) {
+                        self.resumeChat(conversationViewModel.conversation);
+                    }
                 });
-            }
-
-            // SEND MESSAGE ON ENTER PRESS
-            $(document).keypress(function (e) {
-                if (e.which == 13) {
-
-                    self.messages.push(new Message({
-                        author: self.visitorName(),
-                        text: self.newMessage(),
-                        time: moment().format('LT')
-                    }));
-
-                    chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage());
-
-                    self.newMessage('');
-
-                    e.preventDefault();
-                }
-            });
+            }       
         });
 
         self.isFocus(true);
     };
 
-    // Create a function that the hub can call back to display messages.
-    chatHubProxy.client.sendMessageToVisitor = function (name, message, time) {
-        self.messages.push(new Message({
-            author: name,
-            text: message,
-            time: moment(time).format('LT')
-        }));
+
+    // resume chat
+    // -----------
+    self.resumeChat = function (previousConversation)
+    {
+        self.messages(previousConversation);
+        self.conversationStarted(true);
+        self.addEnterPressEvent();
+        self.registerClientSideFunctions();
     };
 
-    chatHubProxy.client.orderToDisconnect = function () {
-        $.connection.hub.stop();
 
-        self.messages.push(new Message({
-            author: 'System',
-            text: 'You were disconnected by the operator',
-            time: moment().format('LT')
-        }));
-    };
+    // Sends message to operator on Enter Press
+    // ----------------------------------------
+    self.addEnterPressEvent = function () {        
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
 
-    self.StartChatOnEnter = function (data, event) {
-        try {
-            if (event.which == 13) {
-                self.startConversation();
-                return false;
+                self.messages.push(new Message({
+                    author: self.visitorName(),
+                    text: self.newMessage(),
+                    time: moment().format('LT')
+                }));
+
+                chatHubProxy.server.sendToOperator(self.visitorName(), self.newMessage());
+
+                self.newMessage('');
+
+                e.preventDefault();
             }
-            return true;
-        }
-        catch (e)
-        { }
-    }
+        });
+    };
 
+
+    // register SignalR callback functions
+    // -----------------------------------
+    self.registerClientSideFunctions = function () {
+        // Create a function that the hub can call back to display messages.
+        chatHubProxy.client.sendMessageToVisitor = function (name, message, time) {
+            self.messages.push(new Message({
+                author: name,
+                text: message,
+                time: moment(time).format('LT')
+            }));
+        };
+
+        chatHubProxy.client.orderToDisconnect = function () {
+            $.connection.hub.stop();
+
+            self.messages.push(new Message({
+                author: 'System',
+                text: 'You were disconnected by the operator',
+                time: moment().format('LT')
+            }));
+        };
+    };
+   
+
+    // starts new chat with operator
+    // -----------------------------
     self.startConversation = function () {
-
         if (!self.visitorName.hasError()) {
             self.goneOffline(false);
 
@@ -113,8 +129,10 @@ function ChatWidgetViewModel(accountKey, currentPage) {
                 }
                 else {
                     // show chat window
-                    self.conversationStarted(true);
-                          
+                    self.conversationStarted(true);                          
+                    self.addEnterPressEvent();
+                    self.registerClientSideFunctions();
+
                     $.cookie('kookaburra.visitor.sessionid', _sessionId);
                 }
             });
@@ -124,6 +142,21 @@ function ChatWidgetViewModel(accountKey, currentPage) {
             self.isFocus(true);
         }
     };
+
+
+    // On enter press event handler
+    // ----------------------------
+    self.onEnterStartChat = function (data, event) {
+        try {
+            if (event.which == 13) {
+                self.startConversation();
+                return false;
+            }
+            return true;
+        }
+        catch (e)
+        { }
+    }
 }
 
 function Message(data) {

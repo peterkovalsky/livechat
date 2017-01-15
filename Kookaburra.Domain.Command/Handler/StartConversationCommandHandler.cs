@@ -54,7 +54,7 @@ namespace Kookaburra.Domain.Command.Handler
         private Visitor CheckForVisitor(string name, string email, string sessionId)
         {
             var existingVisitor = _context.Visitors
-                .Where(v => (v.Name == name && v.Email == email) || (v.SessionId == sessionId))
+                .Where(v => v.SessionId == sessionId)
                 .SingleOrDefault();
 
             return existingVisitor;

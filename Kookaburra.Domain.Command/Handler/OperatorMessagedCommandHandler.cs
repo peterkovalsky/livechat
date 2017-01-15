@@ -2,6 +2,7 @@
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
+using System;
 
 namespace Kookaburra.Domain.Command.Handler
 {
@@ -17,10 +18,16 @@ namespace Kookaburra.Domain.Command.Handler
         }
 
         public void Execute(OperatorMessagedCommand command)
-        {           
+        {
+            var visitorSession = _chatSession.GetVisitorSession(command.VisitorSessionId);
+            if (visitorSession == null)
+            {
+                throw new ArgumentException(string.Format("Visitor with session {0} doesn't exist.", command.VisitorSessionId));
+            }
+
             var message = new Message
             {
-                ConversationId = _chatSession.GetConversationId(command.VisitorConnectionId),
+                ConversationId = visitorSession.ConversationId,
                 SentBy = UserType.Operator.ToString(),
                 Text = command.Message,
                 DateSent = command.DateSent

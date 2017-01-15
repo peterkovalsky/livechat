@@ -3,10 +3,10 @@
         Please intoduce yourself
     </div>
     <div class="name">
-        <input type="text" placeholder="Name" autocomplete="off" data-bind="hasFocus: isFocus, textInput: visitorName, css: {'input-validation-error': visitorName.hasError && showErrors}, event:{keypress: StartChatOnEnter}" />
+        <input type="text" placeholder="Name" autocomplete="off" data-bind="hasFocus: isFocus, textInput: visitorName, css: {'input-validation-error': visitorName.hasError && showErrors}, event:{keypress: onEnterStartChat}" />
     </div>
     <div class="email">
-        <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="value: visitorEmail, event:{keypress: StartChatOnEnter}" />
+        <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="value: visitorEmail, event:{keypress: onEnterStartChat}" />
     </div>
     <div>
         <input class="btn start" type="button" value="START CHAT" data-bind="click: startConversation" />

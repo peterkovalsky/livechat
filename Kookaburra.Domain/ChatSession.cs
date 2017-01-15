@@ -143,7 +143,7 @@ namespace Kookaburra.Domain
 
         public bool IsConversationAlive(string visitorSessionId)
         {
-            var visitor = Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.SessionId == visitorSessionId);
+            var visitor = GetVisitorSession(visitorSessionId);
 
             return visitor != null;
         }
@@ -157,6 +157,11 @@ namespace Kookaburra.Domain
             }
 
             return operatorSession;
+        }
+
+        public VisitorSession GetVisitorSession(string visitorSessionId)
+        {
+            return Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.SessionId == visitorSessionId);
         }
     }
 

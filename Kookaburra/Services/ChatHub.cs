@@ -44,14 +44,14 @@ namespace Kookaburra.Services
             _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
         }
 
-        public void SendToVisitor(string operatorName, string message, string visitorId)
+        public void SendToVisitor(string operatorName, string message, string visitorSessionId)
         {
             var dateSent = DateTime.UtcNow;
 
             Clients.Clients(new List<string>() { Context.ConnectionId, visitorId })
                 .sendMessageToVisitor(operatorName, message, dateSent.JsDateTime());
 
-            _commandDispatcher.Execute(new OperatorMessagedCommand(visitorId, message, dateSent));
+            _commandDispatcher.Execute(new OperatorMessagedCommand(visitorSessionId, message, dateSent));
         }
 
         public ConversationViewModel CheckVisitorSession(string sessionId)
@@ -81,7 +81,7 @@ namespace Kookaburra.Services
                 var sessionId = Guid.NewGuid().ToString();
 
                 Clients.Clients(new List<string>() { operatorResult.OperatorConnectionId })
-                    .clientConnected(Context.ConnectionId, name, DateTime.UtcNow.JsDateTime(), location, page);
+                    .clientConnected(sessionId, name, DateTime.UtcNow.JsDateTime(), location, page);
 
                 var command = new StartConversationCommand(operatorResult.OperatorConnectionId, Context.ConnectionId, name, sessionId);
                 command.Page = page;
