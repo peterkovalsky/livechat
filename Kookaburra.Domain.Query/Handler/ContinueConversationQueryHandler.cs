@@ -20,7 +20,7 @@ namespace Kookaburra.Domain.Query.Handler
 
         public ContinueConversationQueryResult Execute(ContinueConversationQuery query)
         {
-            if (string.IsNullOrWhiteSpace(query.SessionId))
+            if (string.IsNullOrWhiteSpace(query.VisitorSessionId))
             {
                 return null;
             }
@@ -29,15 +29,16 @@ namespace Kookaburra.Domain.Query.Handler
                 .Include(i => i.Messages)
                 .Include(i => i.Visitor)
                 .Include(i => i.Operator)
-                .Where(c => c.Visitor.SessionId == query.SessionId && c.TimeFinished == null)
+                .Where(c => c.Visitor.SessionId == query.VisitorSessionId && c.TimeFinished == null)
                 .SingleOrDefault();
 
             // check if operator still there            
             if (conversation != null)
             {            
-                if (_chatSession.IsConversationAlive(query.SessionId))
+                // check if conversation still alive
+                if (_chatSession.GetVisitorByVisitorSessionId(query.VisitorSessionId) != null)
                 {
-                    _chatSession.UpdateVisitor(query.SessionId, query.VisitorConnectionId);
+                    _chatSession.UpdateVisitor(query.VisitorSessionId, query.VisitorConnectionId);
                 }
                 else
                 {

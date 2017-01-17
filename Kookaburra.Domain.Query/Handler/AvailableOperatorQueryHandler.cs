@@ -18,9 +18,11 @@ namespace Kookaburra.Domain.Query.Handler
 
             if (!string.IsNullOrWhiteSpace(operatorConnectionId))
             {
+                var operatorSession = _chatSession.GetOperatorByOperatorConnId(operatorConnectionId);
+
                 return new AvailableOperatorQueryResult
                 {
-                    OperatorId = _chatSession.GetOperatorId(operatorConnectionId),
+                    OperatorId = operatorSession.Id,
                     OperatorConnectionId = operatorConnectionId
                 };
             }

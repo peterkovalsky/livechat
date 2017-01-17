@@ -33,11 +33,13 @@ namespace Kookaburra.Domain.Command.Handler
                     SessionId = command.SessionId                                     
                 };
                 _context.Visitors.Add(returningVisitor);
-            }          
+            }
+
+            var operatorSession = _chatSession.GetOperatorByOperatorConnId(command.OperatorConnectionId);
 
             var conversation = new Conversation
             {
-                OperatorId = _chatSession.GetOperatorId(command.OperatorConnectionId),
+                OperatorId = operatorSession.Id,
                 Visitor = returningVisitor,
                 TimeStarted = DateTime.UtcNow,
                 Page = command.Page

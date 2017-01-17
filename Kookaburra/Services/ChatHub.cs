@@ -32,23 +32,39 @@ namespace Kookaburra.Services
             _commandDispatcher.Execute(new ConnectOperatorCommand(Context.ConnectionId, Context.User.Identity.GetUserId()));            
         }
 
+        /// <summary>
+        /// Message from VISITOR to OPERATOR
+        /// </summary>
         public void SendToOperator(string name, string message)
         {
             var dateSent = DateTime.UtcNow;
 
-            var visitorSession = _queryDispatcher.Execute<VisitorSessionQuery, VisitorSessionQueryResult>(new VisitorSessionQuery(Context.ConnectionId));
+            var query = new CurrentSessionQuery
+            {
+                VisitorConnectionId = Context.ConnectionId
+            };
+            var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);          
             
-            Clients.Clients(new List<string>() { Context.ConnectionId, visitorSession.OperatorConnectionId })
-                .sendMessageToOperator(name, message, dateSent.JsDateTime(), Context.ConnectionId);
+            Clients.Clients(new List<string>() { Context.ConnectionId, currentSession.OperatorConnectionId })
+                .sendMessageToOperator(name, message, dateSent.JsDateTime(), currentSession.VisitorSessionId);
             
             _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
         }
 
+        /// <summary>
+        /// Message from OPERATOR to VISITOR
+        /// </summary>
         public void SendToVisitor(string operatorName, string message, string visitorSessionId)
         {
             var dateSent = DateTime.UtcNow;
 
-            Clients.Clients(new List<string>() { Context.ConnectionId, visitorId })
+            var query = new CurrentSessionQuery
+            {
+                VisitorSessionId = visitorSessionId
+            };
+            var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
+
+            Clients.Clients(new List<string>() { Context.ConnectionId, currentSession.VisitorConnectionId })
                 .sendMessageToVisitor(operatorName, message, dateSent.JsDateTime());
 
             _commandDispatcher.Execute(new OperatorMessagedCommand(visitorSessionId, message, dateSent));

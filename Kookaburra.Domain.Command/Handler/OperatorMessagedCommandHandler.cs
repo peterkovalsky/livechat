@@ -19,7 +19,7 @@ namespace Kookaburra.Domain.Command.Handler
 
         public void Execute(OperatorMessagedCommand command)
         {
-            var visitorSession = _chatSession.GetVisitorSession(command.VisitorSessionId);
+            var visitorSession = _chatSession.GetVisitorByVisitorSessionId(command.VisitorSessionId);
             if (visitorSession == null)
             {
                 throw new ArgumentException(string.Format("Visitor with session {0} doesn't exist.", command.VisitorSessionId));

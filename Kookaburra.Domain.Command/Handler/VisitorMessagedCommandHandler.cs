@@ -18,9 +18,10 @@ namespace Kookaburra.Domain.Command.Handler
 
         public void Execute(VisitorMessagedCommand command)
         {
+            var visitorSession = _chatSession.GetVisitorByVisitorConnId(command.VisitorConnectionId);
             var message = new Message
             {
-                ConversationId = _chatSession.GetConversationId(command.VisitorConnectionId),
+                ConversationId = visitorSession.ConversationId,
                 SentBy = UserType.Visitor.ToString(),
                 Text = command.Message,
                 DateSent = command.DateSent

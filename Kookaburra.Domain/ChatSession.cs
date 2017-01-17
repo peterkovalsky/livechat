@@ -1,5 +1,4 @@
-﻿using Kookaburra.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -75,7 +74,8 @@ namespace Kookaburra.Domain
         {
             // get current active operators for an account
             var activeOperators = Sessions.Where(s => s.AccountKey == accountKey)
-                .Select(s => new {
+                .Select(s => new
+                {
                     OperatorConnectionId = s.ConnectionId,
                     NumOfVisitors = s.Visitors.Count()
                 })
@@ -88,7 +88,8 @@ namespace Kookaburra.Domain
         {
             // get current active operators for an account
             var activeOperators = Sessions.Where(s => s.AccountKey == accountKey)
-                .Select(s => new {
+                .Select(s => new
+                {
                     OperatorConnectionId = s.ConnectionId,
                     NumOfVisitors = s.Visitors.Count()
                 })
@@ -101,67 +102,31 @@ namespace Kookaburra.Domain
             }
 
             return null;
+        }  
+
+        public OperatorSession GetOperatorByOperatorConnId(string operatorConnectionId)
+        {
+            return Sessions.SingleOrDefault(s => s.ConnectionId == operatorConnectionId);
         }
 
-        public OperatorSession GetOperator(int id)
+        public OperatorSession GetOperatorByVisitorConnId(string visitorConnectionId)
         {
-            return Sessions.Where(s => s.Id == id).SingleOrDefault();
+            return Sessions.Where(s => s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)).SingleOrDefault();
         }
 
-        public int GetOperatorId(string operatorConnectionId)
+        public OperatorSession GetOperatorByVisitorSessionId(string visitorSessionId)
         {
-            var operatorObj = Sessions.SingleOrDefault(s => s.ConnectionId == operatorConnectionId);
-            if (operatorObj == null)
-            {
-                throw new OperatorDisconnectedException("Operator has been disconnected. ID: " + operatorConnectionId);
-            }
-
-            return operatorObj.Id;
+            return Sessions.Where(s => s.Visitors.Any(v => v.SessionId == visitorSessionId)).SingleOrDefault();
         }
 
-        public int GetVisitorId(string visitorConnectionId)
+        public VisitorSession GetVisitorByVisitorConnId(string visitorConnectionId)
         {
-            var visitor = Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.ConnectionId == visitorConnectionId);
-            if (visitor == null)
-            {
-                throw new VisitorDisconnectedException("Visitor has been disconnected. ID: " + visitorConnectionId);
-            }
-
-            return visitor.Id;
+            return Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.ConnectionId == visitorConnectionId);
         }
 
-        public int GetConversationId(string visitorConnectionId)
+        public VisitorSession GetVisitorByVisitorSessionId(string visitorSessionId)
         {
-            var visitor = Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.ConnectionId == visitorConnectionId);
-            if (visitor == null)
-            {
-                throw new VisitorDisconnectedException("Visitor has been disconnected. ID: " + visitorConnectionId);
-            }
-
-            return visitor.ConversationId;
-        }
-
-        public bool IsConversationAlive(string visitorSessionId)
-        {
-            var visitor = GetVisitorSession(visitorSessionId);
-
-            return visitor != null;
-        }
-
-        public OperatorSession GetOperatorSession(string visitorConnectionId)
-        {
-            var operatorSession = Sessions.Where(s => s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)).SingleOrDefault();
-            if (operatorSession == null)
-            {
-                throw new ArgumentException("Visitor doen't have an operator");
-            }
-
-            return operatorSession;
-        }
-
-        public VisitorSession GetVisitorSession(string visitorSessionId)
-        {
-            return Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.SessionId == visitorSessionId);
+            return Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.SessionId == visitorSessionId);           
         }
     }
 
@@ -179,6 +144,8 @@ namespace Kookaburra.Domain
         public string AccountKey { get; set; }
 
         public string ConnectionId { get; set; }
+
+        public string SessionId { get; set; }
 
         public List<VisitorSession> Visitors { get; set; }
     }

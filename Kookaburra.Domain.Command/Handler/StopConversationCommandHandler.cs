@@ -19,7 +19,9 @@ namespace Kookaburra.Domain.Command.Handler
 
         public void Execute(StopConversationCommand command)
         {
-            var conversation = _context.Conversations.Where(c => c.Id == _chatSession.GetConversationId(command.VisitorConnectionId)).SingleOrDefault();
+            var visitorSession = _chatSession.GetVisitorByVisitorConnId(command.VisitorConnectionId);
+            var conversation = _context.Conversations.Where(c => c.Id == visitorSession.ConversationId).SingleOrDefault();
+
             if (conversation == null)
             {
                 throw new ArgumentException("There is no conversation for visitor " + command.VisitorConnectionId);
