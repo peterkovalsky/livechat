@@ -40,6 +40,10 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     // init widget
     // -----------
     self.init = function () {
+
+        // register SignalR callbacks
+        self.registerClientSideFunctions();
+
         // connect to SignalR
         $.connection.hub.start().done(function () {
 
@@ -65,8 +69,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     {
         self.messages(previousConversation);
         self.conversationStarted(true);
-        self.addEnterPressEvent();
-        self.registerClientSideFunctions();
+        self.addEnterPressEvent();        
     };
 
 
@@ -130,8 +133,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
                 else {
                     // show chat window
                     self.conversationStarted(true);                          
-                    self.addEnterPressEvent();
-                    self.registerClientSideFunctions();
+                    self.addEnterPressEvent();             
 
                     $.cookie('kookaburra.visitor.sessionid', _sessionId);
                 }

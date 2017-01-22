@@ -66,7 +66,7 @@ namespace Kookaburra.Controllers
 
             var model = new PreviewViewModel
             {
-                Code = new Code().GenerateCode(serverHost + "/chatbox", currentOperator.Account.Identifier)
+                Code = new Code().GenerateCode(serverHost + "/widget/container", currentOperator.Account.Identifier)
             };
 
             return View(model);

@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Kookaburra</title>
+
+    @Scripts.Render("~/bundles/js/widget")
+    @Styles.Render("~/bundles/css/widget")
+
+    @RenderSection("head", required: false)
+</head>
+<body>
+
+    <div id="button" onclick="showWidget()"> 
+        @Html.Partial("_Button")
+    </div>
+
+    <div id="widget" class="widget" style="display:none;">
+        <div class="header" onclick="hideWidget()">
+            Hi there
+        </div>
+
+        @RenderBody()
+
+        <div class="footer">
+            <label>Powered by <strong><a>Kookaburra</a></strong></label>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        function showWidget() {
+            $('#button').hide();
+            $('#widget').show();
+        }
+
+        function hideWidget() {
+            $('#button').show();
+            $('#widget').hide();
+        }
+
+    </script>
+</body>
+</html>

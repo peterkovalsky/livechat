@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Kookaburra.ViewModels.Widget
+namespace Kookaburra.Models.Widget
 {
-    public class OfflineBoxViewModel
+    public class OfflineViewModel
     {
         [Required]
         public string Name { get; set; }
@@ -16,7 +16,5 @@ namespace Kookaburra.ViewModels.Widget
 
         [Required]
         public string AccountKey { get; set; }
-
-        public bool ThankYou { get; set; }
     }
 }

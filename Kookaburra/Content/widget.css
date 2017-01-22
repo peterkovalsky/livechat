@@ -102,32 +102,71 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
-/* ChatBox */
-.chatbox {
+/* Button */
+.launcher-button {
+    cursor: pointer; 
+    background: #2c3e50 url('/images/logo-small.png') no-repeat right center; 
+    border-right: 10px solid transparent; 
+    color: white; 
+    padding: 10px 10px 9px; 
+    font-size: 14px; 
+    width: 300px;
+}
+
+/* Widget */
+.widget {
     width: 300px;
     font-size: 14px;
     line-height: 1.4;
     color: #434343;
+    border-left: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+    padding: 0 10px 10px 10px;
+    border-bottom: 0;
+    background-color: white;
+    height: 290px;
 }
 
-    .chatbox .box-header {
-        background: #4781d9 url("/Content/images/chatico3.png") no-repeat right center;
-        color: white;
-        padding: 10px 10px 7px;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-    }
-
-    .chatbox .chat-body {
-        border-left: 1px solid #e1e1e1;
-        border-right: 1px solid #e1e1e1;
-        padding: 0 10px 10px 10px;
-        border-bottom: 0;
-        background-color: white;
-        height: 290px;
-    }
+.widget .header {
+    cursor: pointer; 
+    background: #2c3e50 url('/images/logo-small.png') no-repeat right center; 
+    border-right: 10px solid transparent; 
+    color: white; 
+    padding: 10px 10px 9px; 
+    font-size: 14px; 
+}
 
 
+/* Introduction */
+.widget .introduction {
+  
+}
+
+.widget .introduction input[type=text] {
+    height: 45px;
+    padding: 10px 16px;
+    font-size: 17px;
+    line-height: 1.33;
+    border-radius: 0;
+}
+
+.widget .introduction .btn.start {
+    background-color: #2c3e50;
+    color: #fff;
+    display: block;
+    width: 100%;   
+    margin-top: 100px;
+    padding: 10px 16px;
+    font-size: 17px;
+    line-height: 1.33;
+}
+
+.widget .introduction .btn.start:hover {
+    background-color: #2c3e50;
+    text-color: #fff;   
+}
+
+/* header */
 .chatbox .chat-body .heading {
     padding: 12px 0;
 }
@@ -204,45 +243,18 @@ input[type="checkbox"].input-validation-error {
 }
 
 
-/* Introduction */
-.chatbox .introduction {
-  
-}
 
-.chatbox .introduction input[type=text] {
-    height: 45px;
-    padding: 10px 16px;
-    font-size: 17px;
-    line-height: 1.33;
-    border-radius: 0;
-}
-
-.chatbox .introduction .btn.start {
-    background-color: #2c3e50;
-    color: #fff;
-    display: block;
-    width: 100%;   
-    margin-top: 100px;
-    padding: 10px 16px;
-    font-size: 17px;
-    line-height: 1.33;
-}
-
-.chatbox .introduction .btn.start:hover {
-    background-color: #2c3e50;
-    text-color: #fff;   
-}
 
 
 /* Offline */
-.chatbox .offline input[type=text] {    
+.widget .offline input[type=text] {    
     padding: 10px 15px;   
     line-height: 1.33;
     border-radius: 0;
     height: 38px;
 }
 
-.chatbox .offline textarea {
+.widget .offline textarea {
     height: 72px;
     padding: 10px 16px;
     font-size: 15px;
@@ -250,7 +262,7 @@ input[type="checkbox"].input-validation-error {
     border-radius: 0;
 }
 
-.chatbox .offline .btn {
+.widget .offline .btn {
     margin-top: 15px;
     background-color: #2c3e50;
     color: #fff;
@@ -261,22 +273,23 @@ input[type="checkbox"].input-validation-error {
     line-height: 1.33;
 }
 
-.chatbox .offline .btn:hover {
+.widget .offline .btn:hover {
     background-color: #2c3e50;
     text-color: #fff;   
 }
 
-.chatbox .offline .heading {
+.widget .offline .heading {
     padding: 6px 0;
 }
 
-.chatbox .thank-you .bg-icon {
+/* Thank You */
+.widget .thank-you .bg-icon {
     position: absolute;
     right: 20px;
     top: 70px;
 }
 
-.chatbox .thank-you .bg-icon i {
+.widget .thank-you .bg-icon i {
     font-size: 205px;
     display: block;
     line-height: 1;

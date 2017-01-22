@@ -3,6 +3,7 @@ using Kookaburra.Domain.Command.Model;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
+using Kookaburra.Models.Widget;
 using Kookaburra.ViewModels.Widget;
 using System;
 using System.Web.Mvc;
@@ -14,6 +15,8 @@ namespace Kookaburra.Controllers
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
 
+        public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";
+
         public WidgetController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
@@ -22,13 +25,15 @@ namespace Kookaburra.Controllers
 
 
         [HttpGet]
-        [Route("chatbox/{key}")]
-        public ActionResult ChatBox(string key)
+        [Route("widget/container/{key}")]
+        public ActionResult Container(string key)
         {
-            var model = new ChatBoxStyleViewModel { Key = key };
-
-            model.ChatServerHost = Request.Url.Scheme + Uri.SchemeDelimiter + Request.Url.Host + ":" + Request.Url.Port;
-
+            var model = new ContainerViewModel
+            {
+                AccountKey = key,
+                ChatServerHost = Request.Url.Scheme + Uri.SchemeDelimiter + Request.Url.Host + ":" + Request.Url.Port
+            };
+            
             HttpContext.Response.ContentType = "application/javascript";
 
             return View(model);
@@ -47,34 +52,31 @@ namespace Kookaburra.Controllers
                 return View("Online", onlineModel);
             }
 
-            var model = new OfflineBoxViewModel { AccountKey = key };
+            var model = new OfflineViewModel { AccountKey = key };
 
             return View("Offline", model);
         }
 
         [HttpGet]
-        [Route("chatbox/offline/{key}")]
+        [Route("widget/offline/{key}")]
         public ActionResult Offline(string key)
         {    
-            var model = new OfflineBoxViewModel { AccountKey = key };
+            var model = new OfflineViewModel { AccountKey = key };
 
             return View("Offline", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("chatbox/offline")]
-        public ActionResult Offline(OfflineBoxViewModel model)
+        [Route("widget/offline")]
+        public ActionResult Offline(OfflineViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
             var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message);
-
             _commandDispatcher.Execute(command);
-
-            model.ThankYou = true;
-
-            return View("Offline", model);
+         
+            return View("ThankYou");
         }    
     }
 }
