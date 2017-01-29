@@ -1,6 +1,5 @@
 ﻿using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
-using System.Linq;
 
 namespace Kookaburra.Domain.Query.Handler
 {
@@ -20,6 +19,11 @@ namespace Kookaburra.Domain.Query.Handler
                 var operatorSession = _chatSession.GetOperatorByVisitorConnId(query.VisitorConnectionId);
                 var visitorSession = _chatSession.GetVisitorByVisitorConnId(query.VisitorConnectionId);
 
+                if (operatorSession == null || visitorSession == null)
+                {
+                    return null;
+                }
+
                 return new CurrentSessionQueryResult
                 {
                     VisitorConnectionId = visitorSession.ConnectionId,
@@ -31,8 +35,14 @@ namespace Kookaburra.Domain.Query.Handler
 
             if (!string.IsNullOrWhiteSpace(query.VisitorSessionId))
             {
+
                 var operatorSession = _chatSession.GetOperatorByVisitorSessionId(query.VisitorSessionId);
                 var visitorSession = _chatSession.GetVisitorByVisitorSessionId(query.VisitorSessionId);
+
+                if (operatorSession == null || visitorSession == null)
+                {
+                    return null;
+                }
 
                 return new CurrentSessionQueryResult
                 {

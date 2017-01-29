@@ -1,14 +1,20 @@
-﻿<div class="introduction" data-bind="if: !conversationStarted()">
-    <div class="heading">
-        Please intoduce yourself
+﻿@model Kookaburra.Models.Widget.IntroductionViewModel
+
+@using (Html.BeginForm("Online", "Widget"))
+{
+    @Html.AntiForgeryToken()
+    <div class="introduction">
+        <div class="heading">
+            Please intoduce yourself
+        </div>
+        <div class="name">
+            @Html.TextBoxFor(m => m.Name, new { placeholder = "Name", autocomplete = "off" })
+        </div>
+        <div class="email">
+            @Html.TextBoxFor(m => m.Email, new { placeholder = "Email (optional)", autocomplete = "off" })
+        </div>
+        <div>
+            <input class="btn start" type="submit" value="START CHAT" data-bind="click: startConversation" />
+        </div>
     </div>
-    <div class="name">
-        <input type="text" placeholder="Name" autocomplete="off" data-bind="hasFocus: isFocus, textInput: visitorName, css: {'input-validation-error': visitorName.hasError && showErrors}, event:{keypress: onEnterStartChat}" />
-    </div>
-    <div class="email">
-        <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="value: visitorEmail, event:{keypress: onEnterStartChat}" />
-    </div>
-    <div>
-        <input class="btn start" type="button" value="START CHAT" data-bind="click: startConversation" />
-    </div>
-</div>
+}

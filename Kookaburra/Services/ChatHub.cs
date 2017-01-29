@@ -99,12 +99,7 @@ namespace Kookaburra.Services
                 Clients.Clients(new List<string>() { operatorResult.OperatorConnectionId })
                     .clientConnected(sessionId, name, DateTime.UtcNow.JsDateTime(), location, page);
 
-                var command = new StartConversationCommand(operatorResult.OperatorConnectionId, Context.ConnectionId, name, sessionId);
-                command.Page = page;
-                command.Location = location;
-                command.VisitorEmail = email;
-
-                _commandDispatcher.Execute(command);
+             
 
                 return sessionId;
             }

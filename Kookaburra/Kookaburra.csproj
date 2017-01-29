@@ -254,6 +254,7 @@
     <Compile Include="Models\Widget\ButtonViewModel.cs" />
     <Compile Include="Models\Widget\ContainerViewModel.cs" />
     <Compile Include="Models\Widget\ConversationViewModel.cs" />
+    <Compile Include="Models\Widget\IntroductionViewModel.cs" />
     <Compile Include="Models\Widget\MessageViewModel.cs" />
     <Compile Include="Models\Widget\OfflineViewModel.cs" />
     <Compile Include="Models\Widget\OnlineBoxViewModel.cs" />
