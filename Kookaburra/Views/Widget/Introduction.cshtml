@@ -1,6 +1,13 @@
 ﻿@model Kookaburra.Models.Widget.IntroductionViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutWidget.cshtml";
+}
 
-@using (Html.BeginForm("Online", "Widget"))
+@section head{
+    @Scripts.Render("~/bundles/js/form")
+}
+
+@using (Html.BeginForm("Introduction", "Widget"))
 {
     @Html.AntiForgeryToken()
     <div class="introduction">
@@ -17,4 +24,21 @@
             <input class="btn start" type="submit" value="START CHAT" data-bind="click: startConversation" />
         </div>
     </div>
+    @Html.HiddenFor(m => m.PageUrl)
+    @Html.HiddenFor(m => m.AccountKey)
 }
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#@Html.IdFor(m => m.Name)').focus();
+
+        var url = (window.location != window.parent.location)
+            ? document.referrer
+            : document.location.href;
+
+        $('#@(Html.NameFor(m => m.PageUrl))').val(url);
+    });
+
+</script>

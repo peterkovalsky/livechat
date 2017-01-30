@@ -50,7 +50,7 @@ namespace Kookaburra.Domain.Command.Handler
 
            
             // add visitor to session
-            _chatSession.AddVisitor(conversation.Id, command.OperatorConnectionId, command.VisitorConnectionId, returningVisitor.Id, returningVisitor.Name, returningVisitor.SessionId);            
+            _chatSession.AddVisitor(conversation.Id, command.OperatorConnectionId, null, returningVisitor.Id, returningVisitor.Name, returningVisitor.SessionId);            
         }
 
         private Visitor CheckForVisitor(string name, string email, string sessionId)

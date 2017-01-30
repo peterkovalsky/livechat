@@ -56,35 +56,55 @@ namespace Kookaburra.Controllers
                     if (currentSession != null)
                     {
                         // Online - resume chat
-                        return View("Online", new OnlineBoxViewModel { AccountKey = key });
+                        return View(nameof(WidgetController.Online), new OnlineBoxViewModel { AccountKey = key });
                     }
 
                     // Introduction                 
-                    return View("Introduction", new IntroductionViewModel { AccountKey = key });
+                    return View(nameof(WidgetController.Introduction), new IntroductionViewModel { AccountKey = key });
                 }
 
                 // Introduction                 
-                return View("Introduction", new IntroductionViewModel { AccountKey = key });
+                return View(nameof(WidgetController.Introduction), new IntroductionViewModel { AccountKey = key });
             }
 
             // Offline - no operator available
-            return View("Offline", new OfflineViewModel { AccountKey = key });
+            return View(nameof(WidgetController.Offline), new OfflineViewModel { AccountKey = key });
         }
 
         [HttpPost]
+        [Route("widget/introduction")]
         [ValidateAntiForgeryToken]      
         public ActionResult Introduction(IntroductionViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
-            var command = new StartConversationCommand(operatorResult.OperatorConnectionId, Context.ConnectionId, name, sessionId);
-            command.Page = page;
-            command.Location = location;
-            command.VisitorEmail = email;
+            // get location
+            var location = "Sydney, Australia";
+            var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(model.AccountKey));
+            
+            // if operator is available - establish connection
+            if (availableOperator != null)
+            {
+                var sessionId = Guid.NewGuid().ToString();
 
-            _commandDispatcher.Execute(command);
+                var command = new StartConversationCommand(availableOperator.OperatorConnectionId, model.Name, sessionId);
+                command.Page = model.PageUrl;
+                command.Location = location;
+                command.VisitorEmail = model.Email;
 
-            return View("Online", new OnlineBoxViewModel { AccountKey = model.AccountKey });
+                _commandDispatcher.Execute(command);
+            }
+
+            return RedirectToAction("Online", new { key = model.AccountKey });
+        }
+
+        [HttpGet]
+        [Route("widget/online/{key}")]
+        public ActionResult Online(string key)
+        {
+            var model = new OnlineBoxViewModel { AccountKey = key };
+
+            return View(model);
         }
 
         [HttpGet]
@@ -93,7 +113,7 @@ namespace Kookaburra.Controllers
         {
             var model = new OfflineViewModel { AccountKey = key };
 
-            return View("Offline", model);
+            return View(model);
         }
 
         [HttpPost]
@@ -106,7 +126,14 @@ namespace Kookaburra.Controllers
             var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message);
             _commandDispatcher.Execute(command);
 
-            return View("ThankYou");
+            return RedirectToAction("ThankYou");
+        }
+
+        [HttpGet]
+        [Route("widget/thankyou")]
+        public ActionResult ThankYou()
+        {
+            return View();
         }
     }
 }

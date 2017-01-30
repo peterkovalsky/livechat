@@ -4,37 +4,33 @@
 }
 
 @section head{
+    @Scripts.Render("~/bundles/js/widget")
     <script src="~/signalr/hubs"></script>
 }
 
-
-    @Html.Partial("_Introduction")
-
-    <div class="online" data-bind="if: conversationStarted">
-        <div class="header">
-            <div class="operator-pic"></div>
-            <div class="operator-name"></div>
-        </div>
-        <div class="chat-window">
-            <ul id="discussion" data-bind="foreach: messages">
-                <li>
-                    <strong data-bind="text: author"></strong>:
-                    <span data-bind="text: text"></span>
-                    <span data-bind="text: time"></span>
-                </li>
-            </ul>
-        </div>
-        <div class="message-box">
-            <textarea id="message" class="message" data-bind="textInput: newMessage" rows="1"></textarea>
-            <input type="hidden" id="displayname" />
-        </div>
+<div class="online" data-bind="if: conversationStarted">
+    <div class="header">
+        <div class="operator-pic"></div>
+        <div class="operator-name"></div>
     </div>
-
-    <div class="gone-offline" data-bind="if: goneOffline">
-        Operator has gone offline. Click <a href="/chatbox/offline/@(Model.AccountKey)">here</a> if you wish leave a message.
+    <div class="chat-window">
+        <ul id="discussion" data-bind="foreach: messages">
+            <li>
+                <strong data-bind="text: author"></strong>:
+                <span data-bind="text: text"></span>
+                <span data-bind="text: time"></span>
+            </li>
+        </ul>
     </div>
+    <div class="message-box">
+        <textarea id="message" class="message" data-bind="textInput: newMessage" rows="1"></textarea>
+        <input type="hidden" id="displayname" />
+    </div>
+</div>
 
-
+<div class="gone-offline" data-bind="if: goneOffline">
+    Operator has gone offline. Click <a href="/chatbox/offline/@(Model.AccountKey)">here</a> if you wish leave a message.
+</div>
 
 
 <script type="text/javascript">

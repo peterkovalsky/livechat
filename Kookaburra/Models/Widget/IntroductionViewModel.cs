@@ -12,5 +12,7 @@ namespace Kookaburra.Models.Widget
 
         [Required]
         public string AccountKey { get; set; }
+
+        public string PageUrl { get; set; }
     }
 }

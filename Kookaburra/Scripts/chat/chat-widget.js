@@ -1,31 +1,11 @@
-﻿ko.extenders.required = function (target, overrideMessage) {
-    //add some sub-observables to our observable
-    target.hasError = ko.observable();
-    target.validationMessage = ko.observable();
-
-    //define a function to do validation
-    function validate(newValue) {
-        target.hasError(newValue ? false : true);
-        target.validationMessage(newValue ? "" : overrideMessage || "This field is required");
-    }
-
-    //initial validation
-    validate(target());
-
-    //validate whenever the value changes
-    target.subscribe(validate);
-
-    //return the original observable
-    return target;
-};
-
+﻿
 function ChatWidgetViewModel(accountKey, currentPage) {
 
     var self = this;
 
     self.visitorName = ko.observable("").extend({ required: "" });
     self.visitorEmail = ko.observable("");
-    self.conversationStarted = ko.observable(false);
+    self.conversationStarted = ko.observable(true);
     self.goneOffline = ko.observable(false);
     self.newMessage = ko.observable("");
     self.messages = ko.observableArray([]);
