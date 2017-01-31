@@ -34,25 +34,41 @@ namespace Kookaburra.Domain.Query.Handler
 
             // check if operator still there            
             if (conversation != null)
-            {            
+            {
                 // check if conversation still alive
-                if (_chatSession.GetVisitorByVisitorSessionId(query.VisitorSessionId) != null)
+                var visitorSession = _chatSession.GetVisitorByVisitorSessionId(query.VisitorSessionId);
+                if (visitorSession != null)
                 {
+                    bool isNewConversation = visitorSession.ConnectionId == null;
+
                     _chatSession.UpdateVisitor(query.VisitorSessionId, query.VisitorConnectionId);
-                }
-                else
-                {
-                    return null;
-                }
 
-                var conversationItems = conversation.Messages.Select(m => new ConversationItem
-                {
-                    Author = m.SentBy == UserType.Visitor.ToString() ? conversation.Visitor.Name : conversation.Operator.FirstName,
-                    Text = m.Text,
-                    Time = m.DateSent
-                }).ToList();
+                    var conversationItems = conversation.Messages.Select(m => new ConversationItem
+                    {
+                        Author = m.SentBy == UserType.Visitor.ToString() ? conversation.Visitor.Name : conversation.Operator.FirstName,
+                        Text = m.Text,
+                        Time = m.DateSent
+                    }).ToList();
 
-                return new ContinueConversationQueryResult { Conversation = conversationItems };
+                    var operatorSession = _chatSession.GetOperatorByVisitorSessionId(query.VisitorSessionId);
+
+                    return new ContinueConversationQueryResult
+                    {
+                        IsNewConversation = isNewConversation,
+                        OperatorInfo = new OperatorInfo
+                        {
+                            ConnectionId = operatorSession.ConnectionId,
+                            SessionId = operatorSession.SessionId
+                        },
+                        VisitorInfo = new VisitorInfo
+                        {
+                            Name = conversation.Visitor.Name,
+                            Location = conversation.Visitor.Location,
+                            Page = conversation.Page
+                        },
+                        Conversation = conversationItems
+                    };
+                }                     
             }
 
             return null;

@@ -19,6 +19,8 @@ namespace Kookaburra.Services
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
 
+        public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";
+
         public ChatHub(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
@@ -70,39 +72,30 @@ namespace Kookaburra.Services
             _commandDispatcher.Execute(new OperatorMessagedCommand(visitorSessionId, message, dateSent));
         }
 
-        public ConversationViewModel CheckVisitorSession(string sessionId)
+        public ConversationViewModel ConnectVisitor(string sessionId1)
         {
-            var query = new ContinueConversationQuery(sessionId, Context.ConnectionId);
+            var httpContext = Context.Request.GetHttpContext();
+            var sessionId = httpContext.Request.Cookies[COOKIE_SESSION_ID];
+
+            if (sessionId == null || string.IsNullOrWhiteSpace(sessionId.Value))
+            {
+                return null;
+            }
+
+            var query = new ContinueConversationQuery(sessionId.Value, Context.ConnectionId);
             var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(query);
 
             if (resumedConversation != null)
             {
-                return Mapper.Map<ConversationViewModel>(resumedConversation);            
-            }
+                if (resumedConversation.IsNewConversation)
+                {
+                    // Notify operator about this visitor
+                    Clients.Clients(new List<string>() { resumedConversation.OperatorInfo.ConnectionId })
+                        .clientConnected(sessionId, resumedConversation.VisitorInfo.Name, DateTime.UtcNow.JsDateTime(), resumedConversation.VisitorInfo.Location, resumedConversation.VisitorInfo.Page);
+                }
 
-            return null;
-        }
-
-        public string ConnectVisitor(string name, string email, string page, string accountKey)
-        {
-            //http://freegeoip.net/json/rio-matras.com
-            string location = "Sydney, Australia";
-
-
-            var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(accountKey));
-
-            // if operator is available - establish connection
-            if (operatorResult != null)
-            {
-                var sessionId = Guid.NewGuid().ToString();
-
-                Clients.Clients(new List<string>() { operatorResult.OperatorConnectionId })
-                    .clientConnected(sessionId, name, DateTime.UtcNow.JsDateTime(), location, page);
-
-             
-
-                return sessionId;
-            }
+                return Mapper.Map<ConversationViewModel>(resumedConversation);
+            }                      
 
             return null;
         }

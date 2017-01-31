@@ -31,12 +31,23 @@ function ChatWidgetViewModel(accountKey, currentPage) {
 
             // if visitor session valid - resume chat
             if (sessionId) {
-                chatHubProxy.server.checkVisitorSession(sessionId).done(function (conversationViewModel) {
+                chatHubProxy.server.connectVisitor(sessionId).done(function (conversationViewModel) {
                     if (conversationViewModel) {
                         self.resumeChat(conversationViewModel.conversation);
+                        self.addEnterPressEvent();
+                    }
+                    else {
+                        // operator gone offline
+                        self.conversationStarted(false);
+                        self.goneOffline(true)
                     }
                 });
-            }       
+            }
+            else {
+                // session ID is missing - go offline
+                self.conversationStarted(false);
+                self.goneOffline(true)
+            }
         });
 
         self.isFocus(true);
@@ -101,29 +112,29 @@ function ChatWidgetViewModel(accountKey, currentPage) {
 
     // starts new chat with operator
     // -----------------------------
-    self.startConversation = function () {
-        if (!self.visitorName.hasError()) {
-            self.goneOffline(false);
+    //self.startConversation = function () {
+    //    if (!self.visitorName.hasError()) {
+    //        self.goneOffline(false);
 
-            // Start the connection.
-            chatHubProxy.server.connectVisitor(self.visitorName(), self.visitorEmail(), currentPage.href, accountKey).done(function (_sessionId) {
-                if (_sessionId == null) {
-                    self.goneOffline(true)
-                }
-                else {
-                    // show chat window
-                    self.conversationStarted(true);                          
-                    self.addEnterPressEvent();             
+    //        // Start the connection.
+    //        chatHubProxy.server.connectVisitor(self.visitorName(), self.visitorEmail(), currentPage.href, accountKey).done(function (_sessionId) {
+    //            if (_sessionId == null) {
+    //                self.goneOffline(true)
+    //            }
+    //            else {
+    //                // show chat window
+    //                self.conversationStarted(true);                          
+    //                self.addEnterPressEvent();             
 
-                    $.cookie('kookaburra.visitor.sessionid', _sessionId);
-                }
-            });
-        }
-        else {
-            self.showErrors(true);
-            self.isFocus(true);
-        }
-    };
+    //                $.cookie('kookaburra.visitor.sessionid', _sessionId);
+    //            }
+    //        });
+    //    }
+    //    else {
+    //        self.showErrors(true);
+    //        self.isFocus(true);
+    //    }
+    //};
 
 
     // On enter press event handler

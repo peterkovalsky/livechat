@@ -5,6 +5,12 @@ namespace Kookaburra.Domain.Query.Result
 {
     public class ContinueConversationQueryResult
     {
+        public bool IsNewConversation { get; set; }
+
+        public OperatorInfo OperatorInfo { get; set; }
+
+        public VisitorInfo VisitorInfo { get; set; }
+
         public List<ConversationItem> Conversation { get; set; }
     }
 
@@ -15,5 +21,21 @@ namespace Kookaburra.Domain.Query.Result
         public string Text { get; set; }
 
         public DateTime Time { get; set; }
+    }
+
+    public class VisitorInfo
+    {
+        public string Name { get; set; }
+
+        public string Page { get; set; }
+
+        public string Location { get; set; }
+    }
+
+    public class OperatorInfo
+    {
+        public string ConnectionId { get; set; }
+
+        public string SessionId { get; set; }
     }
 }

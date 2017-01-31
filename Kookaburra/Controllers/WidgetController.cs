@@ -6,6 +6,7 @@ using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models.Widget;
 using Kookaburra.ViewModels.Widget;
 using System;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Kookaburra.Controllers
@@ -44,13 +45,13 @@ namespace Kookaburra.Controllers
         public ActionResult Widget(string key)
         {
             var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(key));
-            var sessionId = Session[COOKIE_SESSION_ID];
+            var sessionId = Request.Cookies[COOKIE_SESSION_ID];
 
             if (operatorResult != null) // There is someone online
             {
-                if (sessionId != null)
+                if (sessionId != null && !string.IsNullOrWhiteSpace(sessionId.Value))
                 {
-                    var query = new CurrentSessionQuery { VisitorSessionId = sessionId.ToString() };
+                    var query = new CurrentSessionQuery { VisitorSessionId = sessionId.Value };
                     var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
 
                     if (currentSession != null)
@@ -80,6 +81,7 @@ namespace Kookaburra.Controllers
 
             // get location
             var location = "Sydney, Australia";
+            //http://freegeoip.net/json/rio-matras.com
             var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(model.AccountKey));
             
             // if operator is available - establish connection
@@ -93,6 +95,9 @@ namespace Kookaburra.Controllers
                 command.VisitorEmail = model.Email;
 
                 _commandDispatcher.Execute(command);
+
+                // add sessionId cookie
+                Response.Cookies.Set(new HttpCookie(COOKIE_SESSION_ID, sessionId));
             }
 
             return RedirectToAction("Online", new { key = model.AccountKey });

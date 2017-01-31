@@ -121,25 +121,16 @@ input[type="checkbox"].input-validation-error {
     color: #434343;
     border-left: 1px solid #e1e1e1;
     border-right: 1px solid #e1e1e1;
-    padding: 0 10px 10px 10px;
-    border-bottom: 0;
+    border-bottom: 1px solid #e1e1e1;
+    padding: 0;  
     background-color: white;
-    height: 290px;
-}
-
-.widget .header {
-    cursor: pointer; 
-    background: #2c3e50 url('/images/logo-small.png') no-repeat right center; 
-    border-right: 10px solid transparent; 
-    color: white; 
-    padding: 10px 10px 9px; 
-    font-size: 14px; 
+    height: 325px;
 }
 
 
 /* Introduction */
 .widget .introduction {
-  
+  padding: 0 10px 10px 10px;
 }
 
 .widget .introduction input[type=text] {
@@ -155,7 +146,7 @@ input[type="checkbox"].input-validation-error {
     color: #fff;
     display: block;
     width: 100%;   
-    margin-top: 100px;
+    margin-top: 90px;
     padding: 10px 16px;
     font-size: 17px;
     line-height: 1.33;
@@ -167,64 +158,46 @@ input[type="checkbox"].input-validation-error {
 }
 
 /* header */
-.chatbox .chat-body .heading {
+.widget .heading {
     padding: 12px 0;
 }
 
        
-        .chatbox .online textarea {
-            margin: 7px 0;
-            display: block;
-            width: 100%;
-            -webkit-font-smoothing: antialiased;
-            font-size: 12px;
-            padding: 7px;
-            outline: 0;
-            resize: none;
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-        }
+       
 
-        .chatbox .online textarea {
-            height: 80px;
-            margin-bottom: 10px;
-        }
-
-.chatbox .box-footer {
-    padding: 0 10px 5px 10px;
-    border-left: 1px solid #e1e1e1;
-    border-right: 1px solid #e1e1e1;
-    border-bottom: 1px solid #e1e1e1;
-    border-top: 0;
+/* footer */
+.widget .footer {
+    padding: 10px 10px 5px 10px;   
     background-color: white;
 }
 
-.chatbox .box-footer label {
+.widget .footer label {
     color: #999;
     font-size: 9px;
     float: right;
 }
 
-.chatbox .box-footer a {    
+.widget .footer a {    
     font-size: 9px;
     color: darkgray;
     text-decoration: none;  
 }
 
 /* ONLINE */
-.chatbox .online {
+.widget .online {
     padding: 0 0 10px 0;
+    border-bottom: 1px solid #e1e1e1;
 }
  
-.chatbox .online .chatting .heading {
+.widget .online .header {
     height: 30px;
     background-color: #e1e1e1;
 }
 
-.chatbox .online .chatting .heading .operator-pic {
+.widget .online .header .operator-pic {
 }
 
-.chatbox .online .chat-window {
+.widget .online .chat-window {
     height: 152px;
     border-bottom: 1px solid #e1e1e1;
     padding: 10px;
@@ -232,21 +205,27 @@ input[type="checkbox"].input-validation-error {
     overflow-y: scroll;
 }
 
-.chatbox .online .message-box textarea {
-    margin: 0;
+.widget .online .message-box textarea {    
     border: 0;
+    margin: 0;
+    display: block;
+    width: 100%;
+    -webkit-font-smoothing: antialiased;
+    font-size: 12px;
+    padding: 7px;
+    outline: 0;
+    resize: none;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 70px;
 }
-
-.chatbox .online .box-footer {
-    background-color: #e1e1e1;
-    padding: 4px 10px 5px 10px;
-}
-
-
-
 
 
 /* Offline */
+.widget .offline {
+    padding: 0 10px 0 10px;
+}
+
 .widget .offline input[type=text] {    
     padding: 10px 15px;   
     line-height: 1.33;
