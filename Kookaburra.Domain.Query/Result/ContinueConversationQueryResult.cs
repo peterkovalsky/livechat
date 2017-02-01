@@ -21,6 +21,8 @@ namespace Kookaburra.Domain.Query.Result
         public string Text { get; set; }
 
         public DateTime Time { get; set; }
+
+        public string SentBy { get; set; }
     }
 
     public class VisitorInfo

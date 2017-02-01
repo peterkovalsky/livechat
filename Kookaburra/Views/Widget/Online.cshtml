@@ -13,11 +13,13 @@
         <div class="operator-pic"></div>
         <div class="operator-name"></div>
     </div>
-    <div class="chat-window">
-        <ul id="discussion" data-bind="foreach: messages">
+    <div id="conversation" class="chat-window">
+        <ul id="messages" data-bind="foreach: messages">
             <li>
                 <strong data-bind="text: author"></strong>:
-                <span data-bind="text: text"></span>
+                <div class="chat-message" data-bind="css: sentBy">
+                    <span data-bind="text: text"></span>
+                </div>
                 <span data-bind="text: time"></span>
             </li>
         </ul>

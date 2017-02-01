@@ -47,7 +47,8 @@ namespace Kookaburra.Domain.Query.Handler
                     {
                         Author = m.SentBy == UserType.Visitor.ToString() ? conversation.Visitor.Name : conversation.Operator.FirstName,
                         Text = m.Text,
-                        Time = m.DateSent
+                        Time = m.DateSent,
+                        SentBy = m.SentBy.ToLower()
                     }).ToList();
 
                     var operatorSession = _chatSession.GetOperatorByVisitorSessionId(query.VisitorSessionId);

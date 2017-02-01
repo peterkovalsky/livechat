@@ -18,8 +18,7 @@ namespace Kookaburra
                 .Include("~/Scripts/jquery.signalR-{version}.js")
                 .Include("~/Scripts/knockout-{version}.js")
                 .Include("~/Scripts/chat/chat-widget.js")
-                .Include("~/Scripts/moment-with-locales.min.js")
-                .Include("~/Scripts/jquery.cookie.js")
+                .Include("~/Scripts/moment-with-locales.min.js")      
             );
 
             bundles.Add(new ScriptBundle("~/bundles/js/chatroom")

@@ -5,6 +5,9 @@ namespace Kookaburra.Models.Widget
 {
     public class ConversationViewModel
     {
+        [JsonProperty("visitorName")]
+        public string VisitorName { get; set; }
+
         [JsonProperty("conversation")]
         public List<MessageViewModel> Conversation { get; set; }
     }

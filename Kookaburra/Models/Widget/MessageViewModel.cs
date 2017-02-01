@@ -13,5 +13,8 @@ namespace Kookaburra.Models.Widget
 
         [JsonProperty("time")]
         public DateTime Time { get; set; }
+
+        [JsonProperty("sentBy")]
+        public string SentBy { get; set; }
     }
 }

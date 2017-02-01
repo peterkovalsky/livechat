@@ -37,7 +37,7 @@ namespace Kookaburra.Services
         /// <summary>
         /// Message from VISITOR to OPERATOR
         /// </summary>
-        public void SendToOperator(string name, string message)
+        public void SendToOperator(string message)
         {
             var dateSent = DateTime.UtcNow;
 
@@ -47,8 +47,8 @@ namespace Kookaburra.Services
             };
             var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);          
             
-            Clients.Clients(new List<string>() { Context.ConnectionId, currentSession.OperatorConnectionId })
-                .sendMessageToOperator(name, message, dateSent.JsDateTime(), currentSession.VisitorSessionId);
+            Clients.Clients(new List<string>() { currentSession.OperatorConnectionId })
+                .sendMessageToOperator(currentSession.VisitorName, message, dateSent.JsDateTime(), currentSession.VisitorSessionId);
             
             _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
         }
@@ -72,7 +72,7 @@ namespace Kookaburra.Services
             _commandDispatcher.Execute(new OperatorMessagedCommand(visitorSessionId, message, dateSent));
         }
 
-        public ConversationViewModel ConnectVisitor(string sessionId1)
+        public ConversationViewModel ConnectVisitor()
         {
             var httpContext = Context.Request.GetHttpContext();
             var sessionId = httpContext.Request.Cookies[COOKIE_SESSION_ID];
@@ -91,10 +91,13 @@ namespace Kookaburra.Services
                 {
                     // Notify operator about this visitor
                     Clients.Clients(new List<string>() { resumedConversation.OperatorInfo.ConnectionId })
-                        .clientConnected(sessionId, resumedConversation.VisitorInfo.Name, DateTime.UtcNow.JsDateTime(), resumedConversation.VisitorInfo.Location, resumedConversation.VisitorInfo.Page);
+                        .clientConnected(sessionId.Value, resumedConversation.VisitorInfo.Name, DateTime.UtcNow.JsDateTime(), resumedConversation.VisitorInfo.Location, resumedConversation.VisitorInfo.Page);
                 }
 
-                return Mapper.Map<ConversationViewModel>(resumedConversation);
+                var viewModel = Mapper.Map<ConversationViewModel>(resumedConversation);
+                viewModel.VisitorName = resumedConversation.VisitorInfo.Name;
+
+                return viewModel;
             }                      
 
             return null;
