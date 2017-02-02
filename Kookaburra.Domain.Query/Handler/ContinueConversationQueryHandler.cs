@@ -58,6 +58,7 @@ namespace Kookaburra.Domain.Query.Handler
                         IsNewConversation = isNewConversation,
                         OperatorInfo = new OperatorInfo
                         {
+                            Name = conversation.Operator.FirstName,
                             ConnectionId = operatorSession.ConnectionId,
                             SessionId = operatorSession.SessionId
                         },

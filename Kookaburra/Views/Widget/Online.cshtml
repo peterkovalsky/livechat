@@ -11,22 +11,20 @@
 <div class="online" data-bind="if: conversationStarted">
     <div class="header">
         <div class="operator-pic"></div>
-        <div class="operator-name"></div>
+        <div class="operator-name" data-bind="text: operatorName"></div>
     </div>
     <div id="conversation" class="chat-window">
         <ul id="messages" data-bind="foreach: messages">
             <li>
-                <strong data-bind="text: author"></strong>:
-                <div class="chat-message" data-bind="css: sentBy">
-                    <span data-bind="text: text"></span>
-                </div>
-                <span data-bind="text: time"></span>
+                <div class="author" data-bind="text: author, css: sentBy"></div>
+                <div class="message" data-bind="text: text, css: sentBy"></div>
+                @*<span data-bind="text: time"></span>*@
             </li>
         </ul>
     </div>
     <div class="message-box">
-        <textarea id="message" class="message" data-bind="textInput: newMessage" rows="1"></textarea>
-        <input type="hidden" id="displayname" />
+        <textarea id="message" class="message" data-bind="textInput: newMessage, hasFocus: isMessageBoxFocus" rows="1"
+                  placeholder="Type in your message here and press Enter to send"></textarea>
     </div>
 </div>
 
@@ -37,12 +35,16 @@
 
 <script type="text/javascript">
 
-    var url = (window.location != window.parent.location) ? document.referrer : document.location;
+    $(document).ready(function () {
+        $('#conversation').perfectScrollbar();
 
-    var chatWidgetModel = new ChatWidgetViewModel('@Model.AccountKey', url);
-    ko.applyBindings(chatWidgetModel);
+        var url = (window.location != window.parent.location) ? document.referrer : document.location;
 
-    // initialise the chat
-    chatWidgetModel.init();
+        var chatWidgetModel = new ChatWidgetViewModel('@Model.AccountKey', url);
+        ko.applyBindings(chatWidgetModel);
+
+        // initialise the chat
+        chatWidgetModel.init();
+    });
 
 </script>

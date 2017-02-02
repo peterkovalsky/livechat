@@ -18,7 +18,8 @@ namespace Kookaburra
                 .Include("~/Scripts/jquery.signalR-{version}.js")
                 .Include("~/Scripts/knockout-{version}.js")
                 .Include("~/Scripts/chat/chat-widget.js")
-                .Include("~/Scripts/moment-with-locales.min.js")      
+                .Include("~/Scripts/moment-with-locales.min.js")
+                .Include("~/Scripts/perfect-scrollbar.jquery.js")
             );
 
             bundles.Add(new ScriptBundle("~/bundles/js/chatroom")
@@ -47,7 +48,9 @@ namespace Kookaburra
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/bundles/css/widget")
-                .Include("~/Content/widget.css"));
+                .Include("~/Content/widget.css")
+                .Include("~/Content/perfect-scrollbar.css")
+                );
 
             #endregion
         }

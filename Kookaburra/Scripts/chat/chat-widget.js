@@ -11,8 +11,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     self.messages = ko.observableArray([]);
     self.operatorName = ko.observable("");
 
-    self.showErrors = ko.observable(false);
-    self.isFocus = ko.observable(true);
+    self.isMessageBoxFocus = ko.observable(true);
 
     var chatHubProxy = $.connection.chatHub;
 
@@ -30,7 +29,10 @@ function ChatWidgetViewModel(accountKey, currentPage) {
             chatHubProxy.server.connectVisitor().done(function (conversationViewModel) {
                 if (conversationViewModel) {
                     self.visitorName(conversationViewModel.visitorName);
+                    self.operatorName(conversationViewModel.operatorName);
                     self.resumeChat(conversationViewModel.conversation);
+
+                    self.isMessageBoxFocus(true);
                 }
                 else {
                     // operator gone offline
@@ -38,9 +40,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
                     self.goneOffline(true)
                 }
             });
-        });
-
-        self.isFocus(true);
+        });        
     };
 
 

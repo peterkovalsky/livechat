@@ -299,6 +299,8 @@
     <Content Include="Content\fonts\meteocons\index.html" />
     <Content Include="Content\index.html" />
     <Content Include="Content\other\wysihtml5-color.css" />
+    <Content Include="Content\perfect-scrollbar.css" />
+    <Content Include="Content\perfect-scrollbar.min.css" />
     <Content Include="Content\widget.css" />
     <Content Include="Content\xenon-components.css" />
     <Content Include="Content\xenon-core.css" />
@@ -428,6 +430,10 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\perfect-scrollbar.jquery.js" />
+    <Content Include="Scripts\perfect-scrollbar.jquery.min.js" />
+    <Content Include="Scripts\perfect-scrollbar.js" />
+    <Content Include="Scripts\perfect-scrollbar.min.js" />
     <Content Include="Scripts\resizeable.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -483,7 +489,6 @@
     <Content Include="Views\Widget\Online.cshtml" />
     <Content Include="Views\Home\Preview.cshtml" />
     <Content Include="Views\Chat\ChatRoom.cshtml" />
-    <Content Include="Views\Widget\Modern.cshtml" />
     <Content Include="Views\Shared\_SideMenu.cshtml" />
     <Content Include="Views\Shared\_TopNavBar.cshtml" />
     <Content Include="Views\Widget\Introduction.cshtml" />

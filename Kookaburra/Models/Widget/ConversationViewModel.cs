@@ -8,6 +8,9 @@ namespace Kookaburra.Models.Widget
         [JsonProperty("visitorName")]
         public string VisitorName { get; set; }
 
+        [JsonProperty("operatorName")]
+        public string OperatorName { get; set; }
+
         [JsonProperty("conversation")]
         public List<MessageViewModel> Conversation { get; set; }
     }
