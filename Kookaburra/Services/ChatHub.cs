@@ -96,7 +96,7 @@ namespace Kookaburra.Services
 
                 var viewModel = Mapper.Map<ConversationViewModel>(resumedConversation);
                 viewModel.VisitorName = resumedConversation.VisitorInfo.Name;
-                viewModel.OperatorName = resumedConversation.OperatorInfo.Name;
+                viewModel.OperatorName = resumedConversation.OperatorInfo.Name;                           
 
                 return viewModel;
             }                      

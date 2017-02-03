@@ -1,7 +1,10 @@
-﻿using Kookaburra.Domain.Common;
+﻿using Kookaburra.Domain.Command.Handler;
+using Kookaburra.Domain.Command.Model;
+using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Repository;
+using System;
 using System.Data.Entity;
 using System.Linq;
 
@@ -11,11 +14,13 @@ namespace Kookaburra.Domain.Query.Handler
     {
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;
+        private readonly OperatorMessagedCommandHandler _operatorMessagedHandler;
 
         public ContinueConversationQueryHandler(KookaburraContext context, ChatSession chatSession)
         {
             _context = context;
             _chatSession = chatSession;
+            _operatorMessagedHandler = new OperatorMessagedCommandHandler(_context, _chatSession);
         }
 
         public ContinueConversationQueryResult Execute(ContinueConversationQuery query)
@@ -25,22 +30,29 @@ namespace Kookaburra.Domain.Query.Handler
                 return null;
             }
 
-            var conversation = _context.Conversations
-                .Include(i => i.Messages)
-                .Include(i => i.Visitor)
-                .Include(i => i.Operator)
-                .Where(c => c.Visitor.SessionId == query.VisitorSessionId && c.TimeFinished == null)
-                .SingleOrDefault();
-
-            // check if operator still there            
-            if (conversation != null)
+            // check if conversation still alive 
+            var visitorSession = _chatSession.GetVisitorByVisitorSessionId(query.VisitorSessionId);
+            if (visitorSession != null)
             {
-                // check if conversation still alive
-                var visitorSession = _chatSession.GetVisitorByVisitorSessionId(query.VisitorSessionId);
-                if (visitorSession != null)
-                {
-                    bool isNewConversation = visitorSession.ConnectionId == null;
+                bool isNewConversation = visitorSession.ConnectionId == null;
 
+                if (isNewConversation)
+                {
+                    // add greeting if needed
+                    var command = new OperatorMessagedCommand(query.VisitorSessionId, DefaultSettings.CHAT_GREETING, DateTime.UtcNow);
+                    _operatorMessagedHandler.Execute(command);
+                }
+
+                var conversation = _context.Conversations
+                    .Include(i => i.Messages)
+                    .Include(i => i.Visitor)
+                    .Include(i => i.Operator)
+                    .Where(c => c.Visitor.SessionId == query.VisitorSessionId && c.TimeFinished == null)
+                    .SingleOrDefault();
+
+                // check if operator still there            
+                if (conversation != null)
+                {
                     _chatSession.UpdateVisitor(query.VisitorSessionId, query.VisitorConnectionId);
 
                     var conversationItems = conversation.Messages.Select(m => new ConversationItem
@@ -70,7 +82,7 @@ namespace Kookaburra.Domain.Query.Handler
                         },
                         Conversation = conversationItems
                     };
-                }                     
+                }
             }
 
             return null;

@@ -45,6 +45,7 @@
     <Compile Include="Common\Code.cs" />
     <Compile Include="Common\OperatorType.cs" />
     <Compile Include="Common\UserType.cs" />
+    <Compile Include="DefaultSettings.cs" />
     <Compile Include="Exceptions\OperatorDisconnectedException.cs" />
     <Compile Include="Exceptions\VisitorDisconnectedException.cs" />
     <Compile Include="Model\Account.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Model\Message.cs" />
     <Compile Include="Model\OfflineMessage.cs" />
     <Compile Include="Model\Operator.cs" />
+    <Compile Include="Model\Setting.cs" />
     <Compile Include="Model\Visitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IAccountRepository.cs" />

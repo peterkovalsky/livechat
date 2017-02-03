@@ -291,8 +291,12 @@ input[type="checkbox"].input-validation-error {
     padding-right: 10px;
 }
 
-.widget .online .message-box textarea {    
-    border: 0;
+.widget .online .message-wrapper { 
+     overflow: hidden;
+}
+
+.widget .online .message-wrapper textarea {    
+    border: none;
     margin: 0;
     display: block;
     width: 100%;
@@ -302,7 +306,7 @@ input[type="checkbox"].input-validation-error {
     resize: none;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
-    height: 70px;
+    height: 70px;    
 }
 
 

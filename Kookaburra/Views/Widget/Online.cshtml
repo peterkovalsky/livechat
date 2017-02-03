@@ -22,9 +22,8 @@
             </li>
         </ul>
     </div>
-    <div class="message-box">
-        <textarea id="message" class="message" data-bind="textInput: newMessage, hasFocus: isMessageBoxFocus" rows="1"
-                  placeholder="Type in your message here and press Enter to send"></textarea>
+    <div id="message" class="message-wrapper">
+        <textarea data-bind="textInput: newMessage, hasFocus: isMessageBoxFocus" rows="1" placeholder="Type in your message here and press Enter to send"></textarea>
     </div>
 </div>
 
@@ -36,7 +35,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $('#conversation').perfectScrollbar();
+        $('#conversation').perfectScrollbar();       
 
         var url = (window.location != window.parent.location) ? document.referrer : document.location;
 
