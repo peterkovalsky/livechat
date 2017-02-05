@@ -7,6 +7,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     self.visitorEmail = ko.observable("");
     self.conversationStarted = ko.observable(true);
     self.goneOffline = ko.observable(false);
+    self.isStopChat = ko.observable(false);
     self.newMessage = ko.observable("");
     self.messages = ko.observableArray([]);
     self.operatorName = ko.observable("");
@@ -53,6 +54,15 @@ function ChatWidgetViewModel(accountKey, currentPage) {
         self.scrollDown();
     };
 
+    // Visitor wants to stop conversation
+    // ------------------
+    self.closeChat = function () {
+        chatHubProxy.server.visitorClosesChat().done(function () {
+            $.connection.hub.stop();
+
+            window.location = "/widget/stop";
+        });
+    }
 
     // Sends message to operator on Enter Press
     // ----------------------------------------

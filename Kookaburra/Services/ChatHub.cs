@@ -104,12 +104,19 @@ namespace Kookaburra.Services
             return null;
         }
 
-        public void DisconnectVisitor(string visitorConnectionId)
+        public void DisconnectVisitor(string visitorSessionId)
         {
-            _commandDispatcher.Execute(new StopConversationCommand(visitorConnectionId));
+            _commandDispatcher.Execute(new StopConversationCommand(visitorSessionId));
 
-            Clients.Clients(new List<string>() { visitorConnectionId }).orderToDisconnect();
+            //Clients.Clients(new List<string>() { visitorConnectionId }).orderToDisconnect();
         }    
+
+        public void VisitorClosesChat()
+        {
+            var visitorSessionId = GetVisitorSessionId();
+
+            _commandDispatcher.Execute(new StopConversationCommand(visitorSessionId));
+        }
 
         public override Task OnConnected()
         {
@@ -146,6 +153,20 @@ namespace Kookaburra.Services
             // user as offline after a period of inactivity; in that case 
             // mark the user as online again.
             return base.OnReconnected();
+        }
+
+        private string GetVisitorSessionId()
+        {
+            var httpContext = Context.Request.GetHttpContext();
+
+            var sessionId = httpContext.Request.Cookies[COOKIE_SESSION_ID];
+
+            if (sessionId == null || string.IsNullOrWhiteSpace(sessionId.Value))
+            {
+                return null;
+            }
+
+            return sessionId.Value;
         }
     }
 }

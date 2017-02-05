@@ -19,19 +19,19 @@ namespace Kookaburra.Domain.Command.Handler
 
         public void Execute(StopConversationCommand command)
         {
-            var visitorSession = _chatSession.GetVisitorByVisitorConnId(command.VisitorConnectionId);
+            var visitorSession = _chatSession.GetVisitorByVisitorSessionId(command.VisitorSessionId);
             var conversation = _context.Conversations.Where(c => c.Id == visitorSession.ConversationId).SingleOrDefault();
 
             if (conversation == null)
             {
-                throw new ArgumentException("There is no conversation for visitor " + command.VisitorConnectionId);
+                throw new ArgumentException("There is no conversation for visitor " + command.VisitorSessionId);
             }
 
             conversation.TimeFinished = DateTime.UtcNow;
 
             _context.SaveChanges();
 
-            _chatSession.RemoveVisitor(command.VisitorConnectionId);
+            _chatSession.RemoveVisitor(command.VisitorSessionId);
         }
     }
 }

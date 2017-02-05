@@ -251,13 +251,13 @@
     <Compile Include="Models\Home\PreviewViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Widget\ButtonViewModel.cs" />
     <Compile Include="Models\Widget\ContainerViewModel.cs" />
     <Compile Include="Models\Widget\ConversationViewModel.cs" />
     <Compile Include="Models\Widget\IntroductionViewModel.cs" />
     <Compile Include="Models\Widget\MessageViewModel.cs" />
     <Compile Include="Models\Widget\OfflineViewModel.cs" />
     <Compile Include="Models\Widget\OnlineBoxViewModel.cs" />
+    <Compile Include="Models\Widget\ThankYouViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChatHub.cs" />
     <Compile Include="Startup.cs" />
@@ -492,7 +492,6 @@
     <Content Include="Views\Shared\_SideMenu.cshtml" />
     <Content Include="Views\Shared\_TopNavBar.cshtml" />
     <Content Include="Views\Widget\Introduction.cshtml" />
-    <Content Include="Views\Widget\Button.cshtml" />
     <Content Include="Views\Widget\Container.cshtml" />
     <Content Include="Views\Shared\_LayoutWidget.cshtml" />
     <Content Include="Views\Widget\ThankYou.cshtml" />

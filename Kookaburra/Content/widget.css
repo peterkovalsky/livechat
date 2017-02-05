@@ -102,6 +102,7 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+
 /* Button */
 .launcher-button {
     cursor: pointer; 
@@ -132,6 +133,10 @@ input[type="checkbox"].input-validation-error {
   padding: 0 10px 10px 10px;
 }
 
+.widget .introduction .header {
+  padding: 10px 0 10px 0;
+}
+
 .widget .introduction input[type=text] {
     height: 45px;
     padding: 10px 16px;
@@ -145,7 +150,7 @@ input[type="checkbox"].input-validation-error {
     color: #fff;
     display: block;
     width: 100%;   
-    margin-top: 90px;
+    margin-top: 110px;
     padding: 10px 16px;
     font-size: 17px;
     line-height: 1.33;
@@ -158,8 +163,13 @@ input[type="checkbox"].input-validation-error {
 
 /* footer */
 .widget .footer {
-    padding: 10px 10px 5px 10px;   
+    padding: 10px;   
     background-color: white;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 35px;
 }
 
 .widget .footer label {
@@ -179,11 +189,28 @@ input[type="checkbox"].input-validation-error {
     padding: 10px;
     height: 23px;
     border-bottom: 1px solid #e1e1e1;
+    text-align: center;
 }
 
 .widget .online .header .operator-name {
-    font-size: 17px;
-    text-align: center;
+    font-size: 17px; 
+    display: inline;
+}
+
+.widget .online .header .close-chat {
+    display: inline;
+    float: right;
+    visibility: hidden;
+}
+
+.widget .online .header .close-chat a {    
+    color: #979898;
+    font-size: 18px;
+    text-decoration: none;  
+}
+
+.widget .online .header:hover .close-chat {
+    visibility: visible;
 }
 
 /* ONLINE */
@@ -216,6 +243,10 @@ input[type="checkbox"].input-validation-error {
     overflow: auto;
     overflow-y: scroll;
     position: relative;
+}
+
+.widget .online .chat-window li {
+    list-style: none;
 }
 
 .widget .online .chat-window .message {
@@ -309,6 +340,9 @@ input[type="checkbox"].input-validation-error {
     height: 70px;    
 }
 
+.widget .close-thank-you {
+
+}
 
 /* Offline */
 .widget .offline {
@@ -350,6 +384,10 @@ input[type="checkbox"].input-validation-error {
 }
 
 /* Thank You */
+.widget .thank-you .header {
+    padding: 10px;
+}
+
 .widget .thank-you .bg-icon {
     position: absolute;
     right: 20px;

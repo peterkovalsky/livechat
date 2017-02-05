@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Kookaburra.Models.Widget.ThankYouViewModel
+@{
     Layout = "~/Views/Shared/_LayoutWidget.cshtml";
 }
 
@@ -6,8 +7,11 @@
     <link rel="stylesheet" href="~/Content/fonts/linecons/css/linecons.css">
 }
 
-<div class="thank-you heading">
-    Thank you! Your message has been sent. We will get back to you as soon as we can.
+<div class="thank-you">
+    <div class="header">
+        @Model.ThankYouText        
+    </div>
+   
     <div class="bg-icon">
         <i class="linecons-comment"></i>
     </div>

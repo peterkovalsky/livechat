@@ -113,6 +113,15 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet]
+        [Route("widget/stop")]
+        public ActionResult Stop(string key)
+        {
+            var model = new ThankYouViewModel { ThankYouText = "Thank you for chatting with us!" };
+
+            return View(nameof(WidgetController.ThankYou), model);
+        }
+
+        [HttpGet]
         [Route("widget/offline/{key}")]
         public ActionResult Offline(string key)
         {
@@ -131,14 +140,16 @@ namespace Kookaburra.Controllers
             var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message);
             _commandDispatcher.Execute(command);
 
-            return RedirectToAction("ThankYou");
+            return RedirectToAction(nameof(WidgetController.ThankYou));
         }
 
         [HttpGet]
         [Route("widget/thankyou")]
         public ActionResult ThankYou()
         {
-            return View();
+            var model = new ThankYouViewModel { ThankYouText = "Thank you! Your message has been sent. We will get back to you as soon as we can." };
+
+            return View(model);
         }
     }
 }
