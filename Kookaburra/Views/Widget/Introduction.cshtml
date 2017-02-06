@@ -1,4 +1,6 @@
-﻿@model Kookaburra.Models.Widget.IntroductionViewModel
+﻿@using SimpleHoneypot.HtmlHelpers
+
+@model Kookaburra.Models.Widget.IntroductionViewModel
 @{
     Layout = "~/Views/Shared/_LayoutWidget.cshtml";
 }
@@ -10,6 +12,8 @@
 @using (Html.BeginForm("Introduction", "Widget"))
 {
     @Html.AntiForgeryToken()
+    @Html.HoneypotInput()
+
     <div class="introduction">
         <div class="header">
             Please intoduce yourself
@@ -37,7 +41,7 @@
 
     $(document).ready(function () {
 
-        $('#@Html.IdFor(m => m.Name)').focus();
+        init();
 
         var url = (window.location != window.parent.location)
             ? document.referrer
@@ -45,5 +49,9 @@
 
         $('#@(Html.NameFor(m => m.PageUrl))').val(url);
     });
+
+    function init() {
+        $('#@Html.IdFor(m => m.Name)').focus();
+    }
 
 </script>

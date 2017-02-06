@@ -74,6 +74,10 @@ input[type=text]:focus {
     text-decoration: none;
 }
 
+input.widget-question {
+    display: none;
+}
+
 /* --------------------------------------------------------- */
 
 /* styles for validation helpers */
@@ -166,9 +170,9 @@ input[type="checkbox"].input-validation-error {
     padding: 10px;   
     background-color: white;
     position: absolute;
-    right: 0;
+    right: 1px;
     bottom: 0;
-    left: 0;
+    left: 1px;
     height: 35px;
 }
 

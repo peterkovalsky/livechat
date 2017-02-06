@@ -1,4 +1,6 @@
-﻿@model Kookaburra.Models.Widget.OfflineViewModel
+﻿@using SimpleHoneypot.HtmlHelpers
+
+@model Kookaburra.Models.Widget.OfflineViewModel
 @{
     Layout = "~/Views/Shared/_LayoutWidget.cshtml";
 }
@@ -10,6 +12,8 @@
 @using (Html.BeginForm("Offline", "Widget"))
 {
     @Html.AntiForgeryToken()
+    @Html.HoneypotInput()
+
     <div class="offline">
         <div class="heading">
             Sorry, we aren't online at the moment. Please leave a message and we'll get back to you soon.
@@ -38,7 +42,11 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $('#@Html.IdFor(m => m.Name)').focus();
+        init();
     });
+
+    function init() {
+        $('#@Html.IdFor(m => m.Name)').focus();
+    }
 
 </script>

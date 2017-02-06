@@ -5,6 +5,7 @@ using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models.Widget;
 using Kookaburra.ViewModels.Widget;
+using SimpleHoneypot.ActionFilters;
 using System;
 using System.Web;
 using System.Web.Mvc;
@@ -73,6 +74,7 @@ namespace Kookaburra.Controllers
         }
 
         [HttpPost]
+        [Honeypot]
         [Route("widget/introduction")]
         [ValidateAntiForgeryToken]      
         public ActionResult Introduction(IntroductionViewModel model)
@@ -118,6 +120,9 @@ namespace Kookaburra.Controllers
         {
             var model = new ThankYouViewModel { ThankYouText = "Thank you for chatting with us!" };
 
+            // remove sessionId cookie
+            Response.Cookies.Set(new HttpCookie(COOKIE_SESSION_ID, null));
+
             return View(nameof(WidgetController.ThankYou), model);
         }
 
@@ -131,6 +136,7 @@ namespace Kookaburra.Controllers
         }
 
         [HttpPost]
+        [Honeypot]
         [ValidateAntiForgeryToken]
         [Route("widget/offline")]
         public ActionResult Offline(OfflineViewModel model)
