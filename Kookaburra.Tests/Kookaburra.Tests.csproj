@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kookaburra.Tests</RootNamespace>
     <AssemblyName>Kookaburra.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -51,6 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="IntegrationTests.cs" />
     <Compile Include="QueriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -67,10 +68,17 @@
       <Project>{1f955ef9-25d2-4a38-be51-c81aebfdb41c}</Project>
       <Name>Kookaburra.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kookaburra.Integration.freegeoip\Kookaburra.Integration.freegeoip.csproj">
+      <Project>{f95250a3-88c4-4ede-b23c-c0c4fd4e0462}</Project>
+      <Name>Kookaburra.Integration.freegeoip</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kookaburra.Repository\Kookaburra.Repository.csproj">
       <Project>{da1f181d-5da2-447f-b542-4d2d0bdd4518}</Project>
       <Name>Kookaburra.Repository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
