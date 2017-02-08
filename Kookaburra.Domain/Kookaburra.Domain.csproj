@@ -49,6 +49,8 @@
     <Compile Include="DefaultSettings.cs" />
     <Compile Include="Exceptions\OperatorDisconnectedException.cs" />
     <Compile Include="Exceptions\VisitorDisconnectedException.cs" />
+    <Compile Include="Integration\IGeoLocator.cs" />
+    <Compile Include="Integration\VisitorLocation.cs" />
     <Compile Include="Model\Account.cs" />
     <Compile Include="Model\Conversation.cs" />
     <Compile Include="Model\Message.cs" />
