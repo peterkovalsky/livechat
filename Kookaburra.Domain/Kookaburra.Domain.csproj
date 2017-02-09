@@ -44,13 +44,14 @@
   <ItemGroup>
     <Compile Include="ChatSession.cs" />
     <Compile Include="Common\Code.cs" />
+    <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\OperatorType.cs" />
     <Compile Include="Common\UserType.cs" />
     <Compile Include="DefaultSettings.cs" />
     <Compile Include="Exceptions\OperatorDisconnectedException.cs" />
     <Compile Include="Exceptions\VisitorDisconnectedException.cs" />
     <Compile Include="Integration\IGeoLocator.cs" />
-    <Compile Include="Integration\VisitorLocation.cs" />
+    <Compile Include="Integration\Model\VisitorLocation.cs" />
     <Compile Include="Model\Account.cs" />
     <Compile Include="Model\Conversation.cs" />
     <Compile Include="Model\Message.cs" />

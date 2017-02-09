@@ -14,7 +14,15 @@ namespace Kookaburra.Domain.Model
         public string Email { get; set; }
 
         [StringLength(200)]
-        public string Location { get; set; }
+        public string Country { get; set; }
+
+        public string Region { get; set; }
+
+        public string City { get; set; }
+
+        public decimal Latitude { get; set; }
+    
+        public decimal Longitude { get; set; }
 
         [StringLength(1000)]
         public string SessionId { get; set; }      

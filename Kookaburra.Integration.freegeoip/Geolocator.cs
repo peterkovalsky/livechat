@@ -27,6 +27,7 @@ namespace Kookaburra.Integration.freegeoip
             _client.BaseAddress = new Uri("http://freegeoip.net/");
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _client.Timeout = new TimeSpan(0, 0, 5);
         }
 
         public Location GetLocation(string ipOrHost)
@@ -37,6 +38,11 @@ namespace Kookaburra.Integration.freegeoip
             if (response.Result.IsSuccessStatusCode)
             {
                 location = response.Result.Content.ReadAsAsync<Location>().Result;
+
+                if (location != null && string.IsNullOrWhiteSpace(location.CountryName))
+                {
+                    return null;
+                }
             }
 
             return location;
@@ -50,6 +56,11 @@ namespace Kookaburra.Integration.freegeoip
             if (response.IsSuccessStatusCode)
             {
                 location = await response.Content.ReadAsAsync<Location>();
+
+                if (location != null && string.IsNullOrWhiteSpace(location.CountryName))
+                {
+                    return null;
+                }
             }
 
             return location;

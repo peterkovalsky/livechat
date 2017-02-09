@@ -31,7 +31,7 @@ namespace Kookaburra.Tests
         {
             var freegeoip = new Geolocator();
 
-            var locationTask = freegeoip.GetLocationAsync("rio-matras.com");
+            var locationTask = freegeoip.GetLocationAsync("::1");
             var location = locationTask.Result;
 
             Assert.AreEqual("205.144.171.97", location.Ip);

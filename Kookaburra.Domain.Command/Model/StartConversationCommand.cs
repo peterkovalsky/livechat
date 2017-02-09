@@ -10,7 +10,7 @@
 
         public string VisitorEmail { get; set; }
 
-        public string Location { get; set; }
+        public string VisitorIP { get; set; }
 
         public string Page { get; set; }
 

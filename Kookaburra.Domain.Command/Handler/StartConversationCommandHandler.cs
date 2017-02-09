@@ -1,9 +1,9 @@
 ﻿using Kookaburra.Domain.Command.Model;
-using Kookaburra.Domain;
+using Kookaburra.Domain.Integration;
+using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
 using System;
 using System.Linq;
-using Kookaburra.Domain.Model;
 
 namespace Kookaburra.Domain.Command.Handler
 {
@@ -11,11 +11,13 @@ namespace Kookaburra.Domain.Command.Handler
     {
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;
+        private readonly IGeoLocator _geoLocator;
 
-        public StartConversationCommandHandler(KookaburraContext context, ChatSession chatSession)
+        public StartConversationCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator)
         {
             _context = context;
             _chatSession = chatSession;
+            _geoLocator = geoLocator;
         }
 
 
@@ -25,13 +27,24 @@ namespace Kookaburra.Domain.Command.Handler
             var returningVisitor = CheckForVisitor(command.VisitorName, command.VisitorEmail, command.SessionId);
             if (returningVisitor == null)
             {
+                var location = _geoLocator.GetLocation(command.VisitorIP);         
+
                 returningVisitor = new Visitor
                 {
                     Name = command.VisitorName,
-                    Email = command.VisitorEmail,
-                    Location = command.Location,
+                    Email = command.VisitorEmail,             
                     SessionId = command.SessionId                                     
                 };
+
+                if (location != null)
+                {
+                    returningVisitor.Country = location.Country;
+                    returningVisitor.Region = location.Region;
+                    returningVisitor.City = location.City;
+                    returningVisitor.Latitude = location.Latitude;
+                    returningVisitor.Longitude = location.Longitude;
+                }
+
                 _context.Visitors.Add(returningVisitor);
             }
 

@@ -22,10 +22,12 @@ namespace Kookaburra.DependencyResolution
     using Domain.Command;
     using Domain.Command.Handler;
     using Domain.Command.Model;
+    using Domain.Integration;
     using Domain.Query;
     using Domain.Query.Handler;
     using Domain.Query.Model;
     using Domain.Query.Result;
+    using Integration.freegeoip;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
@@ -64,6 +66,7 @@ namespace Kookaburra.DependencyResolution
             For<IQueryHandler<CurrentSessionQuery, CurrentSessionQueryResult>>().Add<CurrentSessionQueryHandler>();
             
             ForSingletonOf<ChatSession>();
+            ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();
         }
 
         #endregion

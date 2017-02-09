@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Kookaburra.Domain.Integration.Model;
 using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Integration
 {
     public interface IGeoLocator
     {
-        void GetLocation(string ip);
+        Task<VisitorLocation> GetLocationAsync(string ip);
+
+        VisitorLocation GetLocation(string ip);
     }
 }

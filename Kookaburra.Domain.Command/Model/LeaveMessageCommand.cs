@@ -18,6 +18,6 @@
 
         public string Message { get; private set; }
 
-        public string Location { get; set; }
+        public string VisitorIP { get; set; }
     }
 }

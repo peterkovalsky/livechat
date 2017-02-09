@@ -1,4 +1,5 @@
-﻿using Kookaburra.Domain.Command;
+﻿using Kookaburra.Common;
+using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.Model;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
@@ -15,14 +16,14 @@ namespace Kookaburra.Controllers
     public class WidgetController : Controller
     {
         private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IQueryDispatcher _queryDispatcher;
+        private readonly IQueryDispatcher _queryDispatcher;       
 
         public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";
 
         public WidgetController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
-            _queryDispatcher = queryDispatcher;
+            _queryDispatcher = queryDispatcher;           
         }
 
 
@@ -80,10 +81,7 @@ namespace Kookaburra.Controllers
         public ActionResult Introduction(IntroductionViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
-
-            // get location
-            var location = "Sydney, Australia";
-            //http://freegeoip.net/json/rio-matras.com
+       
             var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(model.AccountKey));
             
             // if operator is available - establish connection
@@ -93,7 +91,7 @@ namespace Kookaburra.Controllers
 
                 var command = new StartConversationCommand(availableOperator.OperatorConnectionId, model.Name, sessionId);
                 command.Page = model.PageUrl;
-                command.Location = location;
+                command.VisitorIP = WebHelper.GetIPAddress();
                 command.VisitorEmail = model.Email;
 
                 _commandDispatcher.Execute(command);
@@ -144,6 +142,8 @@ namespace Kookaburra.Controllers
             if (!ModelState.IsValid) return View(model);
 
             var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message);
+            command.VisitorIP = WebHelper.GetIPAddress();
+
             _commandDispatcher.Execute(command);
 
             return RedirectToAction(nameof(WidgetController.ThankYou));
