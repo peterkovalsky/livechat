@@ -417,6 +417,7 @@
     <Content Include="Scripts\chat\chat-widget.js" />
     <Content Include="Scripts\chat\chatbox.js" />
     <Content Include="Scripts\chat\operator-global-chat.js" />
+    <Content Include="Scripts\chat\operator-global.js" />
     <Content Include="Scripts\handlebars.min.js" />
     <Content Include="Scripts\joinable.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -509,6 +510,7 @@
     <Content Include="Views\Widget\Container.cshtml" />
     <Content Include="Views\Shared\_LayoutWidget.cshtml" />
     <Content Include="Views\Widget\ThankYou.cshtml" />
+    <Content Include="Views\Shared\_OperatorGlobal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

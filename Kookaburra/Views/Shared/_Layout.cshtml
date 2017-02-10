@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Kookaburra live chat" />
     <meta name="author" content="" />
-    <title>Kookaburra</title>
+    <title>Kookaburra Portal</title>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
     <link rel="stylesheet" href="~/Content/fonts/linecons/css/linecons.css">
     <link rel="stylesheet" href="~/Content/fonts/fontawesome/css/font-awesome.min.css">
@@ -26,7 +26,6 @@
     <![endif]-->
 
 
-
     <!-- Bottom Scripts -->
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/TweenMax.min.js"></script>
@@ -39,53 +38,32 @@
     <script src="~/Scripts/xenon-custom.js"></script>
 
     @RenderSection("scripts", required: false)
+    
+    @Scripts.Render("~/bundles/js/portal")
+    <script src="~/signalr/hubs"></script>
+
 </head>
 <body class="page-body skin-navy">
-   
-   
+      
     <div class="page-container">
-        @Html.Partial("_SideMenu")
-        <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+        @Html.Partial("_SideMenu")       
 
         <div class="main-content">
 
             @Html.Partial("_TopNavBar")
 
             @RenderBody()
-
-            <!-- Main Footer -->
-            <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
-            <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
-            <!-- Or class "fixed" to  always fix the footer to the end of page -->
-            <footer class="main-footer sticky footer-type-1">
-
-                <div class="footer-inner">
-
-                    <!-- Add your copyright text here -->
-                    <div class="footer-text">
-                        &copy; 2014
-                        <strong>Xenon</strong>
-                        theme by <a href="http://laborator.co" target="_blank">Laborator</a> - <a href="http://themeforest.net/item/xenon-bootstrap-admin-theme/9059661?ref=Laborator" target="_blank">Purchase for only <strong>23$</strong></a>
-                    </div>
-
-
-                    <!-- Go to Top Link, just add rel="go-top" to any link to add this functionality -->
-                    <div class="go-up">
-
-                        <a href="#" rel="go-top">
-                            <i class="fa-angle-up"></i>
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </footer>
+   
         </div>
     </div>
 
- 
+    <script>
 
+        var operatorGlobalView = new OperatorGlobalViewModel();
+        ko.applyBindings(operatorGlobalView);
 
+        operatorGlobalView.init();
+
+    </script>
 </body>
 </html>

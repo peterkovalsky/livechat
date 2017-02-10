@@ -38,6 +38,12 @@ namespace Kookaburra
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/portal")
+                .Include("~/Scripts/jquery-{version}.js")
+                .Include("~/Scripts/jquery.signalR-{version}.js")
+                .Include("~/Scripts/knockout-{version}.js")
+            );
+
             #endregion
 
 

@@ -31,7 +31,13 @@ namespace Kookaburra.Controllers
         {
             _operatorRepositor = operatorRepositor;
         }
-    
+
+        public ActionResult OperatorOnline()
+        {
+            var currentOperator = _operatorRepositor.Get(User.Identity.GetUserId());
+
+            return PartialView("_OperatorOnline");
+        }
 
         [HttpGet]
         [Route("chat-room")]
