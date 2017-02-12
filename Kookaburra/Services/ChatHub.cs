@@ -5,6 +5,7 @@ using Kookaburra.Domain.Command.Model;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
+using Kookaburra.Models.Chat;
 using Kookaburra.Models.Widget;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
@@ -29,9 +30,13 @@ namespace Kookaburra.Services
 
 
         [Authorize]
-        public void ConnectOperator()
+        public OperatorCurrentChatsViewModel ConnectOperator()
         {
-            _commandDispatcher.Execute(new ConnectOperatorCommand(Context.ConnectionId, Context.User.Identity.GetUserId()));            
+            _commandDispatcher.Execute(new ConnectOperatorCommand(Context.ConnectionId, Context.User.Identity.GetUserId()));
+
+            var queryResult = _queryDispatcher.Execute<CurrentChatsQuery, CurrentChatsQueryResult>(new CurrentChatsQuery(Context.User.Identity.GetUserId()));
+
+            return Mapper.Map<OperatorCurrentChatsViewModel>(queryResult);
         }
 
         /// <summary>
@@ -88,10 +93,19 @@ namespace Kookaburra.Services
             if (resumedConversation != null)
             {
                 if (resumedConversation.IsNewConversation)
-                {
+                {                    
+                    var visitorInfo = new VisitorInfoViewModel
+                    {
+                        SessionId = sessionId.Value,
+                        Name = resumedConversation.VisitorInfo.Name,
+                        Location = resumedConversation.VisitorInfo.Location,
+                        CurrentUrl = resumedConversation.VisitorInfo.Page,
+                        Time = DateTime.UtcNow.JsDateTime()
+                    };
+
                     // Notify operator about this visitor
                     Clients.Clients(new List<string>() { resumedConversation.OperatorInfo.ConnectionId })
-                        .clientConnected(sessionId.Value, resumedConversation.VisitorInfo.Name, DateTime.UtcNow.JsDateTime(), resumedConversation.VisitorInfo.Location, resumedConversation.VisitorInfo.Page);
+                        .visitorConnected(visitorInfo);
                 }
 
                 var viewModel = Mapper.Map<ConversationViewModel>(resumedConversation);

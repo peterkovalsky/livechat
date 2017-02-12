@@ -13,19 +13,26 @@ namespace Kookaburra.Domain
 
         private List<OperatorSession> Sessions { get; set; }
 
-        public void AddOperator(int id, string name, string accountKey, string connectionId)
+        public void AddOrUpdateOperator(int id, string identity, string name, string accountKey, string connectionId)
         {
-            if (!Sessions.Any(s => s.Id == id))
+            var operatorSession = GetOperatorByIdentity(identity);
+
+            if (operatorSession == null)
             {
                 var newOperator = new OperatorSession
                 {
                     Id = id,
+                    Identity = identity,
                     Name = name,
                     AccountKey = accountKey,
                     ConnectionId = connectionId
                 };
 
                 Sessions.Add(newOperator);
+            }
+            else
+            {
+                operatorSession.ConnectionId = connectionId;
             }
         }
 
@@ -102,7 +109,12 @@ namespace Kookaburra.Domain
             }
 
             return null;
-        }  
+        }
+
+        public OperatorSession GetOperatorByIdentity(string identity)
+        {
+            return Sessions.SingleOrDefault(s => s.Identity == identity);
+        }
 
         public OperatorSession GetOperatorByOperatorConnId(string operatorConnectionId)
         {
@@ -139,13 +151,13 @@ namespace Kookaburra.Domain
 
         public int Id { get; set; }
 
+        public string Identity { get; set; }
+
         public string Name { get; set; }
 
         public string AccountKey { get; set; }
 
         public string ConnectionId { get; set; }
-
-        public string SessionId { get; set; }
 
         public List<VisitorSession> Visitors { get; set; }
     }

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kookaburra.Domain.Query</RootNamespace>
     <AssemblyName>Kookaburra.Domain.Query</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -44,14 +44,17 @@
   <ItemGroup>
     <Compile Include="Handler\AvailableOperatorQueryHandler.cs" />
     <Compile Include="Handler\ContinueConversationQueryHandler.cs" />
+    <Compile Include="Handler\CurrentChatsQueryHandler.cs" />
     <Compile Include="Handler\CurrentSessionQueryHandler.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="Model\AvailableOperatorQuery.cs" />
     <Compile Include="Model\ContinueConversationQuery.cs" />
+    <Compile Include="Model\CurrentChatsQuery.cs" />
     <Compile Include="Model\CurrentSessionQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result\AvailableOperatorQueryResult.cs" />
     <Compile Include="Result\ContinueConversationQueryResult.cs" />
+    <Compile Include="Result\CurrentChatsQueryResult.cs" />
     <Compile Include="Result\CurrentSessionQueryResult.cs" />
   </ItemGroup>
   <ItemGroup />

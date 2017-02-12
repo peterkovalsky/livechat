@@ -15,7 +15,7 @@ namespace Kookaburra.Tests
             var context = new KookaburraContext("Data Source=.;Initial Catalog=kookaburra;uid=sa;password=bazz1983petro;MultipleActiveResultSets=True");
             var session = new ChatSession();
 
-            session.AddOperator(1, "John", Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+            session.AddOrUpdateOperator(1, Guid.NewGuid().ToString(), "John", Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
             //session.AddVisitor("",);
 
             var handler = new ContinueConversationQueryHandler(context, session);

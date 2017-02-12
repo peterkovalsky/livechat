@@ -38,8 +38,6 @@ namespace Kookaburra.Domain.Query.Result
     {
         public string Name { get; set; }
 
-        public string ConnectionId { get; set; }
-
-        public string SessionId { get; set; }
+        public string ConnectionId { get; set; }        
     }
 }

@@ -30,8 +30,7 @@ namespace Kookaburra.Domain.Query.Handler
                     VisitorConnectionId = visitorSession.ConnectionId,
                     VisitorSessionId = visitorSession.SessionId,
                     OperatorName = operatorSession.Name,
-                    OperatorConnectionId = operatorSession.ConnectionId,
-                    OperatorSessionId = operatorSession.SessionId
+                    OperatorConnectionId = operatorSession.ConnectionId                
                 };
             }
 
@@ -52,8 +51,7 @@ namespace Kookaburra.Domain.Query.Handler
                     VisitorConnectionId = visitorSession.ConnectionId,
                     VisitorSessionId = visitorSession.SessionId,
                     OperatorName = operatorSession.Name,
-                    OperatorConnectionId = operatorSession.ConnectionId,
-                    OperatorSessionId = operatorSession.SessionId
+                    OperatorConnectionId = operatorSession.ConnectionId
                 };
             }
 

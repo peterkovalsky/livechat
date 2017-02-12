@@ -1,6 +1,5 @@
 ﻿function ChatRoomViewModel(operatorName) {
-
-    var chatHubProxy = $.connection.chatHub;
+  
     var self = this;
 
     self.operatorName = operatorName;
@@ -15,14 +14,51 @@
         }
     });
 
+
+    // init operator chat room
+    // -----------------------
+    self.init = function () {
+        
+        self.registerCallbackFunctions();
+        self.addEnterPressEvent();
+    };
+
+
+    // Sends message to visitor on Enter Press
+    // ----------------------------------------
+    self.addEnterPressEvent = function () {
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                self.currentChat().messages.push(new Message({
+                    author: self.operatorName,
+                    text: self.newText(),
+                    time: moment().format('LT'),
+                    read: true,
+                    me: true
+                }));
+                $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().visitorId());
+
+                self.newText(''); // clear input area
+
+                e.preventDefault();
+            }
+        });
+    };
+
+
+    // Operator wants to disconnect visitor
+    // ------------------------------------
     self.disconnect = function () {
         if (confirm("Are you sure you want to disconnect " + self.currentChat().visitorName() + "?")) {
-            chatHubProxy.server.disconnectVisitor(self.currentChat().visitorId());
+            $.connection.chatHub.server.disconnectVisitor(self.currentChat().visitorId());
 
             ko.utils.arrayRemoveItem(self.conversations(), self.currentChat());
         }        
     };
 
+
+    // Operator switches to another chat
+    // ---------------------------------
     self.switchChat = function (conversation) {
 
         for (var i = 0; i < self.conversations().length; i++) {
@@ -36,84 +72,48 @@
             item.read(true);
         });
     };
+      
 
-    
+    // Register SignalR callbacks
+    // -----------------------------
+    self.registerCallbackFunctions = function () {
+        // Visitor just CONNECTED
+        $.connection.chatHub.client.visitorConnected = function (visitorInfo) {
 
-    //------------------- INCOMMING MESSAGE --------------------
-    chatHubProxy.client.sendMessageToOperator = function (name, message, time, visitorId) {       
+            self.conversations.push(new Conversation(
+                {
+                    visitorId: visitorInfo.sessionId,
+                    visitorName: visitorInfo.name,
+                    startTime: visitorInfo.time,
+                    location: visitorInfo.location,
+                    visitorUrl: visitorInfo.currentUrl,
+                    isCurrent: (self.conversations().length == 0 ? true : false)
+                }))
+        };
 
-        var conversation = ko.utils.arrayFirst(self.conversations(), function (c) {
-            return c.visitorId() == visitorId;
-        });
+        // Message from visitor
+        $.connection.chatHub.client.sendMessageToOperator = function (name, message, time, visitorId) {
 
-        if (conversation)
-        {
-            conversation.messages.push(new Message({
-                author: name,
-                text: message,
-                time: moment(time).format('LT'),
-                read: conversation.isCurrent(),
-                me: false
-            }));
-        }       
-    };
+            var conversation = ko.utils.arrayFirst(self.conversations(), function (c) {
+                return c.visitorId() == visitorId;
+            });
 
-    //------------------- Visitor CONNECTED --------------------
-    chatHubProxy.client.clientConnected = function (clientId, name, time, location, currentUrl) {
-
-        self.conversations.push(new Conversation(
-            {
-                visitorId: clientId,
-                visitorName: name,
-                startTime: time,
-                location: location,
-                visitorUrl: currentUrl,
-                isCurrent: (self.conversations().length == 0 ? true : false)
-            }))
-    };
-
-    //------------------- Visitor DISCONNECTED --------------------
-    chatHubProxy.client.clientDisconnected = function (clientId, name, time) {
-
-    };
-
-    // ---------------------- OPERATOR DISCONNECTED -------------------
-    $.connection.hub.disconnected(function () {
-        alert('You were disconnected from the messaging server. Please refresh the page.');
-    });
-
-    // Start the connection.
-    $.connection.hub.start().done(function () {
-        chatHubProxy.server.connectOperator().done(function () { });
-
-        // SEND MESSAGE ON ENTER PRESS
-        $(document).keypress(function (e) {
-            if (e.which == 13) {
-                self.currentChat().messages.push(new Message({
-                    author: self.operatorName,
-                    text: self.newText(),
-                    time: moment().format('LT'),
-                    read: true,
-                    me: true
+            if (conversation) {
+                conversation.messages.push(new Message({
+                    author: name,
+                    text: message,
+                    time: moment(time).format('LT'),
+                    read: conversation.isCurrent(),
+                    me: false
                 }));
-                chatHubProxy.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().visitorId());
-
-                self.newText(''); // clear input area
-
-                e.preventDefault();
             }
-        });
+        };
 
-        // DISCONNECT A Visitor
-        $("body").on("click", "button.disconnect", function (e) {
-            var _clientId = $(this).closest('.chat-client[data-client-id]').attr('data-client-id');
-            var name = $(this).closest('.client-info .client-name').val();
+        // Visitor just has been DISCONNECTED 
+        $.connection.chatHub.client.visitorDisconnected = function (clientId, name, time) {
 
-            if (confirm("Are you sure you want to disconnect " + name + "?")) {
-                chatHubProxy.server.disconnectClient(_clientId);
-            }
-        });
-    });
+        };
+    };  
 }
 
 function Message(data) {

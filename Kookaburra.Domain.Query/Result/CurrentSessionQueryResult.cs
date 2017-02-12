@@ -10,8 +10,6 @@
 
         public string OperatorName { get; set; }
 
-        public string OperatorConnectionId { get; set; }
-
-        public string OperatorSessionId { get; set; }
+        public string OperatorConnectionId { get; set; }      
     }
 }

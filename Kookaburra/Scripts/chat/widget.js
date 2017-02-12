@@ -3,7 +3,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
 
     var self = this;
 
-    self.visitorName = ko.observable("").extend({ required: "" });
+    self.visitorName = ko.observable("");
     self.visitorEmail = ko.observable("");
     self.conversationStarted = ko.observable(true);
     self.goneOffline = ko.observable(false);

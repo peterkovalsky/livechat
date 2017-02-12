@@ -71,8 +71,7 @@ namespace Kookaburra.Domain.Query.Handler
                         OperatorInfo = new OperatorInfo
                         {
                             Name = conversation.Operator.FirstName,
-                            ConnectionId = operatorSession.ConnectionId,
-                            SessionId = operatorSession.SessionId
+                            ConnectionId = operatorSession.ConnectionId
                         },
                         VisitorInfo = new VisitorInfo
                         {

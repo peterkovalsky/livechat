@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kookaburra.Domain.Query.Result;
+using Kookaburra.Models.Chat;
 using Kookaburra.Models.Widget;
 
 namespace Kookaburra.App_Start
@@ -13,6 +14,8 @@ namespace Kookaburra.App_Start
                     .ForMember(dest => dest.SentBy, opt => opt.MapFrom(src => src.SentBy.ToLower()));
 
                 cfg.CreateMap<ContinueConversationQueryResult, ConversationViewModel>();
+
+                cfg.CreateMap<CurrentChatsQueryResult, OperatorCurrentChatsViewModel>();
             });
         }
     }
