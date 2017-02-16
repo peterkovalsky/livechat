@@ -16,5 +16,9 @@ Password: Private123!
 ## DataBase ##
 
 sql5030.smarterasp.net
+
 Username: DB_A1807D_kookaburra_admin
+
 Password: Avocado2017
+
+Name: DB_A1807D_kookaburra
