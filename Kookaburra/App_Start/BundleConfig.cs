@@ -39,10 +39,10 @@ namespace Kookaburra
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/js/portal")
-                .Include("~/Scripts/jquery-{version}.js")
+                //.Include("~/Scripts/jquery-{version}.js")
                 .Include("~/Scripts/jquery.signalR-{version}.js")
                 .Include("~/Scripts/knockout-{version}.js")
-                .Include("~/Scripts/chat/operator-global.js")                
+                //.Include("~/Scripts/chat/operator-global.js")                
             );
 
             #endregion

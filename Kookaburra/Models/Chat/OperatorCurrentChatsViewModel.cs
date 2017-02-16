@@ -6,6 +6,12 @@ namespace Kookaburra.Models.Chat
     public class OperatorCurrentChatsViewModel
     {
         [JsonProperty("currentChats")]
-        public List<string> CurrentChats { get; set; }
+        public List<ChatInfo> CurrentChats { get; set; }
+    }
+
+    public class ChatInfo
+    {
+        [JsonProperty("visitorSessionId")]
+        public string VisitorSessionId { get; set; }
     }
 }

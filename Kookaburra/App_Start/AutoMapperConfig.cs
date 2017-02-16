@@ -16,6 +16,8 @@ namespace Kookaburra.App_Start
                 cfg.CreateMap<ContinueConversationQueryResult, ConversationViewModel>();
 
                 cfg.CreateMap<CurrentChatsQueryResult, OperatorCurrentChatsViewModel>();
+                cfg.CreateMap<ChatInfoResult, ChatInfo>();
+                
             });
         }
     }

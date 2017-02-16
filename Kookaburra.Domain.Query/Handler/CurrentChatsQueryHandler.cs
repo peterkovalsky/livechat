@@ -19,7 +19,7 @@ namespace Kookaburra.Domain.Query.Handler
 
             return new CurrentChatsQueryResult
             {
-                CurrentChats = operatorSession.Visitors.Select(v => v.SessionId).ToList()
+                CurrentChats = operatorSession.Visitors.Select(v => new ChatInfoResult { VisitorSessionId = v.SessionId }).ToList()
             };
         }
     }

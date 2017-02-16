@@ -8,8 +8,8 @@ function iframeLoad() {
     el.style.display = '';
 }
 
-function toggleChat(obj) {
-    var el = document.getElementById(obj);
+function toggleChat() {
+    var el = document.getElementById('container-iframe');
     var wrapper = document.getElementById('onlinechatwrapper');
 
     if (el.style.display != 'none') { // hide chat box
@@ -28,22 +28,28 @@ function toggleChat(obj) {
     }
 }
 
-var chatbox = '<div id="onlinechatwrapper" style="' +
-        'display:none; ' +
-        'position: fixed; '+
-        'bottom: 0px; '+
-        'right: 20px; '+
-        'margin: 0px; '+
-        'padding: 0px; '+
-        'overflow: hidden; '+
-        'z-index: 99999999; '+
-        'width: 300px; '+
-        'height: 37px; '+
-        'background-color: transparent;\">' +
+var widgetContainer = document.createElement("div");
+widgetContainer.id = 'onlinechatwrapper';
+widgetContainer.style = 'display:none; position: fixed; bottom: 0px; right: 20px; margin: 0px; padding: 0px; overflow: hidden; z-index: 99999999; width: 300px; height: 37px; background-color: transparent;';
 
-    '<div id="chat-box-header" onclick="toggleChat(\'container-iframe\')" style="cursor: pointer; background: #2c3e50 url(\'@(Model.ChatServerHost)/images/logo-small.png\') no-repeat right center; border-right: 10px solid transparent; color: white; padding: 10px 10px 9px; font-size: 14px; ">' +
-        'Hi there' +
-    '</div>' +
-    '<iframe  onload="iframeLoad();" id="container-iframe" scrolling="0" frameborder="0" src="@(Model.ChatServerHost)/widget/@(Model.AccountKey)" style="display:none; background-color: transparent;vertical-align: text-bottom; overflow: hidden; position: relative; width: 100%; height:100%; margin: 0px; z-index: 999999;"></iframe></div>';
+var widgetButton = document.createElement("div");
+widgetButton.id = 'chat-box-header';
+widgetButton.addEventListener("click", toggleChat);
+widgetButton.style = 'cursor: pointer; background: #2c3e50 url(\"@(Model.ChatServerHost)/images/logo-small.png\") no-repeat right center; border-right: 10px solid transparent; color: white; padding: 10px 10px 9px; font-size: 14px;';
 
-document.body.innerHTML += chatbox;
+var buttonText = document.createTextNode("Hi there");
+widgetButton.appendChild(buttonText);
+
+
+var widgetIframe = document.createElement("iframe");
+widgetIframe.id = 'container-iframe';
+widgetIframe.addEventListener("load", iframeLoad);
+widgetIframe.setAttribute('scrolling', 0);
+widgetIframe.setAttribute('frameborder', 0);
+widgetIframe.setAttribute('src', '@(Model.ChatServerHost)/widget/@(Model.AccountKey)');
+widgetIframe.style = 'display:none; background-color: transparent;vertical-align: text-bottom; overflow: hidden; position: relative; width: 100%; height:100%; margin: 0px; z-index: 999999;';
+
+widgetContainer.appendChild(widgetButton);
+widgetContainer.appendChild(widgetIframe);
+
+document.body.appendChild(widgetContainer);

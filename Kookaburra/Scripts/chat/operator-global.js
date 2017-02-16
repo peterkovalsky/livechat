@@ -1,10 +1,8 @@
 ﻿function OperatorGlobalViewModel() {
  
     var self = this; 
-    self.activeChats = ko.observableArray([]);
-    self.totalChats = ko.computed(function () {
-        return self.activeChats().length;
-    });
+    self.activeChats = ko.observableArray();
+   
 
     self.init = function () {
         self.clientCallbackFunctions();
@@ -12,7 +10,12 @@
         // Start the connection.
         $.connection.hub.start().done(function () {
             $.connection.chatHub.server.connectOperator().done(function (result) {
-                self.activeChats(result.currentChats);
+                //self.activeChats(result.currentChats);
+
+                self.activeChats.push(new Chat(
+                {
+                    visitorSessionId: 'asdfsf'
+                }));
             });
         });
 
@@ -26,8 +29,10 @@
         // Visitor CONNECTED 
         $.connection.chatHub.client.visitorConnected = function (visitorInfo) {
 
+            
+
             var chat = ko.utils.arrayFirst(self.activeChats(), function (c) {
-                return c.visitorSessionId() == visitorInfo.sessionId;
+                return c.visitorSessionId == visitorInfo.sessionId;
             });
 
             if (chat == null) {
@@ -43,7 +48,7 @@
         $.connection.chatHub.client.visitorDisconnected = function (visitorSessionId) {
 
             var chat = ko.utils.arrayFirst(self.activeChats(), function (c) {
-                return c.visitorSessionId() == visitorSessionId;
+                return c.visitorSessionId == visitorSessionId;
             });
 
             if (chat) {
