@@ -60,7 +60,9 @@ namespace Kookaburra.Domain
 
         public void RemoveVisitor(string visitorSessionId)
         {
-            Sessions.SelectMany(s => s.Visitors).ToList().RemoveAll(i => i.SessionId == visitorSessionId);
+            var operatorSession = GetOperatorByVisitorSessionId(visitorSessionId);
+
+            operatorSession.Visitors.RemoveAll(i => i.SessionId == visitorSessionId);            
         }
 
         public void RemoveOperator(string operatorConnectionId)

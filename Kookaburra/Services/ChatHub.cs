@@ -129,14 +129,14 @@ namespace Kookaburra.Services
         {
             var visitorSessionId = GetVisitorSessionId();
 
-            _commandDispatcher.Execute(new StopConversationCommand(visitorSessionId));
-
             var query = new CurrentSessionQuery
             {
                 VisitorSessionId = visitorSessionId
             };
             var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
 
+            _commandDispatcher.Execute(new StopConversationCommand(visitorSessionId));
+          
             // Notify operator
             Clients.Clients(new List<string>() { currentSession.OperatorConnectionId })
                       .visitorDisconnected(visitorSessionId);

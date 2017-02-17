@@ -40,10 +40,7 @@
     @RenderSection("scripts", required: false)
     
     @Scripts.Render("~/bundles/js/portal")
-    <script src="~/signalr/hubs"></script>
-
-    <script src="~/Scripts/chat/operator-global.js"></script>
-
+    <script src="~/signalr/hubs"></script>  
   
 </head>
 <body class="page-body skin-navy">
@@ -56,7 +53,7 @@
             @Html.Partial("_TopNavBar")
 
             @RenderBody()
-   <div data-bind="text: activeChats().length"></div>
+
         </div>
     </div>
 
