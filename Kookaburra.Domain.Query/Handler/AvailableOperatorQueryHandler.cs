@@ -14,16 +14,14 @@ namespace Kookaburra.Domain.Query.Handler
 
         public AvailableOperatorQueryResult Execute(AvailableOperatorQuery query)
         {
-            var operatorConnectionId = _chatSession.GetFirstAvailableOperator(query.AccountKey);
+            var operatorSession = _chatSession.GetFirstAvailableOperator(query.AccountKey);
 
-            if (!string.IsNullOrWhiteSpace(operatorConnectionId))
+            if (operatorSession != null)
             {
-                var operatorSession = _chatSession.GetOperatorByOperatorConnId(operatorConnectionId);
-
                 return new AvailableOperatorQueryResult
                 {
                     OperatorId = operatorSession.Id,
-                    OperatorConnectionId = operatorConnectionId
+                    OperatorConnectionIds = operatorSession.ConnectionIds
                 };
             }
 

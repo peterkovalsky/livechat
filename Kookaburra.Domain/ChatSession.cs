@@ -6,12 +6,8 @@ namespace Kookaburra.Domain
 {
     public class ChatSession
     {
-        public ChatSession()
-        {
-            Sessions = new List<OperatorSession>();
-        }
+        private List<OperatorSession> Sessions { get; set; } = new List<OperatorSession>();
 
-        private List<OperatorSession> Sessions { get; set; }
 
         public void AddOrUpdateOperator(int id, string identity, string name, string accountKey, string connectionId)
         {
@@ -25,31 +21,31 @@ namespace Kookaburra.Domain
                     Identity = identity,
                     Name = name,
                     AccountKey = accountKey,
-                    ConnectionId = connectionId
+                    ConnectionIds = new List<string> { connectionId }
                 };
 
                 Sessions.Add(newOperator);
             }
             else
             {
-                operatorSession.ConnectionId = connectionId;
+                operatorSession.ConnectionIds.Add(connectionId);
             }
         }
 
-        public void AddVisitor(int conversationId, string operatorConnectionId, string visitorConnectionId, int visitorId, string visitorName, string visitorSessionId)
+        public void AddVisitor(int conversationId, int operatorId, string visitorConnectionId, int visitorId, string visitorName, string visitorSessionId)
         {
-            if (!Sessions.Any(s => s.ConnectionId == operatorConnectionId && s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)))
+            var operatorSession = GetOperatorById(operatorId);
+            if (operatorSession == null)
             {
-                var operatorSession = Sessions.Where(s => s.ConnectionId == operatorConnectionId).SingleOrDefault();
-                if (operatorSession == null)
-                {
-                    throw new ArgumentException("Operator session is missing for connection id " + operatorConnectionId);
-                }
+                throw new ArgumentException("Session is missing for operator with id " + operatorId);
+            }
 
+            if (!operatorSession.Visitors.Any(v => v.SessionId == visitorSessionId))
+            {
                 var newVisitor = new VisitorSession
                 {
                     Id = visitorId,
-                    ConnectionId = visitorConnectionId,
+                    ConnectionIds = visitorConnectionId != null ? new List <string> { visitorConnectionId } : new List<string>(),
                     Name = visitorName,
                     ConversationId = conversationId,
                     SessionId = visitorSessionId
@@ -62,12 +58,7 @@ namespace Kookaburra.Domain
         {
             var operatorSession = GetOperatorByVisitorSessionId(visitorSessionId);
 
-            operatorSession.Visitors.RemoveAll(i => i.SessionId == visitorSessionId);            
-        }
-
-        public void RemoveOperator(string operatorConnectionId)
-        {
-            Sessions.RemoveAll(i => i.ConnectionId == operatorConnectionId);
+            operatorSession.Visitors.RemoveAll(i => i.SessionId == visitorSessionId);
         }
 
         public void UpdateVisitor(string visitorSessionId, string newConnectionId)
@@ -75,39 +66,25 @@ namespace Kookaburra.Domain
             var visitor = Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.SessionId == visitorSessionId);
             if (visitor != null)
             {
-                visitor.ConnectionId = newConnectionId;
+                visitor.ConnectionIds.Add(newConnectionId);
             }
         }
 
-        public bool AnyOperatorAvailable(string accountKey)
+        public OperatorSession GetFirstAvailableOperator(string accountKey)
         {
             // get current active operators for an account
             var activeOperators = Sessions.Where(s => s.AccountKey == accountKey)
                 .Select(s => new
                 {
-                    OperatorConnectionId = s.ConnectionId,
-                    NumOfVisitors = s.Visitors.Count()
-                })
-                .ToList();
-
-            return activeOperators.Any();
-        }
-
-        public string GetFirstAvailableOperator(string accountKey)
-        {
-            // get current active operators for an account
-            var activeOperators = Sessions.Where(s => s.AccountKey == accountKey)
-                .Select(s => new
-                {
-                    OperatorConnectionId = s.ConnectionId,
+                    OperatorSession = s,
                     NumOfVisitors = s.Visitors.Count()
                 })
                 .ToList();
 
             if (activeOperators.Any())
             {
-                // return less loaded operator
-                return activeOperators.OrderBy(o => o.NumOfVisitors).First().OperatorConnectionId;
+                // return the least loaded operator
+                return activeOperators.OrderBy(o => o.NumOfVisitors).First().OperatorSession;
             }
 
             return null;
@@ -118,14 +95,19 @@ namespace Kookaburra.Domain
             return Sessions.SingleOrDefault(s => s.Identity == identity);
         }
 
+        public OperatorSession GetOperatorById(int id)
+        {
+            return Sessions.SingleOrDefault(s => s.Id == id);
+        }
+
         public OperatorSession GetOperatorByOperatorConnId(string operatorConnectionId)
         {
-            return Sessions.SingleOrDefault(s => s.ConnectionId == operatorConnectionId);
+            return Sessions.SingleOrDefault(s => s.ConnectionIds.Contains(operatorConnectionId));
         }
 
         public OperatorSession GetOperatorByVisitorConnId(string visitorConnectionId)
         {
-            return Sessions.Where(s => s.Visitors.Any(v => v.ConnectionId == visitorConnectionId)).SingleOrDefault();
+            return Sessions.Where(s => s.Visitors.Any(v => v.ConnectionIds.Contains(visitorConnectionId))).SingleOrDefault();
         }
 
         public OperatorSession GetOperatorByVisitorSessionId(string visitorSessionId)
@@ -135,22 +117,17 @@ namespace Kookaburra.Domain
 
         public VisitorSession GetVisitorByVisitorConnId(string visitorConnectionId)
         {
-            return Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.ConnectionId == visitorConnectionId);
+            return Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.ConnectionIds.Contains(visitorConnectionId));
         }
 
         public VisitorSession GetVisitorByVisitorSessionId(string visitorSessionId)
         {
-            return Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.SessionId == visitorSessionId);           
+            return Sessions.SelectMany(s => s.Visitors).ToList().SingleOrDefault(v => v.SessionId == visitorSessionId);
         }
     }
 
     public class OperatorSession
     {
-        public OperatorSession()
-        {
-            Visitors = new List<VisitorSession>();
-        }
-
         public int Id { get; set; }
 
         public string Identity { get; set; }
@@ -159,9 +136,9 @@ namespace Kookaburra.Domain
 
         public string AccountKey { get; set; }
 
-        public string ConnectionId { get; set; }
+        public List<string> ConnectionIds { get; set; } = new List<string>();
 
-        public List<VisitorSession> Visitors { get; set; }
+        public List<VisitorSession> Visitors { get; set; } = new List<VisitorSession>();
     }
 
     public class VisitorSession
@@ -172,7 +149,7 @@ namespace Kookaburra.Domain
 
         public string Name { get; set; }
 
-        public string ConnectionId { get; set; }
+        public List<string> ConnectionIds { get; set; } = new List<string>();
 
         public string SessionId { get; set; }
     }

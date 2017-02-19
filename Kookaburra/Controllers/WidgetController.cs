@@ -89,7 +89,7 @@ namespace Kookaburra.Controllers
             {
                 var sessionId = Guid.NewGuid().ToString();
 
-                var command = new StartConversationCommand(availableOperator.OperatorConnectionId, model.Name, sessionId);
+                var command = new StartConversationCommand(availableOperator.OperatorId, model.Name, sessionId);
                 command.Page = model.PageUrl;
                 command.VisitorIP = WebHelper.GetIPAddress();
                 command.VisitorEmail = model.Email;

@@ -48,7 +48,7 @@ namespace Kookaburra.Domain.Command.Handler
                 _context.Visitors.Add(returningVisitor);
             }
 
-            var operatorSession = _chatSession.GetOperatorByOperatorConnId(command.OperatorConnectionId);
+            var operatorSession = _chatSession.GetOperatorById(command.OperatorId);
 
             var conversation = new Conversation
             {
@@ -63,7 +63,7 @@ namespace Kookaburra.Domain.Command.Handler
 
            
             // add visitor to session
-            _chatSession.AddVisitor(conversation.Id, command.OperatorConnectionId, null, returningVisitor.Id, returningVisitor.Name, returningVisitor.SessionId);            
+            _chatSession.AddVisitor(conversation.Id, command.OperatorId, null, returningVisitor.Id, returningVisitor.Name, returningVisitor.SessionId);            
         }
 
         private Visitor CheckForVisitor(string name, string email, string sessionId)

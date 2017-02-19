@@ -52,7 +52,7 @@ namespace Kookaburra.Services
             };
             var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);          
             
-            Clients.Clients(new List<string>() { currentSession.OperatorConnectionId })
+            Clients.Clients(currentSession.OperatorConnectionIds)
                 .sendMessageToOperator(currentSession.VisitorName, message, dateSent.JsDateTime(), currentSession.VisitorSessionId);
             
             _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
@@ -61,6 +61,7 @@ namespace Kookaburra.Services
         /// <summary>
         /// Message from OPERATOR to VISITOR
         /// </summary>
+        [Authorize]
         public void SendToVisitor(string operatorName, string message, string visitorSessionId)
         {
             var dateSent = DateTime.UtcNow;
@@ -71,7 +72,8 @@ namespace Kookaburra.Services
             };
             var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
 
-            Clients.Clients(new List<string>() { Context.ConnectionId, currentSession.VisitorConnectionId })
+            // Notify all visitor instances 
+            Clients.Clients(currentSession.VisitorConnectionIds)
                 .sendMessageToVisitor(operatorName, message, dateSent.JsDateTime());
 
             _commandDispatcher.Execute(new OperatorMessagedCommand(visitorSessionId, message, dateSent));
@@ -103,9 +105,9 @@ namespace Kookaburra.Services
                         Time = DateTime.UtcNow.JsDateTime()
                     };
 
-                    // Notify operator about this visitor
-                    Clients.Clients(new List<string>() { resumedConversation.OperatorInfo.ConnectionId })
-                        .visitorConnected(visitorInfo);
+                    // Notify all operator instances about this visitor
+                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorInfo.SessionId);
+                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
                 }
 
                 var viewModel = Mapper.Map<ConversationViewModel>(resumedConversation);
@@ -137,9 +139,9 @@ namespace Kookaburra.Services
 
             _commandDispatcher.Execute(new StopConversationCommand(visitorSessionId));
           
-            // Notify operator
-            Clients.Clients(new List<string>() { currentSession.OperatorConnectionId })
-                      .visitorDisconnected(visitorSessionId);
+            // Notify all operator instances
+            Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(visitorSessionId);
+            Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnected(visitorSessionId);
         }
 
         public override Task OnConnected()
@@ -153,22 +155,12 @@ namespace Kookaburra.Services
             return base.OnConnected();
         }
 
-        //public override Task OnDisconnected(bool stopCalled)
-        //{
-        //    var operatorId = ChatOperation.GetOperatorConnectionId(Context.ConnectionId);
+        public override Task OnDisconnected(bool stopCalled)
+        {
+     
 
-        //    // Operator was disconnected
-        //    if (!string.IsNullOrEmpty(operatorId))
-        //    {
-        //        var clientName = ChatOperation.GetClientName(Context.ConnectionId);
-        //        Clients.Clients(new List<string>() { operatorId })
-        //            .clientDisconnected(Context.ConnectionId, clientName, DateTime.UtcNow.JsDateTime());
-        //    }
-
-        //    ChatOperation.Disconnect(Context.ConnectionId);
-
-        //    return base.OnDisconnected(stopCalled);
-        //}
+            return base.OnDisconnected(stopCalled);
+        }
 
         public override Task OnReconnected()
         {

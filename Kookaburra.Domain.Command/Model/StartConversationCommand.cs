@@ -2,7 +2,7 @@
 {
     public class StartConversationCommand : ICommand
     {
-        public string OperatorConnectionId { get; private set; }  
+        public int OperatorId { get; private set; }  
 
         public string SessionId { get; private set; }
 
@@ -14,9 +14,9 @@
 
         public string Page { get; set; }
 
-        public StartConversationCommand(string operatorConnectionId, string visitorName, string sessionId)
+        public StartConversationCommand(int operatorId, string visitorName, string sessionId)
         {
-            OperatorConnectionId = operatorConnectionId;                     
+            OperatorId = operatorId;                     
             SessionId = sessionId;
             VisitorName = visitorName;
         }

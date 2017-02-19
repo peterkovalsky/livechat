@@ -34,7 +34,7 @@ namespace Kookaburra.Domain.Query.Handler
             var visitorSession = _chatSession.GetVisitorByVisitorSessionId(query.VisitorSessionId);
             if (visitorSession != null)
             {
-                bool isNewConversation = visitorSession.ConnectionId == null;
+                bool isNewConversation = visitorSession.ConnectionIds.Count == 0;
 
                 if (isNewConversation)
                 {
@@ -71,7 +71,7 @@ namespace Kookaburra.Domain.Query.Handler
                         OperatorInfo = new OperatorInfo
                         {
                             Name = conversation.Operator.FirstName,
-                            ConnectionId = operatorSession.ConnectionId
+                            ConnectionIds = operatorSession.ConnectionIds
                         },
                         VisitorInfo = new VisitorInfo
                         {

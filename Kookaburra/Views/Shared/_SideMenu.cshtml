@@ -2,7 +2,8 @@
 <!-- Add "fixed" class to make the sidebar fixed always to the browser viewport. -->
 <!-- Adding class "toggle-others" will keep only one menu item open at a time. -->
 <!-- Adding class "collapsed" collapse sidebar root elements and show only icons. -->
-<div class="sidebar-menu toggle-others">
+
+<div id="layout-sidebar" class="sidebar-menu toggle-others">
 
     <div class="sidebar-menu-inner">
 
@@ -36,19 +37,19 @@
         <ul id="main-menu" class="main-menu">
             <!-- add class "multiple-expanded" to allow multiple submenus to open -->
             <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-       
+
             <li class="opened active">
                 <a href="/chat-room">
                     <i class="fa-dashboard"></i>
                     <span class="title">Dashboard</span>
-                </a>    
+                </a>
             </li>
             <li class="opened active">
                 <a href="/chat-room">
                     <i class="fa-comments-o"></i>
                     <span class="title">Chats</span>
-                    <span class="badge badge-secondary" data-bind="text: activeChats().length"></span>
-                </a>                
+                    <span class="badge badge-secondary" style="display: none;" data-bind="text: activeChats().length, visible: activeChats().length > 0"></span>
+                </a>
             </li>
             <li class="opened active">
                 <a href="/history">
@@ -72,3 +73,12 @@
         </ul>
     </div>
 </div>
+
+<script>
+
+    var operatorGlobalView = new OperatorGlobalViewModel();
+    ko.applyBindings(operatorGlobalView, document.getElementById("layout-sidebar"));
+
+    operatorGlobalView.init();
+
+</script>

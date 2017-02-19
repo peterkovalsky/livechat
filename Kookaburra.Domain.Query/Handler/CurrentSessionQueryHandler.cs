@@ -27,10 +27,10 @@ namespace Kookaburra.Domain.Query.Handler
                 return new CurrentSessionQueryResult
                 {
                     VisitorName = visitorSession.Name,
-                    VisitorConnectionId = visitorSession.ConnectionId,
+                    VisitorConnectionIds = visitorSession.ConnectionIds,
                     VisitorSessionId = visitorSession.SessionId,
                     OperatorName = operatorSession.Name,
-                    OperatorConnectionId = operatorSession.ConnectionId                
+                    OperatorConnectionIds = operatorSession.ConnectionIds               
                 };
             }
 
@@ -48,10 +48,10 @@ namespace Kookaburra.Domain.Query.Handler
                 return new CurrentSessionQueryResult
                 {
                     VisitorName = visitorSession.Name,
-                    VisitorConnectionId = visitorSession.ConnectionId,
+                    VisitorConnectionIds = visitorSession.ConnectionIds,
                     VisitorSessionId = visitorSession.SessionId,
                     OperatorName = operatorSession.Name,
-                    OperatorConnectionId = operatorSession.ConnectionId
+                    OperatorConnectionIds = operatorSession.ConnectionIds
                 };
             }
 

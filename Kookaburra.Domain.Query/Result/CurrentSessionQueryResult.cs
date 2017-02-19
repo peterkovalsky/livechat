@@ -1,15 +1,17 @@
-﻿namespace Kookaburra.Domain.Query.Result
+﻿using System.Collections.Generic;
+
+namespace Kookaburra.Domain.Query.Result
 {
     public class CurrentSessionQueryResult
     {
         public string VisitorName { get; set; }
 
-        public string VisitorConnectionId { get; set; }
+        public List<string> VisitorConnectionIds { get; set; }
 
         public string VisitorSessionId { get; set; }
 
         public string OperatorName { get; set; }
 
-        public string OperatorConnectionId { get; set; }      
+        public List<string> OperatorConnectionIds { get; set; }      
     }
 }

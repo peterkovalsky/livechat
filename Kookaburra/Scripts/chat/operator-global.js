@@ -22,23 +22,23 @@
 
     self.registerCallbackFunctions = function () {
         // Visitor CONNECTED 
-        $.connection.chatHub.client.visitorConnected = function (visitorInfo) {
+        $.connection.chatHub.client.visitorConnectedGlobal = function (sessionId) {
            
             var chat = ko.utils.arrayFirst(self.activeChats(), function (c) {
-                return c.visitorSessionId() == visitorInfo.sessionId;
+                return c.visitorSessionId() == sessionId;
             });
 
             if (chat == null) {
                 // increment active chats
                 self.activeChats.push(new Chat(
                 {
-                    visitorSessionId: visitorInfo.sessionId
+                    visitorSessionId: sessionId
                 }));
             }
         };
 
         // Visitor DISCONNECTED 
-        $.connection.chatHub.client.visitorDisconnected = function (visitorSessionId) {
+        $.connection.chatHub.client.visitorDisconnectedGlobal = function (visitorSessionId) {
 
             var chat = ko.utils.arrayFirst(self.activeChats(), function (c) {
                 return c.visitorSessionId() == visitorSessionId;

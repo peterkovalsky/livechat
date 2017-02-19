@@ -1,126 +1,129 @@
 ﻿@model Kookaburra.ViewModels.Chat.RoomViewModel
 
-<div class="page-title row">
-    <div class="title-env col-sm-11">
-        <h1 class="title">Chats</h1>
-        <p class="description">CURRENT CHATS</p>
+<div id="layout-chatroom">
+    <div class="page-title row">
+        <div class="title-env col-sm-11">
+            <h1 class="title">Chats</h1>
+            <p class="description">CURRENT CHATS</p>
+        </div>
     </div>
-</div>
 
-<div class="row" data-bind="visible: conversations().length > 0">
-    <div class="col-sm-9" data-bind="with: currentChat">
-        <div class="panel panel-color panel-gray chat">
-            <!-- Add class "collapsed" to minimize the panel -->
-            <div class="panel-heading text-center">
-                <h3 class="panel-title col-sm-12">
-                    Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
-                    <br />
-                    <small> Started <span data-bind="text: startTimeFormatted"></span></small>
-                </h3>
+    <div class="row" style="display: none;" data-bind="visible: conversations().length > 0">
+        <div class="col-sm-9" data-bind="with: currentChat">
+            <div class="panel panel-color panel-gray chat">
+                <!-- Add class "collapsed" to minimize the panel -->
+                <div class="panel-heading text-center">
+                    <h3 class="panel-title col-sm-12">
+                        Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
+                        <br />
+                        <small> Started <span data-bind="text: startTimeFormatted"></span></small>
+                    </h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <ul class="conversation-messages ps-scrollbar ps-scroll-down ps-container ps-active-y">
+                        <li data-bind="foreach: messages">
+
+                            <div class="row" data-bind="css: {mymessage: me}">
+                                <div class="col-sm-2 chat-author" data-bind="text: author">
+
+                                </div>
+                                <div class="col-sm-8 chat-message" data-bind="text: text">
+
+                                </div>
+                                <div class="col-sm-2 chat-time" data-bind="text: time">
+
+                                </div>
+                            </div>
+
+                        </li>
+                    </ul>
+
+                    <div class="chat-message">
+                        <textarea data-bind="textInput: $parent.newText"
+                                  class="form-control" placeholder="Enter your message..."></textarea>
+                    </div>
+
+                </div>
             </div>
+        </div>
 
-            <div class="panel-body">
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-12" data-bind="with: currentChat">
 
-                <ul class="conversation-messages ps-scrollbar ps-scroll-down ps-container ps-active-y">
-                    <li data-bind="foreach: messages">
+                    <div class="xe-widget xe-progress-counter xe-progress-counter-turquoise current-chat">
 
-                        <div class="row" data-bind="css: {mymessage: me}">
-                            <div class="col-sm-2 chat-author" data-bind="text: author">
-                                
+                        @*<div class="xe-background">
+                                <i class="linecons-comment"></i>
+                            </div>*@
+
+                        <div class="xe-upper">
+                            <div class="xe-icon">
+                                <i class="linecons-comment"></i>
                             </div>
-                            <div class="col-sm-8 chat-message" data-bind="text: text">
-                                                                
-                            </div>
-                            <div class="col-sm-2 chat-time" data-bind="text: time">
-                               
+                            <div class="xe-label">
+                                <strong class="num" data-bind="text: visitorNameFormatted"></strong>
                             </div>
                         </div>
 
-                    </li>
-                </ul>
+                        <div class="xe-lower">
+                            <div class="border"></div>
 
-                <div class="chat-message">
-                    <textarea data-bind="textInput: $parent.newText" 
-                              class="form-control" placeholder="Enter your message..."></textarea>
+                            <button class="btn btn-purple btn-icon" data-bind="click: $parent.disconnect">
+                                <i class="fa-times-circle"></i>
+                                DISCONNECT
+                            </button>
+
+                            <div class="border"></div>
+
+                            <span data-bind="text: location"></span>
+                            <strong data-bind="text: visitorUrl"></strong>
+
+                            <div class="border"></div>
+                        </div>
+
+                    </div>
+
                 </div>
+            </div>
 
+            <div class="row">
+                <div class="col-sm-12">
+                    <div>
+                        Current Conversations
+                    </div>
+                    <div class="list-group list-group-minimal">
+                        <div data-bind="foreach: conversations">
+                            <a href="#" class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
+                                <span class="badge badge badge-yellow" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
+                                <strong data-bind="text: visitorName"></strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-sm-3">
-        <div class="row">
-            <div class="col-sm-12" data-bind="with: currentChat">
-
-                <div class="xe-widget xe-progress-counter xe-progress-counter-turquoise current-chat">
-
-                    @*<div class="xe-background">
-                        <i class="linecons-comment"></i>
-                    </div>*@
-
-                    <div class="xe-upper">
-                        <div class="xe-icon">
-                            <i class="linecons-comment"></i>
-                        </div>
-                        <div class="xe-label">                    
-                            <strong class="num" data-bind="text: visitorNameFormatted"></strong>
-                        </div>
-                    </div>
-               
-                    <div class="xe-lower">
-                        <div class="border"></div>
-                      
-                        <button class="btn btn-purple btn-icon" data-bind="click: $parent.disconnect">
-                            <i class="fa-times-circle"></i>
-                            DISCONNECT
-                        </button>
-                     
-                        <div class="border"></div>
-
-                        <span data-bind="text: location"></span>
-                        <strong data-bind="text: visitorUrl"></strong>
-
-                        <div class="border"></div>                                             
-                    </div>
-
-                </div>
-
+    <div class="row" style="display: none;" data-bind="visible: conversations().length == 0">
+        <div class="col-sm-12">
+            <div class="alert alert-warning">
+                <strong>There are currently no active chats.</strong>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <div>
-                    Current Conversations
-                </div>
-                <div class="list-group list-group-minimal">        
-                    <div data-bind="foreach: conversations">
-                        <a href="#" class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
-                            <span class="badge badge badge-yellow" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
-                            <strong data-bind="text: visitorName"></strong>
-                        </a>
-                    </div>
-                </div>   
-            </div>
-        </div>        
     </div>
 </div>
 
-<div class="row" data-bind="visible: conversations().length == 0">
-    <div class="col-sm-12">
-        <div class="alert alert-warning">
-            <strong>There are currently no active chats.</strong>
-        </div>
-    </div>    
-</div>
+<script type="text/javascript">
+    var chatRoomViewModel = new ChatRoomViewModel('@Model.OperatorName');
+    ko.applyBindings(chatRoomViewModel, document.getElementById("layout-chatroom"));
 
-<script src="~/Scripts/chat/chat-room.js"></script>
-
-<script>
-    ko.applyBindings(new ChatRoomViewModel('@Model.OperatorName'));
+    chatRoomViewModel.init();
 </script>
 
 @section scripts
 {
-    @Scripts.Render("~/bundles/js/chatroom")    
+    @Scripts.Render("~/bundles/js/chatroom")
 }
