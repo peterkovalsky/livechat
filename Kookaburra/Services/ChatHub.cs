@@ -28,7 +28,7 @@ namespace Kookaburra.Services
             _queryDispatcher = queryDispatcher;
         }
 
-
+        #region Operator Calls
         [Authorize]
         public OperatorCurrentChatsViewModel ConnectOperator()
         {
@@ -37,25 +37,6 @@ namespace Kookaburra.Services
             var queryResult = _queryDispatcher.Execute<CurrentChatsQuery, CurrentChatsQueryResult>(new CurrentChatsQuery(Context.User.Identity.GetUserId()));
 
             return Mapper.Map<OperatorCurrentChatsViewModel>(queryResult);
-        }
-
-        /// <summary>
-        /// Message from VISITOR to OPERATOR
-        /// </summary>
-        public void SendToOperator(string message)
-        {
-            var dateSent = DateTime.UtcNow;
-
-            var query = new CurrentSessionQuery
-            {
-                VisitorConnectionId = Context.ConnectionId
-            };
-            var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);          
-            
-            Clients.Clients(currentSession.OperatorConnectionIds)
-                .sendMessageToOperator(currentSession.VisitorName, message, dateSent.JsDateTime(), currentSession.VisitorSessionId);
-            
-            _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
         }
 
         /// <summary>
@@ -78,6 +59,35 @@ namespace Kookaburra.Services
 
             _commandDispatcher.Execute(new OperatorMessagedCommand(visitorSessionId, message, dateSent));
         }
+
+        [Authorize]
+        public void ResumeOperatorChat()
+        {
+
+        }
+        #endregion
+
+        #region Visitor Calls
+        /// <summary>
+        /// Message from VISITOR to OPERATOR
+        /// </summary>
+        public void SendToOperator(string message)
+        {
+            var dateSent = DateTime.UtcNow;
+
+            var query = new CurrentSessionQuery
+            {
+                VisitorConnectionId = Context.ConnectionId
+            };
+            var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);          
+            
+            Clients.Clients(currentSession.OperatorConnectionIds)
+                .sendMessageToOperator(currentSession.VisitorName, message, dateSent.JsDateTime(), currentSession.VisitorSessionId);
+            
+            _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
+        }
+
+    
 
         public ConversationViewModel ConnectVisitor()
         {
@@ -143,6 +153,7 @@ namespace Kookaburra.Services
             Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(visitorSessionId);
             Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnected(visitorSessionId);
         }
+        #endregion
 
         public override Task OnConnected()
         {

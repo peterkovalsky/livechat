@@ -17,12 +17,18 @@
 
     // init operator chat room
     // -----------------------
-    self.init = function () {
-        
+    self.init = function () {        
         self.registerCallbackFunctions();
         self.addEnterPressEvent();
     };
 
+    // Start or resume chat room
+    // -------------------------
+    self.startOrResumeChat = function () {
+        $.connection.chatHub.server.resumeOperatorChat().done(function (result) {
+           
+        });
+    };
 
     // Sends message to visitor on Enter Press
     // ----------------------------------------
