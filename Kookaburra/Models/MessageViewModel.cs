@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Kookaburra.Models.Widget
+namespace Kookaburra.Models
 {
     public class MessageViewModel
     {

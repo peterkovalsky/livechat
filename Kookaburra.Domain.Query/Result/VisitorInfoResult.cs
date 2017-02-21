@@ -1,16 +1,18 @@
-﻿namespace Kookaburra.Domain.Query.Result
+﻿using System;
+
+namespace Kookaburra.Domain.Query.Result
 {
     public class VisitorInfoResult
     {
+        public string SessionId { get; set; }
+
         public string Name { get; set; }
 
-        public string Page { get; set; }
+        public string CurrentUrl { get; set; }
 
-        public string Country { get; set; }
+        public DateTime TimeStarted { get; set; }
 
-        public string Region { get; set; }
-
-        public string City { get; set; }
+        public string Location { get; set; }
 
         public decimal Latitude { get; set; }
 

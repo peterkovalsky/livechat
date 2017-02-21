@@ -26,7 +26,7 @@
     // -------------------------
     self.startOrResumeChat = function () {
         $.connection.chatHub.server.resumeOperatorChat().done(function (result) {
-           
+            self.conversations(result.conversations);
         });
     };
 
@@ -122,25 +122,30 @@
     };  
 }
 
-function Message(data) {
-    this.id = ko.observable(data.id);
+function Message(data) { 
     this.author = ko.observable(data.author);
-    this.sender = ko.observable(data.sender);
     this.text = ko.observable(data.text);
+    this.sentBy = ko.observable(data.sentBy);
+   
     this.time = ko.observable(data.time);
     this.read = ko.observable(data.read);
     this.me = ko.observable(data.me);
 }
 
+function VisitorInfo(data) {
+    this.sessionId = ko.observable(data.sessionId);
+    this.name = ko.observable(data.name);
+    this.startTime = ko.observable(data.startTime);
+    this.location = ko.observable(data.location);
+    this.visitorUrl = ko.observable(data.visitorUrl);
+}
+
 function Conversation(data) {
     var self = this;
 
-    self.visitorId = ko.observable(data.visitorId);
-    self.visitorName = ko.observable(data.visitorName);
-    self.startTime = ko.observable(data.startTime);
-    self.location = ko.observable(data.location);
-    self.visitorUrl = ko.observable(data.visitorUrl);
+    self.visitor = ko.observable(data.visitor);
     self.messages = ko.observableArray([]);
+
     self.isCurrent = ko.observable(data.isCurrent);
     self.startTimeFormatted = ko.computed(function () {
         return moment(self.startTime()).calendar();

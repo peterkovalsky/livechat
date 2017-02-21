@@ -16,7 +16,13 @@ namespace Kookaburra.Models.Chat
         [JsonProperty("currentUrl")]
         public string CurrentUrl { get; set; }
 
-        [JsonProperty("time")]
-        public double Time { get; set; }
+        [JsonProperty("startTime")]
+        public double TimeStarted { get; set; }
+
+        [JsonProperty("latitude")]
+        public decimal Latitude { get; set; }
+
+        [JsonProperty("longitude")]
+        public decimal Longitude { get; set; }
     }
 }

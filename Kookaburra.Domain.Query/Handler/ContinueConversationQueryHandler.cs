@@ -55,7 +55,7 @@ namespace Kookaburra.Domain.Query.Handler
                 {
                     _chatSession.UpdateVisitor(query.VisitorSessionId, query.VisitorConnectionId);
 
-                    var conversationItems = conversation.Messages.Select(m => new ConversationItem
+                    var conversationItems = conversation.Messages.Select(m => new MessageResult
                     {
                         Author = m.SentBy == UserType.Visitor.ToString() ? conversation.Visitor.Name : conversation.Operator.FirstName,
                         Text = m.Text,
@@ -73,10 +73,10 @@ namespace Kookaburra.Domain.Query.Handler
                             Name = conversation.Operator.FirstName,
                             ConnectionIds = operatorSession.ConnectionIds
                         },
-                        VisitorInfo = new VisitorInfo
+                        VisitorInfo = new VisitorInfoResult
                         {
                             Name = conversation.Visitor.Name,
-                            Location = string.Format("{0}, {1}", conversation.Visitor.Country, conversation.Visitor.City),
+                            Location = @"{conversation.Visitor.Country}, {conversation.Visitor.City}",
                             Page = conversation.Page
                         },
                         Conversation = conversationItems

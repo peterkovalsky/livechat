@@ -61,9 +61,12 @@ namespace Kookaburra.Services
         }
 
         [Authorize]
-        public void ResumeOperatorChat()
+        public CurrentConversationsViewModel ResumeOperatorChat()
         {
+            var query = new ResumeOperatorQuery(Context.User.Identity.GetUserId());
+            var queryResult = _queryDispatcher.Execute<ResumeOperatorQuery, ResumeOperatorQueryResult>(query);
 
+            return Mapper.Map<CurrentConversationsViewModel>(queryResult);
         }
         #endregion
 
