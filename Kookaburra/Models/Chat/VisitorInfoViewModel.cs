@@ -17,7 +17,7 @@ namespace Kookaburra.Models.Chat
         public string CurrentUrl { get; set; }
 
         [JsonProperty("startTime")]
-        public double TimeStarted { get; set; }
+        public double StartTime { get; set; }
 
         [JsonProperty("latitude")]
         public decimal Latitude { get; set; }

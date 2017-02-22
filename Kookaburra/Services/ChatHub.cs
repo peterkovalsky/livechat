@@ -2,9 +2,11 @@
 using Kookaburra.Common;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.Model;
+using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
+using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.Widget;
 using Microsoft.AspNet.Identity;
@@ -82,10 +84,17 @@ namespace Kookaburra.Services
             {
                 VisitorConnectionId = Context.ConnectionId
             };
-            var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);          
-            
+            var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
+          
+            var messageViewModel = new MessageViewModel
+            {
+                Author = currentSession.VisitorName,
+                Text = message,
+                Time = dateSent.JsDateTime(),
+                SentBy = UserType.Visitor.ToString()
+            };
             Clients.Clients(currentSession.OperatorConnectionIds)
-                .sendMessageToOperator(currentSession.VisitorName, message, dateSent.JsDateTime(), currentSession.VisitorSessionId);
+                .sendMessageToOperator(messageViewModel, currentSession.VisitorSessionId);
             
             _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
         }
@@ -114,8 +123,8 @@ namespace Kookaburra.Services
                         SessionId = sessionId.Value,
                         Name = resumedConversation.VisitorInfo.Name,
                         Location = resumedConversation.VisitorInfo.Location,
-                        CurrentUrl = resumedConversation.VisitorInfo.Page,
-                        Time = DateTime.UtcNow.JsDateTime()
+                        CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
+                        StartTime = DateTime.UtcNow.JsDateTime()
                     };
 
                     // Notify all operator instances about this visitor

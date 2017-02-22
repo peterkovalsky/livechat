@@ -12,7 +12,7 @@ namespace Kookaburra.Models
         public string Text { get; set; }
 
         [JsonProperty("time")]
-        public DateTime Time { get; set; }
+        public double Time { get; set; }
 
         [JsonProperty("sentBy")]
         public string SentBy { get; set; }

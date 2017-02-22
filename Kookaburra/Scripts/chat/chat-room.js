@@ -87,27 +87,27 @@
         $.connection.chatHub.client.visitorConnected = function (visitorInfo) {
 
             self.conversations.push(new Conversation(
-                {
-                    visitorId: visitorInfo.sessionId,
+                {                    
+                    sessionId: visitorInfo.sessionId,
                     visitorName: visitorInfo.name,
                     startTime: visitorInfo.time,
                     location: visitorInfo.location,
-                    visitorUrl: visitorInfo.currentUrl,
+                    currentUrl: visitorInfo.currentUrl,
                     isCurrent: (self.conversations().length == 0 ? true : false)
                 }))
         };
 
         // Message from visitor
-        $.connection.chatHub.client.sendMessageToOperator = function (name, message, time, visitorId) {
+        $.connection.chatHub.client.sendMessageToOperator = function (message, sessionId) {
 
             var conversation = ko.utils.arrayFirst(self.conversations(), function (c) {
-                return c.visitorId() == visitorId;
+                return c.sessionId() == sessionId;
             });
 
             if (conversation) {
                 conversation.messages.push(new Message({
-                    author: name,
-                    text: message,
+                    author: author,
+                    text: text,
                     time: moment(time).format('LT'),
                     read: conversation.isCurrent(),
                     me: false
@@ -132,18 +132,15 @@ function Message(data) {
     this.me = ko.observable(data.me);
 }
 
-function VisitorInfo(data) {
-    this.sessionId = ko.observable(data.sessionId);
-    this.name = ko.observable(data.name);
-    this.startTime = ko.observable(data.startTime);
-    this.location = ko.observable(data.location);
-    this.visitorUrl = ko.observable(data.visitorUrl);
-}
-
 function Conversation(data) {
     var self = this;
 
-    self.visitor = ko.observable(data.visitor);
+    self.sessionId = ko.observable(data.sessionId);
+    self.name = ko.observable(data.name);
+    self.startTime = ko.observable(data.startTime);
+    self.location = ko.observable(data.location);
+    self.currentUrl = ko.observable(data.currentUrl);
+
     self.messages = ko.observableArray([]);
 
     self.isCurrent = ko.observable(data.isCurrent);
