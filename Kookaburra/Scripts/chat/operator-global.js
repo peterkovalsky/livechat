@@ -9,6 +9,10 @@
 
         // Start the connection.
         $.connection.hub.start().done(function () {
+
+            var evt = $.Event('signalr.start');           
+            $(window).trigger(evt);
+
             $.connection.chatHub.server.connectOperator().done(function (result) {
                 self.activeChats(result.currentChats);          
             });

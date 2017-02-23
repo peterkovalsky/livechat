@@ -10,7 +10,7 @@ namespace Kookaburra.Domain.Query.Result
 
         public string CurrentUrl { get; set; }
 
-        public DateTime TimeStarted { get; set; }
+        public DateTime StartTime { get; set; }
 
         public string Location { get; set; }
 

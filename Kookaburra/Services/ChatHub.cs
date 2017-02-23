@@ -98,7 +98,6 @@ namespace Kookaburra.Services
             
             _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
         }
-
     
 
         public ConversationViewModel ConnectVisitor()
@@ -118,10 +117,10 @@ namespace Kookaburra.Services
             {
                 if (resumedConversation.IsNewConversation)
                 {                    
-                    var visitorInfo = new VisitorInfoViewModel
+                    var visitorInfo = new OperatorConversationViewModel
                     {
                         SessionId = sessionId.Value,
-                        Name = resumedConversation.VisitorInfo.Name,
+                        VisitorName = resumedConversation.VisitorInfo.Name,
                         Location = resumedConversation.VisitorInfo.Location,
                         CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
                         StartTime = DateTime.UtcNow.JsDateTime()
@@ -130,13 +129,9 @@ namespace Kookaburra.Services
                     // Notify all operator instances about this visitor
                     Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorInfo.SessionId);
                     Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
-                }
+                }                             
 
-                var viewModel = Mapper.Map<ConversationViewModel>(resumedConversation);
-                viewModel.VisitorName = resumedConversation.VisitorInfo.Name;
-                viewModel.OperatorName = resumedConversation.OperatorInfo.Name;                           
-
-                return viewModel;
+                return Mapper.Map<ConversationViewModel>(resumedConversation);
             }                      
 
             return null;

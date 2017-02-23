@@ -13,16 +13,24 @@ namespace Kookaburra.App_Start
         {
             Mapper.Initialize(cfg => {              
                 cfg.CreateMap<MessageResult, MessageViewModel>()
-                    .ForMember(dest => dest.SentBy, opt => opt.MapFrom(src => src.SentBy.ToLower()));
+                    .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time.JsDateTime()));
 
-                cfg.CreateMap<ContinueConversationQueryResult, ConversationViewModel>();
+                cfg.CreateMap<ContinueConversationQueryResult, ConversationViewModel>()
+                    .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.VisitorInfo.Name))
+                    .ForMember(dest => dest.OperatorName, opt => opt.MapFrom(src => src.OperatorInfo.Name));
 
                 cfg.CreateMap<CurrentChatsQueryResult, OperatorCurrentChatsViewModel>();
-                cfg.CreateMap<ChatInfoResult, ChatInfo>();
+                cfg.CreateMap<ChatInfoResult, ChatInfo>();      
 
-                cfg.CreateMap<VisitorInfoResult, VisitorInfoViewModel>()
-                    .ForMember(dest => dest.TimeStarted, opt => opt.MapFrom(src => src.TimeStarted.JsDateTime()));
-                cfg.CreateMap<ConversationResult, OperatorConversationViewModel>();
+                cfg.CreateMap<ConversationResult, OperatorConversationViewModel>()
+                    .ForMember(dest => dest.SessionId, opt => opt.MapFrom(src => src.VisitorInfo.SessionId))
+                    .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.VisitorInfo.Name))
+                    .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.VisitorInfo.Location))
+                    .ForMember(dest => dest.CurrentUrl, opt => opt.MapFrom(src => src.VisitorInfo.CurrentUrl))
+                    .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.VisitorInfo.StartTime.JsDateTime()))
+                    .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.VisitorInfo.Latitude))
+                    .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.VisitorInfo.Longitude));
+
                 cfg.CreateMap<ResumeOperatorQueryResult, CurrentConversationsViewModel>();
             });
         }

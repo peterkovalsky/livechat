@@ -15,18 +15,21 @@
     });
 
 
-    // init operator chat room
+    // Init operator chat room
     // -----------------------
     self.init = function () {        
         self.registerCallbackFunctions();
         self.addEnterPressEvent();
+        self.startOrResumeChat();
     };
 
-    // Start or resume chat room
+    // Resume operator chats
     // -------------------------
     self.startOrResumeChat = function () {
         $.connection.chatHub.server.resumeOperatorChat().done(function (result) {
-            self.conversations(result.conversations);
+            if (result.conversations.length > 0) {
+                self.conversations(result.conversations);
+            }
         });
     };
 
@@ -42,7 +45,7 @@
                     read: true,
                     me: true
                 }));
-                $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().visitorId());
+                $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId());
 
                 self.newText(''); // clear input area
 
@@ -56,7 +59,7 @@
     // ------------------------------------
     self.disconnect = function () {
         if (confirm("Are you sure you want to disconnect " + self.currentChat().visitorName() + "?")) {
-            $.connection.chatHub.server.disconnectVisitor(self.currentChat().visitorId());
+            $.connection.chatHub.server.disconnectVisitor(self.currentChat().sessionId());
 
             ko.utils.arrayRemoveItem(self.conversations(), self.currentChat());
         }        
@@ -84,15 +87,15 @@
     // -----------------------------
     self.registerCallbackFunctions = function () {
         // Visitor just CONNECTED
-        $.connection.chatHub.client.visitorConnected = function (visitorInfo) {
+        $.connection.chatHub.client.visitorConnected = function (conversationView) {
 
             self.conversations.push(new Conversation(
                 {                    
-                    sessionId: visitorInfo.sessionId,
-                    visitorName: visitorInfo.name,
-                    startTime: visitorInfo.time,
-                    location: visitorInfo.location,
-                    currentUrl: visitorInfo.currentUrl,
+                    sessionId: conversationView.sessionId,
+                    visitorName: conversationView.visitorName,
+                    startTime: conversationView.time,
+                    location: conversationView.location,
+                    currentUrl: conversationView.currentUrl,
                     isCurrent: (self.conversations().length == 0 ? true : false)
                 }))
         };
@@ -106,9 +109,9 @@
 
             if (conversation) {
                 conversation.messages.push(new Message({
-                    author: author,
-                    text: text,
-                    time: moment(time).format('LT'),
+                    author: message.author,
+                    text: message.text,
+                    time: moment(message.time).format('LT'),
                     read: conversation.isCurrent(),
                     me: false
                 }));
@@ -136,7 +139,7 @@ function Conversation(data) {
     var self = this;
 
     self.sessionId = ko.observable(data.sessionId);
-    self.name = ko.observable(data.name);
+    self.visitorName = ko.observable(data.visitorName);
     self.startTime = ko.observable(data.startTime);
     self.location = ko.observable(data.location);
     self.currentUrl = ko.observable(data.currentUrl);

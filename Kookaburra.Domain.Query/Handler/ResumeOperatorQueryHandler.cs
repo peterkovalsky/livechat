@@ -26,7 +26,7 @@ namespace Kookaburra.Domain.Query.Handler
                                             {
                                                 Name = c.Visitor.Name,
                                                 CurrentUrl = c.Page,
-                                                TimeStarted = c.TimeStarted,
+                                                StartTime = c.TimeStarted,
                                                 Location = @"{c.Visitor.Country}, {c.Visitor.City}",
                                                 Latitude = c.Visitor.Latitude,
                                                 Longitude = c.Visitor.Longitude
