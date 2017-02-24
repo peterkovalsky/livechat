@@ -10,6 +10,7 @@
         // Start the connection.
         $.connection.hub.start().done(function () {
 
+            // trigger event idicating that SignalR has started
             var evt = $.Event('signalr.start');           
             $(window).trigger(evt);
 

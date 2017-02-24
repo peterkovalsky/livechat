@@ -41,6 +41,7 @@ namespace Kookaburra
                 //.Include("~/Scripts/jquery-{version}.js")
                 .Include("~/Scripts/jquery.signalR-{version}.js")
                 .Include("~/Scripts/knockout-{version}.js")
+                .Include("~/Scripts/knockout.mapping-latest.js")                
                 .Include("~/Scripts/chat/operator-global.js")                
             );
 

@@ -12,7 +12,9 @@ namespace Kookaburra.Domain.Query.Result
 
         public DateTime StartTime { get; set; }
 
-        public string Location { get; set; }
+        public string Country { get; set; }
+
+        public string City { get; set; }
 
         public decimal Latitude { get; set; }
 

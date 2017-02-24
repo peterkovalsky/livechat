@@ -65,8 +65,8 @@ namespace Kookaburra.DependencyResolution
             For<IQueryHandler<ContinueConversationQuery, ContinueConversationQueryResult>>().Add<ContinueConversationQueryHandler>();
             For<IQueryHandler<CurrentSessionQuery, CurrentSessionQueryResult>>().Add<CurrentSessionQueryHandler>();
             For<IQueryHandler<CurrentChatsQuery, CurrentChatsQueryResult>>().Add<CurrentChatsQueryHandler>();
+            For<IQueryHandler<ResumeOperatorQuery, ResumeOperatorQueryResult>>().Add<ResumeOperatorQueryHandler>();
             
-
             ForSingletonOf<ChatSession>();
             ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();
         }

@@ -7,7 +7,7 @@
     self.conversations = ko.observableArray([]);
     self.currentChat = ko.computed(function () {
         var result = $.grep(self.conversations(), function (e) { return e.isCurrent() == true; });
-        if (result.length > 0) {
+        if (result && result.length > 0) {
             return result[0];
         } else {
             return null;
@@ -20,15 +20,22 @@
     self.init = function () {        
         self.registerCallbackFunctions();
         self.addEnterPressEvent();
-        self.startOrResumeChat();
+
+        $(window).on('signalr.start', function (e) {
+            self.startOrResumeChat();
+        });        
     };
 
     // Resume operator chats
     // -------------------------
     self.startOrResumeChat = function () {
         $.connection.chatHub.server.resumeOperatorChat().done(function (result) {
-            if (result.conversations.length > 0) {
-                self.conversations(result.conversations);
+            if (result.conversations && result.conversations.length > 0) {
+                $.each(result.conversations, function (index, item) {
+                    self.conversations.push(new Conversation(item));
+                });
+
+                self.setCurrentChat();
             }
         });
     };
@@ -42,8 +49,8 @@
                     author: self.operatorName,
                     text: self.newText(),
                     time: moment().format('LT'),
-                    read: true,
-                    me: true
+                    sentBy: 'operator',
+                    read: true,                 
                 }));
                 $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId());
 
@@ -70,11 +77,7 @@
     // ---------------------------------
     self.switchChat = function (conversation) {
 
-        for (var i = 0; i < self.conversations().length; i++) {
-            self.conversations()[i].isCurrent(false);
-        }
-
-        conversation.isCurrent(true);
+        self.setCurrentChat(conversation);
 
         // mark all messages as READ in the current conversation
         ko.utils.arrayForEach(conversation.messages(), function (item) {
@@ -82,6 +85,22 @@
         });
     };
       
+    // Set a current chat. If null argument - set first chat as a current one
+    // ----------------------------------------------------------------------
+    self.setCurrentChat = function (conversation) {
+        if (self.conversations().length > 0) {
+            for (var i = 0; i < self.conversations().length; i++) {
+                self.conversations()[i].isCurrent(false);
+            }
+
+            if (conversation) {
+                conversation.isCurrent(true);
+            }
+            else {
+                self.conversations()[0].isCurrent(true);
+            }
+        }
+    };
 
     // Register SignalR callbacks
     // -----------------------------
@@ -89,15 +108,8 @@
         // Visitor just CONNECTED
         $.connection.chatHub.client.visitorConnected = function (conversationView) {
 
-            self.conversations.push(new Conversation(
-                {                    
-                    sessionId: conversationView.sessionId,
-                    visitorName: conversationView.visitorName,
-                    startTime: conversationView.time,
-                    location: conversationView.location,
-                    currentUrl: conversationView.currentUrl,
-                    isCurrent: (self.conversations().length == 0 ? true : false)
-                }))
+            self.conversations.push(new Conversation(conversationView))
+            self.setCurrentChat();
         };
 
         // Message from visitor
@@ -108,13 +120,7 @@
             });
 
             if (conversation) {
-                conversation.messages.push(new Message({
-                    author: message.author,
-                    text: message.text,
-                    time: moment(message.time).format('LT'),
-                    read: conversation.isCurrent(),
-                    me: false
-                }));
+                conversation.messages.push(new Message(message, conversation.isCurrent()));
             }
         };
 
@@ -125,14 +131,13 @@
     };  
 }
 
-function Message(data) { 
+function Message(data, isRead) { 
     this.author = ko.observable(data.author);
     this.text = ko.observable(data.text);
-    this.sentBy = ko.observable(data.sentBy);
-   
-    this.time = ko.observable(data.time);
-    this.read = ko.observable(data.read);
-    this.me = ko.observable(data.me);
+    this.sentBy = ko.observable(data.sentBy);   
+    this.time = ko.observable(moment(data.time).format('LT'));
+
+    this.read = ko.observable(isRead);
 }
 
 function Conversation(data) {
@@ -143,21 +148,32 @@ function Conversation(data) {
     self.startTime = ko.observable(data.startTime);
     self.location = ko.observable(data.location);
     self.currentUrl = ko.observable(data.currentUrl);
-
     self.messages = ko.observableArray([]);
 
+    if (data.messages) {
+        $.each(data.messages, function (index, item) {
+            self.messages.push(new Message(item, true));
+        });
+    }
+
     self.isCurrent = ko.observable(data.isCurrent);
+
     self.startTimeFormatted = ko.computed(function () {
         return moment(self.startTime()).calendar();
     });
+
     self.visitorNameFormatted = ko.computed(function () {
         return self.visitorName().toUpperCase();
     });
+
     self.unreadMessages = ko.computed(function () {
         var unreadMessages = ko.utils.arrayFilter(self.messages(), function (item) {
             return !item.read();
         });
 
-        return unreadMessages.length;
+        if (unreadMessages)
+            return unreadMessages.length;
+        else
+            return 0;
     });
 }

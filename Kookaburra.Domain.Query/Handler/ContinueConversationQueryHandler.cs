@@ -76,7 +76,8 @@ namespace Kookaburra.Domain.Query.Handler
                         VisitorInfo = new VisitorInfoResult
                         {
                             Name = conversation.Visitor.Name,
-                            Location = @"{conversation.Visitor.Country}, {conversation.Visitor.City}",
+                            Country = conversation.Visitor.Country,
+                            City = conversation.Visitor.City,                            
                             CurrentUrl = conversation.Page
                         },
                         Conversation = conversationItems

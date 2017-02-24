@@ -25,7 +25,7 @@ namespace Kookaburra.App_Start
                 cfg.CreateMap<ConversationResult, OperatorConversationViewModel>()
                     .ForMember(dest => dest.SessionId, opt => opt.MapFrom(src => src.VisitorInfo.SessionId))
                     .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.VisitorInfo.Name))
-                    .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.VisitorInfo.Location))
+                    .ForMember(dest => dest.Location, opt => opt.MapFrom(src => @"{src.VisitorInfo.Country}, {src.VisitorInfo.City}"))
                     .ForMember(dest => dest.CurrentUrl, opt => opt.MapFrom(src => src.VisitorInfo.CurrentUrl))
                     .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.VisitorInfo.StartTime.JsDateTime()))
                     .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.VisitorInfo.Latitude))
