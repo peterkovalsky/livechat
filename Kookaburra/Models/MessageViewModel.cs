@@ -11,10 +11,10 @@ namespace Kookaburra.Models
         [JsonProperty("text")]
         public string Text { get; set; }
 
-        [JsonProperty("time")]
-        public double Time { get; set; }
-
         [JsonProperty("sentBy")]
         public string SentBy { get; set; }
+
+        [JsonProperty("time")]
+        public double Time { get; set; }
     }
 }

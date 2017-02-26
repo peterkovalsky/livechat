@@ -69,12 +69,15 @@
                         </div>
 
                         <div class="xe-lower">
-                            <div class="border"></div>
 
-                            <button class="btn btn-purple btn-icon" data-bind="click: $parent.disconnect">
-                                <i class="fa-times-circle"></i>
-                                DISCONNECT
-                            </button>
+                            <div data-bind="visible: !isClosed()">
+                                <div class="border"></div>
+
+                                <button class="btn btn-purple btn-icon" data-bind="click: $parent.disconnect">
+                                    <i class="fa-times-circle"></i>
+                                    DISCONNECT
+                                </button>
+                            </div>
 
                             <div class="border"></div>
 

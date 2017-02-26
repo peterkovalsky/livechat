@@ -258,6 +258,7 @@
     <Compile Include="Models\Chat\OperatorCurrentChatsViewModel.cs" />
     <Compile Include="Models\Chat\RoomViewModel.cs" />
     <Compile Include="Models\ConversationViewModel.cs" />
+    <Compile Include="Models\DisconnectViewModel.cs" />
     <Compile Include="Models\History\ChatHistoryViewModel.cs" />
     <Compile Include="Models\History\HistoryViewModel.cs" />
     <Compile Include="Models\History\MessageViewModel.cs" />

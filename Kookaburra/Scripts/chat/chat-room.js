@@ -45,13 +45,12 @@
     self.addEnterPressEvent = function () {
         $(document).keypress(function (e) {
             if (e.which == 13) {
-                self.currentChat().messages.push(new Message({
-                    author: self.operatorName,
-                    text: self.newText(),
-                    time: moment().format('LT'),
-                    sentBy: 'operator',
-                    read: true,                 
-                }));
+                //self.currentChat().messages.push(new Message({
+                //    author: self.operatorName,
+                //    text: self.newText(),
+                //    sentBy: 'operator',
+                //    time: moment()                                                  
+                //}, true));
                 $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId());
 
                 self.newText(''); // clear input area
@@ -66,9 +65,7 @@
     // ------------------------------------
     self.disconnect = function () {
         if (confirm("Are you sure you want to disconnect " + self.currentChat().visitorName() + "?")) {
-            $.connection.chatHub.server.disconnectVisitor(self.currentChat().sessionId());
-
-            ko.utils.arrayRemoveItem(self.conversations(), self.currentChat());
+            $.connection.chatHub.server.finishChattingWithVisitor(self.currentChat().sessionId());
         }        
     };
 
@@ -105,14 +102,15 @@
     // Register SignalR callbacks
     // -----------------------------
     self.registerCallbackFunctions = function () {
-        // Visitor just CONNECTED
+
+        // Visitor connected
         $.connection.chatHub.client.visitorConnected = function (conversationView) {
 
             self.conversations.push(new Conversation(conversationView))
             self.setCurrentChat();
         };
 
-        // Message from visitor
+        // Message from visitor/operator
         $.connection.chatHub.client.sendMessageToOperator = function (message, sessionId) {
 
             var conversation = ko.utils.arrayFirst(self.conversations(), function (c) {
@@ -124,9 +122,40 @@
             }
         };
 
-        // Visitor just has been DISCONNECTED 
-        $.connection.chatHub.client.visitorDisconnected = function (clientId, name, time) {
+        // Visitor stopped chat
+        $.connection.chatHub.client.visitorDisconnectedByVisitor = function (result) {
 
+            var conversationToClose = ko.utils.arrayFirst(self.conversations(), function (c) {
+                return c.sessionId() == result.visitorSessionId;
+            });
+
+            if (conversationToClose)
+            {
+                if (conversationToClose.isCurrent()) {
+                    conversationToClose.messages.push(new Message({                        
+                        text: 'Visitor closed the chat.',
+                        sentBy: 'system',
+                        time: result.time
+                    }, true));
+
+                    conversationToClose.isClosed(true);
+                }
+                else {
+                    self.conversations.remove(conversationToClose);
+                }
+            }            
+        };
+
+        // Operator stopped chat
+        $.connection.chatHub.client.visitorDisconnectedByOperator = function (result) {
+
+            var conversationToClose = ko.utils.arrayFirst(self.conversations(), function (c) {
+                return c.sessionId() == result.visitorSessionId;
+            });
+
+            if (conversationToClose) {
+                self.conversations.remove(conversationToClose);                
+            }
         };
     };  
 }
@@ -149,6 +178,7 @@ function Conversation(data) {
     self.location = ko.observable(data.location);
     self.currentUrl = ko.observable(data.currentUrl);
     self.messages = ko.observableArray([]);
+    self.isClosed = ko.observable(false);
 
     if (data.messages) {
         $.each(data.messages, function (index, item) {

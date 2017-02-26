@@ -1,7 +1,7 @@
 ﻿function OperatorGlobalViewModel() {
  
     var self = this; 
-    self.activeChats = ko.observableArray();
+    self.activeChats = ko.observableArray([]);
    
 
     self.init = function () {
@@ -15,7 +15,12 @@
             $(window).trigger(evt);
 
             $.connection.chatHub.server.connectOperator().done(function (result) {
-                self.activeChats(result.currentChats);          
+                // resume
+                if (result.currentChats && result.currentChats.length > 0) {
+                    $.each(result.currentChats, function (index, item) {
+                        self.activeChats.push(new Chat(item));
+                    });
+                }
             });
         });
 

@@ -57,11 +57,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     // Visitor wants to stop conversation
     // ------------------
     self.closeChat = function () {
-        chatHubProxy.server.visitorClosesChat().done(function () {
-            $.connection.hub.stop();
-
-            window.location = "/widget/stop";
-        });
+        chatHubProxy.server.finishChattingWithOperator();
     }
 
     // Sends message to operator on Enter Press
@@ -70,12 +66,12 @@ function ChatWidgetViewModel(accountKey, currentPage) {
         $(document).keypress(function (e) {
             if (e.which == 13) {
 
-                self.messages.push(new Message({
-                    author: self.visitorName(),
-                    text: self.newMessage(),
-                    time: moment().format('LT'),
-                    sentBy: 'visitor'
-                }));
+                //self.messages.push(new Message({
+                //    author: self.visitorName(),
+                //    text: self.newMessage(),
+                //    time: moment().format('LT'),
+                //    sentBy: 'visitor'
+                //}));
 
                 chatHubProxy.server.sendToOperator(self.newMessage());
 
@@ -96,27 +92,29 @@ function ChatWidgetViewModel(accountKey, currentPage) {
     self.registerClientSideFunctions = function () {
 
         // Visitor received message from operator
-        chatHubProxy.client.sendMessageToVisitor = function (name, message, time) {
-            self.messages.push(new Message({
-                author: name,
-                text: message,
-                time: moment(time).format('LT'),
-                sentBy: 'operator'
+        chatHubProxy.client.sendMessageToVisitor = function (message) {
+            self.messages.push(new Message(message));
+
+            self.scrollDown();
+        };
+
+        chatHubProxy.client.visitorDisconnectedByOperator = function (result) {
+            $.connection.hub.stop();
+
+            self.messages.push(new Message({               
+                text: 'You were disconnected by the operator',                
+                sentBy: 'system',
+                time: result.time
             }));
 
             self.scrollDown();
         };
 
-        chatHubProxy.client.orderToDisconnect = function () {
+        chatHubProxy.client.visitorDisconnectedByVisitor = function () {
             $.connection.hub.stop();
 
-            self.messages.push(new Message({
-                author: 'System',
-                text: 'You were disconnected by the operator',
-                time: moment().format('LT'),
-                sentBy: 'operator'
-            }));
-        };
+            window.location = "/widget/stop";
+        }
     };
 
 
@@ -137,7 +135,7 @@ function ChatWidgetViewModel(accountKey, currentPage) {
 
 function Message(data) {
     this.author = ko.observable(data.author);
-    this.text = ko.observable(data.text);
-    this.time = ko.observable(data.time);
-    this.sentBy = ko.observable(data.sentBy)
+    this.text = ko.observable(data.text);    
+    this.sentBy = ko.observable(data.sentBy);
+    this.time = ko.observable(moment(data.time).format('LT'));
 }
