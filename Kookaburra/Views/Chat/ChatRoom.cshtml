@@ -22,18 +22,21 @@
 
                 <div class="panel-body">
 
-                    <ul class="conversation-messages ps-scrollbar ps-scroll-down ps-container ps-active-y">
+                    <ul class="conversation">
                         <li data-bind="foreach: messages">
 
-                            <div class="row" data-bind="css: sentBy">
-                                <div class="col-sm-2 chat-author" data-bind="text: author">
-
+                            <div class="row message" data-bind="css: sentBy">
+                                <div class="col-sm-1 author" data-bind="visible: sentBy() == 'operator'">
+                                    <img src="/images/user-1.png" class="img-circle" alt="user-pic">
+                                    <div class="author-name" data-bind="text: author"></div>
                                 </div>
-                                <div class="col-sm-8 chat-message" data-bind="text: text">
-
-                                </div>
-                                <div class="col-sm-2 chat-time" data-bind="text: time">
-
+                                <div class="col-sm-10">
+                                    <div class="time" data-bind="text: time"></div>                                    
+                                    <div class="text" data-bind="text: text"></div>
+                                </div>                             
+                                <div class="col-sm-1 author" data-bind="visible: sentBy() == 'visitor'">                                    
+                                    <img src="/images/user-1.png" class="img-circle" alt="user-pic">
+                                    <div class="author-name" data-bind="text: author"></div>
                                 </div>
                             </div>
 
