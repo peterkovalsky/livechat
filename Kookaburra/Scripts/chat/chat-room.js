@@ -34,11 +34,17 @@
                 $.each(result.conversations, function (index, item) {
                     self.conversations.push(new Conversation(item));
                 });
-
+               
                 self.setCurrentChat();
+                $('#conversation').perfectScrollbar();
+                self.scrollDown();
             }
         });
     };
+
+    self.scrollDown = function () {
+        $('#conversation').animate({ scrollTop: $('#messages').prop('scrollHeight') }, "slow");
+    }
 
     // Sends message to visitor on Enter Press
     // ----------------------------------------
@@ -119,6 +125,9 @@
 
             if (conversation) {
                 conversation.messages.push(new Message(message, conversation.isCurrent()));
+
+                $('#conversation').perfectScrollbar('update');
+                self.scrollDown();
             }
         };
 

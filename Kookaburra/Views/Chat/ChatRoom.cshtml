@@ -22,26 +22,26 @@
 
                 <div class="panel-body">
 
-                    <ul class="conversation">
-                        <li data-bind="foreach: messages">
+                    <div id="conversation" class="chat-window">
+                        <ul id="messages" class="conversation" data-bind="foreach: messages">
+                            <li class="row message" data-bind="css: sentBy">
 
-                            <div class="row message" data-bind="css: sentBy">
                                 <div class="col-sm-1 author" data-bind="visible: sentBy() == 'operator'">
                                     <img src="/images/user-1.png" class="img-circle" alt="user-pic">
                                     <div class="author-name" data-bind="text: author"></div>
                                 </div>
-                                <div class="col-sm-10">
-                                    <div class="time" data-bind="text: time"></div>                                    
+                                <div class="col-sm-11">
+                                    <div class="time" data-bind="text: time"></div>
                                     <div class="text" data-bind="text: text"></div>
-                                </div>                             
-                                <div class="col-sm-1 author" data-bind="visible: sentBy() == 'visitor'">                                    
+                                </div>
+                                <div class="col-sm-1 author" data-bind="visible: sentBy() == 'visitor'">
                                     <img src="/images/user-1.png" class="img-circle" alt="user-pic">
                                     <div class="author-name" data-bind="text: author"></div>
                                 </div>
-                            </div>
 
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </div>
 
                     <div class="chat-message">
                         <textarea data-bind="textInput: $parent.newText"
@@ -123,13 +123,20 @@
 </div>
 
 <script type="text/javascript">
-    var chatRoomViewModel = new ChatRoomViewModel('@Model.OperatorName');
-    ko.applyBindings(chatRoomViewModel, document.getElementById("layout-chatroom"));
 
-    chatRoomViewModel.init();
+    $(document).ready(function () {
+        //$('#conversation').perfectScrollbar();
+
+        var chatRoomViewModel = new ChatRoomViewModel('@Model.OperatorName');
+        ko.applyBindings(chatRoomViewModel, document.getElementById("layout-chatroom"));
+
+        chatRoomViewModel.init();
+    });
+
 </script>
 
 @section scripts
 {
     @Scripts.Render("~/bundles/js/chatroom")
+    @Styles.Render("~/bundles/css/chatroom")
 }
