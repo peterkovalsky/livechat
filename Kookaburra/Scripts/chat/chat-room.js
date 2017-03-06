@@ -169,13 +169,21 @@
     };  
 }
 
-function Message(data, isRead) { 
-    this.author = ko.observable(data.author);
-    this.text = ko.observable(data.text);
-    this.sentBy = ko.observable(data.sentBy);   
-    this.time = ko.observable(moment(data.time).format('LT'));
+function Message(data, isRead) {
+    var self = this;
 
-    this.read = ko.observable(isRead);
+    self.author = ko.observable(data.author);
+    self.text = ko.observable(data.text);
+    self.sentBy = ko.observable(data.sentBy);
+
+    var now = ko.observable(new Date());
+    setInterval(function () { now(new Date()); }, 60 * 1000);
+
+    self.time = ko.computed(function () {
+        return moment(data.time).startOf('minute').from(now());
+    });
+
+    self.read = ko.observable(isRead);
 }
 
 function Conversation(data) {
