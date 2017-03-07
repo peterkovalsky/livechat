@@ -3800,6 +3800,8 @@
     <Content Include="vendor\waves\waves.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Views\Shared\_SideMenuRemark.cshtml" />
+    <Content Include="Views\Shared\_TopNavBarRemark.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

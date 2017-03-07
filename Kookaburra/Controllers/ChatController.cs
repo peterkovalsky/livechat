@@ -40,7 +40,7 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet]
-        [Route("chat-room")]
+        [Route("chats")]
         public ActionResult ChatRoom()
         {
             var currentOperator = _operatorRepositor.Get(User.Identity.GetUserId());
