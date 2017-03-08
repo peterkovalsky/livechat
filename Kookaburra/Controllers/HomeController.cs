@@ -3,7 +3,6 @@ using Kookaburra.Domain.Repository;
 using Kookaburra.Models.Home;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using System;
 using System.Web;
 using System.Web.Mvc;
 
@@ -39,7 +38,8 @@ namespace Kookaburra.Controllers
 
         [HttpGet]
         [Route("")]
-        public ActionResult Index()
+        [Route("dashboard")]
+        public ActionResult Dashboard()
         {
             return View();
         }

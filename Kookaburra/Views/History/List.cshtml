@@ -1,92 +1,88 @@
 ﻿@model Kookaburra.Models.History.HistoryViewModel
 
-@section scripts
-{  
-    <script src="~/Scripts/moment-with-locales.min.js"></script>
-}
-
-<div class="page-title row">
-    <div class="title-env col-sm-11">
-        <h1 class="title">Chat History</h1>
-        <p class="description">VIEW AND EXPORT CHAT HISTORY FOR THE LAST 30 DAYS</p>
+<div class="page">
+    <div class="page-header">
+        <h1 class="page-title">CHAT HISTORY</h1>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-sm-8">
+    <div class="page-content">
+        <div class="row">
+            <div class="col-sm-8">
 
-        <div class="xe-widget xe-conversations">
-            <div class="xe-bg-icon">
-                <i class="linecons-comment"></i>
-            </div>
-            <div class="xe-header">
-                <div class="xe-icon">
-                    <i class="linecons-comment"></i>
+                <div class="xe-widget xe-conversations">
+                    <div class="xe-bg-icon">
+                        <i class="linecons-comment"></i>
+                    </div>
+                    <div class="xe-header">
+                        <div class="xe-icon">
+                            <i class="linecons-comment"></i>
+                        </div>
+                        <div class="xe-label">
+                            <h3>
+                                Conversations
+                                <small>Chatting arround</small>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="xe-body">
+
+                        <ul class="list-unstyled">
+                            <li>
+                                <div class="xe-comment-entry">
+                                    <a href="#" class="xe-user-img">
+                                        <img src="assets/images/user-2.png" class="img-circle" width="40">
+                                    </a>
+
+                                    <div class="xe-comment">
+                                        <a href="#" class="xe-user-name">
+                                            <strong>Jack Gates</strong>
+                                        </a>
+
+                                        <p>In it except to so temper mutual tastes mother. Interested cultivated its continuing now yet are. <br>Out interested acceptance our partiality affronting unpleasant why add. Esteem garden me...</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="xe-comment-entry">
+                                    <a href="#" class="xe-user-img">
+                                        <img src="assets/images/user-5.png" class="img-circle" width="40">
+                                    </a>
+
+                                    <div class="xe-comment">
+                                        <a href="#" class="xe-user-name">
+                                            <strong>Arlind Nushi</strong>
+                                            <span class="label label-secondary">5</span>
+                                        </a>
+
+                                        <p>Age sold some full like rich new. Amounted repeated as believed in confined juvenile.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="xe-comment-entry">
+                                    <a href="#" class="xe-user-img">
+                                        <img src="assets/images/user-4.png" class="img-circle" width="40">
+                                    </a>
+
+                                    <div class="xe-comment">
+                                        <a href="#" class="xe-user-name">
+                                            <strong>Bryan Green</strong>
+                                        </a>
+
+                                        <p>Stuff sight equal of my woody. Him children bringing goodness suitable she entirely put far daughter.</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="xe-footer">
+                        <a href="#">View All</a>
+                    </div>
                 </div>
-                <div class="xe-label">
-                    <h3>
-                        Conversations
-                        <small>Chatting arround</small>
-                    </h3>
-                </div>
-            </div>
-            <div class="xe-body">
 
-                <ul class="list-unstyled">
-                    <li>
-                        <div class="xe-comment-entry">
-                            <a href="#" class="xe-user-img">
-                                <img src="assets/images/user-2.png" class="img-circle" width="40">
-                            </a>
-
-                            <div class="xe-comment">
-                                <a href="#" class="xe-user-name">
-                                    <strong>Jack Gates</strong>
-                                </a>
-
-                                <p>In it except to so temper mutual tastes mother. Interested cultivated its continuing now yet are. <br>Out interested acceptance our partiality affronting unpleasant why add. Esteem garden me...</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="xe-comment-entry">
-                            <a href="#" class="xe-user-img">
-                                <img src="assets/images/user-5.png" class="img-circle" width="40">
-                            </a>
-
-                            <div class="xe-comment">
-                                <a href="#" class="xe-user-name">
-                                    <strong>Arlind Nushi</strong>
-                                    <span class="label label-secondary">5</span>
-                                </a>
-
-                                <p>Age sold some full like rich new. Amounted repeated as believed in confined juvenile.</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="xe-comment-entry">
-                            <a href="#" class="xe-user-img">
-                                <img src="assets/images/user-4.png" class="img-circle" width="40">
-                            </a>
-
-                            <div class="xe-comment">
-                                <a href="#" class="xe-user-name">
-                                    <strong>Bryan Green</strong>
-                                </a>
-
-                                <p>Stuff sight equal of my woody. Him children bringing goodness suitable she entirely put far daughter.</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-
-            </div>
-            <div class="xe-footer">
-                <a href="#">View All</a>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -105,12 +101,21 @@
 
 </script>
 
+@section scripts
+{
+    <script src="~/Scripts/moment-with-locales.min.js"></script>
+}
+
 <!--Start of Zopim Live Chat Script-->
 <script type="text/javascript">
-window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-$.src="//v2.zopim.com/?47sV5SBO2s68vDegvaogmgXRycxDt8q6";z.t=+new Date;$.
-type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+    window.$zopim || (function (d, s) {
+        var z = $zopim = function (c) { z._.push(c) }, $ = z.s =
+        d.createElement(s), e = d.getElementsByTagName(s)[0]; z.set = function (o) {
+            z.set.
+            _.push(o)
+        }; z._ = []; z.set._ = []; $.async = !0; $.setAttribute("charset", "utf-8");
+        $.src = "//v2.zopim.com/?47sV5SBO2s68vDegvaogmgXRycxDt8q6"; z.t = +new Date; $.
+        type = "text/javascript"; e.parentNode.insertBefore($, e)
+    })(document, "script");
 </script>
 <!--End of Zopim Live Chat Script-->

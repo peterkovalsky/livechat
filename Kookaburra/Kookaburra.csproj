@@ -3802,6 +3802,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Views\Shared\_SideMenuRemark.cshtml" />
     <Content Include="Views\Shared\_TopNavBarRemark.cshtml" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

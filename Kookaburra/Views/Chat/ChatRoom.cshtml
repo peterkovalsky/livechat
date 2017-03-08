@@ -1,131 +1,131 @@
 ﻿@model Kookaburra.ViewModels.Chat.RoomViewModel
 
-<div id="layout-chatroom">
-    <div class="page-title row">
-        <div class="title-env col-sm-11">
-            <h1 class="title">Chats</h1>
-            <p class="description">CURRENT CHATS</p>
-        </div>
+<div id="layout-chatroom" class="page">
+    <div class="page-header">
+        <h1 class="page-title">CURRENT CHATS</h1>
     </div>
 
-    <div class="row" style="display: none;" data-bind="visible: conversations().length > 0">
-        <div class="col-sm-9" data-bind="with: currentChat">
-            <div class="panel panel-color panel-gray chat">
-                <!-- Add class "collapsed" to minimize the panel -->
-                <div class="panel-heading text-center">
-                    <h3 class="panel-title col-sm-12">
-                        Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
-                        <br />
-                        <small> Started <span data-bind="text: startTimeFormatted"></span></small>
-                    </h3>
-                </div>
-
-                <div class="panel-body">
-
-                    <div id="conversation" class="chat-window">
-                        <ul id="messages" class="conversation" data-bind="foreach: messages">
-                            <li class="row message" data-bind="css: sentBy">
-
-                                <div class="col-sm-1 author" data-bind="visible: sentBy() == 'operator'">
-                                    <img src="/images/user-1.png" class="img-circle" alt="user-pic">
-                                    <div class="author-name" data-bind="text: author"></div>
-                                </div>
-                                <div class="col-sm-11">
-                                    <div class="time" data-bind="text: time"></div>
-                                    <div class="text" data-bind="text: text"></div>
-                                </div>
-                                <div class="col-sm-1 author" data-bind="visible: sentBy() == 'visitor'">
-                                    <img src="/images/user-1.png" class="img-circle" alt="user-pic">
-                                    <div class="author-name" data-bind="text: author"></div>
-                                </div>
-
-                            </li>
-                        </ul>
+    <div class="page-content">
+        <div class="row" style="display: none;" data-bind="visible: conversations().length > 0">
+            <div class="col-sm-9" data-bind="with: currentChat">
+                <div class="panel panel-color panel-gray chat">
+                    <!-- Add class "collapsed" to minimize the panel -->
+                    <div class="panel-heading text-center">
+                        <h3 class="panel-title col-sm-12">
+                            Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
+                            <br />
+                            <small> Started <span data-bind="text: startTimeFormatted"></span></small>
+                        </h3>
                     </div>
 
-                    <div class="chat-message">
-                        <textarea data-bind="textInput: $parent.newText"
-                                  class="form-control" placeholder="Enter your message..."></textarea>
-                    </div>
+                    <div class="panel-body">
 
-                </div>
-            </div>
-        </div>
+                        <div id="conversation" class="chat-window">
+                            <ul id="messages" class="conversation" data-bind="foreach: messages">
+                                <li class="row message" data-bind="css: sentBy">
 
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-12" data-bind="with: currentChat">
+                                    <div class="col-sm-1 author" data-bind="visible: sentBy() == 'operator'">
+                                        <img src="/images/user-1.png" class="img-circle" alt="user-pic">
+                                        <div class="author-name" data-bind="text: author"></div>
+                                    </div>
+                                    <div class="col-sm-11">
+                                        <div class="time" data-bind="text: time"></div>
+                                        <div class="text" data-bind="text: text"></div>
+                                    </div>
+                                    <div class="col-sm-1 author" data-bind="visible: sentBy() == 'visitor'">
+                                        <img src="/images/user-1.png" class="img-circle" alt="user-pic">
+                                        <div class="author-name" data-bind="text: author"></div>
+                                    </div>
 
-                    <div class="xe-widget xe-progress-counter xe-progress-counter-turquoise current-chat">
-
-                        @*<div class="xe-background">
-                                <i class="linecons-comment"></i>
-                            </div>*@
-
-                        <div class="xe-upper">
-                            <div class="xe-icon">
-                                <i class="linecons-comment"></i>
-                            </div>
-                            <div class="xe-label">
-                                <strong class="num" data-bind="text: visitorNameFormatted"></strong>
-                            </div>
+                                </li>
+                            </ul>
                         </div>
 
-                        <div class="xe-lower">
+                        <div class="chat-message">
+                            <textarea data-bind="textInput: $parent.newText"
+                                      class="form-control" placeholder="Enter your message..."></textarea>
+                        </div>
 
-                            <div data-bind="visible: !isClosed()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-sm-12" data-bind="with: currentChat">
+
+                        <div class="xe-widget xe-progress-counter xe-progress-counter-turquoise current-chat">
+
+                            @*<div class="xe-background">
+                                    <i class="linecons-comment"></i>
+                                </div>*@
+
+                            <div class="xe-upper">
+                                <div class="xe-icon">
+                                    <i class="linecons-comment"></i>
+                                </div>
+                                <div class="xe-label">
+                                    <strong class="num" data-bind="text: visitorNameFormatted"></strong>
+                                </div>
+                            </div>
+
+                            <div class="xe-lower">
+
+                                <div data-bind="visible: !isClosed()">
+                                    <div class="border"></div>
+
+                                    <button class="btn btn-purple btn-icon" data-bind="click: $parent.disconnect">
+                                        <i class="fa-times-circle"></i>
+                                        DISCONNECT
+                                    </button>
+                                </div>
+
                                 <div class="border"></div>
 
-                                <button class="btn btn-purple btn-icon" data-bind="click: $parent.disconnect">
-                                    <i class="fa-times-circle"></i>
-                                    DISCONNECT
-                                </button>
+                                <span data-bind="text: location"></span>
+                                <strong data-bind="text: currentUrl"></strong>
+
+                                <div class="border"></div>
                             </div>
 
-                            <div class="border"></div>
-
-                            <span data-bind="text: location"></span>
-                            <strong data-bind="text: currentUrl"></strong>
-
-                            <div class="border"></div>
                         </div>
 
                     </div>
-
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div>
-                        Current Conversations
-                    </div>
-                    <div class="list-group list-group-minimal">
-                        <div data-bind="foreach: conversations">
-                            <a href="#" class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
-                                <span class="badge badge badge-yellow" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
-                                <strong data-bind="text: visitorName"></strong>
-                            </a>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div>
+                            Current Conversations
+                        </div>
+                        <div class="list-group list-group-minimal">
+                            <div data-bind="foreach: conversations">
+                                <a href="#" class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
+                                    <span class="badge badge badge-yellow" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
+                                    <strong data-bind="text: visitorName"></strong>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row" style="display: none;" data-bind="visible: conversations().length == 0">
-        <div class="col-sm-12">
-            <div class="alert alert-warning">
-                <strong>There are currently no active chats.</strong>
+        <div class="row" style="display: none;" data-bind="visible: conversations().length == 0">
+            <div class="col-sm-12">
+                <div class="alert alert-warning">
+                    <strong>There are currently no active chats.</strong>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+
+
 <script type="text/javascript">
 
     $(document).ready(function () {
-        //$('#conversation').perfectScrollbar();
 
         var chatRoomViewModel = new ChatRoomViewModel('@Model.OperatorName');
         ko.applyBindings(chatRoomViewModel, document.getElementById("layout-chatroom"));
