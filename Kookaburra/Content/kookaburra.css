@@ -255,8 +255,6 @@ li.conversation-item.active {
 .chat .chat-window {
     height: 350px;
     position: relative;
-    overflow-y: auto; 
-    overflow-x:hidden;
 }
 
 .chat .conversation {   

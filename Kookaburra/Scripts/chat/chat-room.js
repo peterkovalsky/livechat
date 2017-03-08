@@ -36,7 +36,7 @@
                 });
                
                 self.setCurrentChat();
-                $('#conversation').perfectScrollbar();
+                //$('#conversation').perfectScrollbar();
                 self.scrollDown();
             }
         });
@@ -126,7 +126,7 @@
             if (conversation) {
                 conversation.messages.push(new Message(message, conversation.isCurrent()));
 
-                $('#conversation').perfectScrollbar('update');
+                //$('#conversation').perfectScrollbar('update');
                 self.scrollDown();
             }
         };

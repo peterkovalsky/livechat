@@ -39,3 +39,12 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    var operatorGlobalView = new OperatorGlobalViewModel();
+    ko.applyBindings(operatorGlobalView, document.getElementById("layout-sidebar"));
+
+    operatorGlobalView.init();
+
+</script>

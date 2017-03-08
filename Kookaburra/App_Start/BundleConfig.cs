@@ -25,7 +25,7 @@ namespace Kookaburra
             bundles.Add(new ScriptBundle("~/bundles/js/chatroom")        
                 .Include("~/Scripts/moment-with-locales.min.js")
                 .Include("~/Scripts/chat/chat-room.js")
-                .Include("~/Scripts/perfect-scrollbar.jquery.js")
+                //.Include("~/Scripts/perfect-scrollbar.jquery.js")
             );
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -56,7 +56,7 @@ namespace Kookaburra
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/bundles/css/chatroom")
-                .Include("~/Content/perfect-scrollbar.css")
+                //.Include("~/Content/perfect-scrollbar.css")
             );
 
             bundles.Add(new StyleBundle("~/bundles/css/widget")
