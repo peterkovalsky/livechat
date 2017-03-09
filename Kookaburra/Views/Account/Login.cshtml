@@ -4,92 +4,149 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html class="no-js css-menubar" lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="bootstrap admin template">
+    <meta name="author" content="">
+    <title>Blank | Remark Admin Template</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Xenon Boostrap Admin Panel" />
-    <meta name="author" content="" />
+    <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
+    <link rel="shortcut icon" href="../../assets/images/favicon.ico">
 
-    <title>Xenon - Login</title>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="/Content/bootstrap-extend.min.css">
+    <link rel="stylesheet" href="/Content/site.min.css">
+    <link rel="stylesheet" href="/Content/kookaburra.css">
+    <link rel="stylesheet" href="/Content/login-v3.min.css?v2.2.0">
 
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
-    <link rel="stylesheet" href="~/Content/fonts/linecons/css/linecons.css">
-    <link rel="stylesheet" href="~/Content/fonts/fontawesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/Content/bootstrap.css">
-    <link rel="stylesheet" href="~/Content/xenon-core.css">
-    <link rel="stylesheet" href="~/Content/xenon-forms.css">
-    <link rel="stylesheet" href="~/Content/xenon-components.css">
-    <link rel="stylesheet" href="~/Content/xenon-skins.css">
-    <link rel="stylesheet" href="~/Content/custom.css">
+    <!-- Plugins -->
+    <link rel="stylesheet" href="/vendor/animsition/animsition.css">
+    <link rel="stylesheet" href="/vendor/asscrollable/asScrollable.css">
+    <link rel="stylesheet" href="/vendor/switchery/switchery.css">
+    <link rel="stylesheet" href="/vendor/intro-js/introjs.css">
+    <link rel="stylesheet" href="/vendor/slidepanel/slidePanel.css">
+    <link rel="stylesheet" href="/vendor/flag-icon-css/flag-icon.css">
+    <link rel="stylesheet" href="/vendor/waves/waves.css">
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- Fonts -->
+    <link rel="stylesheet" href="~/Content/fonts/web-icons/web-icons.min.css">
+    <link rel="stylesheet" href="~/Content/fonts/font-awesome/font-awesome.min.css">
+    <link rel="stylesheet" href="/Content/fonts/material-design/material-design.min.css">
+    <link rel="stylesheet" href="/Content/fonts/brand-icons/brand-icons.min.css">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+      <script src="/vendor/html5shiv/html5shiv.min.js"></script>
+      <![endif]-->
+    <!--[if lt IE 10]>
+      <script src="/vendor/media-match/media.match.min.js"></script>
+      <script src="/vendor/respond/respond.min.js"></script>
+      <![endif]-->
+    <!-- Scripts -->
+    <script src="/vendor/breakpoints/breakpoints.js"></script>
+    <script>
+  Breakpoints();
+    </script>
 
+    <!-- Core  -->
+    <script src="/vendor/babel-external-helpers/babel-external-helpers.js"></script>
+    <script src="/vendor/jquery/jquery.js"></script>
+    <script src="/vendor/tether/tether.js"></script>
+    <script src="/vendor/bootstrap/bootstrap.js"></script>
+    <script src="/vendor/animsition/animsition.js"></script>
+    <script src="/vendor/mousewheel/jquery.mousewheel.js"></script>
+    <script src="/vendor/asscrollbar/jquery-asScrollbar.js"></script>
+    <script src="/vendor/asscrollable/jquery-asScrollable.js"></script>
+    <script src="/vendor/ashoverscroll/jquery-asHoverScroll.js"></script>
+    <script src="/vendor/waves/waves.js"></script>
+
+    @Scripts.Render("~/bundles/jqueryval")
 </head>
-<body class="page-body login-page">
 
-    <div class="login-container">
-
-        <div class="row">
-
-            <div class="col-sm-6">              
-                <!-- Add class "fade-in-effect" for login form effect -->
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "login", @class = "login-form", role = "form" }))
-            {
-                @Html.AntiForgeryToken()       
-
-                    <div class="login-header">
-                        <span style="font-family:'Comic Sans MS'; font-size:20px; font-weight:bold;">KOOKABURRA</span>
-
-                        <p>Dear user, log in to access the admin area!</p>
+<body class="animsition page-login-v3 layout-full">
+    <!--[if lt IE 8]>
+          <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <![endif]-->
+    <!-- Page -->
+    <div class="page vertical-align text-xs-center" data-animsition-in="fade-in" data-animsition-out="fade-out">
+        >
+        <div class="page-content vertical-align-middle">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="brand">
+                        <img class="brand-img" src="/images/logo-small.png" alt="...">
+                        <h2 class="brand-text font-size-18">Kookaburra</h2>
                     </div>
-
-                    <div class="form-group">                     
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-dark", autocomplete = "off", placeholder = "Email" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="form-group">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control input-dark", autocomplete = "off", placeholder = "Password" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })               
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success  btn-block text-left">
-                            <i class="fa-lock"></i>
-                            SIGN IN
-                        </button>
-                    </div>
-
-                    <div class="login-footer">
-                        <a href="#">Forgot your password?</a>
-                    </div>
-               }
+                  @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "login", @class = "login-form", role = "form" }))
+                  {
+                    @Html.AntiForgeryToken()
+                        <div class="form-group form-material floating" data-plugin="formMaterial">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", autocomplete = "off"})                                                 
+                            <label class="floating-label">Email</label>
+                        </div>
+                        <div class="form-group form-material floating" data-plugin="formMaterial">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", autocomplete = "off" })
+                            <label class="floating-label">Password</label>
+                        </div>
+                        <div class="form-group clearfix">
+                            <div class="checkbox-custom checkbox-inline checkbox-primary checkbox-lg pull-xs-left">
+                                <input type="checkbox" id="inputCheckbox" name="remember">
+                                <label for="inputCheckbox">Remember me</label>
+                            </div>
+                            <a class="pull-xs-right" href="forgot-password.html">Forgot password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg m-t-40">Sign in</button>
+                  }
+                    <p>Still no account? Please go to <a href="register-v3.html">Sign up</a></p>
+                </div>
             </div>
+            <footer class="page-copyright page-copyright-inverse">              
+                <p>© 2017. All RIGHT RESERVED.</p>           
+            </footer>
         </div>
     </div>
 
+    <!-- End Page -->
+    <!-- Plugins -->
+    <script src="/vendor/switchery/switchery.min.js"></script>
+    <script src="/vendor/intro-js/intro.js"></script>
+    <script src="/vendor/screenfull/screenfull.js"></script>
+    <script src="/vendor/slidepanel/jquery-slidePanel.js"></script>
+    <script src="/vendor/jquery-placeholder/jquery.placeholder.js"></script>
 
-    <!-- Bottom Scripts -->
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/TweenMax.min.js"></script>
-    <script src="~/Scripts/resizeable.js"></script>
-    <script src="~/Scripts/joinable.js"></script>
-    <script src="~/Scripts/xenon-api.js"></script>
-    <script src="~/Scripts/xenon-toggles.js"></script>
-     
+    <!-- Scripts -->
+    <script src="/Scripts/remark/global/State.js"></script>
+    <script src="/Scripts/remark/global/Component.js"></script>
+    <script src="/Scripts/remark/global/Plugin.js"></script>
+    <script src="/Scripts/remark/global/Base.js"></script>
+    <script src="/Scripts/remark/global/Config.js"></script>
+    <script src="/Scripts/remark/Section/Menubar.js"></script>
+    <script src="/Scripts/remark/Section/GridMenu.js"></script>
+    <script src="/Scripts/remark/Section/Sidebar.js"></script>
+    <script src="/Scripts/remark/Section/PageAside.js"></script>
+    <script src="/Scripts/remark/Plugin/menu.js"></script>
+    <script src="/Scripts/remark/global/config/colors.js"></script>
+    <script src="/Scripts/remark/config/tour.js"></script>
 
-    <!-- JavaScripts initializations and stuff -->
-    <script src="~/Scripts/xenon-custom.js"></script>
+    <!-- Page -->
+    <script src="/Scripts/remark/Site.js"></script>
+    <script src="/Scripts/remark/global/Plugin/asscrollable.js"></script>
+    <script src="/Scripts/remark/global/Plugin/slidepanel.js"></script>
+    <script src="/Scripts/remark/global/Plugin/switchery.js"></script>
+    <script src="/Scripts/remark/global/Plugin/jquery-placeholder.js"></script>
+    <script src="/Scripts/remark/global/Plugin/material.js"></script>
 
+    <script>
+        (function (document, window, $) {
+            'use strict';
+            var Site = window.Site;
+            $(document).ready(function () {
+                Site.run();
+            });
+        })(document, window, jQuery);
+    </script>
 </body>
 </html>
