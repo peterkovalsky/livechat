@@ -6,56 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="bootstrap admin template">
     <meta name="author" content="">
-    <title>Blank | Remark Admin Template</title>
+    <title>Kookaburra</title>
 
-    <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
-    <link rel="shortcut icon" href="../../assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/remark/assets/images/apple-touch-icon.png">
+    <link rel="shortcut icon" href="/remark/assets/images/favicon.ico">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/Content/bootstrap.min.css">
-    <link rel="stylesheet" href="/Content/bootstrap-extend.min.css">
-    <link rel="stylesheet" href="/Content/site.min.css">
-    <link rel="stylesheet" href="/Content/kookaburra.css">
+    <link rel="stylesheet" href="/remark/global/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/remark/global/css/bootstrap-extend.min.css">
+    <link rel="stylesheet" href="/remark/assets/css/site.min.css">
 
     <!-- Plugins -->
-    <link rel="stylesheet" href="/vendor/animsition/animsition.css">
-    <link rel="stylesheet" href="/vendor/asscrollable/asScrollable.css">
-    <link rel="stylesheet" href="/vendor/switchery/switchery.css">
-    <link rel="stylesheet" href="/vendor/intro-js/introjs.css">
-    <link rel="stylesheet" href="/vendor/slidepanel/slidePanel.css">
-    <link rel="stylesheet" href="/vendor/flag-icon-css/flag-icon.css">
-    <link rel="stylesheet" href="/vendor/waves/waves.css">
-
+    <link rel="stylesheet" href="/remark/global/vendor/animsition/animsition.css">
+    <link rel="stylesheet" href="/remark/global/vendor/asscrollable/asScrollable.css">
+    <link rel="stylesheet" href="/remark/global/vendor/switchery/switchery.css">
+    <link rel="stylesheet" href="/remark/global/vendor/intro-js/introjs.css">
+    <link rel="stylesheet" href="/remark/global/vendor/slidepanel/slidePanel.css">
+    <link rel="stylesheet" href="/remark/global/vendor/flag-icon-css/flag-icon.css">
+    <link rel="stylesheet" href="/remark/global/vendor/chartist/chartist.css">
+    <link rel="stylesheet" href="/remark/global/vendor/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="/remark/global/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css">
+  
     <!-- Fonts -->
-    <link rel="stylesheet" href="~/Content/fonts/web-icons/web-icons.min.css">
-    <link rel="stylesheet" href="~/Content/fonts/font-awesome/font-awesome.min.css">
-    <link rel="stylesheet" href="/Content/fonts/material-design/material-design.min.css">
-    <link rel="stylesheet" href="/Content/fonts/brand-icons/brand-icons.min.css">
+    <link rel="stylesheet" href="/remark/global/fonts/weather-icons/weather-icons.css">
+    <link rel="stylesheet" href="/remark/global/fonts/web-icons/web-icons.min.css">
+    <link rel="stylesheet" href="/remark/global/fonts/brand-icons/brand-icons.min.css">
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
     <!--[if lt IE 9]>
-      <script src="/vendor/html5shiv/html5shiv.min.js"></script>
+      <script src="/remark/global/vendor/html5shiv/html5shiv.min.js"></script>
       <![endif]-->
     <!--[if lt IE 10]>
-      <script src="/vendor/media-match/media.match.min.js"></script>
-      <script src="/vendor/respond/respond.min.js"></script>
+      <script src="/remark/global/vendor/media-match/media.match.min.js"></script>
+      <script src="/remark/global/vendor/respond/respond.min.js"></script>
       <![endif]-->
     <!-- Scripts -->
-    <script src="/vendor/breakpoints/breakpoints.js"></script>
+    <script src="/remark/global/vendor/breakpoints/breakpoints.js"></script>
     <script>
   Breakpoints();
     </script>
 
+    <link rel="stylesheet" href="~/Content/kookaburra.css">
+
     <!-- Core  -->
-    <script src="/vendor/babel-external-helpers/babel-external-helpers.js"></script>
-    <script src="/vendor/jquery/jquery.js"></script>
-    <script src="/vendor/tether/tether.js"></script>
-    <script src="/vendor/bootstrap/bootstrap.js"></script>
-    <script src="/vendor/animsition/animsition.js"></script>
-    <script src="/vendor/mousewheel/jquery.mousewheel.js"></script>
-    <script src="/vendor/asscrollbar/jquery-asScrollbar.js"></script>
-    <script src="/vendor/asscrollable/jquery-asScrollable.js"></script>
-    <script src="/vendor/ashoverscroll/jquery-asHoverScroll.js"></script>
-    <script src="/vendor/waves/waves.js"></script>
+    <script src="/remark/global/vendor/babel-external-helpers/babel-external-helpers.js"></script>
+    <script src="/remark/global/vendor/jquery/jquery.js"></script>
+    <script src="/remark/global/vendor/tether/tether.js"></script>
+    <script src="/remark/global/vendor/bootstrap/bootstrap.js"></script>
+    <script src="/remark/global/vendor/animsition/animsition.js"></script>
+    <script src="/remark/global/vendor/mousewheel/jquery.mousewheel.js"></script>
+    <script src="/remark/global/vendor/asscrollbar/jquery-asScrollbar.js"></script>
+    <script src="/remark/global/vendor/asscrollable/jquery-asScrollable.js"></script>
+    <script src="/remark/global/vendor/ashoverscroll/jquery-asHoverScroll.js"></script>
 
     @Scripts.Render("~/bundles/js/portal")
     @RenderSection("scripts", required: false)
@@ -79,38 +81,41 @@
     <!-- End Page -->
 
     <!-- Plugins -->
-    <script src="/vendor/switchery/switchery.min.js"></script>
-    <script src="/vendor/intro-js/intro.js"></script>
-    <script src="/vendor/screenfull/screenfull.js"></script>
-    <script src="/vendor/slidepanel/jquery-slidePanel.js"></script>
+    <script src="/remark/global/vendor/switchery/switchery.min.js"></script>
+    <script src="/remark/global/vendor/intro-js/intro.js"></script>
+    <script src="/remark/global/vendor/screenfull/screenfull.js"></script>
+    <script src="/remark/global/vendor/slidepanel/jquery-slidePanel.js"></script>
+    <script src="/remark/global/vendor/skycons/skycons.js"></script>
+    <script src="/remark/global/vendor/chartist/chartist.min.js"></script>
+    <script src="/remark/global/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.min.js"></script>
+    <script src="/remark/global/vendor/aspieprogress/jquery-asPieProgress.min.js"></script>
+    <script src="/remark/global/vendor/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="/remark/global/vendor/jvectormap/maps/jquery-jvectormap-au-mill-en.js"></script>
+    <script src="/remark/global/vendor/matchheight/jquery.matchHeight-min.js"></script>
 
     <!-- Scripts -->
-    <script src="/Scripts/remark/global/State.js"></script>
-    <script src="/Scripts/remark/global/Component.js"></script>
-    <script src="/Scripts/remark/global/Plugin.js"></script>
-    <script src="/Scripts/remark/global/Base.js"></script>
-    <script src="/Scripts/remark/global/Config.js"></script>
-    <script src="/Scripts/remark/Section/Menubar.js"></script>
-    <script src="/Scripts/remark/Section/GridMenu.js"></script>
-    <script src="/Scripts/remark/Section/Sidebar.js"></script>
-    <script src="/Scripts/remark/Section/PageAside.js"></script>
-    <script src="/Scripts/remark/Plugin/menu.js"></script>
-    <script src="/Scripts/remark/global/config/colors.js"></script>
-    <script src="/Scripts/remark/config/tour.js"></script>
-
-    <!-- Page -->
-    <script src="/Scripts/remark/Site.js"></script>
-    <script src="/Scripts/remark/global/Plugin/asscrollable.js"></script>
-    <script src="/Scripts/remark/global/Plugin/slidepanel.js"></script>
-    <script src="/Scripts/remark/global/Plugin/switchery.js"></script>
+    <script src="/remark/global/js/State.js"></script>
+    <script src="/remark/global/js/Component.js"></script>
+    <script src="/remark/global/js/Plugin.js"></script>
+    <script src="/remark/global/js/Base.js"></script>
+    <script src="/remark/global/js/Config.js"></script>
+    <script src="/remark/assets/js/Section/Menubar.js"></script>
+    <script src="/remark/assets/js/Section/GridMenu.js"></script>
+    <script src="/remark/assets/js/Section/Sidebar.js"></script>
+    <script src="/remark/assets/js/Section/PageAside.js"></script>
+    <script src="/remark/assets/js/Plugin/menu.js"></script>
+    <script src="/remark/global/js/config/colors.js"></script>
+    <script src="/remark/assets/js/config/tour.js"></script>
     <script>
-  (function(document, window, $) {
-    'use strict';
-    var Site = window.Site;
-    $(document).ready(function() {
-      Site.run();
-    });
-  })(document, window, jQuery);
+  Config.set('assets', '../assets');
     </script>
+    <!-- Page -->
+    <script src="/remark/assets/js/Site.js"></script>
+    <script src="/remark/global/js/Plugin/asscrollable.js"></script>
+    <script src="/remark/global/js/Plugin/slidepanel.js"></script>
+    <script src="/remark/global/js/Plugin/switchery.js"></script>
+    <script src="/remark/global/js/Plugin/matchheight.js"></script>
+    <script src="/remark/global/js/Plugin/jvectormap.js"></script>
+    <script src="/remark/assets/examples/js/dashboard/v1.js"></script>
 </body>
 </html>
