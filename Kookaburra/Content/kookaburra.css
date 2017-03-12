@@ -24,6 +24,19 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+.form-control{
+    height: 3.0rem;
+}
+
+.page-aside {
+    border-left: 1px solid #e4eaec;
+}
+
+.page-aside-right .page-aside .page-aside-inner {
+    border-right: 0;
+    border-left: 0;
+}
+
 /* ---------------- CHATS --------------------*/
 
 .operator-chats .chat-window{

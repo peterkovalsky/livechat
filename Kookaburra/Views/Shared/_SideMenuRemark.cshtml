@@ -1,8 +1,10 @@
-﻿<div class="site-menubar site-menubar-dark">
+﻿<div class="site-menubar">
     <div class="site-menubar-body">
         <div>
             <div>
                 <ul class="site-menu" data-plugin="menu">
+                    <li class="site-menu-category"></li>
+
                     <li class="site-menu-item active open">
                         <a class="animsition-link" href="/dashboard">
                             <i class="site-menu-icon fa fa-dashboard" aria-hidden="true"></i>
@@ -13,7 +15,9 @@
                         <a class="animsition-link" href="/chats">
                             <i class="site-menu-icon wb-chat-group" aria-hidden="true"></i>
                             <span class="site-menu-title">Chats</span>
-                            <span class="badge badge-secondary" style="display: none;" data-bind="text: activeChats().length, visible: activeChats().length > 0"></span>
+                            <div class="site-menu-badge">
+                                <span class="tag tag-pill tag-success" style="display: none;" data-bind="text: activeChats().length, visible: activeChats().length > 0"></span>
+                            </div>                
                         </a>
                     </li>
                     <li class="site-menu-item">
