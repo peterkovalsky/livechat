@@ -13,7 +13,7 @@
         </div>
         <div class="page-aside-inner">
 
-            <section class="page-aside-section current-chats">
+            <section class="page-aside-section current-chats" style="display: none;" data-bind="visible: conversations().length > 0">
                 <h5 class="page-aside-title">Current Chats</h5>
                 <ul class="list-group" data-bind="foreach: conversations">
                     <li class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
@@ -43,7 +43,7 @@
         <div class="page-content">
             <div class="row" style="display: none;" data-bind="visible: conversations().length > 0">
                 <div class="col-sm-9" data-bind="with: currentChat">
-                    <div class="panel panel-bordered panel-warning chat">
+                    <div class="panel panel-bordered panel-action chat">
                         <!-- Add class "collapsed" to minimize the panel -->
                         <div class="panel-heading text-center">
                             <h1 class="panel-title">
@@ -133,9 +133,13 @@
 
             <div class="row" style="display: none;" data-bind="visible: conversations().length == 0">
                 <div class="col-sm-12">
-                    <div class="alert alert-warning">
-                        <strong>There are currently no active chats.</strong>
-                    </div>
+                    <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">                       
+                        <i class="icon md-alert-circle-o" aria-hidden="true"></i>
+                        <h4>Kookaburra</h4>
+                        <p>
+                            There are currently no active chats.
+                        </p>
+                    </div>             
                 </div>
             </div>
         </div>

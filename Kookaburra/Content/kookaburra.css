@@ -20,6 +20,16 @@ input[type="checkbox"].input-validation-error {
     color: #b94a48;
 }
 
+.validation-summary-errors ul {
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.validation-summary-errors ul li {
+    list-style: none;
+    text-align: center;
+}
+
 .validation-summary-valid {
     display: none;
 }
@@ -35,6 +45,22 @@ input[type="checkbox"].input-validation-error {
 .page-aside-right .page-aside .page-aside-inner {
     border-right: 0;
     border-left: 0;
+}
+
+.page {
+    min-height: 100%;
+}
+
+.alert.dark.alert-info {
+    padding-left: 54px;
+}
+
+.alert h4 {
+    margin-top: 4px;
+}
+
+.alert-icon > .icon {
+    font-size: 24px;
 }
 
 /* ---------------- CHATS --------------------*/
