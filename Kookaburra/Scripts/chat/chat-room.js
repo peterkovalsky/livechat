@@ -223,4 +223,15 @@ function Conversation(data) {
         else
             return 0;
     });
+
+    self.lastMessage = ko.computed(function () {
+        var unreadMessages = ko.utils.arrayFilter(self.messages(), function (item) {
+            return !item.read();
+        });
+
+        if (unreadMessages)
+            return unreadMessages.length;
+        else
+            return 0;
+    });
 }

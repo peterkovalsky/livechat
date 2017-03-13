@@ -13,17 +13,26 @@
         </div>
         <div class="page-aside-inner">
 
-            <section class="page-aside-section">
+            <section class="page-aside-section current-chats">
                 <h5 class="page-aside-title">Current Chats</h5>
-                <div class="list-group">
-                    <div data-bind="foreach: conversations">
-                        <a class="list-group-item" href="javascript:void(0)" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
-                            <i class="icon md-face" aria-hidden="true"></i>
-                            <strong data-bind="text: visitorName"></strong>
-                            <span class="tag tag-warning" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
-                        </a>
-                    </div>                    
-                </div>
+                <ul class="list-group" data-bind="foreach: conversations">
+                    <li class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
+                        <div class="media">
+                            <div class="media-left">
+                                <a class="avatar avatar-online" href="javascript:void(0)">
+                                    <img class="img-fluid" src="~/images/user-1.png"><i></i>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading" data-bind="text: visitorName"></h4>
+                                <span class="media-time">15 sec ago</span>
+                            </div>
+                            <div class="media-right">
+                                <span class="tag tag-pill tag-danger" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
+                            </div>
+                        </div>
+                    </li>                    
+                </ul>
             </section>
 
         </div>
