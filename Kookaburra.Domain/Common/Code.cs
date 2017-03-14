@@ -8,17 +8,17 @@ namespace Kookaburra.Domain.Common
         {
             var code = new StringBuilder();
 
-            code.Append("<!--start of Kookaburra js code-->");
-            code.Append("<script type='text/javascript'>");
-            code.Append("(function ()");
-            code.Append("{");
-            code.Append("var oc = document.createElement('script');");
-            code.Append("oc.type = 'text/javascript';");
-            code.Append("oc.async = true;");
-            code.AppendFormat("oc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '{0}/{1}';", host, accountId);
-            code.Append("var s = document.getElementsByTagName('script')[0];");
-            code.Append(" s.parentNode.insertBefore(oc, s);");
-            code.Append("}());</script><!--end of Kookaburra js code-->");
+            code.AppendLine("<!--start of Kookaburra js code-->");
+            code.AppendLine("<script type='text/javascript'>");
+            code.AppendLine("(function ()");
+            code.AppendLine("{");
+            code.AppendLine("var oc = document.createElement('script');");
+            code.AppendLine("oc.type = 'text/javascript';");
+            code.AppendLine("oc.async = true;");
+            code.AppendLine($"oc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '{host}/{accountId}';");
+            code.AppendLine("var s = document.getElementsByTagName('script')[0];");
+            code.AppendLine(" s.parentNode.insertBefore(oc, s);");
+            code.AppendLine("}());</script><!--end of Kookaburra js code-->");
 
             return code.ToString();
         }
