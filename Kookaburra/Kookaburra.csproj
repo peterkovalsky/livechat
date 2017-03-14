@@ -4088,7 +4088,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -4120,8 +4119,6 @@
     <Content Include="Views\Widget\Online.cshtml" />
     <Content Include="Views\Home\Preview.cshtml" />
     <Content Include="Views\Chat\ChatRoom.cshtml" />
-    <Content Include="Views\Shared\_SideMenu.cshtml" />
-    <Content Include="Views\Shared\_TopNavBar.cshtml" />
     <Content Include="Views\Widget\Introduction.cshtml" />
     <Content Include="Views\Widget\Container.cshtml" />
     <Content Include="Views\Shared\_LayoutWidget.cshtml" />
@@ -4134,6 +4131,7 @@
     <Content Include="Views\Shared\_TopNavBarRemark.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Settings\Code.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
