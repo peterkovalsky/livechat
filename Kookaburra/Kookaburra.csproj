@@ -5,6 +5,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>1.7.6</TypeScriptToolsVersion>
     <TypeScriptModuleKind>system</TypeScriptModuleKind>
     <TypeScriptExperimentalDecorators>true</TypeScriptExperimentalDecorators>
@@ -4132,6 +4133,7 @@
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Settings\Code.cshtml" />
+    <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

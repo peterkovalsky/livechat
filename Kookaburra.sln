@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra", "Kookaburra\Kookaburra.csproj", "{9EED0EF9-6DBE-4AC5-94D0-76038EFF37C7}"
 EndProject
@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Tests", "Kookabu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Integration.freegeoip", "Kookaburra.Integration.freegeoip\Kookaburra.Integration.freegeoip.csproj", "{F95250A3-88C4-4EDE-B23C-C0C4FD4E0462}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Kookaburra.Web", "Kookaburra.Web\Kookaburra.Web.xproj", "{C3D9F2CD-5081-460B-AA51-6D334FD8F833}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kookaburra.Web", "Kookaburra.Web\Kookaburra.Web.csproj", "{C3D9F2CD-5081-460B-AA51-6D334FD8F833}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
