@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
+﻿@using Kookaburra.Controllers;
 
 <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
     <div class="navbar-header">
@@ -14,7 +14,7 @@
             @*<img class="navbar-brand-logo" src="/images/logo.png" title="Remark">*@
             <i class="site-menu-icon md-comments" aria-hidden="true" style="font-size: 35px;"></i>
             <span class="navbar-brand-text hidden-xs-down">Kookaburra</span>
-        </div>  
+        </div>
     </div>
     <div class="navbar-container container-fluid">
         <!-- Navbar Collapse -->
@@ -32,7 +32,7 @@
             </ul>
             <!-- End Navbar Toolbar -->
             <!-- Navbar Toolbar Right -->
-            <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">      
+            <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
                 <li class="nav-item dropdown">
                     <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false"
                        data-animation="scale-up" role="button">
@@ -42,19 +42,23 @@
                         </span>
                     </a>
                     <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-account" aria-hidden="true"></i> Profile</a>
-                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-card" aria-hidden="true"></i> Billing</a>
+                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-account" aria-hidden="true"></i> Profile</a>                        
                         <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-settings" aria-hidden="true"></i> Settings</a>
                         <div class="dropdown-divider"></div>
-@if (User.Identity.IsAuthenticated)
-{
-                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-power" aria-hidden="true"></i> Logout</a>
-}
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a class="dropdown-item" href="#" onclick="document.getElementById('logoutForm').submit()" role="menuitem"><i class="icon md-power" aria-hidden="true"></i> Logout</a>
+                        }
                     </div>
                 </li>
             </ul>
             <!-- End Navbar Toolbar Right -->
         </div>
-        <!-- End Navbar Collapse -->   
+        <!-- End Navbar Collapse -->
     </div>
 </nav>
+
+@using (Html.BeginForm(nameof(AccountController.LogOff), "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "logoutForm"}))
+{
+    @Html.AntiForgeryToken()
+}

@@ -397,7 +397,7 @@ namespace Kookaburra.Controllers
             _operatorRepository.ResetOperatorActivity(User.Identity.GetUserId());
 
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return Redirect("/");
         }
 
         //
