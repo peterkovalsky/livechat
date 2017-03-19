@@ -237,6 +237,7 @@
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OfflineController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="DependencyResolution\CommandDispatcher.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Models\Home\PreviewViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Offline\MessagesViewModel.cs" />
     <Compile Include="Models\Settings\CodeViewModel.cs" />
     <Compile Include="Models\Widget\ContainerViewModel.cs" />
     <Compile Include="Models\Widget\ConversationViewModel.cs" />
@@ -4134,6 +4136,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Settings\Code.cshtml" />
     <Content Include="tsconfig.json" />
+    <Content Include="Views\Offline\Messages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

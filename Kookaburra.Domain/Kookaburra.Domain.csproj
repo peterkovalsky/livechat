@@ -46,6 +46,7 @@
     <Compile Include="Common\Code.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\OperatorType.cs" />
+    <Compile Include="Common\TimeFilterType.cs" />
     <Compile Include="Common\UserType.cs" />
     <Compile Include="DefaultSettings.cs" />
     <Compile Include="Exceptions\OperatorDisconnectedException.cs" />

@@ -52,6 +52,7 @@
     <Compile Include="Model\ContinueConversationQuery.cs" />
     <Compile Include="Model\CurrentChatsQuery.cs" />
     <Compile Include="Model\CurrentSessionQuery.cs" />
+    <Compile Include="Model\OfflineMessagesQuery.cs" />
     <Compile Include="Model\ResumeOperatorQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result\AvailableOperatorQueryResult.cs" />

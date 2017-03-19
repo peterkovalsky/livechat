@@ -1,0 +1,253 @@
+﻿<div id="offline-messages" class="page bg-white">
+
+    <div class="page-main">
+        <!-- Mailbox Header -->
+        <div class="page-header">
+            <h1 class="page-title">Offline Messages</h1>
+            <div class="page-header-actions">
+                <form>
+                    <div class="input-search input-search-dark">
+                        <i class="input-search-icon wb-search" aria-hidden="true"></i>
+                        <input type="text" class="form-control" name="" placeholder="Search...">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Mailbox Content -->
+        <div id="mailContent" class="page-content page-content-table" data-plugin="selectable">
+            <!-- Actions -->
+            <div class="page-content-actions">
+                <div class="pull-xs-right filter">
+                    <span>Filter :</span>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-pure" data-toggle="dropdown" aria-expanded="false">
+                            Check all
+                            <span class="icon wb-chevron-down-mini" aria-hidden="true"></span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right animation-scale-up animation-top-right animation-duration-250"
+                             role="menu">
+                            <a class="dropdown-item" href="javascript:void(0)">Check read</a>
+                            <a class="dropdown-item" href="javascript:void(0)">Check unread</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="javascript:void(0)">French</a>
+                            <a class="dropdown-item" href="javascript:void(0)">Spanish</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mailbox -->
+            <table id="mailboxTable" class="table" data-plugin="animateList" data-animate="fade" data-child="tr">
+                <tbody data-bind="foreach: messages">                
+                    <tr id="mid_8" data-url="panel.tpl" data-toggle="slidePanel" class="unread" data-bind="css: {unread: !isRead}">
+                        <td class="cell-60">
+                            <span class="checkbox-custom checkbox-primary checkbox-lg">
+                                <input type="checkbox" class="mailbox-checkbox selectable-item" id="mail_mid_8" />
+                                <label for="mail_mid_8"></label>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="content">
+                                <div class="title" data-bind="text: name"></div>
+                                <div class="abstract" data-bind="text: message"></div>
+                            </div>
+                        </td>
+                        <td class="cell-30 responsive-hide"></td>
+                        <td class="cell-130">
+                            <div class="time" data-bind="time"></div>
+                            <div class="identity" data-bind="text: country"></div>
+                        </td>
+                    </tr>               
+                </tbody>
+            </table>
+            <!-- pagination -->
+            <ul data-plugin="paginator" data-total="50" data-skin="pagination-gap"></ul>
+        </div>
+    </div>
+</div>
+
+@section bottom_scripts
+{
+    <script src="/remark/global/js/Plugin/bootbox.js"></script>
+    <script src="/remark/assets/js/BaseApp.js"></script>
+    <script src="/remark/assets/js/App/Mailbox.js"></script>
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        AppMailbox.run();
+    });
+
+</script>
+
+<script type="text/html" id="person-template">
+    <header class="slidePanel-header">
+        <div class="slidePanel-actions" aria-label="actions" role="group">
+            <button type="button" class="btn btn-icon btn-pure btn-inverse slidePanel-close actions-top icon wb-close"
+                    aria-hidden="true"></button>
+            <div class="btn-group actions-bottom" role="group">
+                <div class="pull-xs-left" style="position:relative;">
+                    <button type="button" class="btn btn-icon btn-pure btn-inverse icon wb-more-horizontal"
+                            data-toggle="dropdown" aria-expanded="false" aria-hidden="true"></button>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                        <a class="dropdown-item" href="javascript:void(0)"><i class="icon wb-inbox" aria-hidden="true"></i> Archive</a>
+                        <a class="dropdown-item" href="javascript:void(0)"><i class="icon wb-alert-circle" aria-hidden="true"></i> Report Spam</a>
+                        <a class="dropdown-item" href="javascript:void(0)"><i class="icon wb-trash" aria-hidden="true"></i> Delete</a>
+                        <a class="dropdown-item" href="javascript:void(0)"><i class="icon wb-print" aria-hidden="true"></i> Print</a>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-icon btn-pure btn-inverse icon wb-chevron-left"
+                        aria-hidden="true"></button>
+                <button type="button" class="btn btn-icon btn-pure btn-inverse icon wb-chevron-right"
+                        aria-hidden="true"></button>
+            </div>
+        </div>
+        <h1>Titudin venenatis ipsum ac feugiat. Vestibulum ullamcorper Neque quam.</h1>
+    </header>
+    <div class="slidePanel-inner">
+        <section class="slidePanel-inner-section">
+            <div class="mail-header">
+                <div class="mail-header-main">
+                    <a class="avatar" href="javascript:void(0)">
+                        <img src="../../../../global/portraits/2.jpg" alt="...">
+                    </a>
+                    <div>
+                        <span class="name">Seevisual</span>
+                    </div>
+                    <div>
+                        <a href="javascript:void(0)">Mazhesee@gmail.com</a> to <a href="javascript:void(0)">me</a>
+                        <span class="identity"><i class="wb-medium-point red-600" aria-hidden="true"></i>Work</span>
+                    </div>
+                </div>
+                <div class="mail-header-right">
+                    <span class="time">3 minutes ago</span>
+                    <div class="btn-group actions" role="group">
+                        <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-star" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-reply" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="mail-content">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam.
+                    Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper
+                    sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat.
+                    Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum
+                    nisl eu consectetur. Integer eleifend, nisl venenatis consequat iaculis,
+                    lectus arcu malesuada sem, dapibus porta quam lacus eu neque.Lorem ipsum
+                    dolor sit amet, consectetur adipiscing elit.
+                </p>
+                <p>
+                    Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum
+                    ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque
+                    volutpat. Phasellus at ultricies neque, quis malesuada augue. Donec eleifend
+                    condimentum nisl eu consectetur. Integer eleifend, nisl venenatis consequat
+                    iaculis, lectus arcu malesuada sem, dapibus porta quam lacus eu neque.
+                </p>
+            </div>
+            <div class="mail-attachments">
+                <p><i Class="icon wb-paperclip"></i>Attachments | <a href="javascript:void(0)">Download All</a></p>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="name">Rstuvwxyz.mp4</span>
+                        <span class="size">(2.40M)</span>
+                        <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-download" aria-hidden="true"></i></button>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="name">Demo.doc</span>
+                        <span class="size">(2.40M)</span>
+                        <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-download" aria-hidden="true"></i></button>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="slidePanel-inner-section">
+            <div class="mail-header">
+                <div class="mail-header-main">
+                    <a class="avatar" href="javascript:void(0)">
+                        <img src="../../../../global/portraits/2.jpg" alt="...">
+                    </a>
+                    <div>
+                        <span class="name">Seevisual</span>
+                    </div>
+                    <div>
+                        <a href="javascript:void(0)">Mazhesee@gmail.com</a> to <a href="javascript:void(0)">me</a>
+                        <span class="identity"><i class="wb-medium-point red-600" aria-hidden="true"></i>Work</span>
+                    </div>
+                </div>
+                <div class="mail-header-right">
+                    <span class="time">2 minutes ago</span>
+                    <div class="btn-group actions" role="group">
+                        <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-star" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-reply" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="mail-content">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam.
+                    Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper
+                    sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat.
+                </p>
+            </div>
+        </section>
+        <section class="slidePanel-inner-section">
+            <div class="mail-header">
+                <div class="mail-header-main">
+                    <a class="avatar" href="javascript:void(0)">
+                        <img src="../../../../global/portraits/2.jpg" alt="...">
+                    </a>
+                    <div>
+                        <span class="name">Seevisual</span>
+                    </div>
+                    <div>
+                        <a href="javascript:void(0)">Mazhesee@gmail.com</a> to <a href="javascript:void(0)">me</a>
+                        <span class="identity"><i class="wb-medium-point red-600" aria-hidden="true"></i>Work</span>
+                    </div>
+                </div>
+                <div class="mail-header-right">
+                    <span class="time">1 minutes ago</span>
+                    <div class="btn-group actions" role="group">
+                        <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-star" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-reply" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="mail-content">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam.
+                    Aliquam sollicitudin venenatis ipsum ac feugiat.
+                </p>
+            </div>
+        </section>
+        <div class="slidePanel-comment">
+            <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4"></textarea>
+            <button class="btn btn-primary" data-dismiss="modal" type="button">Reply</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+
+    function Message(data) {
+        var self = this;
+
+        self.id = ko.observable(data.id);
+        self.message = ko.observable(data.message);
+        self.time = ko.observable(data.time);
+        self.name = ko.observable(data.name);
+        self.email = ko.observable(data.email);
+        self.country = ko.observable(data.country);
+        self.region = ko.observable(data.region);
+        self.isRead = ko.observable(data.isRead);
+    }
+
+    function MessagesViewModel() {
+        var self = this;
+
+        self.messages = ko.observableArray([]);
+    }
+
+    ko.applyBindings(new MessagesViewModel(), document.getElementById("offline-messages"));
+
+</script>

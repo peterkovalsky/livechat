@@ -186,8 +186,8 @@
                                             <div class="xe-widget xe-progress-counter xe-progress-counter-turquoise current-chat">
 
                                                 @*<div class="xe-background">
-                                                    <i class="linecons-comment"></i>
-                                                </div>*@
+                                                        <i class="linecons-comment"></i>
+                                                    </div>*@
 
                                                 <div class="xe-upper">
                                                     <div class="xe-icon">
@@ -239,9 +239,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-                <script type="text/javascript">
+<script type="text/javascript">
 
     $(document).ready(function () {
 
@@ -251,10 +254,10 @@
         chatRoomViewModel.init();
     });
 
-                </script>
+</script>
 
-                @section scripts
+@section scripts
 {
-                    @Scripts.Render("~/bundles/js/chatroom")
-                    @Styles.Render("~/bundles/css/chatroom")
-                }
+    @Scripts.Render("~/bundles/js/chatroom")
+    @Styles.Render("~/bundles/css/chatroom")
+}
