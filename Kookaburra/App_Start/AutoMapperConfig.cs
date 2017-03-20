@@ -3,6 +3,7 @@ using Kookaburra.Common;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
+using Kookaburra.Models.Offline;
 using Kookaburra.Models.Widget;
 
 namespace Kookaburra.App_Start
@@ -30,6 +31,13 @@ namespace Kookaburra.App_Start
                     .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.VisitorInfo.StartTime.JsDateTime()))
                     .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.VisitorInfo.Latitude))
                     .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.VisitorInfo.Longitude));
+
+                cfg.CreateMap<OfflineMessagesQueryResult, OfflineMessagesViewModel>();
+
+                cfg.CreateMap<OfflineMessageResult, LeftMessageViewModel>()
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.VisitorName))
+                    .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.City))
+                    .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.TimeSent));
 
                 cfg.CreateMap<ResumeOperatorQueryResult, CurrentConversationsViewModel>();
             });

@@ -2,7 +2,7 @@
 
 namespace Kookaburra.Models.Offline
 {
-    public class MessagesViewModel
+    public class LeftMessageViewModel
     {
         public int Id { get; set; }
 

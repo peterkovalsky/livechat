@@ -46,6 +46,7 @@
     <Compile Include="Handler\ContinueConversationQueryHandler.cs" />
     <Compile Include="Handler\CurrentChatsQueryHandler.cs" />
     <Compile Include="Handler\CurrentSessionQueryHandler.cs" />
+    <Compile Include="Handler\OfflineMessagesQueryHandler.cs" />
     <Compile Include="Handler\ResumeOperatorQueryHandler.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="Model\AvailableOperatorQuery.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="Result\CurrentChatsQueryResult.cs" />
     <Compile Include="Result\CurrentSessionQueryResult.cs" />
     <Compile Include="Result\MessageResult.cs" />
+    <Compile Include="Result\OfflineMessageResult.cs" />
+    <Compile Include="Result\OfflineMessagesQueryResult.cs" />
     <Compile Include="Result\ResumeOperatorQueryResult.cs" />
     <Compile Include="Result\VisitorInfoResult.cs" />
   </ItemGroup>

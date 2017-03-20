@@ -267,7 +267,8 @@
     <Compile Include="Models\Home\PreviewViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Offline\MessagesViewModel.cs" />
+    <Compile Include="Models\Offline\LeftMessageViewModel.cs" />
+    <Compile Include="Models\Offline\OfflineMessagesViewModel.cs" />
     <Compile Include="Models\Settings\CodeViewModel.cs" />
     <Compile Include="Models\Widget\ContainerViewModel.cs" />
     <Compile Include="Models\Widget\ConversationViewModel.cs" />

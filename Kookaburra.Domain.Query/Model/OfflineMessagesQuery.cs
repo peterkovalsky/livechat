@@ -1,14 +1,17 @@
 ﻿using Kookaburra.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Kookaburra.Domain.Query.Result;
 
 namespace Kookaburra.Domain.Query.Model
 {
-    public class OfflineMessagesQuery
+    public class OfflineMessagesQuery : IQuery<OfflineMessagesQueryResult>
     {
-        public TimeFilterType TimeFilter { get; set; }
+        public OfflineMessagesQuery(TimeFilterType timeFilter)
+        {
+            TimeFilter = timeFilter;
+        }
+
+        public TimeFilterType TimeFilter { get; private set; }
+
+        public Pagination Pagination { get; set; }
     }
 }

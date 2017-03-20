@@ -3,8 +3,8 @@
     public enum TimeFilterType
     {
         Day,
-        Days7,
-        Days14,
+        Week,
+        Fortnight,
         Month,
         Year,
         All
