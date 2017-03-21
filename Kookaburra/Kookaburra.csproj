@@ -284,6 +284,7 @@
   <ItemGroup>
     <Content Include="App_Readme\simplehoneypot.readme.txt" />
     <Content Include="Content\kookaburra.css" />
+    <Content Include="Content\kookaburra\offline-messages.css" />
     <Content Include="Content\other\wysihtml5-color.css" />
     <Content Include="Content\perfect-scrollbar.css" />
     <Content Include="Content\perfect-scrollbar.min.css" />

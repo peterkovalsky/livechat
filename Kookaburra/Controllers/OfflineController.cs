@@ -5,6 +5,7 @@ using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models.Offline;
+
 using System.Web.Mvc;
 
 namespace Kookaburra.Controllers
@@ -30,7 +31,7 @@ namespace Kookaburra.Controllers
             var result = _queryDispatcher.Execute<OfflineMessagesQuery, OfflineMessagesQueryResult>(query);
 
             var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
-
+          
             return View(viewModel);
         }
     }

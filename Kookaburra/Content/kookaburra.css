@@ -75,6 +75,9 @@ input[type="checkbox"].input-validation-error {
 }
 
 
+.app-mailbox .table .unread > td:first-child {
+    border-left: 0;
+}
 
 
 /* ---------------- CHATS --------------------*/

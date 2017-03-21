@@ -1,4 +1,8 @@
-﻿<div id="offline-messages" class="page bg-white">
+﻿@model Kookaburra.Models.Offline.OfflineMessagesViewModel
+
+@using Newtonsoft.Json;
+
+<div id="offline-messages" class="page bg-white offline-messages">
 
     <div class="page-main">
         <!-- Mailbox Header -->
@@ -36,49 +40,40 @@
                 </div>
             </div>
             <!-- Mailbox -->
-            <table id="mailboxTable" class="table" data-plugin="animateList" data-animate="fade" data-child="tr">
-                <tbody data-bind="foreach: messages">                
-                    <tr id="mid_8" data-url="panel.tpl" data-toggle="slidePanel" class="unread" data-bind="css: {unread: !isRead}">
-                        <td class="cell-60">
-                            <span class="checkbox-custom checkbox-primary checkbox-lg">
-                                <input type="checkbox" class="mailbox-checkbox selectable-item" id="mail_mid_8" />
-                                <label for="mail_mid_8"></label>
-                            </span>
-                        </td>
-                        <td>
-                            <div class="content">
-                                <div class="title" data-bind="text: name"></div>
-                                <div class="abstract" data-bind="text: message"></div>
-                            </div>
-                        </td>
-                        <td class="cell-30 responsive-hide"></td>
-                        <td class="cell-130">
-                            <div class="time" data-bind="time"></div>
-                            <div class="identity" data-bind="text: country"></div>
-                        </td>
-                    </tr>               
-                </tbody>
-            </table>
-            <!-- pagination -->
-            <ul data-plugin="paginator" data-total="50" data-skin="pagination-gap"></ul>
+
+            <div class="pannel">
+                <div class="panel-body">
+                    <table id="mailboxTable" class="table" data-plugin="animateList" data-animate="fade" data-child="tr">
+                        <tbody data-bind="foreach: messages">
+                            <tr id="mid_8" data-url="panel.tpl" data-toggle="slidePanel" class="unread" data-bind="css: {unread: !isRead}">                              
+                                <td class="cell-60">
+                                    <span class="checkbox-custom checkbox-primary checkbox-lg">
+                                        <input type="checkbox" class="mailbox-checkbox selectable-item" id="mail_mid_8" />
+                                        <label for="mail_mid_8"></label>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="content">
+                                        <div class="title" data-bind="text: name"></div>
+                                        <div class="abstract" data-bind="text: message"></div>
+                                    </div>
+                                </td>
+                                <td class="cell-30 responsive-hide"></td>
+                                <td class="cell-130">
+                                    <div class="time" data-bind="time"></div>
+                                    <div class="identity" data-bind="text: country"></div>
+                                </td>                      
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- pagination -->
+                    <ul data-plugin="paginator" data-total="50" data-skin="pagination-gap"></ul>
+                </div>
+            </div>
+       
         </div>
     </div>
 </div>
-
-@section bottom_scripts
-{
-    <script src="/remark/global/js/Plugin/bootbox.js"></script>
-    <script src="/remark/assets/js/BaseApp.js"></script>
-    <script src="/remark/assets/js/App/Mailbox.js"></script>
-}
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        AppMailbox.run();
-    });
-
-</script>
 
 <script type="text/html" id="person-template">
     <header class="slidePanel-header">
@@ -227,7 +222,24 @@
     </div>
 </script>
 
+@section scripts
+{
+    <link rel="stylesheet" href="~/remark/assets/examples/css/apps/mailbox.min.css">
+}
+
+@section bottom_scripts
+{
+    <script src="/remark/global/js/Plugin/bootbox.js"></script>
+    <script src="/remark/assets/js/BaseApp.js"></script>
+    <script src="/remark/assets/js/App/Mailbox.js"></script>
+}
+
 <script type="text/javascript">
+
+    $(document).ready(function () {
+        AppMailbox.run();
+    });
+
 
     function Message(data) {
         var self = this;
@@ -245,7 +257,8 @@
     function MessagesViewModel() {
         var self = this;
 
-        self.messages = ko.observableArray([]);
+        self.messages = ko.observableArray(@Html.Raw(JsonConvert.SerializeObject(Model.OfflineMessages)));
+        self.total = ko.observable(@Html.Raw(JsonConvert.SerializeObject(Model.TotalMessages)));
     }
 
     ko.applyBindings(new MessagesViewModel(), document.getElementById("offline-messages"));

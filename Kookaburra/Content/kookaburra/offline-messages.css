@@ -1,0 +1,206 @@
+﻿@charset "UTF-8";
+/*mailbox custom*/
+.offline-messages .identity {
+    white-space: nowrap;
+}
+
+.offline-messages .page-content-actions .btn-group {
+    margin-left: 8px;
+}
+
+.offline-messages .page-content-actions .btn-pure.btn-default {
+    color: #a3afb7;
+}
+
+    .offline-messages .page-content-actions .btn-pure.btn-default.active, .offline-messages .page-content-actions .btn-pure.btn-default:focus, .offline-messages .page-content-actions .btn-pure.btn-default:hover {
+        color: #76838f;
+    }
+
+.offline-messages .checkbox-important {
+    margin-bottom: 4px;
+    padding: 9px 0 0 14px;
+    position: relative;
+}
+
+    .offline-messages .checkbox-important input[type="checkbox"] {
+        cursor: pointer;
+        left: 3px;
+        margin: -2px 0 0;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        z-index: 2;
+    }
+
+        .offline-messages .checkbox-important input[type="checkbox"]:checked + label:before {
+            background-color: transparent;
+            color: #f2a654;
+        }
+
+    .offline-messages .checkbox-important label {
+        cursor: pointer;
+        line-height: 1.2;
+        margin-bottom: 0;
+        text-align: left;
+        font-weight: normal;
+    }
+
+        .offline-messages .checkbox-important label:before {
+            color: #e4eaec;
+            content: "";
+            display: inline-block;
+            font-family: "Web Icons";
+            font-size: 16px;
+            height: 16px;
+            left: 4px;
+            line-height: 1;
+            margin-top: -4px;
+            position: absolute;
+            top: 50%;
+            width: 16px;
+            font-weight: bold;
+        }
+
+.offline-messages .table {
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+    .offline-messages .table td {
+        vertical-align: middle;
+    }
+
+    .offline-messages .table .avatar {
+        margin-left: 10px;
+    }
+
+    .offline-messages .table .content > * {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .offline-messages .table .title {
+        color: #526069;
+    }
+
+    .offline-messages .table .time {
+        color: #a3afb7;
+    }
+
+    .offline-messages .table .identity .icon {
+        margin-right: 8px;
+    }
+
+    .offline-messages .table .unread > td:first-child {
+        border-left: 1px solid #62a8ea;
+    }
+
+.offline-messages .slidePanel-header {
+    background-color: #57c7d4;
+}
+
+    .offline-messages .slidePanel-header::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+.offline-messages .slidePanel .actions-top {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+}
+
+.offline-messages .slidePanel .actions-bottom {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+}
+
+.offline-messages .slidePanel .mail-header {
+    position: relative;
+    padding-left: 50px;
+    margin-bottom: 20px;
+}
+
+    .offline-messages .slidePanel .mail-header::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+.offline-messages .slidePanel .mail-header-main {
+    display: inline-block;
+}
+
+.offline-messages .slidePanel .mail-header-right {
+    float: right;
+}
+
+.offline-messages .slidePanel .mail-header .time {
+    color: #a3afb7;
+}
+
+.offline-messages .slidePanel .mail-header .avatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.offline-messages .slidePanel .mail-header .identity .icon {
+    margin-left: 10px;
+    margin-right: 6px;
+}
+
+.offline-messages .slidePanel .mail-content p {
+    margin-bottom: 20px;
+}
+
+    .offline-messages .slidePanel .mail-content p:last-child {
+        margin-bottom: 0;
+    }
+
+.offline-messages .slidePanel .mail-content + .mail-attachments {
+    margin-top: 40px;
+}
+
+.offline-messages .slidePanel .mail-attachments {
+    margin-bottom: 20px;
+}
+
+    .offline-messages .slidePanel .mail-attachments .wb-paperclip {
+        margin-right: 10px;
+    }
+
+    .offline-messages .slidePanel .mail-attachments .list-group-item {
+        padding: 0;
+    }
+
+.offline-messages .select2-container {
+    z-index: 1700;
+}
+
+@media (max-width: 767px) {
+    .offline-messages .responsive-hide {
+        display: none;
+    }
+}
+
+@media (max-width: 479px) {
+    .offline-messages .page-header .page-header-actions {
+        margin-top: 20px;
+        position: relative;
+        top: 0;
+        right: 0;
+        -webkit-transform: none;
+        -ms-transform: none;
+        -o-transform: none;
+        transform: none;
+    }
+
+    .offline-messages .page-content-actions .actions-right {
+        float: none;
+        display: block;
+    }
+}
