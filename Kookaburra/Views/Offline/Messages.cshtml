@@ -222,9 +222,9 @@
     </div>
 </script>
 
-@section scripts
+@section css
 {
-    <link rel="stylesheet" href="~/remark/assets/examples/css/apps/mailbox.min.css">
+    @Styles.Render("~/bundles/css/offlinemessages")
 }
 
 @section bottom_scripts
@@ -246,7 +246,7 @@
 
         self.id = ko.observable(data.id);
         self.message = ko.observable(data.message);
-        self.time = ko.observable(data.time);
+        self.time = ko.observable(moment(data.time).format('LT'));
         self.name = ko.observable(data.name);
         self.email = ko.observable(data.email);
         self.country = ko.observable(data.country);
@@ -259,6 +259,10 @@
 
         self.messages = ko.observableArray(@Html.Raw(JsonConvert.SerializeObject(Model.OfflineMessages)));
         self.total = ko.observable(@Html.Raw(JsonConvert.SerializeObject(Model.TotalMessages)));
+
+        $.each(result.conversations, function (index, item) {
+            self.conversations.push(new Conversation(item));
+        });
     }
 
     ko.applyBindings(new MessagesViewModel(), document.getElementById("offline-messages"));

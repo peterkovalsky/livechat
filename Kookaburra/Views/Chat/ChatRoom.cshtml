@@ -256,8 +256,12 @@
 
 </script>
 
+@section css
+{
+    @Styles.Render("~/bundles/css/chatroom")
+}
+
 @section scripts
 {
-    @Scripts.Render("~/bundles/js/chatroom")
-    @Styles.Render("~/bundles/css/chatroom")
+    @Scripts.Render("~/bundles/js/chatroom")    
 }

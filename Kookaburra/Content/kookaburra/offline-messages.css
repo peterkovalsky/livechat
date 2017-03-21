@@ -92,9 +92,6 @@
         margin-right: 8px;
     }
 
-    .offline-messages .table .unread > td:first-child {
-        border-left: 1px solid #62a8ea;
-    }
 
 .offline-messages .slidePanel-header {
     background-color: #57c7d4;

@@ -50,17 +50,22 @@ namespace Kookaburra
 
 
             #region CSS
-
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+   
+            bundles.Add(new StyleBundle("~/bundles/css/portal")               
+                .Include("~/remark/assets/skins/pink.min.css")
+                .Include("~/Content/kookaburra/portal.css")
+            );
 
             bundles.Add(new StyleBundle("~/bundles/css/chatroom")
-                //.Include("~/Content/perfect-scrollbar.css")
+                .Include("~/Content/kookaburra/operator-chat.css")
+            );
+
+            bundles.Add(new StyleBundle("~/bundles/css/offlinemessages")
+                .Include("~/Content/kookaburra/offline-messages.css")
             );
 
             bundles.Add(new StyleBundle("~/bundles/css/widget")
-                .Include("~/Content/widget.css")
+                .Include("~/Content/kookaburra/widget.css")
                 .Include("~/Content/perfect-scrollbar.css")
             );
 

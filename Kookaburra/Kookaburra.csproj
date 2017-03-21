@@ -283,12 +283,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Readme\simplehoneypot.readme.txt" />
-    <Content Include="Content\kookaburra.css" />
+    <Content Include="Content\kookaburra\operator-chat.css" />
     <Content Include="Content\kookaburra\offline-messages.css" />
-    <Content Include="Content\other\wysihtml5-color.css" />
+    <Content Include="Content\kookaburra\portal.css" />
     <Content Include="Content\perfect-scrollbar.css" />
     <Content Include="Content\perfect-scrollbar.min.css" />
-    <Content Include="Content\widget.css" />
+    <Content Include="Content\kookaburra\widget.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -4129,11 +4129,11 @@
     <Content Include="Views\Shared\_LayoutWidget.cshtml" />
     <Content Include="Views\Widget\ThankYou.cshtml" />
     <Content Include="Views\Shared\_OperatorGlobal.cshtml" />
-    <Content Include="Views\Shared\_LayoutRemark.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Views\Shared\_SideMenuRemark.cshtml" />
-    <Content Include="Views\Shared\_TopNavBarRemark.cshtml" />
+    <Content Include="Views\Shared\_SideMenu.cshtml" />
+    <Content Include="Views\Shared\_TopNavBar.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Settings\Code.cshtml" />

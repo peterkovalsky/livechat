@@ -34,6 +34,10 @@
     <link rel="stylesheet" href="/remark/global/fonts/brand-icons/brand-icons.min.css">
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
 
+    @Styles.Render("~/bundles/css/portal")
+
+    @RenderSection("css", required: false)
+
     <!--[if lt IE 9]>
       <script src="/remark/global/vendor/html5shiv/html5shiv.min.js"></script>
       <![endif]-->
@@ -44,11 +48,8 @@
     <!-- Scripts -->
     <script src="/remark/global/vendor/breakpoints/breakpoints.js"></script>
     <script>
-  Breakpoints();
-    </script>
- 
-    <link rel="stylesheet" href="~/remark/assets/skins/pink.min.css">
-    <link rel="stylesheet" href="~/Content/kookaburra.css">
+        Breakpoints();
+    </script>  
 
     <!-- Core  -->
     <script src="/remark/global/vendor/babel-external-helpers/babel-external-helpers.js"></script>
@@ -74,9 +75,9 @@
           <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
       <![endif]-->
 
-    @Html.Partial("_TopNavBarRemark")
+    @Html.Partial("_TopNavBar")
     
-    @Html.Partial("_SideMenuRemark")    
+    @Html.Partial("_SideMenu")    
    
     <!-- Page -->
     @RenderBody()

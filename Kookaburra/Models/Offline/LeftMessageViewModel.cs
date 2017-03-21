@@ -12,7 +12,7 @@ namespace Kookaburra.Models.Offline
         public string Message { get; set; }
 
         [JsonProperty("time")]
-        public DateTime Time { get; set; }
+        public double Time { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }

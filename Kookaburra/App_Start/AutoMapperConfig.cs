@@ -37,7 +37,7 @@ namespace Kookaburra.App_Start
                 cfg.CreateMap<OfflineMessageResult, LeftMessageViewModel>()
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.VisitorName))
                     .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.City))
-                    .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.TimeSent));
+                    .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.TimeSent.JsDateTime()));
 
                 cfg.CreateMap<ResumeOperatorQueryResult, CurrentConversationsViewModel>();
             });

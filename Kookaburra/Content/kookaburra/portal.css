@@ -1,0 +1,95 @@
+﻿/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+textarea.input-validation-error,
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+    .validation-summary-errors ul {
+        padding-left: 0;
+        margin-top: 10px;
+    }
+
+        .validation-summary-errors ul li {
+            list-style: none;
+            text-align: center;
+        }
+
+.validation-summary-valid {
+    display: none;
+}
+
+.form-control {
+    height: 3.0rem;
+}
+
+.page-aside {
+    border-left: 1px solid #e4eaec;
+}
+
+.page-aside-right .page-aside .page-aside-inner {
+    border-right: 0;
+    border-left: 0;
+}
+
+.page {
+    min-height: 100%;
+    height: 100%;
+}
+
+.operator-chats.page .page-main,
+.operator-chats.page .page-main .page-content,
+.operator-chats.page .page-main .page-content .row,
+.operator-chats.page .page-main .page-content .current-chat,
+.operator-chats.page .page-main .page-content .current-chat .chat,
+.operator-chats.page .page-main .page-content .current-chat .chat .panel-body,
+.operator-chats.page .page-main .page-content .chat-list {
+    height: 100%;
+}
+
+.alert.dark.alert-info {
+    padding-left: 54px;
+}
+
+.alert h4 {
+    margin-top: 4px;
+}
+
+.alert-icon > .icon {
+    font-size: 24px;
+}
+
+
+.app-mailbox .table .unread > td:first-child {
+    border-left: 0;
+}
+
+/*-------------- GLOBAL -----------------*/
+#global-alert {
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+/* Layout */
+.user-info-navbar .user-info-menu > li > a {
+    top: 0;
+}
+
+.page-container .main-content .page-title .title-env .title + p {
+    font-size: 10px;
+}
