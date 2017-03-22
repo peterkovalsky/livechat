@@ -64,10 +64,21 @@
     <script src="/remark/global/vendor/waves/waves.js"></script>
 
     @Scripts.Render("~/bundles/js/portal")
-    @RenderSection("scripts", required: false)
 
     <script src="~/signalr/hubs"></script> 
 
+    <!-- Plugins -->
+    <script src="/remark/global/vendor/switchery/switchery.min.js"></script>
+    <script src="/remark/global/vendor/intro-js/intro.js"></script>
+    <script src="/remark/global/vendor/screenfull/screenfull.js"></script>
+    <script src="/remark/global/vendor/slidepanel/jquery-slidePanel.js"></script>
+    <script src="/remark/global/vendor/skycons/skycons.js"></script>
+    <script src="/remark/global/vendor/aspieprogress/jquery-asPieProgress.min.js"></script>
+    <script src="/remark/global/vendor/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="/remark/global/vendor/jvectormap/maps/jquery-jvectormap-au-mill-en.js"></script>
+    <script src="/remark/global/vendor/matchheight/jquery.matchHeight-min.js"></script>
+
+    @RenderSection("js", required: false)
 </head>
 
 <body class="animsition @(ViewBag.PageLayout)">
@@ -84,17 +95,6 @@
     
     <!-- End Page -->
 
-    <!-- Plugins -->
-    <script src="/remark/global/vendor/switchery/switchery.min.js"></script>
-    <script src="/remark/global/vendor/intro-js/intro.js"></script>
-    <script src="/remark/global/vendor/screenfull/screenfull.js"></script>
-    <script src="/remark/global/vendor/slidepanel/jquery-slidePanel.js"></script>
-    <script src="/remark/global/vendor/skycons/skycons.js"></script>
-    <script src="/remark/global/vendor/aspieprogress/jquery-asPieProgress.min.js"></script>
-    <script src="/remark/global/vendor/jvectormap/jquery-jvectormap.min.js"></script>
-    <script src="/remark/global/vendor/jvectormap/maps/jquery-jvectormap-au-mill-en.js"></script>
-    <script src="/remark/global/vendor/matchheight/jquery.matchHeight-min.js"></script>
-
     <!-- Scripts -->
     <script src="/remark/global/js/State.js"></script>
     <script src="/remark/global/js/Component.js"></script>
@@ -107,9 +107,9 @@
     <script src="/remark/assets/js/Section/PageAside.js"></script>
     <script src="/remark/assets/js/Plugin/menu.js"></script>
     <script src="/remark/global/js/config/colors.js"></script>
-    <script src="/remark/assets/js/config/tour.js"></script>
+
     <script>
-  Config.set('assets', '../assets');
+        Config.set('assets', '../assets');
     </script>
     <!-- Page -->
     <script src="/remark/assets/js/Site.js"></script>

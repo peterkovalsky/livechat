@@ -8,6 +8,14 @@ namespace Kookaburra
         {
             #region JS
 
+            bundles.Add(new ScriptBundle("~/bundles/js/portal")
+                 //.Include("~/Scripts/jquery-{version}.js")
+                 .Include("~/Scripts/jquery.signalR-{version}.js")
+                 .Include("~/Scripts/knockout-{version}.js")
+                 .Include("~/Scripts/knockout.mapping-latest.js")
+                 .Include("~/Scripts/chat/operator-global.js")
+             );
+
             bundles.Add(new ScriptBundle("~/bundles/js/form")
                 .Include("~/Scripts/jquery-{version}.js")
                 .Include("~/Scripts/jquery.validate*")
@@ -22,36 +30,28 @@ namespace Kookaburra
                 .Include("~/Scripts/perfect-scrollbar.jquery.js")
             );
 
-            bundles.Add(new ScriptBundle("~/bundles/js/chatroom")        
+            bundles.Add(new ScriptBundle("~/bundles/js/chatroom")
                 .Include("~/Scripts/moment-with-locales.min.js")
                 .Include("~/Scripts/chat/chat-room.js")
-                //.Include("~/Scripts/perfect-scrollbar.jquery.js")
+            //.Include("~/Scripts/perfect-scrollbar.jquery.js")
             );
+            
+            bundles.Add(new ScriptBundle("~/bundles/js/offlinemessage")
+                 .Include("~/Scripts/moment-with-locales.min.js")                     
+             );
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/js/portal")
-                //.Include("~/Scripts/jquery-{version}.js")
-                .Include("~/Scripts/jquery.signalR-{version}.js")
-                .Include("~/Scripts/knockout-{version}.js")
-                .Include("~/Scripts/knockout.mapping-latest.js")                
-                .Include("~/Scripts/chat/operator-global.js")              
-            );
+                        "~/Scripts/jquery.validate*"));           
 
             #endregion
 
 
             #region CSS
-   
-            bundles.Add(new StyleBundle("~/bundles/css/portal")               
+
+            bundles.Add(new StyleBundle("~/bundles/css/portal")
                 .Include("~/remark/assets/skins/pink.min.css")
                 .Include("~/Content/kookaburra/portal.css")
             );

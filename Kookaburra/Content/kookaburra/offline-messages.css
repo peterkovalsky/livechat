@@ -80,9 +80,10 @@
         white-space: nowrap;
     }
 
-    .offline-messages .table .title {
-        color: #526069;
-    }
+.offline-messages .table .title {
+    color: #526069;
+    font-weight: 500;
+}
 
     .offline-messages .table .time {
         color: #a3afb7;
