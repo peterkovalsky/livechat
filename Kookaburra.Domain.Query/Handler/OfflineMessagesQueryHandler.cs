@@ -64,6 +64,7 @@ namespace Kookaburra.Domain.Query.Handler
                 OfflineMessages = offlineMessages.Select(om => new OfflineMessageResult
                 {
                     VisitorName = om.Visitor.Name,
+                    Email = om.Visitor.Email,
                     Message = om.Message,
                     TimeSent = om.DateSent,
                     Country = om.Visitor.Country,

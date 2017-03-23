@@ -69,49 +69,41 @@
             </div>
 
         </div>
-    </div>    
-</div>
+    </div>
 
-
-<div id="message-details-template" style="display: none;">
-    <div class="offline-messages" data-bind="with: currentMessage">
-        <header class="slidePanel-header">
-            <div class="slidePanel-actions" aria-label="actions" role="group">
-                <button type="button" class="btn btn-icon btn-pure btn-inverse slidePanel-close actions-top icon wb-close"
-                        aria-hidden="true"></button>                                
-                </div>           
-            <h1 data-bind="text: name"></h1>
-        </header>
-        <div class="slidePanel-inner">
-            <section class="slidePanel-inner-section">
+    <div id="message-details-template" style="display: none;">
+        <div class="offline-messages" data-bind="with: currentMessage">
+            <header class="slidePanel-header">
+                <div class="slidePanel-actions" aria-label="actions" role="group">
+                    <button type="button" class="btn btn-icon btn-pure btn-inverse slidePanel-close actions-top icon wb-close slidePanel-will-close" aria-hidden="true"></button>
+                </div>
                 <div class="mail-header">
                     <div class="mail-header-main">
                         <a class="avatar" href="javascript:void(0)">
                             <img src="/images/user-1.png" class="img-circle" alt="user-pic">
                         </a>
                         <div>
-                            <span class="name" data-bind="text: name"></span>
+                            <h1 class="name" data-bind="text: name"></h1>
                         </div>
                         <div>
-                            <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email}"></a>
-                            <span class="identity"><i class="wb-medium-point red-600" aria-hidden="true"></i>Work</span>
+                            <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email() }"></a>
                         </div>
                     </div>
                     <div class="mail-header-right">
                         <span class="time" data-bind="text: time"></span>
-                        <div class="btn-group actions" role="group">
-                            <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-star" aria-hidden="true"></i></button>
-                            <button type="button" class="btn btn-icon btn-pure btn-default"><i class="icon wb-reply" aria-hidden="true"></i></button>
-                        </div>
                     </div>
                 </div>
-                <div class="mail-content" data-bind="text: message"></div>
-    
-            </section>
 
-            <div class="slidePanel-comment">
-                <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4"></textarea>
-                <button class="btn btn-primary" data-dismiss="modal" type="button">Reply</button>
+            </header>
+            <div class="slidePanel-inner">
+                <section class="slidePanel-inner-section">
+                    <div class="mail-content" data-bind="text: message"></div>
+                </section>
+
+                <div class="slidePanel-comment">
+                    <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4"></textarea>
+                    <button class="btn btn-primary" data-dismiss="modal" type="button">Reply</button>
+                </div>
             </div>
         </div>
     </div>
@@ -128,17 +120,11 @@
     @Scripts.Render("~/bundles/js/offlinemessage")
 }
 
-@section bottom_scripts
-{
-    <script src="~/remark/assets/js/BaseApp.js"></script>
-    <script src="~/remark/assets/js/App/Mailbox.js"></script>
-    <script src="~/remark/global/js/Plugin/bootbox.js"></script>
-}
 
 <script type="text/javascript">
 
     $(document).ready(function () {
-        //AppMailbox.run();
+
     });
 
     var initialView = @Html.Raw(JsonConvert.SerializeObject(Model));
@@ -154,6 +140,7 @@
         self.country = ko.observable(data.country);
         self.region = ko.observable(data.region);
         self.isRead = ko.observable(data.isRead);
+        self.isCurrent = ko.observable(false);
     }
 
     function MessagesViewModel(data) {
@@ -161,11 +148,6 @@
 
         self.messages = ko.observableArray([]);
         self.total = ko.observable(0);
-
-        $.each(data.offlineMessages, function (index, item) {
-            self.messages.push(new Message(item));
-        });
-
         self.currentMessage = ko.computed(function () {
             var result = $.grep(self.messages(), function (e) { return e.isCurrent() == true; });
             if (result && result.length > 0) {
@@ -175,13 +157,33 @@
             }
         });
 
-        self.openMessage = function () {
+        $.each(data.offlineMessages, function (index, item) {
+            self.messages.push(new Message(item));
+        });
+
+
+        self.openMessage = function (message) {
+
+            if (self.messages().length > 0) {
+                for (var i = 0; i < self.messages().length; i++) {
+                    self.messages()[i].isCurrent(false);
+                }
+
+                if (message) {
+                    message.isCurrent(true);
+                }
+            }
+
 
             var html = $('#message-details-template').html();
 
             $.slidePanel.show({
                 content: html
-            }, {
+            },{
+                mouseDrag: false,
+                touchDrag: false,
+                pointerDrag: false,
+                closeSelector: '.slidePanel-close',           
                 direction: 'right'
             });
         };

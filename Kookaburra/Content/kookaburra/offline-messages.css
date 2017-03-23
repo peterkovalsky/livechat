@@ -85,95 +85,95 @@
     font-weight: 500;
 }
 
-    .offline-messages .table .time {
-        color: #a3afb7;
-    }
+.offline-messages .table .time {
+    color: #a3afb7;
+}
 
-    .offline-messages .table .identity .icon {
-        margin-right: 8px;
-    }
+.offline-messages .table .identity .icon {
+    margin-right: 8px;
+}
 
 
 .offline-messages .slidePanel-header {
     background-color: #57c7d4;
 }
 
-    .offline-messages .slidePanel-header::after {
-        content: "";
-        display: table;
-        clear: both;
-    }
+.offline-messages .slidePanel-header::after {
+    content: "";
+    display: table;
+    clear: both;
+}
 
-.offline-messages .slidePanel .actions-top {
+.slidePanel .actions-top {
     position: absolute;
     top: 30px;
     right: 20px;
 }
 
-.offline-messages .slidePanel .actions-bottom {
+.slidePanel .actions-bottom {
     position: absolute;
     bottom: 30px;
     right: 20px;
 }
 
-.offline-messages .slidePanel .mail-header {
+.slidePanel .mail-header {
     position: relative;
     padding-left: 50px;
     margin-bottom: 20px;
 }
 
-    .offline-messages .slidePanel .mail-header::after {
-        content: "";
-        display: table;
-        clear: both;
-    }
+.slidePanel .mail-header::after {
+    content: "";
+    display: table;
+    clear: both;
+}
 
-.offline-messages .slidePanel .mail-header-main {
+.slidePanel .mail-header-main {
     display: inline-block;
 }
 
-.offline-messages .slidePanel .mail-header-right {
+.slidePanel .mail-header-right {
     float: right;
 }
 
-.offline-messages .slidePanel .mail-header .time {
+.slidePanel .mail-header .time {
     color: #a3afb7;
 }
 
-.offline-messages .slidePanel .mail-header .avatar {
+.slidePanel .mail-header .avatar {
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.offline-messages .slidePanel .mail-header .identity .icon {
+.slidePanel .mail-header .identity .icon {
     margin-left: 10px;
     margin-right: 6px;
 }
 
-.offline-messages .slidePanel .mail-content p {
+.slidePanel .mail-content p {
     margin-bottom: 20px;
 }
 
-    .offline-messages .slidePanel .mail-content p:last-child {
-        margin-bottom: 0;
-    }
+.slidePanel .mail-content p:last-child {
+    margin-bottom: 0;
+}
 
-.offline-messages .slidePanel .mail-content + .mail-attachments {
+.slidePanel .mail-content + .mail-attachments {
     margin-top: 40px;
 }
 
-.offline-messages .slidePanel .mail-attachments {
+.slidePanel .mail-attachments {
     margin-bottom: 20px;
 }
 
-    .offline-messages .slidePanel .mail-attachments .wb-paperclip {
-        margin-right: 10px;
-    }
+.slidePanel .mail-attachments .wb-paperclip {
+    margin-right: 10px;
+}
 
-    .offline-messages .slidePanel .mail-attachments .list-group-item {
-        padding: 0;
-    }
+.slidePanel .mail-attachments .list-group-item {
+    padding: 0;
+}
 
 .offline-messages .select2-container {
     z-index: 1700;
