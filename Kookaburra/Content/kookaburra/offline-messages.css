@@ -106,7 +106,7 @@
 
 .slidePanel .actions-top {
     position: absolute;
-    top: 30px;
+    top: 20px;
     right: 20px;
 }
 
@@ -132,12 +132,12 @@
     display: inline-block;
 }
 
-.slidePanel .mail-header-right {
-    float: right;
+.slidePanel .mail-header-main a{
+    color: white;
 }
 
-.slidePanel .mail-header .time {
-    color: #a3afb7;
+.slidePanel .mail-header-right {
+    float: right;
 }
 
 .slidePanel .mail-header .avatar {
@@ -175,9 +175,15 @@
     padding: 0;
 }
 
+.slidePanel .slidePanel-inner-section {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
 .offline-messages .select2-container {
     z-index: 1700;
 }
+
 
 @media (max-width: 767px) {
     .offline-messages .responsive-hide {

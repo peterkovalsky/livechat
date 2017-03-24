@@ -101,8 +101,8 @@
                 </section>
 
                 <div class="slidePanel-comment">
-                    <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4"></textarea>
-                    <button class="btn btn-primary" data-dismiss="modal" type="button">Reply</button>
+                    <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4" placeholder="Whrite your reply here..." data-bind="text: reply"></textarea>
+                    <button class="btn btn-primary" data-dismiss="modal" type="button" data-bind="click: sendReply">Reply</button>
                 </div>
             </div>
         </div>
@@ -134,20 +134,22 @@
 
         self.id = ko.observable(data.id);
         self.message = ko.observable(data.message);
-        self.time = ko.observable(moment(data.time).format('LT'));
+        self.time = ko.observable(moment(data.time).format('lll'));
         self.name = ko.observable(data.name);
         self.email = ko.observable(data.email);
         self.country = ko.observable(data.country);
         self.region = ko.observable(data.region);
         self.isRead = ko.observable(data.isRead);
         self.isCurrent = ko.observable(false);
+        self.reply = ko.observable('');
     }
 
     function MessagesViewModel(data) {
         var self = this;
 
         self.messages = ko.observableArray([]);
-        self.total = ko.observable(0);
+        self.total = ko.observable(0);        
+
         self.currentMessage = ko.computed(function () {
             var result = $.grep(self.messages(), function (e) { return e.isCurrent() == true; });
             if (result && result.length > 0) {
@@ -174,7 +176,6 @@
                 }
             }
 
-
             var html = $('#message-details-template').html();
 
             $.slidePanel.show({
@@ -186,6 +187,10 @@
                 closeSelector: '.slidePanel-close',           
                 direction: 'right'
             });
+        };
+
+        self.sendReply = function (message) {
+
         };
     }
 
