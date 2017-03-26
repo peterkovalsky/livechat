@@ -17,8 +17,21 @@
                 </form>
             </div>
         </div>
+
+        <div class="row" style="display: none;" data-bind="visible: messages().length == 0">
+            <div class="col-sm-12">
+                <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
+                    <i class="icon md-alert-circle-o" aria-hidden="true"></i>
+                    <h4>Messages</h4>
+                    <p>
+                        You don't have any offline messages.
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <!-- Mailbox Content -->
-        <div id="mailContent" class="page-content page-content-table" data-plugin="selectable">
+        <div id="mailContent" class="page-content page-content-table" data-plugin="selectable" style="display: none;" data-bind="visible: messages().length > 0">
             <!-- Actions -->
             <div class="page-content-actions">
                 <div class="pull-xs-right filter">
@@ -56,7 +69,7 @@
                                     </div>
                                 </td>
                                 <td class="cell-30 responsive-hide"></td>
-                                <td class="cell-130">
+                                <td class="cell-200">
                                     <div class="time" data-bind="text: time"></div>
                                     <div class="identity" data-bind="text: country"></div>
                                 </td>
@@ -101,8 +114,8 @@
                 </section>
 
                 <div class="slidePanel-comment">
-                    <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4" placeholder="Whrite your reply here..." data-bind="text: reply"></textarea>
-                    <button class="btn btn-primary" data-dismiss="modal" type="button" data-bind="click: sendReply">Reply</button>
+                    <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4" placeholder="Write your reply here..." data-bind="text: reply"></textarea>
+                    <button class="btn btn-primary" data-dismiss="modal" type="button" data-bind="click: $root.sendReply">Reply</button>
                 </div>
             </div>
         </div>
