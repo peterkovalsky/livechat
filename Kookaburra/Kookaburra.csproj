@@ -3965,6 +3965,7 @@
     <Content Include="Scripts\knockout-3.4.1.js" />
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
+    <Content Include="Scripts\kookaburra\offline-messages.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -4176,9 +4177,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="remark\global\vendor\moment-develop\moment.d.ts" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\kookaburra\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

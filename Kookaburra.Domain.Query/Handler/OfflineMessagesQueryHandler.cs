@@ -54,6 +54,8 @@ namespace Kookaburra.Domain.Query.Handler
             {                
             }
 
+            var total = offlineMessages.Count();
+
             if (query.Pagination != null)
             {
                 offlineMessages = offlineMessages.OrderByDescending(om => om.DateSent).Skip(query.Pagination.Skip).Take(query.Pagination.Size);
@@ -61,6 +63,8 @@ namespace Kookaburra.Domain.Query.Handler
 
             return new OfflineMessagesQueryResult
             {
+                TotalMessages = total,
+
                 OfflineMessages = offlineMessages.Select(om => new OfflineMessageResult
                 {
                     VisitorName = om.Visitor.Name,

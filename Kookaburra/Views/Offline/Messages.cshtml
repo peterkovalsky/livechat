@@ -5,18 +5,6 @@
 <div id="offline-messages" class="page bg-white offline-messages">
 
     <div class="page-main">
-        <!-- Mailbox Header -->
-        <div class="page-header">
-            <h1 class="page-title">Offline Messages</h1>
-            <div class="page-header-actions">
-                <form>
-                    <div class="input-search input-search-dark">
-                        <i class="input-search-icon wb-search" aria-hidden="true"></i>
-                        <input type="text" class="form-control" name="" placeholder="Search...">
-                    </div>
-                </form>
-            </div>
-        </div>
 
         <div class="row" style="display: none;" data-bind="visible: messages().length == 0">
             <div class="col-sm-12">
@@ -30,25 +18,37 @@
             </div>
         </div>
 
+        <!-- Mailbox Header -->
+        <div class="page-header" style="display: none;" data-bind="visible: messages().length > 0">
+            <h1 class="page-title">Offline Messages</h1>    
+            
+            <div class="page-header-actions">
+                <form>
+                    <div class="input-search input-search-dark">
+                        <i class="input-search-icon wb-search" aria-hidden="true"></i>
+                        <input type="text" class="form-control" name="" placeholder="Search...">
+                    </div>
+                </form>
+            </div>
+        </div>
+    
         <!-- Mailbox Content -->
         <div id="mailContent" class="page-content page-content-table" data-plugin="selectable" style="display: none;" data-bind="visible: messages().length > 0">
             <!-- Actions -->
             <div class="page-content-actions">
+              
+                <span class="pull-left tag tag-primary" data-bind="visible: messages().length < totalMessages">
+                    <span data-bind="text: messages().length"></span> of <span data-bind="text: totalMessages"></span> Messages
+                </span>
+
+                <span class="pull-left tag tag-primary" data-bind="visible: messages().length == totalMessages()">
+                    <span data-bind="text: totalMessages"></span> Messages
+                </span>
+
                 <div class="pull-xs-right filter">
                     <span>Filter :</span>
                     <div class="dropdown">
-                        <button type="button" class="btn btn-pure" data-toggle="dropdown" aria-expanded="false">
-                            Check all
-                            <span class="icon wb-chevron-down-mini" aria-hidden="true"></span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right animation-scale-up animation-top-right animation-duration-250"
-                             role="menu">
-                            <a class="dropdown-item" href="javascript:void(0)">Check read</a>
-                            <a class="dropdown-item" href="javascript:void(0)">Check unread</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="javascript:void(0)">French</a>
-                            <a class="dropdown-item" href="javascript:void(0)">Spanish</a>
-                        </div>
+                    
                     </div>
                 </div>
             </div>
@@ -76,8 +76,12 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!-- pagination -->
-                    <ul data-plugin="paginator" data-total="50" data-skin="pagination-gap"></ul>
+
+                    <div class="text-sm-center" data-bind="visible: messages().length < totalMessages">
+                        <button type="button" class="btn btn-default" data-bind="showMore">
+                            <i class="icon wb-chevron-down margin-right-5" aria-hidden="true"></i>Show More
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -133,79 +137,12 @@
     @Scripts.Render("~/bundles/js/offlinemessage")
 }
 
-
 <script type="text/javascript">
 
     $(document).ready(function () {
-
     });
 
-    var initialView = @Html.Raw(JsonConvert.SerializeObject(Model));
-
-    function Message(data) {
-        var self = this;
-
-        self.id = ko.observable(data.id);
-        self.message = ko.observable(data.message);
-        self.time = ko.observable(moment(data.time).format('lll'));
-        self.name = ko.observable(data.name);
-        self.email = ko.observable(data.email);
-        self.country = ko.observable(data.country);
-        self.region = ko.observable(data.region);
-        self.isRead = ko.observable(data.isRead);
-        self.isCurrent = ko.observable(false);
-        self.reply = ko.observable('');
-    }
-
-    function MessagesViewModel(data) {
-        var self = this;
-
-        self.messages = ko.observableArray([]);
-        self.total = ko.observable(0);        
-
-        self.currentMessage = ko.computed(function () {
-            var result = $.grep(self.messages(), function (e) { return e.isCurrent() == true; });
-            if (result && result.length > 0) {
-                return result[0];
-            } else {
-                return null;
-            }
-        });
-
-        $.each(data.offlineMessages, function (index, item) {
-            self.messages.push(new Message(item));
-        });
-
-
-        self.openMessage = function (message) {
-
-            if (self.messages().length > 0) {
-                for (var i = 0; i < self.messages().length; i++) {
-                    self.messages()[i].isCurrent(false);
-                }
-
-                if (message) {
-                    message.isCurrent(true);
-                }
-            }
-
-            var html = $('#message-details-template').html();
-
-            $.slidePanel.show({
-                content: html
-            },{
-                mouseDrag: false,
-                touchDrag: false,
-                pointerDrag: false,
-                closeSelector: '.slidePanel-close',           
-                direction: 'right'
-            });
-        };
-
-        self.sendReply = function (message) {
-
-        };
-    }
+    var initialView = @Html.Raw(JsonConvert.SerializeObject(Model));   
 
     ko.applyBindings(new MessagesViewModel(initialView), document.getElementById("offline-messages"));
 

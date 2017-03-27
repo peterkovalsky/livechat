@@ -10,5 +10,8 @@ namespace Kookaburra.Models.Offline
 
         [JsonProperty("totalMessages")]
         public int TotalMessages { get; set; }
+
+        [JsonProperty("pageSize")]
+        public int PageSize { get; set; }
     }
 }

@@ -37,7 +37,8 @@ namespace Kookaburra
             );
             
             bundles.Add(new ScriptBundle("~/bundles/js/offlinemessage")
-                 .Include("~/Scripts/moment-with-locales.min.js")                     
+                 .Include("~/Scripts/moment-with-locales.min.js")
+                 .Include("~/Scripts/kookaburra/offline-messages.js")
              );
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
