@@ -239,6 +239,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OfflineController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\WebAPIController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="DependencyResolution\CommandDispatcher.cs" />
     <Compile Include="DependencyResolution\CommandHandlerNotFoundException.cs" />

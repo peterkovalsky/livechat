@@ -24,6 +24,8 @@ namespace Kookaburra.DependencyResolution
     using StructureMap;
     using StructureMap.Graph.Scanning;
     using System.Linq;
+    using System.Web.Http;
+
     public class ControllerConvention : IRegistrationConvention {
         #region Public Methods and Operators
 
@@ -31,7 +33,7 @@ namespace Kookaburra.DependencyResolution
         {
             types.AllTypes().ToList().ForEach(type =>
             {
-                if (type.CanBeCastTo<Controller>() && !type.IsAbstract)
+                if ((type.CanBeCastTo<Controller>()) && !type.IsAbstract)
                 {
                     registry.For(type).LifecycleIs(new UniquePerRequestLifecycle());
                 }

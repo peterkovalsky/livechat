@@ -37,7 +37,7 @@
             <!-- Actions -->
             <div class="page-content-actions">
               
-                <span class="pull-left tag tag-primary" data-bind="visible: messages().length < totalMessages">
+                <span class="pull-left tag tag-primary" data-bind="visible: messages().length < totalMessages()">
                     <span data-bind="text: messages().length"></span> of <span data-bind="text: totalMessages"></span> Messages
                 </span>
 
@@ -77,8 +77,8 @@
                         </tbody>
                     </table>
 
-                    <div class="text-sm-center" data-bind="visible: messages().length < totalMessages">
-                        <button type="button" class="btn btn-default" data-bind="showMore">
+                    <div class="text-sm-center" data-bind="visible: messages().length < totalMessages()">
+                        <button type="button" class="btn btn-default" data-bind="click: showMore">
                             <i class="icon wb-chevron-down margin-right-5" aria-hidden="true"></i>Show More
                         </button>
                     </div>
