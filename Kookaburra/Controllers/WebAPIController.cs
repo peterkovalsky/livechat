@@ -17,7 +17,7 @@ namespace Kookaburra.Controllers
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
 
-        private readonly int PageSize = 20;
+        private readonly int PageSize = 5;
 
         public WebAPIController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
@@ -37,6 +37,12 @@ namespace Kookaburra.Controllers
             var viewModel = result.OfflineMessages.Select(om => Mapper.Map<LeftMessageViewModel>(om)).ToList();
 
             return viewModel;
+        }
+
+        [HttpGet, Route("api/messages/search/{query}")]
+        public List<LeftMessageViewModel> SearchMessages(string query)
+        {
+
         }
     }
 }

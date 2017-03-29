@@ -14,7 +14,7 @@ namespace Kookaburra.Controllers
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
 
-        private readonly int PageSize = 20;
+        private readonly int PageSize = 5;
 
         public OfflineController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
