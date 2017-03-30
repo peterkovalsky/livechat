@@ -5,38 +5,51 @@
 <div id="offline-messages" class="page bg-white offline-messages">
 
     <div class="page-main">
-
-        <div class="row" style="display: none;" data-bind="visible: messages().length == 0">
-            <div class="col-sm-12">
-                <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
-                    <i class="icon md-alert-circle-o" aria-hidden="true"></i>
-                    <h4>Messages</h4>
-                    <p>
-                        You don't have any offline messages.
-                    </p>
-                </div>
-            </div>
-        </div>
-
         <!-- Mailbox Header -->
-        <div class="page-header" style="display: none;" data-bind="visible: messages().length > 0">
-            <h1 class="page-title">Offline Messages</h1>    
-            
+        <div class="page-header" style="display: none;" data-bind="visible: messages().length > 0 || searching() == true">
+            <h1 class="page-title">Offline Messages</h1>
+
             <div class="page-header-actions">
                 <form>
                     <div class="input-search input-search-dark">
                         <i class="input-search-icon wb-search" aria-hidden="true"></i>
-                        <input type="text" class="form-control" name="" placeholder="Search...">
+                        <input type="text" class="form-control" name="" placeholder="Search..." data-bind="textInput: searchTerm, enterkey: search">
                     </div>
                 </form>
             </div>
         </div>
-    
+
+        <!-- No Messages -->
+        <div class="page-header" style="display: none;" data-bind="visible: searching() == false && messages().length == 0">
+            <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
+                <i class="icon md-alert-circle-o" aria-hidden="true"></i>
+                <h4>Messages</h4>
+                <p>
+                    You don't have any offline messages.
+                </p>
+            </div>
+        </div>
+
+        <!-- No Search Results -->
+        <div class="page-header row" style="display: none;" data-bind="visible: searching() == true && messages().length == 0">
+            <div class="col-sm-12">
+                <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
+                    <i class="icon md-alert-circle-o" aria-hidden="true"></i>
+                    <h4>No search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="page-header" style="display: none;" data-bind="visible: searching() == true && messages().length > 0">
+            <h4>Search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>            
+        </div>
+
         <!-- Mailbox Content -->
         <div id="mailContent" class="page-content page-content-table" data-plugin="selectable" style="display: none;" data-bind="visible: messages().length > 0">
             <!-- Actions -->
             <div class="page-content-actions">
-              
+
                 <span class="pull-left tag tag-primary" data-bind="visible: messages().length < totalMessages()">
                     <span data-bind="text: messages().length"></span> of <span data-bind="text: totalMessages"></span> Messages
                 </span>
@@ -48,7 +61,7 @@
                 <div class="pull-xs-right filter">
                     <span>Filter :</span>
                     <div class="dropdown">
-                    
+
                     </div>
                 </div>
             </div>
@@ -142,7 +155,7 @@
     $(document).ready(function () {
     });
 
-    var initialView = @Html.Raw(JsonConvert.SerializeObject(Model));   
+    var initialView = @Html.Raw(JsonConvert.SerializeObject(Model));
 
     ko.applyBindings(new MessagesViewModel(initialView), document.getElementById("offline-messages"));
 

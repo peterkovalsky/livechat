@@ -39,10 +39,18 @@ namespace Kookaburra.Controllers
             return viewModel;
         }
 
-        [HttpGet, Route("api/messages/search/{query}")]
-        public List<LeftMessageViewModel> SearchMessages(string query)
+        [HttpGet, Route("api/messages/search/{queryTerm}/{page}")]
+        public OfflineMessagesViewModel SearchMessages(string queryTerm, int page)
         {
+            var query = new SearchOfflineMessagesQuery(queryTerm)
+            {
+                Pagination = new Pagination(PageSize, page)
+            };
+            var result = _queryDispatcher.Execute<SearchOfflineMessagesQuery, OfflineMessagesQueryResult>(query);
+            
+            var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
 
+            return viewModel;
         }
     }
 }

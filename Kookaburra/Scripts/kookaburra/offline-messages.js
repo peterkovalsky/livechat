@@ -13,14 +13,30 @@
     self.reply = ko.observable('');
 }
 
+ko.bindingHandlers.enterkey = {
+    init: function (element, valueAccessor, allBindings, viewModel) {
+        var callback = valueAccessor();
+        $(element).keypress(function (event) {
+            var keyCode = (event.which ? event.which : event.keyCode);
+            if (keyCode === 13) {
+                callback.call(viewModel);
+                return false;
+            }
+            return true;
+        });
+    }
+};
+
 function MessagesViewModel(data) {
     var self = this;
 
     self.messages = ko.observableArray([]);
     self.totalMessages = ko.observable(data.totalMessages);
     self.pageSize = ko.observable(data.pageSize);
-    self.currentPage = ko.observable(1);   
-
+    self.currentPage = ko.observable(1);
+    self.searchTerm = ko.observable('');
+    self.searchTermLabel = ko.observable('');
+    self.searching = ko.observable(false);
 
     self.currentMessage = ko.computed(function () {
         var result = $.grep(self.messages(), function (e) { return e.isCurrent() == true; });
@@ -66,14 +82,38 @@ function MessagesViewModel(data) {
 
     };
 
+    self.search = function () {
+        if (self.searchTerm() && self.searchTerm().length > 3) {
+            
+            $.get("/api/messages/search/" + self.searchTerm() + '/' + + self.currentPage())
+                .done(function (data) {
+                    self.searchTermLabel(self.searchTerm());
+                    self.searching(true);
+                    self.messages([]);
+                    self.currentPage(1);
+
+                    self.addMessages(data.offlineMessages);
+                    self.totalMessages(data.totalMessages);                    
+                });
+        }
+    };
+
     self.showMore = function () {
 
         self.currentPage(self.currentPage() + 1);
 
-        $.get("/api/messages/" + self.currentPage())
-            .done(function (data) {
-                self.addMessages(data);
-            });
+        if (self.searching()) {
+            $.get("/api/messages/search/" + self.searchTerm() + '/' + self.currentPage())
+                .done(function (data) {
+                    self.addMessages(data.offlineMessages);                    
+                });
+        }
+        else {
+            $.get("/api/messages/" + self.currentPage())
+                .done(function (data) {
+                    self.addMessages(data);
+                });
+        }        
     };
 
     // Init

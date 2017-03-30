@@ -1,11 +1,7 @@
 ﻿using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Repository;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.Handler
 {
@@ -21,9 +17,9 @@ namespace Kookaburra.Domain.Query.Handler
         public OfflineMessagesQueryResult Execute(SearchOfflineMessagesQuery query)
         {
             var offlineMessages = _context.OfflineMessages.Where(om => 
-            om.Message.Contains(query.Query) ||
-            om.Visitor.Name.Contains(query.Query) ||
-            om.Visitor.Email.Contains(query.Query));
+                                        om.Message.Contains(query.Query) ||
+                                        om.Visitor.Name.Contains(query.Query) ||
+                                        om.Visitor.Email.Contains(query.Query));
 
             var total = offlineMessages.Count();
 
