@@ -37,6 +37,7 @@ function MessagesViewModel(data) {
     self.searchTerm = ko.observable('');
     self.searchTermLabel = ko.observable('');
     self.searching = ko.observable(false);
+    self.totalUnread = ko.observable(data.totalUnread);
 
     self.currentMessage = ko.computed(function () {
         var result = $.grep(self.messages(), function (e) { return e.isCurrent() == true; });
@@ -62,6 +63,7 @@ function MessagesViewModel(data) {
 
             if (message) {
                 message.isCurrent(true);
+                message.isRead(true);
             }
         }
 

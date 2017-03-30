@@ -52,5 +52,11 @@ namespace Kookaburra.Controllers
 
             return viewModel;
         }
+
+        [HttpPatch, Route("api/messages/mark-read/{id}")]
+        public void MarkMessageAsRead(int id)
+        {
+
+        }
     }
 }

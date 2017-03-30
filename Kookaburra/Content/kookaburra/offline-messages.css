@@ -211,4 +211,8 @@
 
 .page-content-actions {
     padding: 0 30px 0px;
-} 
+}
+
+.offline-messages .unread {
+    font-weight: 500;
+}
