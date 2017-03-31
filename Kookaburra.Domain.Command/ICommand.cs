@@ -2,6 +2,7 @@
 {
     public interface ICommand
     {
+        string OperatorIdentity { get; }
     }
 
     public interface ICommandHandler<in TCommand>

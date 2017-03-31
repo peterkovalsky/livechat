@@ -22,63 +22,63 @@
     position: relative;
 }
 
-    .offline-messages .checkbox-important input[type="checkbox"] {
-        cursor: pointer;
-        left: 3px;
-        margin: -2px 0 0;
-        opacity: 0;
-        position: absolute;
-        top: 50%;
-        z-index: 2;
-    }
+.offline-messages .checkbox-important input[type="checkbox"] {
+    cursor: pointer;
+    left: 3px;
+    margin: -2px 0 0;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+}
 
-        .offline-messages .checkbox-important input[type="checkbox"]:checked + label:before {
-            background-color: transparent;
-            color: #f2a654;
-        }
+.offline-messages .checkbox-important input[type="checkbox"]:checked + label:before {
+    background-color: transparent;
+    color: #f2a654;
+}
 
-    .offline-messages .checkbox-important label {
-        cursor: pointer;
-        line-height: 1.2;
-        margin-bottom: 0;
-        text-align: left;
-        font-weight: normal;
-    }
+.offline-messages .checkbox-important label {
+    cursor: pointer;
+    line-height: 1.2;
+    margin-bottom: 0;
+    text-align: left;
+    font-weight: normal;
+}
 
-        .offline-messages .checkbox-important label:before {
-            color: #e4eaec;
-            content: "";
-            display: inline-block;
-            font-family: "Web Icons";
-            font-size: 16px;
-            height: 16px;
-            left: 4px;
-            line-height: 1;
-            margin-top: -4px;
-            position: absolute;
-            top: 50%;
-            width: 16px;
-            font-weight: bold;
-        }
+.offline-messages .checkbox-important label:before {
+    color: #e4eaec;
+    content: "";
+    display: inline-block;
+    font-family: "Web Icons";
+    font-size: 16px;
+    height: 16px;
+    left: 4px;
+    line-height: 1;
+    margin-top: -4px;
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    font-weight: bold;
+}
 
 .offline-messages .table {
     table-layout: fixed;
     border-collapse: collapse;
 }
 
-    .offline-messages .table td {
-        vertical-align: middle;
-    }
+.offline-messages .table td {
+    vertical-align: middle;
+}
 
-    .offline-messages .table .avatar {
-        margin-left: 10px;
-    }
+.offline-messages .table .avatar {
+    margin-left: 10px;
+}
 
-    .offline-messages .table .content > * {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+.offline-messages .table .content > * {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 .offline-messages .table .title {
     color: #526069;
@@ -215,4 +215,12 @@
 
 .offline-messages .unread {
     font-weight: 500;
+}
+
+.offline-messages .table > tbody > tr.unread > td {
+    background-color: #FAFAFA;
+}
+
+.offline-messages .table > tbody > tr:hover > td {
+    background-color: #f3f7f9;
 }

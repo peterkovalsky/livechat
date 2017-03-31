@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Kookaburra.Domain.Command;
+using Kookaburra.Domain.Command.Model;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models.Offline;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -18,6 +20,7 @@ namespace Kookaburra.Controllers
         private readonly IQueryDispatcher _queryDispatcher;
 
         private readonly int PageSize = 5;
+  
 
         public WebAPIController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
@@ -28,7 +31,7 @@ namespace Kookaburra.Controllers
         [HttpGet, Route("api/messages/{page}")]
         public List<LeftMessageViewModel> GetMoreMessages(int page)
         {
-            var query = new OfflineMessagesQuery(TimeFilterType.All)
+            var query = new OfflineMessagesQuery(TimeFilterType.All, RequestContext.Principal.Identity.GetUserId())
             {
                 Pagination = new Pagination(PageSize, page)
             };
@@ -42,7 +45,7 @@ namespace Kookaburra.Controllers
         [HttpGet, Route("api/messages/search/{queryTerm}/{page}")]
         public OfflineMessagesViewModel SearchMessages(string queryTerm, int page)
         {
-            var query = new SearchOfflineMessagesQuery(queryTerm)
+            var query = new SearchOfflineMessagesQuery(queryTerm, RequestContext.Principal.Identity.GetUserId())
             {
                 Pagination = new Pagination(PageSize, page)
             };
@@ -55,8 +58,9 @@ namespace Kookaburra.Controllers
 
         [HttpPatch, Route("api/messages/mark-read/{id}")]
         public void MarkMessageAsRead(int id)
-        {
-
+        {            
+            var command = new MarkMessageAsReadCommand(id, RequestContext.Principal.Identity.GetUserId());
+            _commandDispatcher.Execute(command);
         }
     }
 }

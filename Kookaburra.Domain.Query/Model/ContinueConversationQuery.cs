@@ -4,14 +4,17 @@ namespace Kookaburra.Domain.Query.Model
 {
     public class ContinueConversationQuery : IQuery<ContinueConversationQueryResult>
     {
-        public ContinueConversationQuery(string visitorSessionId, string visitorConnectionId)
+        public ContinueConversationQuery(string visitorSessionId, string visitorConnectionId, string operatorIdentity)
         {
             VisitorSessionId = visitorSessionId;
             VisitorConnectionId = visitorConnectionId;
+            OperatorIdentity = operatorIdentity;
         }
 
-        public string VisitorSessionId { get; private set; }
+        public string VisitorSessionId { get; }
 
-        public string VisitorConnectionId { get; private set; }
+        public string VisitorConnectionId { get; }
+
+        public string OperatorIdentity { get; }
     }
 }

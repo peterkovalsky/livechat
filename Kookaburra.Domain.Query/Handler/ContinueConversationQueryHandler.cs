@@ -39,7 +39,7 @@ namespace Kookaburra.Domain.Query.Handler
                 if (isNewConversation)
                 {
                     // add greeting if needed
-                    var command = new OperatorMessagedCommand(query.VisitorSessionId, DefaultSettings.CHAT_GREETING, DateTime.UtcNow);
+                    var command = new OperatorMessagedCommand(query.VisitorSessionId, DefaultSettings.CHAT_GREETING, DateTime.UtcNow, query.OperatorIdentity);
                     _operatorMessagedHandler.Execute(command);
                 }
 

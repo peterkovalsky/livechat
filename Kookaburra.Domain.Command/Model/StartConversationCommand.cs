@@ -2,11 +2,19 @@
 {
     public class StartConversationCommand : ICommand
     {
-        public int OperatorId { get; private set; }  
+        public StartConversationCommand(int operatorId, string visitorName, string sessionId, string operatorIdentity)
+        {
+            OperatorId = operatorId;
+            SessionId = sessionId;
+            VisitorName = visitorName;
+            OperatorIdentity = operatorIdentity;
+        }
 
-        public string SessionId { get; private set; }
+        public int OperatorId { get; }  
 
-        public string VisitorName { get; private set; }
+        public string SessionId { get; }
+
+        public string VisitorName { get; }
 
         public string VisitorEmail { get; set; }
 
@@ -14,11 +22,6 @@
 
         public string Page { get; set; }
 
-        public StartConversationCommand(int operatorId, string visitorName, string sessionId)
-        {
-            OperatorId = operatorId;                     
-            SessionId = sessionId;
-            VisitorName = visitorName;
-        }
+        public string OperatorIdentity { get; }     
     }
 }

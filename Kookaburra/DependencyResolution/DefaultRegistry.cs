@@ -59,7 +59,8 @@ namespace Kookaburra.DependencyResolution
             For<ICommandHandler<OperatorMessagedCommand>>().Add<OperatorMessagedCommandHandler>();
             For<ICommandHandler<StopConversationCommand>>().Add<StopConversationCommandHandler>();
             For<ICommandHandler<VisitorMessagedCommand>>().Add<VisitorMessagedCommandHandler>();
-
+            For<ICommandHandler<MarkMessageAsReadCommand>>().Add<MarkMessageAsReadCommandHandler>();
+            
             // Queries
             For<IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>>().Add<AvailableOperatorQueryHandler>();       
             For<IQueryHandler<ContinueConversationQuery, ContinueConversationQueryResult>>().Add<ContinueConversationQueryHandler>();

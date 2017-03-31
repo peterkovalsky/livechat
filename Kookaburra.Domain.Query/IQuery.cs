@@ -2,6 +2,7 @@
 {
     public interface IQuery<TResult>
     {
+        string OperatorIdentity { get; }
     }
 
     public interface IQueryHandler<in TQuery, out TResult>

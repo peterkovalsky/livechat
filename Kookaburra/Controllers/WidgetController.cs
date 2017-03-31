@@ -6,6 +6,7 @@ using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models.Widget;
 using Kookaburra.ViewModels.Widget;
+using Microsoft.AspNet.Identity;
 using SimpleHoneypot.ActionFilters;
 using System;
 using System.Web;
@@ -46,14 +47,14 @@ namespace Kookaburra.Controllers
         [Route("widget/{key}")]
         public ActionResult Widget(string key)
         {
-            var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(key));
+            var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(key, User.Identity.GetUserId()));
             var sessionId = Request.Cookies[COOKIE_SESSION_ID];
 
             if (operatorResult != null) // There is someone online
             {
                 if (sessionId != null && !string.IsNullOrWhiteSpace(sessionId.Value))
                 {
-                    var query = new CurrentSessionQuery { VisitorSessionId = sessionId.Value };
+                    var query = new CurrentSessionQuery(User.Identity.GetUserId()) { VisitorSessionId = sessionId.Value };
                     var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
 
                     if (currentSession != null)
@@ -82,18 +83,19 @@ namespace Kookaburra.Controllers
         {
             if (!ModelState.IsValid) return View(model);
        
-            var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(model.AccountKey));
+            var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(model.AccountKey, User.Identity.GetUserId()));
             
             // if operator is available - establish connection
             if (availableOperator != null)
             {
                 var sessionId = Guid.NewGuid().ToString();
 
-                var command = new StartConversationCommand(availableOperator.OperatorId, model.Name, sessionId);
-                command.Page = model.PageUrl;
-                command.VisitorIP = WebHelper.GetIPAddress();
-                command.VisitorEmail = model.Email;
-
+                var command = new StartConversationCommand(availableOperator.OperatorId, model.Name, sessionId, User.Identity.GetUserId())
+                {
+                    Page = model.PageUrl,
+                    VisitorIP = WebHelper.GetIPAddress(),
+                    VisitorEmail = model.Email
+                };
                 _commandDispatcher.Execute(command);
 
                 // add sessionId cookie
@@ -141,9 +143,10 @@ namespace Kookaburra.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message);
-            command.VisitorIP = WebHelper.GetIPAddress();
-
+            var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message, User.Identity.GetUserId())
+            {
+                VisitorIP = WebHelper.GetIPAddress()
+            };
             _commandDispatcher.Execute(command);
 
             return RedirectToAction(nameof(WidgetController.ThankYou));

@@ -18,7 +18,7 @@ namespace Kookaburra.Domain.Query.Handler
 
         public OfflineMessagesQueryResult Execute(OfflineMessagesQuery query)
         {
-            var offlineMessages = _context.OfflineMessages.AsQueryable();       
+            var offlineMessages = _context.OfflineMessages.Where(om => om.Account.Operators.Any(o => o.Identity == query.OperatorIdentity));       
 
             if (query.TimeFilter == TimeFilterType.Day)
             {
@@ -67,9 +67,11 @@ namespace Kookaburra.Domain.Query.Handler
 
                 OfflineMessages = offlineMessages.Select(om => new OfflineMessageResult
                 {
+                    Id = om.Id,
                     VisitorName = om.Visitor.Name,
                     Email = om.Visitor.Email,
                     Message = om.Message,
+                    IsRead = om.IsRead,
                     TimeSent = om.DateSent,
                     Country = om.Visitor.Country,
                     City = om.Visitor.City

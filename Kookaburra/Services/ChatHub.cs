@@ -50,7 +50,7 @@ namespace Kookaburra.Services
         {
             var dateSent = DateTime.UtcNow;
 
-            var query = new CurrentSessionQuery
+            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
             {
                 VisitorSessionId = visitorSessionId
             };
@@ -69,7 +69,7 @@ namespace Kookaburra.Services
             // Notify all visitor instances (mutiple tabs)
             Clients.Clients(currentSession.VisitorConnectionIds).sendMessageToVisitor(messageView);            
 
-            _commandDispatcher.Execute(new OperatorMessagedCommand(visitorSessionId, message, dateSent));
+            _commandDispatcher.Execute(new OperatorMessagedCommand(visitorSessionId, message, dateSent, Context.User.Identity.GetUserId()));
         }
 
         [Authorize]
@@ -87,13 +87,13 @@ namespace Kookaburra.Services
         [Authorize]
         public void FinishChattingWithVisitor(string visitorSessionId)
         {
-            var query = new CurrentSessionQuery
+            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
             {
                 VisitorSessionId = visitorSessionId
             };
             var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
 
-            _commandDispatcher.Execute(new StopConversationCommand(visitorSessionId));
+            _commandDispatcher.Execute(new StopConversationCommand(visitorSessionId, Context.User.Identity.GetUserId()));
 
             var diconnectView = new DisconnectViewModel
             {
@@ -121,7 +121,7 @@ namespace Kookaburra.Services
                 return null;
             }
 
-            var query = new ContinueConversationQuery(sessionId.Value, Context.ConnectionId);
+            var query = new ContinueConversationQuery(sessionId.Value, Context.ConnectionId, Context.User.Identity.GetUserId());
             var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(query);
 
             if (resumedConversation != null)
@@ -155,7 +155,7 @@ namespace Kookaburra.Services
         {
             var dateSent = DateTime.UtcNow;
 
-            var query = new CurrentSessionQuery
+            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
             {
                 VisitorConnectionId = Context.ConnectionId
             };
@@ -174,7 +174,7 @@ namespace Kookaburra.Services
             // Notify all operator instances (mutiple tabs)   
             Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, currentSession.VisitorSessionId);
             
-            _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));            
+            _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent, Context.User.Identity.GetUserId()));            
         }        
 
         /// <summary>
@@ -184,13 +184,13 @@ namespace Kookaburra.Services
         {
             var visitorSessionId = GetVisitorSessionId();
 
-            var query = new CurrentSessionQuery
+            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
             {
                 VisitorSessionId = visitorSessionId
             };
             var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
 
-            _commandDispatcher.Execute(new StopConversationCommand(visitorSessionId));
+            _commandDispatcher.Execute(new StopConversationCommand(visitorSessionId, Context.User.Identity.GetUserId()));
 
             var diconnectView = new DisconnectViewModel
             {

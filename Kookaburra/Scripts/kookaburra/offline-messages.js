@@ -28,7 +28,7 @@ ko.bindingHandlers.enterkey = {
 };
 
 function MessagesViewModel(data) {
-    var self = this;
+    var self = this;        
 
     self.messages = ko.observableArray([]);
     self.totalMessages = ko.observable(data.totalMessages);
@@ -37,7 +37,10 @@ function MessagesViewModel(data) {
     self.searchTerm = ko.observable('');
     self.searchTermLabel = ko.observable('');
     self.searching = ko.observable(false);
-    self.totalUnread = ko.observable(data.totalUnread);
+
+    self.init = function () {
+        self.addMessages(data.offlineMessages);
+    };
 
     self.currentMessage = ko.computed(function () {
         var result = $.grep(self.messages(), function (e) { return e.isCurrent() == true; });
@@ -52,7 +55,7 @@ function MessagesViewModel(data) {
         $.each(newMessages, function (index, item) {
             self.messages.push(new Message(item));
         });
-    };    
+    };
 
     self.openMessage = function (message) {
 
@@ -63,7 +66,7 @@ function MessagesViewModel(data) {
 
             if (message) {
                 message.isCurrent(true);
-                message.isRead(true);
+                self.markAsRead(message);
             }
         }
 
@@ -72,12 +75,12 @@ function MessagesViewModel(data) {
         $.slidePanel.show({
             content: html
         }, {
-                mouseDrag: false,
-                touchDrag: false,
-                pointerDrag: false,
-                closeSelector: '.slidePanel-close',
-                direction: 'right'
-            });
+            mouseDrag: false,
+            touchDrag: false,
+            pointerDrag: false,
+            closeSelector: '.slidePanel-close',
+            direction: 'right'
+         });
     };
 
     self.sendReply = function (message) {
@@ -85,8 +88,8 @@ function MessagesViewModel(data) {
     };
 
     self.search = function () {
-        if (self.searchTerm() && self.searchTerm().length > 3) {
-            
+        if (self.searchTerm() && self.searchTerm().length >= 3) {
+
             $.get("/api/messages/search/" + self.searchTerm() + '/' + + self.currentPage())
                 .done(function (data) {
                     self.searchTermLabel(self.searchTerm());
@@ -95,7 +98,7 @@ function MessagesViewModel(data) {
                     self.currentPage(1);
 
                     self.addMessages(data.offlineMessages);
-                    self.totalMessages(data.totalMessages);                    
+                    self.totalMessages(data.totalMessages);
                 });
         }
     };
@@ -107,7 +110,7 @@ function MessagesViewModel(data) {
         if (self.searching()) {
             $.get("/api/messages/search/" + self.searchTerm() + '/' + self.currentPage())
                 .done(function (data) {
-                    self.addMessages(data.offlineMessages);                    
+                    self.addMessages(data.offlineMessages);
                 });
         }
         else {
@@ -115,9 +118,33 @@ function MessagesViewModel(data) {
                 .done(function (data) {
                     self.addMessages(data);
                 });
-        }        
+        }
     };
 
-    // Init
-    self.addMessages(data.offlineMessages);
+    self.markAsRead = function (message) {
+
+        message.isRead(true);
+
+        $.ajax({
+            method: "PATCH",
+            url: "api/messages/mark-read/" + message.id()
+        })
+        .done(function (msg) {
+
+        });
+    };
+
+    self.backToAll = function () {
+        self.messages([]);
+        self.totalMessages(data.totalMessages);
+        self.pageSize(data.pageSize);
+        self.currentPage(1);
+        self.searchTerm('');
+        self.searchTermLabel('');
+        self.searching(false);
+
+        self.init();
+    };
+
+    self.init();
 }

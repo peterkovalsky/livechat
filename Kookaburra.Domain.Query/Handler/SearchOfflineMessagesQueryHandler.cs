@@ -16,10 +16,11 @@ namespace Kookaburra.Domain.Query.Handler
 
         public OfflineMessagesQueryResult Execute(SearchOfflineMessagesQuery query)
         {
-            var offlineMessages = _context.OfflineMessages.Where(om => 
-                                        om.Message.Contains(query.Query) ||
+            var offlineMessages = _context.OfflineMessages.Where(om =>
+                                        om.Account.Operators.Any(o => o.Identity == query.OperatorIdentity) &&
+                                        (om.Message.Contains(query.Query) ||
                                         om.Visitor.Name.Contains(query.Query) ||
-                                        om.Visitor.Email.Contains(query.Query));
+                                        om.Visitor.Email.Contains(query.Query)));
 
             var total = offlineMessages.Count();
 
@@ -34,9 +35,11 @@ namespace Kookaburra.Domain.Query.Handler
 
                 OfflineMessages = offlineMessages.Select(om => new OfflineMessageResult
                 {
+                    Id = om.Id,
                     VisitorName = om.Visitor.Name,
                     Email = om.Visitor.Email,
                     Message = om.Message,
+                    IsRead = om.IsRead,
                     TimeSent = om.DateSent,
                     Country = om.Visitor.Country,
                     City = om.Visitor.City

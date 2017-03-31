@@ -41,8 +41,8 @@
         </div>
 
         <!-- Search Results -->
-        <div class="page-header" style="display: none; padding-top: 0;" data-bind="visible: searching() == true && messages().length > 0">
-            <h4>Search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>            
+        <div class="page-header" style="display: none; padding-top: 0;" data-bind="visible: searching() == true && messages().length > 0">         
+            <h4>Search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>                              
         </div>
 
         <!-- Mailbox Content -->
@@ -64,6 +64,12 @@
 
                     </div>
                 </div>
+                <div class="pull-xs-right filter" style="display: none;" data-bind="visible: searching() == true">
+                    <button type="button" class="btn btn-outline btn-default pull-right" data-bind="click: backToAll">
+                        <i class="icon wb-arrow-left m-r-10" aria-hidden="true"></i>
+                        Back to all messages
+                    </button>
+                </div>  
             </div>
             <!-- Mailbox -->
 

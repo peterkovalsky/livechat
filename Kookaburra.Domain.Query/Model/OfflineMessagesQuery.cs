@@ -5,13 +5,16 @@ namespace Kookaburra.Domain.Query.Model
 {
     public class OfflineMessagesQuery : IQuery<OfflineMessagesQueryResult>
     {
-        public OfflineMessagesQuery(TimeFilterType timeFilter)
+        public OfflineMessagesQuery(TimeFilterType timeFilter, string operatorIdentity)
         {
             TimeFilter = timeFilter;
+            OperatorIdentity = operatorIdentity;
         }
 
-        public TimeFilterType TimeFilter { get; private set; }
+        public TimeFilterType TimeFilter { get; }
 
         public Pagination Pagination { get; set; }
+
+        public string OperatorIdentity { get; }
     }
 }
