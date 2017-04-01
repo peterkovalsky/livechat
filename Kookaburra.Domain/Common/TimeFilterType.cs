@@ -2,11 +2,11 @@
 {
     public enum TimeFilterType
     {
+        All,
         Day,
         Week,
         Fortnight,
         Month,
-        Year,
-        All
+        Year,        
     }
 }

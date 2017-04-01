@@ -1,12 +1,13 @@
 ﻿@model Kookaburra.Models.Offline.OfflineMessagesViewModel
 
 @using Newtonsoft.Json;
+@using Kookaburra.Domain.Common;
 
 <div id="offline-messages" class="page bg-white offline-messages">
 
     <div class="page-main">
         <!-- Mailbox Header -->
-        <div class="page-header" style="display: none;" data-bind="visible: messages().length > 0 || searching() == true">
+        <div class="page-header" style="display: none;" data-bind="visible: totalInitialMessages() > 0 || searching() == true">
             <h1 class="page-title">Offline Messages</h1>
 
             <div class="page-header-actions">
@@ -20,7 +21,7 @@
         </div>
 
         <!-- No Messages -->
-        <div class="page-header" style="display: none;" data-bind="visible: searching() == false && messages().length == 0">
+        <div class="page-header" style="display: none;" data-bind="visible: totalInitialMessages().length == 0 && searching() == false">
             <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
                 <i class="icon md-alert-circle-o" aria-hidden="true"></i>
                 <h4>Messages</h4>
@@ -31,45 +32,46 @@
         </div>
 
         <!-- No Search Results -->
-        <div class="page-header row" style="display: none; padding-top: 0;" data-bind="visible: searching() == true && messages().length == 0">
-            <div class="col-sm-12">
-                <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
-                    <i class="icon md-alert-circle-o" aria-hidden="true"></i>
-                    <h4>No search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>
-                </div>
+        <div class="page-header" style="display: none; padding-top: 0; padding-bottom: 0;" data-bind="visible: searching() == true && messages().length == 0">
+            <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
+                <i class="icon md-alert-circle-o" aria-hidden="true"></i>
+                <h4>No search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>
             </div>
         </div>
 
         <!-- Search Results -->
-        <div class="page-header" style="display: none; padding-top: 0;" data-bind="visible: searching() == true && messages().length > 0">         
-            <h4>Search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>                              
+        <div class="page-header" style="display: none; padding-top: 0;" data-bind="visible: searching() == true && messages().length > 0">
+            <h4>Search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>
         </div>
 
         <!-- Mailbox Content -->
-        <div id="mailContent" class="page-content page-content-table" data-plugin="selectable" style="display: none;" data-bind="visible: messages().length > 0">
+        <div id="mailContent" class="page-content page-content-table" data-plugin="selectable" style="display: none;" data-bind="visible: totalInitialMessages() > 0">
             <!-- Actions -->
             <div class="page-content-actions">
 
-                <span class="pull-left tag tag-primary" data-bind="visible: messages().length < totalMessages()">
-                    <span data-bind="text: messages().length"></span> of <span data-bind="text: totalMessages"></span> Messages
-                </span>
-
-                <span class="pull-left tag tag-primary" data-bind="visible: messages().length == totalMessages()">
-                    <span data-bind="text: totalMessages"></span> Messages
-                </span>
+                <div class="pull-xs-left total-messages" data-bind="visible: totalMessages() > 0 || searching() == false">
+                    <span style="display: none;" data-bind="visible: messages().length < totalMessages()">
+                        <span data-bind="text: messages().length"></span> of <span data-bind="text: totalMessages"></span> Messages
+                    </span>
+                    <span style="display: none;" data-bind="visible: messages().length == totalMessages()">
+                        <span data-bind="text: totalMessages"></span> Messages
+                    </span>
+                </div>
 
                 <div class="pull-xs-right filter" style="display: none;" data-bind="visible: searching() == false">
-                    <span>Filter :</span>
-                    <div class="dropdown">
-
-                    </div>
+                    <span style="padding-right: 5px;">FILTER:</span>
+                    <button type="button" class="btn btn-outline btn-primary" data-bind="click: filterAll, css: {active: filter() == 'All'}">All</button>
+                    <button type="button" class="btn btn-outline btn-primary" data-bind="click: filterByDay, css: {active: filter() == 'Day'}">Today</button>
+                    <button type="button" class="btn btn-outline btn-primary" data-bind="click: filterByWeek, css: {active: filter() == 'Week'}">Week</button>
+                    <button type="button" class="btn btn-outline btn-primary" data-bind="click: filterByMonth, css: {active: filter() == 'Month'}">Month</button>
                 </div>
-                <div class="pull-xs-right filter" style="display: none;" data-bind="visible: searching() == true">
+
+                <div class="pull-xs-right" style="display: none;" data-bind="visible: searching() == true">
                     <button type="button" class="btn btn-outline btn-default pull-right" data-bind="click: backToAll">
                         <i class="icon wb-arrow-left m-r-10" aria-hidden="true"></i>
                         Back to all messages
                     </button>
-                </div>  
+                </div>
             </div>
             <!-- Mailbox -->
 

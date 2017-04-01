@@ -7,6 +7,7 @@ using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models.Offline;
 using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -28,16 +29,19 @@ namespace Kookaburra.Controllers
             _queryDispatcher = queryDispatcher;
         }
       
-        [HttpGet, Route("api/messages/{page}")]
-        public List<LeftMessageViewModel> GetMoreMessages(int page)
+        [HttpGet, Route("api/messages/{filter}/{page}")]
+        public OfflineMessagesViewModel GetMoreMessages(string filter, int page)
         {
-            var query = new OfflineMessagesQuery(TimeFilterType.All, RequestContext.Principal.Identity.GetUserId())
+            TimeFilterType timeFilter = TimeFilterType.All;         
+            Enum.TryParse(filter, out timeFilter);            
+
+            var query = new OfflineMessagesQuery(timeFilter, RequestContext.Principal.Identity.GetUserId())
             {
                 Pagination = new Pagination(PageSize, page)
             };
             var result = _queryDispatcher.Execute<OfflineMessagesQuery, OfflineMessagesQueryResult>(query);
 
-            var viewModel = result.OfflineMessages.Select(om => Mapper.Map<LeftMessageViewModel>(om)).ToList();
+            var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
 
             return viewModel;
         }
