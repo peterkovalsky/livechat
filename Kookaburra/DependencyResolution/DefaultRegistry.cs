@@ -60,6 +60,7 @@ namespace Kookaburra.DependencyResolution
             For<ICommandHandler<StopConversationCommand>>().Add<StopConversationCommandHandler>();
             For<ICommandHandler<VisitorMessagedCommand>>().Add<VisitorMessagedCommandHandler>();
             For<ICommandHandler<MarkMessageAsReadCommand>>().Add<MarkMessageAsReadCommandHandler>();
+            For<ICommandHandler<DeleteMessageCommand>>().Add<DeleteMessageCommandHandler>();
             
             // Queries
             For<IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>>().Add<AvailableOperatorQueryHandler>();       

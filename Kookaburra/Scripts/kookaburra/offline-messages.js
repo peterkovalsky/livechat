@@ -28,7 +28,7 @@ ko.bindingHandlers.enterkey = {
 };
 
 function MessagesViewModel(data) {
-    var self = this;        
+    var self = this;
 
     self.messages = ko.observableArray([]);
     self.totalMessages = ko.observable(data.totalMessages);
@@ -40,7 +40,7 @@ function MessagesViewModel(data) {
     self.searching = ko.observable(false);
     self.filter = ko.observable('All');
 
-    
+
     self.init = function () {
         self.addMessages(data.offlineMessages);
     };
@@ -78,16 +78,12 @@ function MessagesViewModel(data) {
         $.slidePanel.show({
             content: html
         }, {
-            mouseDrag: false,
-            touchDrag: false,
-            pointerDrag: false,
-            closeSelector: '.slidePanel-close',
-            direction: 'right'
-         });
-    };
-
-    self.sendReply = function (message) {
-
+                mouseDrag: false,
+                touchDrag: false,
+                pointerDrag: false,
+                closeSelector: '.slidePanel-close',
+                direction: 'right'
+            });
     };
 
     self.search = function () {
@@ -132,9 +128,9 @@ function MessagesViewModel(data) {
             method: "PATCH",
             url: "api/messages/mark-read/" + message.id()
         })
-        .done(function (msg) {
+            .done(function (msg) {
 
-        });
+            });
     };
 
     self.backToAll = function () {
@@ -145,7 +141,7 @@ function MessagesViewModel(data) {
         self.searchTerm('');
         self.searchTermLabel('');
         self.searching(false);
-        self.filter('all');
+        self.filter('All');
 
         self.init();
     };
@@ -174,17 +170,41 @@ function MessagesViewModel(data) {
         self.filterOut('Year');
     };
 
-    self.filterOut = function (filter) {        
+    self.filterOut = function (filter) {
 
         self.filter(filter);
         self.currentPage(1);
 
         $.get("/api/messages/" + self.filter() + "/" + self.currentPage())
             .done(function (data) {
-                self.messages([]);                
+                self.messages([]);
                 self.addMessages(data.offlineMessages);
                 self.totalMessages(data.totalMessages);
             });
+    };
+
+    self.delete = function (id) {
+
+        var message = ko.utils.arrayFirst(self.messages(), function (item) {
+            return item.id() == id;
+        });
+
+        // confirm dialog
+        alertify.confirm("Are you sure you want to delete message from " + message.name() + "?", function () {            
+
+            self.messages.remove(message);
+            $.slidePanel.hide();
+            //$.ajax({
+            //    method: "DELETE",
+            //    url: "api/messages/" + id
+            //})
+            //.done(function (msg) {
+
+            //});
+
+        }, function () {
+            // user clicked "cancel"
+        });
     };
 
     self.init();

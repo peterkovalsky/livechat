@@ -66,5 +66,12 @@ namespace Kookaburra.Controllers
             var command = new MarkMessageAsReadCommand(id, RequestContext.Principal.Identity.GetUserId());
             _commandDispatcher.Execute(command);
         }
+
+        [HttpDelete, Route("api/messages/{id}")]
+        public void DeleteMessage(int id)
+        {
+            var command = new DeleteMessageCommand(id, RequestContext.Principal.Identity.GetUserId());
+            _commandDispatcher.Execute(command);
+        }
     }
 }

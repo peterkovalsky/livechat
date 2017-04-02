@@ -130,6 +130,7 @@
                     <div class="mail-header-right">
                         <span class="time" data-bind="text: time"></span>
                     </div>
+                    <button type="button" class="btn btn-outline btn-primary" data-bind="attr : {onclick: 'deleteMessage(' + id() + ');'}">Delete</button>
                 </div>
 
             </header>
@@ -138,10 +139,10 @@
                     <div class="mail-content" data-bind="text: message"></div>
                 </section>
 
-                <div class="slidePanel-comment">
+                @*<div class="slidePanel-comment">
                     <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4" placeholder="Write your reply here..." data-bind="text: reply"></textarea>
                     <button class="btn btn-primary" data-dismiss="modal" type="button" data-bind="click: $root.sendReply">Reply</button>
-                </div>
+                </div>*@
             </div>
         </div>
     </div>
@@ -158,13 +159,19 @@
     @Scripts.Render("~/bundles/js/offlinemessage")
 }
 
-<script type="text/javascript">
+@section bottom_scripts{
+    <script src="~/remark/global/vendor/alertify/alertify.js"></script>
+    <script src="~/remark/global/js/Plugin/alertify.js"></script>    
+}
 
-    $(document).ready(function () {
-    });
+<script type="text/javascript"> 
 
     var initialView = @Html.Raw(JsonConvert.SerializeObject(Model));
+    var viewModel = new MessagesViewModel(initialView);
 
-    ko.applyBindings(new MessagesViewModel(initialView), document.getElementById("offline-messages"));
+    ko.applyBindings(viewModel, document.getElementById("offline-messages"));
 
+    function deleteMessage(id) {
+        viewModel.delete(id);
+    }
 </script>
