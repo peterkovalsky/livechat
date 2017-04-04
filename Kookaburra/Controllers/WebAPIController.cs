@@ -20,7 +20,7 @@ namespace Kookaburra.Controllers
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
 
-        private readonly int PageSize = 5;
+        private readonly int PageSize = 10;
   
 
         public WebAPIController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
