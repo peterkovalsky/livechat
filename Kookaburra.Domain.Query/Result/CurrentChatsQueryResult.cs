@@ -5,6 +5,8 @@ namespace Kookaburra.Domain.Query.Result
     public class CurrentChatsQueryResult
     {
         public List<ChatInfoResult> CurrentChats { get; set; }
+
+        public int UnreadMessages { get; set; }
     }
 
     public class ChatInfoResult

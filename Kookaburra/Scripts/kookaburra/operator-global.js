@@ -2,7 +2,7 @@
  
     var self = this; 
     self.activeChats = ko.observableArray([]);
-   
+    self.unreadMessages = ko.observable(0);
 
     self.init = function () {
         self.registerCallbackFunctions();
@@ -21,6 +21,8 @@
                         self.activeChats.push(new Chat(item));
                     });
                 }
+
+                self.unreadMessages(result.unreadMessages);
             });
         });
 
@@ -28,6 +30,11 @@
         $.connection.hub.disconnected(function () {
             alert('You were disconnected from the messaging server. Please refresh the page.');
         });
+
+ 
+        postbox.subscribe(function (newValue) {
+            self.unreadMessages(self.unreadMessages() - 1);
+        }, self, "decrementUnreadMessages");
     }
 
     self.registerCallbackFunctions = function () {

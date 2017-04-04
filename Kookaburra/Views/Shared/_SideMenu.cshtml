@@ -30,6 +30,9 @@
                         <a class="animsition-link" href="/messages">
                             <i class="site-menu-icon md-email" aria-hidden="true"></i>
                             <span class="site-menu-title">Offline Messages</span>
+                            <div class="site-menu-badge">
+                                <span class="tag tag-pill tag-success" style="display: none;" data-bind="text: unreadMessages, visible: unreadMessages() > 0"></span>
+                            </div> 
                         </a>
                     </li>
                     <li class="site-menu-item">
@@ -59,6 +62,8 @@
 </div>
 
 <script>
+
+    var postbox = new ko.subscribable();
 
     var operatorGlobalView = new OperatorGlobalViewModel();
     ko.applyBindings(operatorGlobalView, document.getElementById("layout-sidebar"));

@@ -1866,7 +1866,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\chat\chat-room.js" />
     <Content Include="Scripts\chat\chatbox.js" />
-    <Content Include="Scripts\chat\operator-global.js" />
+    <Content Include="Scripts\kookaburra\operator-global.js" />
     <Content Include="Scripts\chat\widget.js" />
     <Content Include="Scripts\handlebars.min.js" />
     <Content Include="Scripts\joinable.js" />

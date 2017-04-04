@@ -7,6 +7,9 @@ namespace Kookaburra.Models.Chat
     {
         [JsonProperty("currentChats")]
         public List<ChatInfo> CurrentChats { get; set; }
+
+        [JsonProperty("unreadMessages")]
+        public int UnreadMessages { get; set; }
     }
 
     public class ChatInfo

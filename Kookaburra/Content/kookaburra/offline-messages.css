@@ -228,3 +228,9 @@
 .offline-messages .table > tbody > tr:hover > td {
     background-color: #f3f7f9;
 }
+
+.slidePanel .actions-bottom {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}

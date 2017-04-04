@@ -33,7 +33,6 @@ function MessagesViewModel(data) {
     self.messages = ko.observableArray([]);
     self.totalMessages = ko.observable(data.totalMessages);
     self.totalInitialMessages = ko.observable(data.totalMessages);
-    self.pageSize = ko.observable(data.pageSize);
     self.currentPage = ko.observable(1);
     self.searchTerm = ko.observable('');
     self.searchTermLabel = ko.observable('');
@@ -69,7 +68,7 @@ function MessagesViewModel(data) {
 
             if (message) {
                 message.isCurrent(true);
-                self.markAsRead(message);
+                self.markAsRead(message);                
             }
         }
 
@@ -122,21 +121,24 @@ function MessagesViewModel(data) {
 
     self.markAsRead = function (message) {
 
-        message.isRead(true);
+        if (!message.isRead()) {
+            postbox.notifySubscribers(0, "decrementUnreadMessages");
 
-        $.ajax({
-            method: "PATCH",
-            url: "api/messages/mark-read/" + message.id()
-        })
+            message.isRead(true);
+
+            $.ajax({
+                method: "PATCH",
+                url: "api/messages/mark-read/" + message.id()
+            })
             .done(function (msg) {
 
             });
+        }
     };
 
     self.backToAll = function () {
         self.messages([]);
-        self.totalMessages(data.totalMessages);
-        self.pageSize(data.pageSize);
+        self.totalMessages(data.totalMessages);      
         self.currentPage(1);
         self.searchTerm('');
         self.searchTermLabel('');
@@ -193,14 +195,16 @@ function MessagesViewModel(data) {
         alertify.confirm("Are you sure you want to delete message from " + message.name() + "?", function () {            
 
             self.messages.remove(message);
+            self.totalMessages(self.totalMessages()-1);
             $.slidePanel.hide();
-            //$.ajax({
-            //    method: "DELETE",
-            //    url: "api/messages/" + id
-            //})
-            //.done(function (msg) {
 
-            //});
+            $.ajax({
+                method: "DELETE",
+                url: "api/messages/" + id
+            })
+            .done(function (msg) {
+
+            });
 
         }, function () {
             // user clicked "cancel"
