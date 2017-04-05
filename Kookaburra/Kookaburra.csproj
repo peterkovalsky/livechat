@@ -2019,6 +2019,7 @@
     <Content Include="Views\Settings\Code.cshtml" />
     <Content Include="tsconfig.json" />
     <Content Include="Views\Offline\Messages.cshtml" />
+    <Content Include="Views\History\Chat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
