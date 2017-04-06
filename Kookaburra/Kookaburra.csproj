@@ -286,7 +286,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Readme\simplehoneypot.readme.txt" />
+    <Content Include="Content\kookaburra\chat-history.css" />
     <Content Include="Content\kookaburra\operator-chat.css" />
     <Content Include="Content\kookaburra\offline-messages.css" />
     <Content Include="Content\kookaburra\portal.css" />
@@ -294,75 +294,14 @@
     <Content Include="Content\perfect-scrollbar.min.css" />
     <Content Include="Content\kookaburra\widget.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="images\album-image-full.jpg" />
-    <Content Include="images\album-img-1.png" />
-    <Content Include="images\album-img-2.png" />
-    <Content Include="images\album-img-3.png" />
-    <Content Include="images\album-img-4.png" />
-    <Content Include="images\album-img-5.png" />
-    <Content Include="images\album-img-6.png" />
-    <Content Include="images\album-img-7.png" />
-    <Content Include="images\album-img-8.png" />
-    <Content Include="images\attach-1.png" />
-    <Content Include="images\attach-2.png" />
-    <Content Include="images\chatico.png" />
-    <Content Include="images\chatico1.png" />
-    <Content Include="images\chatico2.png" />
-    <Content Include="images\chatico3.png" />
-    <Content Include="images\chatico4.png" />
-    <Content Include="images\eiffel.jpg" />
-    <Content Include="images\flags\flag-al.png" />
-    <Content Include="images\flags\flag-br.png" />
-    <Content Include="images\flags\flag-de.png" />
-    <Content Include="images\flags\flag-es.png" />
-    <Content Include="images\flags\flag-fr.png" />
-    <Content Include="images\flags\flag-uk.png" />
-    <Content Include="images\flags\index.html" />
-    <Content Include="images\highlights\highlights-bootstrap-3-3-1.png" />
-    <Content Include="images\highlights\highlights-chat-footer.png" />
-    <Content Include="images\highlights\highlights-fullscreen.png" />
-    <Content Include="images\highlights\highlights-language-switcher.png" />
-    <Content Include="images\highlights\highlights-members.png" />
-    <Content Include="images\highlights\highlights-sidebar-user-info.png" />
-    <Content Include="images\image-1.jpg" />
-    <Content Include="images\image-2.jpg" />
-    <Content Include="images\image-3.jpg" />
-    <Content Include="images\image-4.jpg" />
-    <Content Include="images\image-5.jpg" />
-    <Content Include="images\layouts\layout-horizontal-right-sidebar-collapsed.png" />
-    <Content Include="images\layouts\layout-horizontal-right-sidebar.png" />
-    <Content Include="images\layouts\layout-horizontal.png" />
-    <Content Include="images\layouts\layout-sidebar-collapsed-horizontal.png" />
-    <Content Include="images\layouts\layout-sidebar-collapsed.png" />
-    <Content Include="images\layouts\layout-sidebar-horizontal.png" />
-    <Content Include="images\layouts\layout-sidebar-right-collapsed.png" />
-    <Content Include="images\layouts\layout-sidebar-right.png" />
-    <Content Include="images\layouts\layout-sidebar.png" />
-    <Content Include="images\logo%402x.png" />
-    <Content Include="images\logo-collapsed%402x.png" />
-    <Content Include="images\logo-collapsed.png" />
     <Content Include="images\logo-small.png" />
-    <Content Include="images\logo-white-bg%402x.png" />
-    <Content Include="images\logo-white-bg.png" />
     <Content Include="images\logo.png" />
-    <Content Include="images\neutral-person.png" />
-    <Content Include="images\news-image-widget-2.png" />
-    <Content Include="images\news-image-widget-3.png" />
-    <Content Include="images\news-image-widget-4.png" />
-    <Content Include="images\news-image-widget.png" />
-    <Content Include="images\notes-lines.png" />
-    <Content Include="images\ok-white-full.png" />
-    <Content Include="images\ok-white.png" />
-    <Content Include="images\ok.png" />
-    <Content Include="images\sample.jpg" />
     <Content Include="images\user-1.png" />
     <Content Include="images\user-2.png" />
     <Content Include="images\user-3.png" />
     <Content Include="images\user-4.png" />
     <Content Include="images\user-5.png" />
-    <Content Include="images\news-image-widget-3" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Kookaburra Portal FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Kookaburra Portal LOCAL.pubxml" />
@@ -1867,6 +1806,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\chat\chat-room.js" />
     <Content Include="Scripts\chat\chatbox.js" />
+    <Content Include="Scripts\kookaburra\chat-history.js" />
     <Content Include="Scripts\kookaburra\operator-global.js" />
     <Content Include="Scripts\chat\widget.js" />
     <Content Include="Scripts\handlebars.min.js" />
@@ -2025,9 +1965,6 @@
     <Content Include="Views\History\Chat.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>

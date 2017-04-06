@@ -1,16 +1,15 @@
 ﻿function Message(data) {
     var self = this;
 
-    self.id = ko.observable(data.id);
-    self.message = ko.observable(data.message);
-    self.time = ko.observable(moment(data.time).format('lll')); // Mar 27, 2017 4:29 PM
-    self.name = ko.observable(data.name);
-    self.email = ko.observable(data.email);
-    self.country = ko.observable(data.country);
-    self.region = ko.observable(data.region);
+    self.id = data.id;
+    self.message = data.message;
+    self.time = moment(data.time).format('lll'); // Mar 27, 2017 4:29 PM
+    self.name = data.name;
+    self.email = data.email;
+    self.country = data.country;
+    self.region = data.region;
     self.isRead = ko.observable(data.isRead);
     self.isCurrent = ko.observable(false);
-    self.reply = ko.observable('');
 }
 
 ko.bindingHandlers.enterkey = {
@@ -32,7 +31,6 @@ function MessagesViewModel(data) {
 
     self.messages = ko.observableArray([]);
     self.totalMessages = ko.observable(data.totalMessages);
-    self.totalInitialMessages = ko.observable(data.totalMessages);
     self.currentPage = ko.observable(1);
     self.searchTerm = ko.observable('');
     self.searchTermLabel = ko.observable('');
