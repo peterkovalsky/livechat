@@ -1,121 +1,94 @@
 ﻿@model Kookaburra.Models.History.HistoryViewModel
 
-<div class="page">
-    <div class="page-header">
-        <h1 class="page-title">CHAT HISTORY</h1>
-    </div>
+<div id="chat-history" class="page bg-white">
 
-    <div class="page-content">
-        <div class="row">
-            <div class="col-sm-8">
+    <div class="page-main">
+        <!-- Forum Content Header -->
+        <div class="page-header">
+            <h1 class="page-title">Historical Chats</h1>
 
-                <div class="xe-widget xe-conversations">
-                    <div class="xe-bg-icon">
-                        <i class="linecons-comment"></i>
-                    </div>
-                    <div class="xe-header">
-                        <div class="xe-icon">
-                            <i class="linecons-comment"></i>
-                        </div>
-                        <div class="xe-label">
-                            <h3>
-                                Conversations
-                                <small>Chatting arround</small>
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="xe-body">
-
-                        <ul class="list-unstyled">
-                            <li>
-                                <div class="xe-comment-entry">
-                                    <a href="#" class="xe-user-img">
-                                        <img src="assets/images/user-2.png" class="img-circle" width="40">
-                                    </a>
-
-                                    <div class="xe-comment">
-                                        <a href="#" class="xe-user-name">
-                                            <strong>Jack Gates</strong>
-                                        </a>
-
-                                        <p>In it except to so temper mutual tastes mother. Interested cultivated its continuing now yet are. <br>Out interested acceptance our partiality affronting unpleasant why add. Esteem garden me...</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="xe-comment-entry">
-                                    <a href="#" class="xe-user-img">
-                                        <img src="assets/images/user-5.png" class="img-circle" width="40">
-                                    </a>
-
-                                    <div class="xe-comment">
-                                        <a href="#" class="xe-user-name">
-                                            <strong>Arlind Nushi</strong>
-                                            <span class="label label-secondary">5</span>
-                                        </a>
-
-                                        <p>Age sold some full like rich new. Amounted repeated as believed in confined juvenile.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="xe-comment-entry">
-                                    <a href="#" class="xe-user-img">
-                                        <img src="assets/images/user-4.png" class="img-circle" width="40">
-                                    </a>
-
-                                    <div class="xe-comment">
-                                        <a href="#" class="xe-user-name">
-                                            <strong>Bryan Green</strong>
-                                        </a>
-
-                                        <p>Stuff sight equal of my woody. Him children bringing goodness suitable she entirely put far daughter.</p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div class="xe-footer">
-                        <a href="#">View All</a>
-                    </div>
+            <form class="m-t-20" action="#" role="search">
+                <div class="input-search input-search-dark">
+                    <input type="text" class="form-control w-full" placeholder="Search..." name="">
+                    <button type="submit" class="input-search-btn">
+                        <i class="icon wb-search" aria-hidden="true"></i>
+                    </button>
                 </div>
-
+            </form>
+        </div>
+        <!-- Forum Nav -->
+        <div class="page-nav-tabs">
+            <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="active nav-link" data-toggle="tab" href="#forum-newest" aria-controls="forum-newest"
+                       aria-expanded="true" role="tab">All</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-toggle="tab" href="#forum-activity" aria-controls="forum-activity"
+                       aria-expanded="false" role="tab">Today</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-toggle="tab" href="#forum-answer" aria-controls="forum-answer"
+                       aria-expanded="false" role="tab">Week</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-toggle="tab" href="#forum-answer" aria-controls="forum-answer"
+                       aria-expanded="false" role="tab">Month</a>
+                </li>
+            </ul>
+        </div>
+        <!-- Forum Content -->
+        <div class="page-content tab-content page-content-table nav-tabs-animate">
+            <div class="tab-pane animation-fade active" id="forum-newest" role="tabpanel">
+                <table class="table is-indent">
+                    <tbody>
+                        <tr data-url="panel.tpl" data-toggle="slidePanel">
+                            <td class="pre-cell"></td>
+                            <td class="cell-60 responsive-hide">
+                                <a class="avatar" href="javascript:void(0)">
+                                    <img class="img-fluid" src="/images/user-1.png">
+                                </a>
+                            </td>
+                            <td>
+                                <div class="content">
+                                    <div class="title">
+                                        Vicinum at aperta, torquem mox doloris illi, officiis.
+                                      
+                                    </div>
+                                    <div class="metas">
+                                        <span class="author">By Herman Beck</span>
+                                        <span class="started">1 day ago</span>
+                                        <span class="tags">Themes</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="cell-80 forum-posts">
+                                <span class="num">1</span>
+                                <span class="unit">Post</span>
+                            </td>
+                            <td class="suf-cell"></td>
+                        </tr>
+                 
+                    </tbody>
+                </table>             
             </div>
         </div>
     </div>
 </div>
 
-
-<script type="text/javascript">
-
-    //var viewModel = function HistoricalChats() {
-    //    var self = this;
-
-    //    self.loadMore = function () {
-
-    //    }
-    //}
-
-    //ko.applyBindings(viewModel);
-
-</script>
-
-@section scripts
+@section js
 {
     <script src="~/Scripts/moment-with-locales.min.js"></script>
 }
 
-<!--Start of Zopim Live Chat Script-->
 <script type="text/javascript">
-    window.$zopim || (function (d, s) {
-        var z = $zopim = function (c) { z._.push(c) }, $ = z.s =
-        d.createElement(s), e = d.getElementsByTagName(s)[0]; z.set = function (o) {
-            z.set.
-            _.push(o)
-        }; z._ = []; z.set._ = []; $.async = !0; $.setAttribute("charset", "utf-8");
-        $.src = "//v2.zopim.com/?47sV5SBO2s68vDegvaogmgXRycxDt8q6"; z.t = +new Date; $.
-        type = "text/javascript"; e.parentNode.insertBefore($, e)
-    })(document, "script");
+
+    var viewModel = function ChatHistoryViewModel() {
+        var self = this;
+
+
+    }
+
+    ko.applyBindings(viewModel, document.getElementById("chat-history"));
+
 </script>
-<!--End of Zopim Live Chat Script-->
