@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Kookaburra.Common;
 using Kookaburra.Domain.Query.Result;
-using Kookaburra.Models;
 using Kookaburra.Models.Chat;
+using Kookaburra.Models.History;
 using Kookaburra.Models.Offline;
 using Kookaburra.Models.Widget;
 
@@ -13,7 +13,7 @@ namespace Kookaburra.App_Start
         public static void Initialize()
         {
             Mapper.Initialize(cfg => {              
-                cfg.CreateMap<MessageResult, MessageViewModel>()
+                cfg.CreateMap<MessageResult, Models.MessageViewModel>()
                     .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time.JsDateTime()));
 
                 cfg.CreateMap<ContinueConversationQueryResult, ConversationViewModel>()
@@ -40,6 +40,7 @@ namespace Kookaburra.App_Start
                     .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.TimeSent.JsDateTime()));
 
                 cfg.CreateMap<ResumeOperatorQueryResult, CurrentConversationsViewModel>();
+                cfg.CreateMap<TranscriptQueryResult, TranscriptViewModel>();
             });
         }
     }

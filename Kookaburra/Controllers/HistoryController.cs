@@ -1,5 +1,10 @@
-﻿using Kookaburra.Domain.Command;
+﻿using AutoMapper;
+using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Query;
+using Kookaburra.Domain.Query.Model;
+using Kookaburra.Domain.Query.Result;
+using Kookaburra.Models.History;
+using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
 
 
@@ -25,10 +30,15 @@ namespace Kookaburra.Controllers
             return View();
         }
 
-        [HttpGet, Route("history/{id}")]       
-        public ActionResult Chat(long id)
+        [HttpGet, Route("transcript/{id}")]       
+        public ActionResult Transcript(long id)
         {
-            return View();
+            var query = new TranscriptQuery(id, User.Identity.GetUserId());
+            var result = _queryDispatcher.Execute<TranscriptQuery, TranscriptQueryResult>(query);
+
+            var viewModel = Mapper.Map<TranscriptViewModel>(result);
+
+            return View(viewModel);
         }
     }
 }

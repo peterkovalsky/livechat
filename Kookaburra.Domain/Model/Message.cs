@@ -14,7 +14,7 @@ namespace Kookaburra.Domain.Model
 
         public string SentBy { get; set; }
 
-        public int ConversationId { get; set; }
+        public long ConversationId { get; set; }
 
         public virtual Conversation Conversation { get; set; }
     }

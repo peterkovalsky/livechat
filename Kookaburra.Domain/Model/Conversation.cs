@@ -7,7 +7,7 @@ namespace Kookaburra.Domain.Model
     public class Conversation
     {
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public int VisitorId { get; set; }
 
