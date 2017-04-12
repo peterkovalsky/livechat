@@ -267,6 +267,8 @@
     <Compile Include="Models\DisconnectViewModel.cs" />
     <Compile Include="Models\History\ChatHistoryViewModel.cs" />
     <Compile Include="Models\History\HistoryViewModel.cs" />
+    <Compile Include="Models\History\MessageViewModel.cs" />
+    <Compile Include="Models\History\TranscriptViewModel.cs" />
     <Compile Include="Models\History\ConversationItemViewModel.cs" />
     <Compile Include="Models\Home\PreviewViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -1962,7 +1964,7 @@
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="Views\History\Chat.cshtml" />
+    <Content Include="Views\History\Transcript.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

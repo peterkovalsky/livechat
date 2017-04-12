@@ -59,6 +59,7 @@
     <Compile Include="Handler\OfflineMessagesQueryHandler.cs" />
     <Compile Include="Handler\ResumeOperatorQueryHandler.cs" />
     <Compile Include="Handler\SearchOfflineMessagesQueryHandler.cs" />
+    <Compile Include="Handler\TranscriptQueryHandler.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="Model\AvailableOperatorQuery.cs" />
     <Compile Include="Model\ChatHistoryQuery.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Model\OfflineMessagesQuery.cs" />
     <Compile Include="Model\ResumeOperatorQuery.cs" />
     <Compile Include="Model\SearchOfflineMessagesQuery.cs" />
+    <Compile Include="Model\TranscriptQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result\AvailableOperatorQueryResult.cs" />
     <Compile Include="Result\ChatHistoryQueryResult.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Result\OfflineMessageResult.cs" />
     <Compile Include="Result\OfflineMessagesQueryResult.cs" />
     <Compile Include="Result\ResumeOperatorQueryResult.cs" />
+    <Compile Include="Result\TranscriptQueryResult.cs" />
     <Compile Include="Result\VisitorInfoResult.cs" />
   </ItemGroup>
   <ItemGroup />

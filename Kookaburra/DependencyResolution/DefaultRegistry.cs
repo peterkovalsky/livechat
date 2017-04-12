@@ -70,6 +70,9 @@ namespace Kookaburra.DependencyResolution
             For<IQueryHandler<ResumeOperatorQuery, ResumeOperatorQueryResult>>().Add<ResumeOperatorQueryHandler>();
             For<IQueryHandler<OfflineMessagesQuery, OfflineMessagesQueryResult>>().Add<OfflineMessagesQueryHandler>();
             For<IQueryHandler<SearchOfflineMessagesQuery, OfflineMessagesQueryResult>>().Add<SearchOfflineMessagesQueryHandler>();
+            For<IQueryHandler<TranscriptQuery, TranscriptQueryResult>>().Add<TranscriptQueryHandler>();
+
+            
             For<IQueryHandler<ChatHistoryQuery, ChatHistoryQueryResult>>().Add<ChatHistoryQueryHandler>();
             
 

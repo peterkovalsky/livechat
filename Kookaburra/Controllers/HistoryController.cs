@@ -39,10 +39,15 @@ namespace Kookaburra.Controllers
             return View(viewModel);
         }
 
-        [HttpGet, Route("history/{id}")]       
-        public ActionResult Chat(long id)
+        [HttpGet, Route("transcript/{id}")]       
+        public ActionResult Transcript(long id)
         {
-            return View();
+            var query = new TranscriptQuery(id, User.Identity.GetUserId());
+            var result = _queryDispatcher.Execute<TranscriptQuery, TranscriptQueryResult>(query);
+
+            var viewModel = Mapper.Map<TranscriptViewModel>(result);
+
+            return View(viewModel);
         }
     }
 }
