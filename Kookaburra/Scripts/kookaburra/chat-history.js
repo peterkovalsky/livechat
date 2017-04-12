@@ -6,7 +6,7 @@
     self.operatorName = data.operatorName;
     self.text = data.text;
     self.totalMessages = data.totalMessages;
-    sef.time = data.time;
+    self.startTime = moment(data.startTime).format('lll'); // Mar 27, 2017 4:29 PM
 }
 
 ko.bindingHandlers.enterkey = {
@@ -27,7 +27,7 @@ function ChatHistoryViewModel(initialData) {
     var self = this;
 
     self.conversations = ko.observableArray([]);
-    self.totalMessages = ko.observable(data.totalMessages);
+    self.totalConversations = ko.observable(initialData.totalConversations);
     self.currentPage = ko.observable(1);
     self.searchTerm = ko.observable('');
     self.searchTermLabel = ko.observable('');
@@ -50,8 +50,8 @@ function ChatHistoryViewModel(initialData) {
                     self.conversations([]);
                     self.currentPage(1);
 
-                    self.addConversations(data.offlineMessages);
-                    self.totalMessages(data.totalMessages);
+                    self.addConversations(data.conversations);
+                    self.totalMessages(data.totalConversations);
                 });
         }
     };
@@ -63,13 +63,13 @@ function ChatHistoryViewModel(initialData) {
         if (self.searching()) {
             $.get("/api/history/search/" + self.searchTerm() + '/' + self.currentPage())
                 .done(function (data) {
-                    self.addConversations(data.offlineMessages);
+                    self.addConversations(data.conversations);
                 });
         }
         else {
             $.get("/api/history/" + self.filter() + "/" + self.currentPage())
                 .done(function (data) {
-                    self.addConversations(data.offlineMessages);
+                    self.addConversations(data.conversations);
                 });
         }
     };

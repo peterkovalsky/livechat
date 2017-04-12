@@ -1,6 +1,8 @@
-﻿@model Kookaburra.Models.History.HistoryViewModel
+﻿@model Kookaburra.Models.History.ChatHistoryViewModel
 
-<div id="chat-history" class="page bg-white">
+@using Newtonsoft.Json;
+
+<div id="chat-history" class="page bg-white chat-history">
 
     <div class="page-main">
         <!-- Forum Content Header -->
@@ -41,8 +43,8 @@
         <div class="page-content tab-content page-content-table nav-tabs-animate">
             <div class="tab-pane animation-fade active" id="forum-newest" role="tabpanel">
                 <table class="table is-indent">
-                    <tbody>
-                        <tr data-url="panel.tpl" data-toggle="slidePanel">
+                    <tbody data-bind="foreach: conversations">
+                        <tr>
                             <td class="pre-cell"></td>
                             <td class="cell-60 responsive-hide">
                                 <a class="avatar" href="javascript:void(0)">
@@ -51,20 +53,16 @@
                             </td>
                             <td>
                                 <div class="content">
-                                    <div class="title">
-                                        Vicinum at aperta, torquem mox doloris illi, officiis.
-                                      
-                                    </div>
-                                    <div class="metas">
-                                        <span class="author">By Herman Beck</span>
-                                        <span class="started">1 day ago</span>
-                                        <span class="tags">Themes</span>
+                                    <h5 class="list-group-item-heading" data-bind="text: visitorName"></h5>
+                                    <div class="title" data-bind="text: text"></div>
+                                    <div class="total-messages">                                  
+                                        <i class="wb-chat" aria-hidden="true"></i>
+                                        <span data-bind="text: totalMessages"></span>
                                     </div>
                                 </div>
                             </td>
-                            <td class="cell-80 forum-posts">
-                                <span class="num">1</span>
-                                <span class="unit">Post</span>
+                            <td class="cell-200 forum-posts">
+                                <span data-bind="text: startTime"></span>
                             </td>
                             <td class="suf-cell"></td>
                         </tr>
@@ -76,18 +74,21 @@
     </div>
 </div>
 
+@section css
+{
+    @Styles.Render("~/bundles/css/chathistory")
+}
+
 @section js
 {
-    <script src="~/Scripts/moment-with-locales.min.js"></script>
+    @Scripts.Render("~/bundles/js/chathistory")
 }
+
 
 <script type="text/javascript">
 
-    var viewModel = function ChatHistoryViewModel() {
-        var self = this;
-
-
-    }
+    var initialView = @Html.Raw(JsonConvert.SerializeObject(Model));
+    var viewModel = new ChatHistoryViewModel(initialView);
 
     ko.applyBindings(viewModel, document.getElementById("chat-history"));
 

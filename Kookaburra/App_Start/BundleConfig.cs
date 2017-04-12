@@ -41,6 +41,11 @@ namespace Kookaburra
                  .Include("~/Scripts/kookaburra/offline-messages.js")
              );
 
+            bundles.Add(new ScriptBundle("~/bundles/js/chathistory")
+                 .Include("~/Scripts/moment-with-locales.min.js")
+                 .Include("~/Scripts/kookaburra/chat-history.js")
+             );
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -64,6 +69,10 @@ namespace Kookaburra
             bundles.Add(new StyleBundle("~/bundles/css/offlinemessages")
                 .Include("~/remark/global/vendor/alertify/alertify.css")
                 .Include("~/Content/kookaburra/offline-messages.css")
+            );
+
+            bundles.Add(new StyleBundle("~/bundles/css/chathistory")         
+                .Include("~/Content/kookaburra/chat-history.css")
             );
 
             bundles.Add(new StyleBundle("~/bundles/css/widget")

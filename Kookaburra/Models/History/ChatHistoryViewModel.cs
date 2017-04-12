@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Kookaburra.Models.History
 {
     public class ChatHistoryViewModel
     {
-        public string VisitorName { get; set; }
+        [JsonProperty("conversations")]
+        public List<ConversationItemViewModel> Conversations { get; set; }
 
-        public List<MessageViewModel> Conversation { get; set; }
+        [JsonProperty("totalConversations")]
+        public int TotalConversations { get; set; }
     }
 }

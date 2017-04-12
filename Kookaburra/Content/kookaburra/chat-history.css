@@ -1,1 +1,102 @@
-﻿
+﻿.chat-history .page-content .table {
+    table-layout: fixed;
+}
+
+    .chat-history .page-content .table .content {
+        position: relative;
+    }
+
+        .chat-history .page-content .table .content > * {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+    .chat-history .page-content .table .flags {
+        display: inline-block;
+    }
+
+    .chat-history .page-content .table a {
+        text-decoration: none;
+    }
+
+    .chat-history .page-content .table .title {
+        line-height: 25px;
+    }
+
+        .chat-history .page-content .table .title > * {
+            margin-right: 10px;
+        }
+
+        .chat-history .page-content .table .title .locked {
+            color: #a3afb7;
+        }
+
+    .chat-history .page-content .table .sticky-top {
+        font-size: 90%;
+    }
+
+        .chat-history .page-content .table .sticky-top .icon {
+            margin-right: 4px;
+        }
+
+    .chat-history .page-content .table .metas {
+        color: #a3afb7;
+    }
+
+        .chat-history .page-content .table .metas > span {
+            position: relative;
+            margin-right: 10px;
+        }
+
+            .chat-history .page-content .table .metas > span + span:before {
+                content: "";
+                position: absolute;
+                width: 2px;
+                height: 2px;
+                top: 50%;
+                left: -8px;
+                background-color: #a7b0b8;
+            }
+
+    .chat-history .page-content .table .forum-posts {
+        text-align: right;
+    }
+
+@media (max-width: 1199px) {
+    .chat-history .page-content .table .content {
+        padding-right: 100px;
+    }
+
+    .chat-history .page-content .table .flags {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+
+@media (max-width: 479px) {
+    .chat-history .nav-tabs-line > li > a {
+        padding: 10px;
+    }
+
+    .chat-history .responsive-hide {
+        display: none !important;
+    }
+
+    .chat-history .page-content .table .content {
+        padding-right: 0;
+    }
+}
+
+.chat-history .total-messages {
+    color: #a3afb7;
+}
+
+.chat-history .total-messages i {
+    font-size: 80%;
+}
+
+.chat-history .total-messages span {
+    font-size: 90%;
+}
