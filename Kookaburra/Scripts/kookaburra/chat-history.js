@@ -74,6 +74,10 @@ function ChatHistoryViewModel(initialData) {
         }
     };
 
+    self.openTranscript = function (conversation) {
+        window.location.href = "/transcript/" + conversation.id;
+    };
+
     // init
     self.addConversations(initialData.conversations);
 }

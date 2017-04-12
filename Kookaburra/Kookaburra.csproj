@@ -267,7 +267,6 @@
     <Compile Include="Models\DisconnectViewModel.cs" />
     <Compile Include="Models\History\ChatHistoryViewModel.cs" />
     <Compile Include="Models\History\HistoryViewModel.cs" />
-    <Compile Include="Models\History\MessageViewModel.cs" />
     <Compile Include="Models\History\TranscriptViewModel.cs" />
     <Compile Include="Models\History\ConversationItemViewModel.cs" />
     <Compile Include="Models\Home\PreviewViewModel.cs" />
