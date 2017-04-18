@@ -60,8 +60,8 @@ namespace Kookaburra.Services
             {
                 Author = operatorName,
                 Text = message,
-                SentBy = UserType.Operator.ToString().ToLower(),
-                Time = dateSent.JsDateTime()
+                SentBy = UserType.Operator,
+                SentOn = dateSent
             };
 
             // Notify all operator instances (mutiple tabs)            
@@ -165,8 +165,8 @@ namespace Kookaburra.Services
             {
                 Author = currentSession.VisitorName,
                 Text = message,                
-                SentBy = UserType.Visitor.ToString().ToLower(),
-                Time = dateSent.JsDateTime()
+                SentBy = UserType.Visitor,
+                SentOn = dateSent
             };
 
             // Notify all visitor instances (mutiple tabs)

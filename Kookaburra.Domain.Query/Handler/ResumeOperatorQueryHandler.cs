@@ -71,7 +71,7 @@ namespace Kookaburra.Domain.Query.Handler
                                                 {
                                                     Author = m.SentBy == UserType.Visitor.ToString() ? c.Visitor.Name : c.Operator.FirstName,
                                                     Text = m.Text,
-                                                    Time = m.DateSent,
+                                                    SentOn = m.DateSent,
                                                     SentBy = m.SentBy.ToLower()
                                                 }).ToList()
                                             }).ToList();

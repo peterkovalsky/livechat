@@ -45,6 +45,11 @@ namespace Kookaburra.Controllers
             var query = new TranscriptQuery(id, User.Identity.GetUserId());
             var result = _queryDispatcher.Execute<TranscriptQuery, TranscriptQueryResult>(query);
 
+            if (result == null)
+            {
+                return HttpNotFound();
+            }
+
             var viewModel = Mapper.Map<TranscriptViewModel>(result);
 
             return View(viewModel);

@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Kookaburra.Common;
+using Kookaburra.Domain.Common;
+using Newtonsoft.Json;
 using System;
 
 namespace Kookaburra.Models
@@ -12,9 +14,25 @@ namespace Kookaburra.Models
         public string Text { get; set; }
 
         [JsonProperty("sentBy")]
-        public string SentBy { get; set; }
+        public string SentByFormatted
+        {
+            get
+            {
+                return SentBy.ToString().ToLower();
+            }
+        }
 
         [JsonProperty("time")]
-        public double Time { get; set; }
+        public double Time
+        {
+            get
+            {
+                return SentOn.JsDateTime();
+            }
+        }
+
+        public UserType SentBy { get; set; }
+
+        public DateTime SentOn { get; set; }
     }
 }

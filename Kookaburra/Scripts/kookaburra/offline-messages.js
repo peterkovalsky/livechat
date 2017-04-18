@@ -126,7 +126,7 @@ function MessagesViewModel(data) {
 
             $.ajax({
                 method: "PATCH",
-                url: "api/messages/mark-read/" + message.id()
+                url: "api/messages/mark-read/" + message.id
             })
             .done(function (msg) {
 
@@ -186,11 +186,11 @@ function MessagesViewModel(data) {
     self.delete = function (id) {
 
         var message = ko.utils.arrayFirst(self.messages(), function (item) {
-            return item.id() == id;
+            return item.id == id;
         });
 
         // confirm dialog
-        alertify.confirm("Are you sure you want to delete message from " + message.name() + "?", function () {            
+        alertify.confirm("Are you sure you want to delete message from " + message.name + "?", function () {            
 
             self.messages.remove(message);
             self.totalMessages(self.totalMessages()-1);

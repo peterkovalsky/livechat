@@ -23,7 +23,10 @@ namespace Kookaburra.Domain.Query.Handler
         {
             var account = _context.Accounts.SingleOrDefault(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity));
 
-            var conversations = _context.Conversations.Where(c => c.Operator.AccountId == account.Id && c.Messages.Any(m => m.SentBy == UserType.Visitor.ToString()));
+            var conversations = _context.Conversations.Where(c => 
+                                c.Operator.AccountId == account.Id
+                                && c.Messages.Any(m => m.SentBy == UserType.Visitor.ToString())
+                                && c.TimeFinished != null);
 
             if (query.TimeFilter == TimeFilterType.Day)
             {

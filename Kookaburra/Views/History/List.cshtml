@@ -68,7 +68,13 @@
                         </tr>
                  
                     </tbody>
-                </table>             
+                </table>   
+                
+                <div class="text-sm-center" style="padding-bottom: 30px;" data-bind="visible: conversations().length < totalConversations()">
+                    <button type="button" class="btn btn-default" data-bind="click: showMore">
+                        <i class="icon wb-chevron-down margin-right-5" aria-hidden="true"></i>Show More
+                    </button>
+                </div>
             </div>
         </div>
     </div>

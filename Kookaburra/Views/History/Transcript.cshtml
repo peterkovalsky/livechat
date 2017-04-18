@@ -1,48 +1,93 @@
 ﻿@model  Kookaburra.Models.History.TranscriptViewModel
+@using Kookaburra.Domain.Common;
 
-<div class="page">
+<div class="transcript page">
 
     <div class="page-header">
-        <h1 class="page-title">Chat Transcript</h1>
+        <h1 class="page-title">
+            <i class="panel-title-icon icon wb-chat" aria-hidden="true"></i>
+            Chat Transcript
+        </h1>
     </div>
 
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-sm-8 masonry-item">
                 <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><i class="panel-title-icon icon wb-chat" aria-hidden="true"></i>Last comments</h3>
-                    </div>
-                    <div class="panel-body">
-                        <ul class="list-group list-group-dividered list-group-full">
 
-                            @foreach (var message in Model.Messages)
+                    <ul class="list-group list-group-dividered list-group-full">
+
+                        @foreach (var message in Model.Messages)
                             {
-                                <li class="list-group-item">
-                                    <div class="media comment">
-                                        <div class="media-left">
-                                            <a class="avatar" href="javascript:void(0)">
-                                                <img src="/images/user-1.png">
-                                            </a>
+                            <li class="list-group-item @(message.SentBy == UserType.Visitor ? "visitor" : "operator")">
+                                <div class="media comment">                                    
+                                    <div class="media-body comment-body">
+                                        <strong>@message.Author</strong>
+                                        <div class="comment-meta pull-right">
+                                            <span class="date">@message.SentOn.ToString("t")</span>
                                         </div>
-                                        <div class="media-body comment-body">
-                                            <strong>@message.Author</strong>
-                                            <div class="comment-meta">
-                                                <span class="date">@message.Time</span>
-                                            </div>
-                                            <div class="comment-content">
-                                                <p>@message.Text</p>
-                                            </div>
+                                        <div class="comment-content">
+                                            <p>@message.Text</p>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
+                            </li>
                             }
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
             </div>
-        </div>
-      
-    </div>
 
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header white bg-cyan-600 p-30 clearfix">
+                        <a class="avatar avatar-100 pull-xs-left m-r-20" href="javascript:void(0)">
+                            <img src="/images/user-1.png" alt="">
+                        </a>
+                        <div class="pull-xs-left">
+                            <div class="font-size-20 m-b-15">@Model.Visitor.Name</div>
+                            <p class="m-b-5 text-nowrap">
+                                <i class="icon wb-map m-r-10" aria-hidden="true"></i>
+                                <span class="text-break">@(Model.Visitor.City), @(Model.Visitor.Country)</span>
+                            </p>
+                            <p class="m-b-5 text-nowrap">
+                                <i class="icon wb-envelope m-r-10" aria-hidden="true"></i>
+                                <span class="text-break">@Model.Visitor.Email</span>
+                            </p>
+                            <p class="m-b-5 text-nowrap">
+                                <i class="icon bd-twitter m-r-10" aria-hidden="true"></i>
+                                <span class="text-break">Kolage</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="row no-space p-y-20 p-x-30 text-xs-center">
+                            <div class="col-xs-4">
+                                <div class="counter">
+                                    <span class="counter-number cyan-600">@(Model.Duration) min</span>
+                                    <div class="counter-label">Duration</div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="counter">
+                                    <span class="counter-number cyan-600">125</span>
+                                    <div class="counter-label">Clients</div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="counter">
+                                    <span class="counter-number cyan-600">10.8K</span>
+                                    <div class="counter-label">Followers</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </div>
 </div>
+
+@section css
+{
+    @Styles.Render("~/bundles/css/chathistory")
+}

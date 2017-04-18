@@ -113,7 +113,7 @@
             <header class="slidePanel-header">
                 <div class="slidePanel-actions" aria-label="actions" role="group">
                     <button type="button" class="btn btn-icon btn-pure btn-inverse slidePanel-close actions-top icon wb-close slidePanel-will-close" aria-hidden="true"></button>
-                    <button type="button" class="btn btn-pure icon wb-trash actions-bottom" aria-hidden="true" data-bind="attr : {onclick: 'deleteMessage(' + id() + ');'}"></button>
+                    <button type="button" class="btn btn-pure icon wb-trash actions-bottom" aria-hidden="true" data-bind="attr : {onclick: 'deleteMessage(' + id + ');'}"></button>
                 </div>
                 <div class="mail-header">
                     <div class="mail-header-main">
@@ -124,7 +124,7 @@
                             <h1 class="name" data-bind="text: name"></h1>
                         </div>
                         <div>
-                            <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email() }"></a>
+                            <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email }"></a>
                         </div>
                     </div>
                     <div class="mail-header-right">

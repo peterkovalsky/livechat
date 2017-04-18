@@ -100,3 +100,12 @@
 .chat-history .total-messages span {
     font-size: 90%;
 }
+
+.transcript .panel {
+
+}
+
+.transcript li.visitor {
+    background-color: #f3f7f9;
+}
+

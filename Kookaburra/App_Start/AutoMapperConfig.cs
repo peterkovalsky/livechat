@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Kookaburra.Common;
 using Kookaburra.Domain.Query.Result;
+using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.History;
 using Kookaburra.Models.Offline;
@@ -13,8 +14,7 @@ namespace Kookaburra.App_Start
         public static void Initialize()
         {
             Mapper.Initialize(cfg => {              
-                cfg.CreateMap<MessageResult, Models.MessageViewModel>()
-                    .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time.JsDateTime()));
+                cfg.CreateMap<MessageResult, MessageViewModel>();
 
                 cfg.CreateMap<ContinueConversationQueryResult, ConversationViewModel>()
                     .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.VisitorInfo.Name))
@@ -45,6 +45,7 @@ namespace Kookaburra.App_Start
                 cfg.CreateMap<ConversationItemQueryResult, ConversationItemViewModel>();
 
                 cfg.CreateMap<TranscriptQueryResult, TranscriptViewModel>();
+                cfg.CreateMap<VisitorResult, VisitorViewModel>();
             });
         }
     }

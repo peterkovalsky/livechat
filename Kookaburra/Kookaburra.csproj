@@ -236,11 +236,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
+    <Compile Include="Controllers\HistoryWebApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OfflineController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Controllers\WebAPIController.cs" />
+    <Compile Include="Controllers\OfflineWebApiController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="DependencyResolution\CommandDispatcher.cs" />
     <Compile Include="DependencyResolution\CommandHandlerNotFoundException.cs" />
@@ -275,6 +276,7 @@
     <Compile Include="Models\Offline\LeftMessageViewModel.cs" />
     <Compile Include="Models\Offline\OfflineMessagesViewModel.cs" />
     <Compile Include="Models\Settings\CodeViewModel.cs" />
+    <Compile Include="Models\VisitorViewModel.cs" />
     <Compile Include="Models\Widget\ContainerViewModel.cs" />
     <Compile Include="Models\Widget\ConversationViewModel.cs" />
     <Compile Include="Models\Widget\IntroductionViewModel.cs" />
@@ -298,6 +300,7 @@
     <Content Include="Global.asax" />
     <Content Include="images\logo-small.png" />
     <Content Include="images\logo.png" />
+    <Content Include="images\placeholder.png" />
     <Content Include="images\user-1.png" />
     <Content Include="images\user-2.png" />
     <Content Include="images\user-3.png" />
