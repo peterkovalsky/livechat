@@ -33,7 +33,7 @@ namespace Kookaburra.Controllers
         public HomeController(IAccountRepository accountRepository, IOperatorRepository operatorRepository)
         {
             _accountRepository = accountRepository;
-            _operatorRepository = operatorRepository;           
+            _operatorRepository = operatorRepository;
         }
 
         [HttpGet]
@@ -70,6 +70,6 @@ namespace Kookaburra.Controllers
             };
 
             return View(model);
-        }
+        }     
     }
 }

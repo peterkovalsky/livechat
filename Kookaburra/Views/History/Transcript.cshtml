@@ -1,5 +1,6 @@
 ﻿@model  Kookaburra.Models.History.TranscriptViewModel
 @using Kookaburra.Domain.Common;
+@using Kookaburra.Common;
 
 <div class="transcript page">
 
@@ -13,12 +14,11 @@
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-sm-8 masonry-item">
-                <div class="panel">
-
+                <div class="panel">                 
                     <ul class="list-group list-group-dividered list-group-full">
 
                         @foreach (var message in Model.Messages)
-                            {
+                        {
                             <li class="list-group-item @(message.SentBy == UserType.Visitor ? "visitor" : "operator")">
                                 <div class="media comment">                                    
                                     <div class="media-body comment-body">
@@ -32,7 +32,7 @@
                                     </div>
                                 </div>
                             </li>
-                            }
+                        }
                     </ul>
                 </div>
             </div>
@@ -45,17 +45,23 @@
                         </a>
                         <div class="pull-xs-left">
                             <div class="font-size-20 m-b-15">@Model.Visitor.Name</div>
+                            @if (!string.IsNullOrWhiteSpace(Model.Visitor.City) && !string.IsNullOrWhiteSpace(Model.Visitor.Country))
+                            {
                             <p class="m-b-5 text-nowrap">
                                 <i class="icon wb-map m-r-10" aria-hidden="true"></i>
                                 <span class="text-break">@(Model.Visitor.City), @(Model.Visitor.Country)</span>
                             </p>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.Visitor.Email))
+                            {
                             <p class="m-b-5 text-nowrap">
                                 <i class="icon wb-envelope m-r-10" aria-hidden="true"></i>
-                                <span class="text-break">@Model.Visitor.Email</span>
+                                <span class="text-break"><a href="mailto:@(Model.Visitor.Email)">@Model.Visitor.Email</a></span>
                             </p>
+                            }
                             <p class="m-b-5 text-nowrap">
                                 <i class="icon bd-twitter m-r-10" aria-hidden="true"></i>
-                                <span class="text-break">Kolage</span>
+                                <span class="text-break" data-utcdate="@Model.TimeStarted.JsDateTime()"></span>
                             </p>
                         </div>
                     </div>
@@ -91,3 +97,17 @@
 {
     @Styles.Render("~/bundles/css/chathistory")
 }
+@section js
+{
+    @Scripts.Render("~/bundles/js/transcript")
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-utcdate]').each(function () {
+            var utcTime = parseInt($(this).attr('data-utcdate'), 10) || 0;
+            var d = moment(utcTime);
+            $(this).html(d.format('lll'));
+        });
+    });
+</script>

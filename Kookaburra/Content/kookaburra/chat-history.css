@@ -106,6 +106,9 @@
 }
 
 .transcript li.visitor {
-    background-color: #f3f7f9;
+    
 }
 
+.card a {
+    color: white;
+}

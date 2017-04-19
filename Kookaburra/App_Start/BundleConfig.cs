@@ -46,6 +46,10 @@ namespace Kookaburra
                  .Include("~/Scripts/kookaburra/chat-history.js")
              );
 
+            bundles.Add(new ScriptBundle("~/bundles/js/transcript")
+                .Include("~/Scripts/moment-with-locales.min.js")            
+            );
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 

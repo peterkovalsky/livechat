@@ -235,6 +235,7 @@
     <Compile Include="Common\WebHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HistoryWebApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1963,6 +1964,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Settings\Code.cshtml" />
     <Content Include="Views\Offline\Messages.cshtml" />
+    <Content Include="Views\Shared\Error404.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1998,7 +2000,9 @@
       <Name>Kookaburra.Repository</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Error\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
