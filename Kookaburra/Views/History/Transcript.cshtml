@@ -8,6 +8,10 @@
         <h1 class="page-title">
             <i class="panel-title-icon icon wb-chat" aria-hidden="true"></i>
             Chat Transcript
+            <button type="button" class="btn btn-outline btn-info pull-right" onclick="history.go(-1);">
+                <i class="icon wb-arrow-left m-r-10" aria-hidden="true"></i>
+                Back To List
+            </button>
         </h1>
     </div>
 
@@ -24,7 +28,7 @@
                                     <div class="media-body comment-body">
                                         <strong>@message.Author</strong>
                                         <div class="comment-meta pull-right">
-                                            <span class="date">@message.SentOn.ToString("t")</span>
+                                            <span class="date" data-utctime="@message.SentOn.JsDateTime()"></span>
                                         </div>
                                         <div class="comment-content">
                                             <p>@message.Text</p>
@@ -40,11 +44,11 @@
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-header white bg-cyan-600 p-30 clearfix">
-                        <a class="avatar avatar-100 pull-xs-left m-r-20" href="javascript:void(0)">
-                            <img src="/images/user-1.png" alt="">
+                        <a class="pull-xs-left m-r-20" href="javascript:void(0)">
+                            <span class="flag-icon flag-icon-us"></span>
                         </a>
                         <div class="pull-xs-left">
-                            <div class="font-size-20 m-b-15">@Model.Visitor.Name</div>
+                            <div class="font-size-24 m-b-15">@Model.Visitor.Name</div>
                             @if (!string.IsNullOrWhiteSpace(Model.Visitor.City) && !string.IsNullOrWhiteSpace(Model.Visitor.Country))
                             {
                             <p class="m-b-5 text-nowrap">
@@ -60,31 +64,25 @@
                             </p>
                             }
                             <p class="m-b-5 text-nowrap">
-                                <i class="icon bd-twitter m-r-10" aria-hidden="true"></i>
+                                <i class="icon fa fa-clock-o m-r-10" aria-hidden="true"></i>
                                 <span class="text-break" data-utcdate="@Model.TimeStarted.JsDateTime()"></span>
                             </p>
                         </div>
                     </div>
                     <div class="card-footer bg-white">
                         <div class="row no-space p-y-20 p-x-30 text-xs-center">
-                            <div class="col-xs-4">
+                            <div class="col-xs-6">
                                 <div class="counter">
-                                    <span class="counter-number cyan-600">@(Model.Duration) min</span>
+                                    <span class="counter-number cyan-600">@(Model.Duration.Minutes >= 1 ? $"{Model.Duration.Minutes} min" : $"{Model.Duration.Seconds} sec")</span>
                                     <div class="counter-label">Duration</div>
                                 </div>
                             </div>
-                            <div class="col-xs-4">
+                            <div class="col-xs-6">
                                 <div class="counter">
-                                    <span class="counter-number cyan-600">125</span>
-                                    <div class="counter-label">Clients</div>
+                                    <span class="counter-number cyan-600">@(Model.Messages.Count())</span>
+                                    <div class="counter-label">Messages</div>
                                 </div>
-                            </div>
-                            <div class="col-xs-4">
-                                <div class="counter">
-                                    <span class="counter-number cyan-600">10.8K</span>
-                                    <div class="counter-label">Followers</div>
-                                </div>
-                            </div>
+                            </div>                        
                         </div>
                     </div>
                 </div>               
@@ -108,6 +106,12 @@
             var utcTime = parseInt($(this).attr('data-utcdate'), 10) || 0;
             var d = moment(utcTime);
             $(this).html(d.format('lll'));
+        });
+
+        $('[data-utctime]').each(function () {
+            var utcTime = parseInt($(this).attr('data-utctime'), 10) || 0;
+            var d = moment(utcTime);
+            $(this).html(d.format('LT'));
         });
     });
 </script>

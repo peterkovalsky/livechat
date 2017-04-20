@@ -109,6 +109,7 @@
     
 }
 
-.card a {
-    color: white;
+.transcript .flag-icon {
+    height: 50px;
+    width: 50px;
 }

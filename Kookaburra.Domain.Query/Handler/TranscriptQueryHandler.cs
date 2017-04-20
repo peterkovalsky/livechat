@@ -19,29 +19,39 @@ namespace Kookaburra.Domain.Query.Handler
         {
             var account = _context.Accounts.Where(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity)).SingleOrDefault();
 
-            return _context.Conversations
+            var result = _context.Conversations
                 .Where(c => c.Id == query.ConversationId && c.Operator.AccountId == account.Id && c.TimeFinished != null)
-                .Select(c => new TranscriptQueryResult
+                .Select(c =>
+                new
                 {
-                    TimeStarted = c.TimeStarted,
                     TimeFinished = c.TimeFinished.Value,
-                    Visitor = new VisitorResult
+                    TranscriptQueryResult = new TranscriptQueryResult
                     {
-                        Name = c.Visitor.Name,
-                        Email = c.Visitor.Email,
-                        Country = c.Visitor.Country,
-                        City = c.Visitor.City,
-                        Latitude = c.Visitor.Latitude,
-                        Longitude = c.Visitor.Longitude
-                    },
-                    Messages = c.Messages.Select(m => new MessageResult
-                    {
-                        Author = m.SentBy == UserType.Visitor.ToString() ? c.Visitor.Name : c.Operator.FirstName,
-                        Text = m.Text,
-                        SentOn = m.DateSent,
-                        SentBy = m.SentBy.ToLower()
-                    }).ToList()
-                }).SingleOrDefault();                
+                        TimeStarted = c.TimeStarted,
+                        Visitor = new VisitorResult
+                        {
+                            Name = c.Visitor.Name,
+                            Email = c.Visitor.Email,
+                            Country = c.Visitor.Country,
+                            City = c.Visitor.City,
+                            Latitude = c.Visitor.Latitude,
+                            Longitude = c.Visitor.Longitude
+                        },
+                        Messages = c.Messages.Select(m => new MessageResult
+                        {
+                            Author = m.SentBy == UserType.Visitor.ToString() ? c.Visitor.Name : c.Operator.FirstName,
+                            Text = m.Text,
+                            SentOn = m.DateSent,
+                            SentBy = m.SentBy.ToLower()
+                        }).ToList()
+                    }
+                }).SingleOrDefault();
+
+            var chatDuration = result.TimeFinished - result.TranscriptQueryResult.TimeStarted;
+
+            result.TranscriptQueryResult.Duration = new Duration((int)chatDuration.TotalMinutes, (int)chatDuration.TotalSeconds);
+
+            return result.TranscriptQueryResult;
         }
     }
 }

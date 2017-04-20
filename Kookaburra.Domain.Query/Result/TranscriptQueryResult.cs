@@ -7,7 +7,7 @@ namespace Kookaburra.Domain.Query.Result
     {
         public DateTime TimeStarted { get; set; }
 
-        public DateTime TimeFinished { get; set; }        
+        public Duration Duration { get; set; }       
 
         public VisitorResult Visitor { get; set; }
 

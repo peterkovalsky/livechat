@@ -11,8 +11,7 @@ namespace Kookaburra.Repository
         public AccountRepository(KookaburraContext context)
         {
             _context = context;
-        }
-      
+        }      
 
         public Account Get(string identifier)
         {

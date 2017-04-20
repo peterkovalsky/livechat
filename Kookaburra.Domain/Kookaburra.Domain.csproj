@@ -59,6 +59,7 @@
     <Compile Include="Common\TimeFilterType.cs" />
     <Compile Include="Common\UserType.cs" />
     <Compile Include="DefaultSettings.cs" />
+    <Compile Include="Duration.cs" />
     <Compile Include="Exceptions\OperatorDisconnectedException.cs" />
     <Compile Include="Exceptions\VisitorDisconnectedException.cs" />
     <Compile Include="Integration\IGeoLocator.cs" />
