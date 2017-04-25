@@ -101,8 +101,36 @@
     font-size: 90%;
 }
 
-.transcript .panel {
+.chat-history  .page-nav-tabs {
+    position: relative;
+}
 
+.chat-history .page-nav-tabs .nav-tabs {
+    border-bottom: 0;
+}
+
+.chat-history .total-conversations {
+    position: absolute;
+    right: 30px;
+    top: 10px;
+    z-index: 2;
+}
+
+.chat-history .tab-pane {
+    border-top: 1px solid #e4eaec;
+    margin: 0 30px;
+}
+
+.chat-history .page-content-table .table > tbody > tr > td:first-child {
+    padding-left: 0;
+}
+
+.chat-history .page-content-table .table > tbody > tr > td:last-child{
+    padding-right: 0;
+}
+
+/* Transcript */
+.transcript .panel {
 }
 
 .transcript li.visitor {

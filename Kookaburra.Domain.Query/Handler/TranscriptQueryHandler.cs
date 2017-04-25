@@ -33,6 +33,7 @@ namespace Kookaburra.Domain.Query.Handler
                             Name = c.Visitor.Name,
                             Email = c.Visitor.Email,
                             Country = c.Visitor.Country,
+                            CountryCode = c.Visitor.CountryCode,
                             City = c.Visitor.City,
                             Latitude = c.Visitor.Latitude,
                             Longitude = c.Visitor.Longitude
@@ -46,6 +47,8 @@ namespace Kookaburra.Domain.Query.Handler
                         }).ToList()
                     }
                 }).SingleOrDefault();
+
+            if (result == null) return null;
 
             var chatDuration = result.TimeFinished - result.TranscriptQueryResult.TimeStarted;
 

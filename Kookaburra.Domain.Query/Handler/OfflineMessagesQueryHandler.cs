@@ -20,7 +20,7 @@ namespace Kookaburra.Domain.Query.Handler
         {
             var offlineMessages = _context.OfflineMessages.Where(om => om.Account.Operators.Any(o => o.Identity == query.OperatorIdentity));       
 
-            if (query.TimeFilter == TimeFilterType.Day)
+            if (query.TimeFilter == TimeFilterType.Today)
             {
                 var aDayAgo = DateTime.UtcNow.AddDays(-1);
 

@@ -19,6 +19,7 @@ namespace Kookaburra.Integration.freegeoip
                     return new VisitorLocation
                     {
                         Country = location.CountryName,
+                        CountryCode = location.CountryCode,
                         Region = location.RegionName,
                         City = location.City,
                         Latitude = location.Latitude,
@@ -42,6 +43,7 @@ namespace Kookaburra.Integration.freegeoip
                     return new VisitorLocation
                     {
                         Country = location.CountryName,
+                        CountryCode = location.CountryCode,
                         Region = location.RegionName,
                         City = location.City,
                         Latitude = location.Latitude,

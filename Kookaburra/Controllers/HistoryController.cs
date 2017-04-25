@@ -2,6 +2,7 @@
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
+using Kookaburra.Domain.Query.ChatHistory;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models.History;

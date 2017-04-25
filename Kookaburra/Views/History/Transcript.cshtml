@@ -44,9 +44,12 @@
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-header white bg-cyan-600 p-30 clearfix">
-                        <a class="pull-xs-left m-r-20" href="javascript:void(0)">
-                            <span class="flag-icon flag-icon-us"></span>
-                        </a>
+                        @if (!string.IsNullOrWhiteSpace(Model.Visitor.CountryCode))
+                        {
+                        <div class="pull-xs-left m-r-20">
+                            <span class="flag-icon flag-icon-@(Model.Visitor.CountryCode.ToLower())"></span>
+                        </div>
+                        }
                         <div class="pull-xs-left">
                             <div class="font-size-24 m-b-15">@Model.Visitor.Name</div>
                             @if (!string.IsNullOrWhiteSpace(Model.Visitor.City) && !string.IsNullOrWhiteSpace(Model.Visitor.Country))
@@ -60,7 +63,7 @@
                             {
                             <p class="m-b-5 text-nowrap">
                                 <i class="icon wb-envelope m-r-10" aria-hidden="true"></i>
-                                <span class="text-break"><a href="mailto:@(Model.Visitor.Email)">@Model.Visitor.Email</a></span>
+                                <span class="text-break"><a href="mailto:@(Model.Visitor.Email)" class="white">@Model.Visitor.Email</a></span>
                             </p>
                             }
                             <p class="m-b-5 text-nowrap">

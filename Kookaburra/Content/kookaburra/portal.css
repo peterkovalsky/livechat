@@ -118,3 +118,8 @@ input[type="checkbox"].input-validation-error {
     margin-bottom: 25px;
     color: #a9afb5;
 }
+
+.navbar-brand-text {
+    font-family: 'Didact Gothic', sans-serif;
+    font-size: 30px;
+}

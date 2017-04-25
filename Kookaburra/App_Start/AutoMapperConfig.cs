@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kookaburra.Common;
+using Kookaburra.Domain.Query.ChatHistory;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;

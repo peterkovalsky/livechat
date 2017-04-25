@@ -28,6 +28,8 @@ namespace Kookaburra.DependencyResolution
     using Domain.Query.Model;
     using Domain.Query.Result;
     using Integration.freegeoip;
+    using Kookaburra.Domain.Query.ChatHistory;
+    using Kookaburra.Domain.Query.ChatHistorySearch;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
@@ -71,8 +73,7 @@ namespace Kookaburra.DependencyResolution
             For<IQueryHandler<OfflineMessagesQuery, OfflineMessagesQueryResult>>().Add<OfflineMessagesQueryHandler>();
             For<IQueryHandler<SearchOfflineMessagesQuery, OfflineMessagesQueryResult>>().Add<SearchOfflineMessagesQueryHandler>();
             For<IQueryHandler<TranscriptQuery, TranscriptQueryResult>>().Add<TranscriptQueryHandler>();
-
-            
+            For<IQueryHandler<ChatHistorySearchQuery, ChatHistoryQueryResult>>().Add<ChatHistorySearchQueryHandler>();            
             For<IQueryHandler<ChatHistoryQuery, ChatHistoryQueryResult>>().Add<ChatHistoryQueryHandler>();
             
 

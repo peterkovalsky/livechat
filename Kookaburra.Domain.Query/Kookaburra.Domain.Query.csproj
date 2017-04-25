@@ -51,8 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatHistorySearch\ChatHistorySearchQuery.cs" />
+    <Compile Include="ChatHistorySearch\ChatHistorySearchQueryHandler.cs" />
     <Compile Include="Handler\AvailableOperatorQueryHandler.cs" />
-    <Compile Include="Handler\ChatHistoryQueryHandler.cs" />
+    <Compile Include="ChatHistory\ChatHistoryQueryHandler.cs" />
     <Compile Include="Handler\ContinueConversationQueryHandler.cs" />
     <Compile Include="Handler\CurrentChatsQueryHandler.cs" />
     <Compile Include="Handler\CurrentSessionQueryHandler.cs" />
@@ -62,7 +64,7 @@
     <Compile Include="Handler\TranscriptQueryHandler.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="Model\AvailableOperatorQuery.cs" />
-    <Compile Include="Model\ChatHistoryQuery.cs" />
+    <Compile Include="ChatHistory\ChatHistoryQuery.cs" />
     <Compile Include="Model\ContinueConversationQuery.cs" />
     <Compile Include="Model\CurrentChatsQuery.cs" />
     <Compile Include="Model\CurrentSessionQuery.cs" />
@@ -72,7 +74,7 @@
     <Compile Include="Model\TranscriptQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result\AvailableOperatorQueryResult.cs" />
-    <Compile Include="Result\ChatHistoryQueryResult.cs" />
+    <Compile Include="ChatHistory\ChatHistoryQueryResult.cs" />
     <Compile Include="Result\ContinueConversationQueryResult.cs" />
     <Compile Include="Result\ConversationResult.cs" />
     <Compile Include="Result\CurrentChatsQueryResult.cs" />

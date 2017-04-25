@@ -25,14 +25,18 @@ ko.bindingHandlers.enterkey = {
 
 function ChatHistoryViewModel(initialData) {
     var self = this;
-
+    
     self.conversations = ko.observableArray([]);
     self.totalConversations = ko.observable(initialData.totalConversations);
     self.currentPage = ko.observable(1);
+
     self.searchTerm = ko.observable('');
     self.searchTermLabel = ko.observable('');
     self.searching = ko.observable(false);
-    self.filter = ko.observable('All');
+    self.searchFocus = ko.observable(false);
+
+    self.filters = ['All', 'Today', 'Week', 'Month'];
+    self.selectedFilter = ko.observable(self.filters[0]);
 
     self.addConversations = function (newConversations) {
         $.each(newConversations, function (index, item) {
@@ -51,9 +55,26 @@ function ChatHistoryViewModel(initialData) {
                     self.currentPage(1);
 
                     self.addConversations(data.conversations);
-                    self.totalMessages(data.totalConversations);
+                    self.totalConversations(data.totalConversations);
                 });
         }
+    };
+
+    self.clearSearch = function () {
+        self.searchTerm('');
+        self.searchFocus(true);
+    };
+
+    self.filter = function (filterBy) {
+        self.selectedFilter(filterBy);
+
+        $.get("/api/history/" + self.selectedFilter() + "/" + self.currentPage())
+            .done(function (data) {
+                self.conversations([]);
+
+                self.addConversations(data.conversations);
+                self.totalConversations(data.totalConversations);
+            });
     };
 
     self.showMore = function () {
@@ -67,7 +88,7 @@ function ChatHistoryViewModel(initialData) {
                 });
         }
         else {
-            $.get("/api/history/" + self.filter() + "/" + self.currentPage())
+            $.get("/api/history/" + self.selectedFilter() + "/" + self.currentPage())
                 .done(function (data) {
                     self.addConversations(data.conversations);
                 });

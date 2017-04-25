@@ -13,8 +13,14 @@ namespace Kookaburra.Domain.Model
         [StringLength(200)]
         public string Email { get; set; }
 
+        [StringLength(50)]
+        public string IpAddress { get; set; }
+
         [StringLength(200)]
         public string Country { get; set; }
+
+        [StringLength(10)]
+        public string CountryCode { get; set; }
 
         public string Region { get; set; }
 

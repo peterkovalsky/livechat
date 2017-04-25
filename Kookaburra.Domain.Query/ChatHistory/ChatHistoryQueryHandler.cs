@@ -1,14 +1,9 @@
 ﻿using Kookaburra.Domain.Common;
-using Kookaburra.Domain.Query.Model;
-using Kookaburra.Domain.Query.Result;
 using Kookaburra.Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Kookaburra.Domain.Query.Handler
+namespace Kookaburra.Domain.Query.ChatHistory
 {
     public class ChatHistoryQueryHandler : IQueryHandler<ChatHistoryQuery, ChatHistoryQueryResult>
     {
@@ -28,7 +23,7 @@ namespace Kookaburra.Domain.Query.Handler
                                 && c.Messages.Any(m => m.SentBy == UserType.Visitor.ToString())
                                 && c.TimeFinished != null);
 
-            if (query.TimeFilter == TimeFilterType.Day)
+            if (query.TimeFilter == TimeFilterType.Today)
             {
                 var aDayAgo = DateTime.UtcNow.AddDays(-1);
 

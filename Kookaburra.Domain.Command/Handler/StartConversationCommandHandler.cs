@@ -33,7 +33,8 @@ namespace Kookaburra.Domain.Command.Handler
                 {
                     Name = command.VisitorName,
                     Email = command.VisitorEmail,             
-                    SessionId = command.SessionId                                     
+                    SessionId = command.SessionId,
+                    IpAddress = command.VisitorIP,
                 };
 
                 if (location != null)

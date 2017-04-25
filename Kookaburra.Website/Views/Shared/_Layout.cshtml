@@ -18,18 +18,7 @@
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
 
-    <!--start of Kookaburra js code-->
-    <script type='text/javascript'>
-        (function () {
-            var oc = document.createElement('script');
-            oc.type = 'text/javascript';
-            oc.async = true;
-            oc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'localhost:64410/widget/container/086FBDC2-14F3-4F68-B3C6-9EA42D257061';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(oc, s);
-        }());
-    </script>
-    <!--end of Kookaburra js code-->
+    @await Component.InvokeAsync("Widget")
 
 </head>
 <body>

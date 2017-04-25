@@ -2,15 +2,11 @@
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
-using Kookaburra.Domain.Query.Model;
-using Kookaburra.Domain.Query.Result;
+using Kookaburra.Domain.Query.ChatHistory;
+using Kookaburra.Domain.Query.ChatHistorySearch;
 using Kookaburra.Models.History;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace Kookaburra.Controllers
@@ -41,6 +37,20 @@ namespace Kookaburra.Controllers
                 Pagination = new Pagination(PageSize, page)
             };
             var result = _queryDispatcher.Execute<ChatHistoryQuery, ChatHistoryQueryResult>(query);
+
+            var viewModel = Mapper.Map<ChatHistoryViewModel>(result);
+
+            return viewModel;
+        }
+
+        [HttpGet, Route("api/history/search/{queryTerm}/{page}")]
+        public ChatHistoryViewModel Search(string queryTerm, int page)
+        {
+            var query = new ChatHistorySearchQuery(queryTerm, User.Identity.GetUserId())
+            {
+                Pagination = new Pagination(PageSize, page)
+            };
+            var result = _queryDispatcher.Execute<ChatHistorySearchQuery, ChatHistoryQueryResult>(query);
 
             var viewModel = Mapper.Map<ChatHistoryViewModel>(result);
 

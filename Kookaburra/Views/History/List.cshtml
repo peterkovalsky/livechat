@@ -9,43 +9,54 @@
         <div class="page-header">
             <h1 class="page-title">Historical Chats</h1>
 
-            <form class="m-t-20" action="#" role="search">
+            <div class="m-t-20" action="#" role="search">
                 <div class="input-search input-search-dark">
-                    <input type="text" class="form-control w-full" placeholder="Search..." name="">
-                    <button type="submit" class="input-search-btn">
-                        <i class="icon wb-search" aria-hidden="true"></i>
-                    </button>
+                    <i class="input-search-icon wb-search" aria-hidden="true"></i>
+                    <input type="text" class="form-control w-full" placeholder="Search..." data-bind="textInput: searchTerm, enterkey: search, hasfocus: searchFocus">
+                    <button type="button" class="input-search-close icon wb-close" aria-label="Close" data-bind="click: clearSearch"></button>                    
                 </div>
-            </form>
+            </div>
         </div>
-        <!-- Forum Nav -->
+             
         <div class="page-nav-tabs">
-            <ul class="nav nav-tabs nav-tabs-line" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="active nav-link" data-toggle="tab" href="#forum-newest" aria-controls="forum-newest"
-                       aria-expanded="true" role="tab">All</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" data-toggle="tab" href="#forum-activity" aria-controls="forum-activity"
-                       aria-expanded="false" role="tab">Today</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" data-toggle="tab" href="#forum-answer" aria-controls="forum-answer"
-                       aria-expanded="false" role="tab">Week</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" data-toggle="tab" href="#forum-answer" aria-controls="forum-answer"
-                       aria-expanded="false" role="tab">Month</a>
-                </li>
-            </ul>
+            <!-- Search Results -->
+            <div style="display: none;" data-bind="visible: searching() && totalConversations() > 0">
+                <h4>Search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>
+            </div>
+
+            <!-- Filters -->
+            <div data-bind="visible: !searching()">
+                <ul class="nav nav-tabs nav-tabs-line" role="tablist" data-bind="foreach: filters">
+                    <li class="nav-item" role="presentation">
+                        <a class="active nav-link" data-toggle="tab" href="#forum-newest" aria-controls="forum-newest"
+                           aria-expanded="true" role="tab" data-bind="text: $data, click: $root.filter, css: {active: $root.selectedFilter() == $data}"></a>
+                    </li>
+                </ul>
+            </div>
+      
+            <!-- Total -->
+            <div class="total-conversations" data-bind="visible: totalConversations() > 0">
+                <span data-bind="text: conversations().length"></span> of <span data-bind="text: totalConversations"></span> Conversations
+            </div>
         </div>
         <!-- Forum Content -->
         <div class="page-content tab-content page-content-table nav-tabs-animate">
-            <div class="tab-pane animation-fade active" id="forum-newest" role="tabpanel">
+
+            <!-- No Search Results -->
+            <div class="page-header" style="display: none; padding-top: 0; padding-bottom: 0;" data-bind="visible: searching() && totalConversations() == 0">
+                <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
+                    <i class="icon md-alert-circle-o" aria-hidden="true"></i>
+                    <h4>No search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>
+                </div>
+            </div>
+
+           
+
+            <div class="tab-pane animation-fade active" id="forum-newest" role="tabpanel" data-bind="visible: totalConversations() > 0">
                 <table class="table is-indent">
                     <tbody data-bind="foreach: conversations">
                         <tr data-bind="click: $root.openTranscript">
-                            <td class="pre-cell"></td>
+                       
                             <td class="cell-60 responsive-hide">
                                 <a class="avatar" href="javascript:void(0)">
                                     <img class="img-fluid" src="/images/user-1.png">
@@ -64,7 +75,7 @@
                             <td class="cell-200 forum-posts">
                                 <span data-bind="text: startTime"></span>
                             </td>
-                            <td class="suf-cell"></td>
+                           
                         </tr>
                  
                     </tbody>

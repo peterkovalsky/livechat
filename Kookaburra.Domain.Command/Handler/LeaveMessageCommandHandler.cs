@@ -40,13 +40,15 @@ namespace Kookaburra.Domain.Command.Handler
                 Visitor = new Visitor
                 {
                     Name = command.Name,
-                    Email = command.Email            
+                    Email = command.Email,
+                    IpAddress = command.VisitorIP
                 }
             };
 
             if (location != null)
             {
                 offlineMessage.Visitor.Country = location.Country;
+                offlineMessage.Visitor.CountryCode = location.CountryCode;
                 offlineMessage.Visitor.Region = location.Region;
                 offlineMessage.Visitor.City = location.City;
                 offlineMessage.Visitor.Latitude = location.Latitude;

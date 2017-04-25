@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Kookaburra.Domain.Query.Result
+namespace Kookaburra.Domain.Query.ChatHistory
 {
     public class ChatHistoryQueryResult
     {
