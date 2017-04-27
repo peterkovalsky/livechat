@@ -17,7 +17,7 @@ Password: Private123!
 
 MSSQL: sql5032.smarterasp.net
 
-Username: DB_A1807D_kookaburra_admin
+Username: DB_A1807D_staging_admin
 
 Password: Avocado2017
 
