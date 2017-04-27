@@ -17,7 +17,7 @@
 }
 
 .offline-messages .page-content-actions .total-messages {
-    margin-top: 14px;
+    /*margin-top: 14px;*/
 }
 
 .offline-messages .checkbox-important {
@@ -106,6 +106,13 @@
     content: "";
     display: table;
     clear: both;
+}
+
+.offline-messages .search-for {
+    font-size: 1.286rem;
+    font-family: Roboto,sans-serif;
+    font-weight: 400;
+    line-height: 1.2;
 }
 
 .slidePanel .actions-top {

@@ -32,11 +32,14 @@ function MessagesViewModel(data) {
     self.messages = ko.observableArray([]);
     self.totalMessages = ko.observable(data.totalMessages);
     self.currentPage = ko.observable(1);
+
     self.searchTerm = ko.observable('');
     self.searchTermLabel = ko.observable('');
     self.searching = ko.observable(false);
-    self.filter = ko.observable('All');
 
+    self.filters = ['All', 'Today', 'Week', 'Month'];
+    self.selectedFilter = ko.observable(self.filters[0]);
+    self.filtering = ko.observable(false);
 
     self.init = function () {
         self.addMessages(data.offlineMessages);
@@ -110,7 +113,7 @@ function MessagesViewModel(data) {
                 });
         }
         else {
-            $.get("/api/messages/" + self.filter() + "/" + self.currentPage())
+            $.get("/api/messages/" + self.selectedFilter() + "/" + self.currentPage())
                 .done(function (data) {
                     self.addMessages(data.offlineMessages);
                 });
@@ -141,45 +144,28 @@ function MessagesViewModel(data) {
         self.searchTerm('');
         self.searchTermLabel('');
         self.searching(false);
-        self.filter('All');
+        self.selectedFilter(self.filters[0]);
+        self.filtering(false);
 
         self.init();
-    };
+    };    
 
-    self.filterAll = function () {
-        self.filterOut('All');
-    };
+    self.filter = function (filterBy) {
 
-    self.filterByDay = function () {
-        self.filterOut('Day');
-    };
-
-    self.filterByWeek = function () {
-        self.filterOut('Week');
-    };
-
-    self.filterByFortnight = function () {
-        self.filterOut('Fortnight');
-    };
-
-    self.filterByMonth = function () {
-        self.filterOut('Month');
-    };
-
-    self.filterByYear = function () {
-        self.filterOut('Year');
-    };
-
-    self.filterOut = function (filter) {
-
-        self.filter(filter);
+        self.selectedFilter(filterBy);
         self.currentPage(1);
+        self.filtering(true);
 
-        $.get("/api/messages/" + self.filter() + "/" + self.currentPage())
+        $.get("/api/messages/" + self.selectedFilter() + "/" + self.currentPage())
             .done(function (data) {
                 self.messages([]);
                 self.addMessages(data.offlineMessages);
                 self.totalMessages(data.totalMessages);
+
+                if (self.selectedFilter() == self.filters[0])
+                {
+                    self.filtering(false);
+                }
             });
     };
 

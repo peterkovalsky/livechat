@@ -1807,6 +1807,7 @@
     <Content Include="remark\global\vendor\waves\waves.js" />
     <Content Include="remark\global\vendor\waves\waves.min.css" />
     <Content Include="remark\global\vendor\waves\waves.min.js" />
+    <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\chat\chat-room.js" />
