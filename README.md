@@ -31,3 +31,11 @@ Server: sql5030.smarterasp.net
 Username: DB_A1807D_kookaburra_admin
 
 Password: Avocado2017
+
+# HOSTING #
+
+smarterasp.net
+
+Username: peter.kovalsky@outlook.com
+
+Password: B...3p..!
