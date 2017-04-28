@@ -30,13 +30,14 @@ namespace Kookaburra.DependencyResolution
     using Integration.freegeoip;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;
+    using Kookaburra.Domain.Query.OfflineMessages;
+    using Kookaburra.Domain.Query.SearchOfflineMessages;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
     using StructureMap.Graph;
 
-    public class DefaultRegistry : Registry {
-        #region Constructors and Destructors
+    public class DefaultRegistry : Registry {       
 
         public DefaultRegistry() {
             Scan(
@@ -79,8 +80,6 @@ namespace Kookaburra.DependencyResolution
 
             ForSingletonOf<ChatSession>();
             ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();
-        }
-
-        #endregion
+        }       
     }
 }

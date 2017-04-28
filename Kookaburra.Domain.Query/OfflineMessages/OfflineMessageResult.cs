@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kookaburra.Domain.Query.Result
+namespace Kookaburra.Domain.Query.OfflineMessages
 {
     public class OfflineMessageResult
     {
@@ -17,6 +17,8 @@ namespace Kookaburra.Domain.Query.Result
         public DateTime TimeSent { get; set; }
 
         public string Country { get; set; }
+
+        public string CountryCode { get; set; }
 
         public string City { get; set; }       
     }

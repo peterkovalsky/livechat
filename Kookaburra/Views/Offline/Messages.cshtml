@@ -28,15 +28,13 @@
                         <input type="text" class="form-control" name="" placeholder="Search..." data-bind="textInput: searchTerm, enterkey: search">
                     </div>
                 </div>
-            </div>           
+            </div>
 
             <div id="mailContent" class="page-content page-content-table" data-plugin="selectable">
-                
-                <!-- Search Results -->
-                
 
+                <!-- Search Results -->
                 <!-- Actions -->
-                <div class="page-content-actions">                  
+                <div class="page-content-actions">
 
                     <div class="pull-xs-left filter" data-bind="visible: !searching()">
                         <spam data-bind="foreach: filters">
@@ -44,22 +42,19 @@
                         </spam>
                     </div>
 
-                    <div class="pull-xs-left filter" style="display: none;" data-bind="visible: searching()">
-                        <div class="search-for" style="display: none; padding-top: 0;" data-bind="visible: totalMessages() > 0">
-                            <span>Search results for '<span data-bind="text: searchTermLabel"></span>'.</span>
-                        </div>
-
-                        <div style="display: none; padding-top: 0;" data-bind="visible: totalMessages() == 0">
-                            <h4>No search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>
-                        </div>
-                    </div>
-
-                    @*<div class="pull-xs-left" style="display: none;" data-bind="visible: searching()">
-                        <button type="button" class="btn btn-outline btn-default pull-right" data-bind="click: backToAll">
-                            <i class="icon wb-arrow-left m-r-10" aria-hidden="true"></i>
-                            Back to all messages
+                    <div class="pull-xs-left search-for" style="display: none;" data-bind="visible: searching()">
+                        <button style="margin-right: 10px;" type="button" class="btn btn-outline btn-default" data-bind="click: backToAll">
+                            <i class="icon wb-arrow-left" aria-hidden="true"></i>
                         </button>
-                    </div>*@
+
+                        <span style="display: none;" data-bind="visible: totalMessages() > 0">
+                            Search results for '<span data-bind="text: searchTermLabel"></span>'
+                        </span>
+
+                        <spam style="display: none;" data-bind="visible: totalMessages() == 0">
+                            No search results for '<span data-bind="text: searchTermLabel"></span>'
+                        </spam>
+                    </div>
 
                     <div class="pull-xs-right total-messages">
                         <span style="display: none;" data-bind="visible: messages().length < totalMessages()">
@@ -68,7 +63,7 @@
                         <span style="display: none;" data-bind="visible: messages().length == totalMessages()">
                             <span data-bind="text: totalMessages"></span> Messages
                         </span>
-                    </div>                  
+                    </div>
                 </div>
 
                 <div class="pannel">
@@ -115,14 +110,18 @@
                 </div>
                 <div class="mail-header">
                     <div class="mail-header-main">
-                        <a class="avatar" href="javascript:void(0)">
-                            <img src="/images/user-1.png" class="img-circle" alt="user-pic">
-                        </a>
-                        <div>
-                            <h1 class="name" data-bind="text: name"></h1>
+                        <div class="pull-xs-left m-r-20" data-bind="if: countryCode != null">
+                            <span data-bind="attr: {class: 'flag-icon flag-icon-' + countryCode.toLowerCase()}"></span>
                         </div>
-                        <div>
-                            <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email }"></a>
+
+                        <div class="pull-xs-left" >
+                            <h1 class="name" data-bind="text: name"></h1>
+                            <p data-bind="if: country != null && city != null">
+                                <span data-bind="text: country"></span>, <span data-bind="text: city"></span>
+                            </p>
+                            <p>
+                                <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email }"></a>
+                            </p>                           
                         </div>
                     </div>
                     <div class="mail-header-right">
@@ -135,11 +134,6 @@
                 <section class="slidePanel-inner-section">
                     <div class="mail-content" data-bind="text: message"></div>
                 </section>
-
-                @*<div class="slidePanel-comment">
-                        <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4" placeholder="Write your reply here..." data-bind="text: reply"></textarea>
-                        <button class="btn btn-primary" data-dismiss="modal" type="button" data-bind="click: $root.sendReply">Reply</button>
-                    </div>*@
             </div>
         </div>
     </div>

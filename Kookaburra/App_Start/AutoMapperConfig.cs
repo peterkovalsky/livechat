@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Kookaburra.Common;
 using Kookaburra.Domain.Query.ChatHistory;
+using Kookaburra.Domain.Query.OfflineMessages;
 using Kookaburra.Domain.Query.Result;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
@@ -35,9 +36,7 @@ namespace Kookaburra.App_Start
 
                 cfg.CreateMap<OfflineMessagesQueryResult, OfflineMessagesViewModel>();
 
-                cfg.CreateMap<OfflineMessageResult, LeftMessageViewModel>()
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.VisitorName))
-                    .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.City))
+                cfg.CreateMap<OfflineMessageResult, LeftMessageViewModel>()                                  
                     .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.TimeSent.JsDateTime()));
 
                 cfg.CreateMap<ResumeOperatorQueryResult, CurrentConversationsViewModel>();

@@ -7,7 +7,8 @@
     self.name = data.name;
     self.email = data.email;
     self.country = data.country;
-    self.region = data.region;
+    self.countryCode = data.countryCode;
+    self.city = data.city;
     self.isRead = ko.observable(data.isRead);
     self.isCurrent = ko.observable(false);
 }
