@@ -28,9 +28,7 @@ namespace Kookaburra.Domain.Command.Handler
             {
                 throw new ArgumentException(string.Format("Account {0} doesn't exists", command.AccountKey));
             }
-
-            var location = _geoLocator.GetLocation(command.VisitorIP);        
-
+                   
             var offlineMessage = new OfflineMessage
             {
                 Message = command.Message,
@@ -45,15 +43,24 @@ namespace Kookaburra.Domain.Command.Handler
                 }
             };
 
-            if (location != null)
+            try
             {
-                offlineMessage.Visitor.Country = location.Country;
-                offlineMessage.Visitor.CountryCode = location.CountryCode;
-                offlineMessage.Visitor.Region = location.Region;
-                offlineMessage.Visitor.City = location.City;
-                offlineMessage.Visitor.Latitude = location.Latitude;
-                offlineMessage.Visitor.Longitude = location.Longitude;
+                var location = _geoLocator.GetLocation(command.VisitorIP);
+
+                if (location != null)
+                {
+                    offlineMessage.Visitor.Country = location.Country;
+                    offlineMessage.Visitor.CountryCode = location.CountryCode;
+                    offlineMessage.Visitor.Region = location.Region;
+                    offlineMessage.Visitor.City = location.City;
+                    offlineMessage.Visitor.Latitude = location.Latitude;
+                    offlineMessage.Visitor.Longitude = location.Longitude;
+                }
             }
+            catch (Exception ex)
+            {
+                // log geo location exception   
+            }          
 
             _context.OfflineMessages.Add(offlineMessage);
             _context.SaveChanges();

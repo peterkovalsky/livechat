@@ -233,6 +233,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\WebHelper.cs" />
+    <Compile Include="Common\WidgetStepType.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -280,6 +281,7 @@
     <Compile Include="Models\VisitorViewModel.cs" />
     <Compile Include="Models\Widget\ContainerViewModel.cs" />
     <Compile Include="Models\Widget\ConversationViewModel.cs" />
+    <Compile Include="Models\Widget\InitWidgetViewModel.cs" />
     <Compile Include="Models\Widget\IntroductionViewModel.cs" />
     <Compile Include="Models\MessageViewModel.cs" />
     <Compile Include="Models\Widget\OfflineViewModel.cs" />
@@ -1835,6 +1837,7 @@
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\kookaburra\offline-messages.js" />
+    <Content Include="Scripts\kookaburra\widget.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -1966,6 +1969,8 @@
     <Content Include="Views\Settings\Code.cshtml" />
     <Content Include="Views\Offline\Messages.cshtml" />
     <Content Include="Views\Shared\Error404.cshtml" />
+    <Content Include="Views\Widget\Widget.cshtml" />
+    <Content Include="Views\Widget\_Intro.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

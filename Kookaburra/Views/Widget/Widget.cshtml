@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Kookaburra Chat</title>
+
+    @Styles.Render("~/bundles/css/widget")
+
+    @Scripts.Render("~/bundles/js/form")
+</head>
+<body>
+    <div class="widget">
+
+        @Html.Partial("_Intro")
+
+
+        <script type="text/javascript">
+
+            var accountKey = '@(ViewBag.AccountKey)';
+
+            $(document).ready(function () {
+                var widgetViewModel = new WidgetViewModel(accountKey, url);
+                ko.applyBindings(widgetViewModel);
+
+                // initialise the chat
+                chatWidgetModel.init();
+            });
+         
+        </script>
+    </div>
+</body>
+</html>
