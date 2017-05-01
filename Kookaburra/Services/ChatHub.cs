@@ -179,6 +179,11 @@ namespace Kookaburra.Services
             };
         }
 
+        public void StartChat()
+        {
+
+        }
+
         public ConversationViewModel ConnectVisitor()
         {
             var httpContext = Context.Request.GetHttpContext();

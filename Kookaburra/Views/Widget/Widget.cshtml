@@ -5,13 +5,15 @@
 
     @Styles.Render("~/bundles/css/widget")
 
-    @Scripts.Render("~/bundles/js/form")
+    @Scripts.Render("~/bundles/js/widget/2")
+    <script src="~/signalr/hubs"></script>
 </head>
 <body>
     <div class="widget">
 
         @Html.Partial("_Intro")
-
+        @Html.Partial("_Chat")
+        @Html.Partial("_GoneOffline")
 
         <script type="text/javascript">
 

@@ -1,0 +1,21 @@
+﻿<div data-bind="visible: view() == 'Chat'">
+    <div class="online" data-bind="if: conversationStarted">
+        <div class="header">
+            <div class="operator-pic"></div>
+            <div class="operator-name" data-bind="text: operatorName"></div>
+            <div class="close-chat"><a href="#" data-bind="click: closeChat">×</a></div>
+        </div>
+        <div id="conversation" class="chat-window">
+            <ul id="messages" data-bind="foreach: messages">
+                <li>
+                    <div class="author" data-bind="text: author, css: sentBy"></div>
+                    <div class="message" data-bind="text: text, css: sentBy"></div>
+                    @*<span data-bind="text: time"></span>*@
+                </li>
+            </ul>
+        </div>
+        <div id="message" class="message-wrapper">
+            <textarea data-bind="textInput: newMessage, hasFocus: isMessageBoxFocus" rows="1" placeholder="Type in your message here and press Enter to send"></textarea>
+        </div>
+    </div> 
+</div>

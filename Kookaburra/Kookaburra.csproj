@@ -1968,6 +1968,10 @@
     <Content Include="Views\Shared\Error404.cshtml" />
     <Content Include="Views\Widget\Widget.cshtml" />
     <Content Include="Views\Widget\_Intro.cshtml" />
+    <Content Include="Views\Widget\_Chat.cshtml" />
+    <Content Include="Views\Widget\_Offline.cshtml" />
+    <Content Include="Views\Widget\_ThankYou.cshtml" />
+    <Content Include="Views\Widget\_GoneOffline.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

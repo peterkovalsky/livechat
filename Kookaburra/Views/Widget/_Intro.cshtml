@@ -1,13 +1,13 @@
-﻿<div class="intro-view">
+﻿<div data-bind="visible: view() == 'Intro'">
     <div class="introduction">
         <div class="header">
             Please intoduce yourself
         </div>
         <div class="name">
-            <input id="name" placeholder="Name" autocomplete="off" data-bind="name" />
+            <input id="name" placeholder="Name" autocomplete="off" data-bind="visitorName" />
         </div>
         <div class="email">
-            <input id="email" placeholder="Email (optional)" autocomplete="off" data-bind="email" />
+            <input id="email" placeholder="Email (optional)" autocomplete="off" data-bind="visitorEmail" />
         </div>
         <div>
             <input class="btn start" type="button" value="START CHAT" data-bind="click: startChat" />

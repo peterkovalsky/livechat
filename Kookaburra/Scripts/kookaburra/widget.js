@@ -1,21 +1,4 @@
-﻿function IntroViewModel() {
-    var self = this;
-
-    self.name = ko.observable('');
-    self.email = ko.observable('');
-
-    
-
-    self.startChat = function () {
-        var url = (window.location != window.parent.location)
-            ? document.referrer
-            : document.location.href;
-
-
-    };
-}
-
-function Message(data) {
+﻿function Message(data) {
     this.author = ko.observable(data.author);
     this.text = ko.observable(data.text);
     this.sentBy = ko.observable(data.sentBy);
@@ -23,30 +6,21 @@ function Message(data) {
 }
 
 function WidgetViewModel(accountKey) {
-
     var self = this;
 
     self.visitorName = ko.observable("");
     self.visitorEmail = ko.observable("");
-    self.conversationStarted = ko.observable(true);
-    self.goneOffline = ko.observable(false);
-    self.isStopChat = ko.observable(false);
-    self.newMessage = ko.observable("");
-    self.messages = ko.observableArray([]);
+         
     self.operatorName = ko.observable("");
+    self.messages = ko.observableArray([]);
+    self.newMessage = ko.observable("");
 
+    self.isStopChat = ko.observable(false);
     self.isMessageBoxFocus = ko.observable(true);
 
+    self.view = ko.observable('');
+
     var chatHubProxy = $.connection.chatHub;
-
-
-    self.startChat = function () {
-        var url = (window.location != window.parent.location)
-            ? document.referrer
-            : document.location.href;
-
-
-    };
 
     // init widget
     // -----------
@@ -58,23 +32,43 @@ function WidgetViewModel(accountKey) {
         // connect to SignalR
         $.connection.hub.start().done(function () {
 
-            chatHubProxy.server.connectVisitor().done(function (conversationViewModel) {
-                if (conversationViewModel) {
+            chatHubProxy.server.initWidget(accountKey).done(function (initResult) {
+
+                if (initResult.step == 'Resume') {
+                    // resume started chat
+                    var conversationViewModel = initResult.resumedChat;
+
                     self.visitorName(conversationViewModel.visitorName);
                     self.operatorName(conversationViewModel.operatorName);
                     self.resumeChat(conversationViewModel.conversation);
 
-                    self.isMessageBoxFocus(true);
+                    self.isMessageBoxFocus(true); 
+
+                    self.view('Chat')
+                }
+                else if (initResult.step == 'Introduction') {
+                    // introduction
+                    self.view('Intro')
                 }
                 else {
-                    // operator gone offline
-                    self.conversationStarted(false);
-                    self.goneOffline(true)
+                    // operator gone offline                
+                    self.view('GoneOffline')
                 }
             });
         });
     };
 
+    self.startChat = function () {
+        var url = (window.location != window.parent.location)
+            ? document.referrer
+            : document.location.href;
+
+
+    };
+
+    self.leaveMessage = function () {
+        self.view('Offline')
+    };
 
     // resume chat
     // -----------

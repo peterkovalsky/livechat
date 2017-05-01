@@ -30,6 +30,15 @@ namespace Kookaburra
                 .Include("~/Scripts/perfect-scrollbar.jquery.js")
             );
 
+            bundles.Add(new ScriptBundle("~/bundles/js/widget/2")
+               .Include("~/Scripts/jquery-{version}.js")
+               .Include("~/Scripts/jquery.signalR-{version}.js")
+               .Include("~/Scripts/knockout-{version}.js")
+               .Include("~/Scripts/kookaburra/widget.js")
+               .Include("~/Scripts/moment-with-locales.min.js")
+               .Include("~/Scripts/perfect-scrollbar.jquery.js")
+           );
+
             bundles.Add(new ScriptBundle("~/bundles/js/chatroom")
                 .Include("~/Scripts/moment-with-locales.min.js")
                 .Include("~/Scripts/chat/chat-room.js")
