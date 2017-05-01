@@ -7,6 +7,10 @@
 
     public class WidgetConfig
     {
-        public string Host { get; set; }
+        public string LocalHost { get; set; }
+
+        public string StagingHost { get; set; }
+
+        public string ProductionHost { get; set; }
     }
 }

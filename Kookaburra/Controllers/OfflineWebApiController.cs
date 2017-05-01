@@ -3,13 +3,11 @@ using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.Model;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
-using Kookaburra.Domain.Query.Model;
-using Kookaburra.Domain.Query.Result;
+using Kookaburra.Domain.Query.OfflineMessages;
+using Kookaburra.Domain.Query.SearchOfflineMessages;
 using Kookaburra.Models.Offline;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 
 namespace Kookaburra.Controllers

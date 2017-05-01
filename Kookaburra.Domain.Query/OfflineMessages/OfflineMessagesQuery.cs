@@ -1,7 +1,7 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query.Result;
 
-namespace Kookaburra.Domain.Query.Model
+namespace Kookaburra.Domain.Query.OfflineMessages
 {
     public class OfflineMessagesQuery : IQuery<OfflineMessagesQueryResult>
     {

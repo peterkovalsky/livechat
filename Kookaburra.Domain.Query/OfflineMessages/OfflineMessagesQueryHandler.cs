@@ -5,7 +5,7 @@ using Kookaburra.Repository;
 using System;
 using System.Linq;
 
-namespace Kookaburra.Domain.Query.Handler
+namespace Kookaburra.Domain.Query.OfflineMessages
 {
     public class OfflineMessagesQueryHandler : IQueryHandler<OfflineMessagesQuery, OfflineMessagesQueryResult>
     {
@@ -74,6 +74,7 @@ namespace Kookaburra.Domain.Query.Handler
                     IsRead = om.IsRead,
                     TimeSent = om.DateSent,
                     Country = om.Visitor.Country,
+                    CountryCode = om.Visitor.CountryCode,
                     City = om.Visitor.City
                 }).ToList()
             };

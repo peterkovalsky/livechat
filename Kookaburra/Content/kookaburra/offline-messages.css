@@ -18,6 +18,7 @@
 
 .offline-messages .page-content-actions .total-messages {
     margin-top: 14px;
+    margin-right: 5px;
 }
 
 .offline-messages .checkbox-important {
@@ -100,6 +101,7 @@
 
 .offline-messages .slidePanel-header {
     background-color: #57c7d4;
+    height: 170px;
 }
 
 .offline-messages .slidePanel-header::after {
@@ -108,10 +110,23 @@
     clear: both;
 }
 
+.offline-messages .search-for {
+    font-size: 1.286rem;
+    font-family: Roboto,sans-serif;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-top: 14px;
+}
+
 .slidePanel .actions-top {
     position: absolute;
     top: 20px;
     right: 20px;
+}
+
+.slidePanel .flag-icon {
+    height: 50px;
+    width: 50px;
 }
 
 .slidePanel .actions-bottom {
@@ -122,7 +137,7 @@
 
 .slidePanel .mail-header {
     position: relative;
-    padding-left: 50px;
+    /*padding-left: 50px;*/
     margin-bottom: 20px;
 }
 

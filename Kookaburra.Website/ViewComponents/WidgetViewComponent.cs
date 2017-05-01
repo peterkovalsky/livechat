@@ -15,7 +15,18 @@ namespace Kookaburra.Website.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            ViewData["WidgetHost"] = _siteConfigs?.Widget?.Host;
+            if (Request.Host.Host.Equals("staging.kookaburra.chat"))
+            {
+                ViewData["WidgetHost"] = _siteConfigs.Widget.StagingHost;
+            }
+            else if (Request.Host.Host.Equals("kookaburra.chat"))
+            {
+                ViewData["WidgetHost"] = _siteConfigs.Widget.ProductionHost;
+            }
+            else
+            {
+                ViewData["WidgetHost"] = _siteConfigs.Widget.LocalHost;
+            }
 
             return View();
         }

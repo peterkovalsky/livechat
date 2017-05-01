@@ -5,22 +5,9 @@
 <div id="offline-messages" class="page bg-white offline-messages">
 
     <div class="page-main">
-        <!-- Mailbox Header -->
-        <div class="page-header" style="display: none;" data-bind="visible: searching() || totalMessages() > 0">
-            <h1 class="page-title">Offline Messages</h1>
-
-            <div class="page-header-actions">
-                <form>
-                    <div class="input-search input-search-dark">
-                        <i class="input-search-icon wb-search" aria-hidden="true"></i>
-                        <input type="text" class="form-control" name="" placeholder="Search..." data-bind="textInput: searchTerm, enterkey: search">
-                    </div>
-                </form>
-            </div>
-        </div>
 
         <!-- No Messages -->
-        <div class="page-header" style="display: none;" data-bind="visible: !searching() && totalMessages() == 0">
+        <div class="page-header" style="display: none;" data-bind="visible: !searching() && !filtering() && totalMessages() == 0 ">
             <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
                 <i class="icon md-alert-circle-o" aria-hidden="true"></i>
                 <h4>Messages</h4>
@@ -30,81 +17,87 @@
             </div>
         </div>
 
-        <!-- No Search Results -->
-        <div class="page-header" style="display: none; padding-top: 0; padding-bottom: 0;" data-bind="visible: searching() && totalMessages() == 0">
-            <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
-                <i class="icon md-alert-circle-o" aria-hidden="true"></i>
-                <h4>No search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>
-            </div>
-        </div>
+        <!-- Some offline messages -->
+        <div data-bind="visible: !(!searching() && !filtering() && totalMessages() == 0)">
+            <div class="page-header">
+                <h1 class="page-title">Offline Messages</h1>
 
-        <!-- Search Results -->
-        <div class="page-header" style="display: none; padding-top: 0;" data-bind="visible: searching() && totalMessages() > 0">
-            <h4>Search results for '<span data-bind="text: searchTermLabel"></span>'.</h4>
-        </div>
-
-        <!-- Mailbox Content -->
-        <div id="mailContent" class="page-content page-content-table" data-plugin="selectable">
-            <!-- Actions -->
-            <div class="page-content-actions">
-
-                <div class="pull-xs-left total-messages" data-bind="visible: totalMessages() > 0">
-                    <span style="display: none;" data-bind="visible: messages().length < totalMessages()">
-                        <span data-bind="text: messages().length"></span> of <span data-bind="text: totalMessages"></span> Messages
-                    </span>
-                    <span style="display: none;" data-bind="visible: messages().length == totalMessages()">
-                        <span data-bind="text: totalMessages"></span> Messages
-                    </span>
-                </div>
-
-                <div class="pull-xs-right filter" style="display: none;" data-bind="visible: searching() == false && totalMessages() > 0">
-                    <span style="padding-right: 5px;">FILTER:</span>
-                    <button type="button" class="btn btn-outline btn-primary" data-bind="click: filterAll, css: {active: filter() == 'All'}">All</button>
-                    <button type="button" class="btn btn-outline btn-primary" data-bind="click: filterByDay, css: {active: filter() == 'Day'}">Today</button>
-                    <button type="button" class="btn btn-outline btn-primary" data-bind="click: filterByWeek, css: {active: filter() == 'Week'}">Week</button>
-                    <button type="button" class="btn btn-outline btn-primary" data-bind="click: filterByMonth, css: {active: filter() == 'Month'}">Month</button>
-                </div>
-
-                <div class="pull-xs-right" style="display: none;" data-bind="visible: searching() == true">
-                    <button type="button" class="btn btn-outline btn-default pull-right" data-bind="click: backToAll">
-                        <i class="icon wb-arrow-left m-r-10" aria-hidden="true"></i>
-                        Back to all messages
-                    </button>
-                </div>
-            </div>
-            <!-- Mailbox -->
-
-            <div class="pannel">
-                <div class="panel-body">
-                    <table id="mailboxTable" class="table" data-plugin="animateList" data-animate="fade" data-child="tr">
-                        <tbody data-bind="foreach: messages">
-                            <tr id="mid_8" data-toggle="slidePanel" class="unread" data-bind="css: {unread: !isRead()}, click: $root.openMessage">
-                                <td class="cell-80">
-                                    <img src="/images/user-1.png" class="img-circle" alt="user-pic">
-                                </td>
-                                <td>
-                                    <div class="content">
-                                        <div class="title" data-bind="text: name"></div>
-                                        <div class="abstract" data-bind="text: message"></div>
-                                    </div>
-                                </td>
-                                <td class="cell-30 responsive-hide"></td>
-                                <td class="cell-200">
-                                    <div class="time" data-bind="text: time"></div>
-                                    <div class="identity" data-bind="text: country"></div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="text-sm-center" data-bind="visible: messages().length < totalMessages()">
-                        <button type="button" class="btn btn-default" data-bind="click: showMore">
-                            <i class="icon wb-chevron-down margin-right-5" aria-hidden="true"></i>Show More
-                        </button>
+                <div class="page-header-actions">
+                    <div class="input-search input-search-dark">
+                        <i class="input-search-icon wb-search" aria-hidden="true"></i>
+                        <input type="text" class="form-control" name="" placeholder="Search..." data-bind="textInput: searchTerm, enterkey: search">
                     </div>
                 </div>
             </div>
 
+            <div id="mailContent" class="page-content page-content-table" data-plugin="selectable">
+
+                <!-- Search Results -->
+                <!-- Actions -->
+                <div class="page-content-actions">
+
+                    <div class="pull-xs-left filter" data-bind="visible: !searching()">
+                        <spam data-bind="foreach: filters">
+                            <button type="button" class="btn btn-outline btn-primary" data-bind="text: $data, click: $root.filter, css: {active: $root.selectedFilter() == $data}"></button>
+                        </spam>
+                    </div>
+
+                    <div class="pull-xs-left search-for" style="display: none;" data-bind="visible: searching()">
+                        <button style="margin-right: 10px;" type="button" class="btn btn-outline btn-default" data-bind="click: backToAll">
+                            <i class="icon wb-arrow-left" aria-hidden="true"></i>
+                        </button>
+
+                        <span style="display: none;" data-bind="visible: totalMessages() > 0">
+                            Search results for '<span data-bind="text: searchTermLabel"></span>'
+                        </span>
+
+                        <spam style="display: none;" data-bind="visible: totalMessages() == 0">
+                            No search results for '<span data-bind="text: searchTermLabel"></span>'
+                        </spam>
+                    </div>
+
+                    <div class="pull-xs-right total-messages">
+                        <span style="display: none;" data-bind="visible: messages().length < totalMessages()">
+                            <span data-bind="text: messages().length"></span> of <span data-bind="text: totalMessages"></span> Messages
+                        </span>
+                        <span style="display: none;" data-bind="visible: messages().length == totalMessages()">
+                            <span data-bind="text: totalMessages"></span> Messages
+                        </span>
+                    </div>
+                </div>
+
+                <div class="pannel">
+                    <div class="panel-body">
+                        <table id="mailboxTable" class="table" data-plugin="animateList" data-animate="fade" data-child="tr">
+                            <tbody data-bind="foreach: messages">
+                                <tr id="mid_8" data-toggle="slidePanel" class="unread" data-bind="css: {unread: !isRead()}, click: $root.openMessage">
+                                    <td class="cell-80">
+                                        <img src="/images/user-1.png" class="img-circle" alt="user-pic">
+                                    </td>
+                                    <td>
+                                        <div class="content">
+                                            <div class="title" data-bind="text: name"></div>
+                                            <div class="abstract" data-bind="text: message"></div>
+                                        </div>
+                                    </td>
+                                    <td class="cell-30 responsive-hide"></td>
+                                    <td class="cell-200">
+                                        <div class="time" data-bind="text: time"></div>
+                                        <div class="identity" data-bind="text: country"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="text-sm-center" data-bind="visible: messages().length < totalMessages()">
+                            <button type="button" class="btn btn-default" data-bind="click: showMore">
+                                <i class="icon wb-chevron-down margin-right-5" aria-hidden="true"></i>Show More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -117,19 +110,23 @@
                 </div>
                 <div class="mail-header">
                     <div class="mail-header-main">
-                        <a class="avatar" href="javascript:void(0)">
-                            <img src="/images/user-1.png" class="img-circle" alt="user-pic">
-                        </a>
-                        <div>
-                            <h1 class="name" data-bind="text: name"></h1>
+                        <div class="pull-xs-left m-r-20" data-bind="if: countryCode != null">
+                            <span data-bind="attr: {class: 'flag-icon flag-icon-' + countryCode.toLowerCase()}"></span>
                         </div>
-                        <div>
-                            <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email }"></a>
+
+                        <div class="pull-xs-left" >
+                            <h1 class="name" data-bind="text: name"></h1>
+                            <p data-bind="if: country != null && city != null">
+                                <span data-bind="text: country"></span>, <span data-bind="text: city"></span>
+                            </p>
+                            <p>
+                                <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email }"></a>
+                            </p>                           
                         </div>
                     </div>
                     <div class="mail-header-right">
                         <span class="time" data-bind="text: time"></span>
-                    </div>              
+                    </div>
                 </div>
 
             </header>
@@ -137,11 +134,6 @@
                 <section class="slidePanel-inner-section">
                     <div class="mail-content" data-bind="text: message"></div>
                 </section>
-
-                @*<div class="slidePanel-comment">
-                    <textarea class="maxlength-textarea form-control mb-sm m-b-20" rows="4" placeholder="Write your reply here..." data-bind="text: reply"></textarea>
-                    <button class="btn btn-primary" data-dismiss="modal" type="button" data-bind="click: $root.sendReply">Reply</button>
-                </div>*@
             </div>
         </div>
     </div>
@@ -160,10 +152,11 @@
 
 @section bottom_scripts{
     <script src="~/remark/global/vendor/alertify/alertify.js"></script>
-    <script src="~/remark/global/js/Plugin/alertify.js"></script>    
+    <script src="~/remark/global/js/Plugin/alertify.js"></script>
 }
 
-<script type="text/javascript"> 
+<script type="text/javascript">
+
 
     var initialView = @Html.Raw(JsonConvert.SerializeObject(Model));
     var viewModel = new MessagesViewModel(initialView);

@@ -16,15 +16,7 @@ namespace Kookaburra.Integration.freegeoip
 
                 if (location != null)
                 {
-                    return new VisitorLocation
-                    {
-                        Country = location.CountryName,
-                        CountryCode = location.CountryCode,
-                        Region = location.RegionName,
-                        City = location.City,
-                        Latitude = location.Latitude,
-                        Longitude = location.Longitude
-                    };
+                    return MapToVisitorLocation(location);
                 }
             }
 
@@ -40,19 +32,24 @@ namespace Kookaburra.Integration.freegeoip
 
                 if (location != null)
                 {
-                    return new VisitorLocation
-                    {
-                        Country = location.CountryName,
-                        CountryCode = location.CountryCode,
-                        Region = location.RegionName,
-                        City = location.City,
-                        Latitude = location.Latitude,
-                        Longitude = location.Longitude
-                    };
+                    return MapToVisitorLocation(location);
                 }
             }
 
             return null;
-        }    
+        }
+        
+        private VisitorLocation MapToVisitorLocation(Location location)
+        {
+            return new VisitorLocation
+            {
+                Country = location.CountryName,
+                CountryCode = location.CountryCode,
+                Region = location.RegionName,
+                City = location.City,
+                Latitude = location.Latitude,
+                Longitude = location.Longitude
+            };
+        }
     }
 }

@@ -25,10 +25,10 @@ namespace Kookaburra.Domain.Command.Handler
         {
             // record new/returning visitor
             var returningVisitor = CheckForVisitor(command.VisitorName, command.VisitorEmail, command.SessionId);
-            if (returningVisitor == null)
-            {
-                var location = _geoLocator.GetLocation(command.VisitorIP);         
 
+            // new visitor
+            if (returningVisitor == null)
+            {                         
                 returningVisitor = new Visitor
                 {
                     Name = command.VisitorName,
@@ -37,14 +37,24 @@ namespace Kookaburra.Domain.Command.Handler
                     IpAddress = command.VisitorIP,
                 };
 
-                if (location != null)
+                try
                 {
-                    returningVisitor.Country = location.Country;
-                    returningVisitor.Region = location.Region;
-                    returningVisitor.City = location.City;
-                    returningVisitor.Latitude = location.Latitude;
-                    returningVisitor.Longitude = location.Longitude;
+                    var location = _geoLocator.GetLocation(command.VisitorIP);
+
+                    if (location != null)
+                    {
+                        returningVisitor.Country = location.Country;
+                        returningVisitor.CountryCode = location.CountryCode;
+                        returningVisitor.Region = location.Region;
+                        returningVisitor.City = location.City;
+                        returningVisitor.Latitude = location.Latitude;
+                        returningVisitor.Longitude = location.Longitude;
+                    }
                 }
+                catch (Exception ex)
+                {
+                    // log geo location exception
+                }            
 
                 _context.Visitors.Add(returningVisitor);
             }

@@ -67,6 +67,7 @@ function ChatHistoryViewModel(initialData) {
 
     self.filter = function (filterBy) {
         self.selectedFilter(filterBy);
+        self.currentPage(1);
 
         $.get("/api/history/" + self.selectedFilter() + "/" + self.currentPage())
             .done(function (data) {

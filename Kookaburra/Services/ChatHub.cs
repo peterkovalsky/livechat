@@ -111,6 +111,74 @@ namespace Kookaburra.Services
 
         #region Visitor Calls
 
+        public InitWidgetViewModel InitWidget(string accountKey)
+        {
+            var query = new AvailableOperatorQuery(accountKey, Context.User.Identity.GetUserId());
+            var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(query);
+
+            var httpContext = Context.Request.GetHttpContext();
+            var sessionId = httpContext.Request.Cookies[COOKIE_SESSION_ID];
+
+            if (operatorResult != null) // Is there any available operator
+            {
+                if (sessionId != null && !string.IsNullOrWhiteSpace(sessionId.Value)) // check if it's a returning visitor
+                {
+                    var sessionQuery = new CurrentSessionQuery(Context.User.Identity.GetUserId()) { VisitorSessionId = sessionId.Value };
+                    var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(sessionQuery);
+
+                    if (currentSession != null) // check if the session still alive 
+                    {
+                        var queryResume = new ContinueConversationQuery(sessionId.Value, Context.ConnectionId, Context.User.Identity.GetUserId());
+                        var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(queryResume);
+
+                        if (resumedConversation != null)
+                        {
+                            if (resumedConversation.IsNewConversation)
+                            {
+                                var visitorInfo = new OperatorConversationViewModel
+                                {
+                                    SessionId = sessionId.Value,
+                                    VisitorName = resumedConversation.VisitorInfo.Name,
+                                    Location = @"{resumedConversation.VisitorInfo.Country}, {resumedConversation.VisitorInfo.City}",
+                                    CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
+                                    StartTime = DateTime.UtcNow.JsDateTime()
+                                };
+
+                                // Notify all operator instances about this visitor
+                                Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorInfo.SessionId);
+                                Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
+                            }
+
+                            // Online - resume chat
+                            return new InitWidgetViewModel
+                            {
+                                Step = WidgetStepType.Resume.ToString(),
+                                ResumedChat = Mapper.Map<ConversationViewModel>(resumedConversation)
+                            };
+                        }                    
+                    }
+
+                    // Introduction                 
+                    return new InitWidgetViewModel
+                    {
+                        Step = WidgetStepType.Introduction.ToString()
+                    };
+                }
+
+                // Introduction                 
+                return new InitWidgetViewModel
+                {
+                    Step = WidgetStepType.Introduction.ToString()
+                };
+            }
+
+            // Offline - no operator available
+            return new InitWidgetViewModel
+            {
+                Step = WidgetStepType.Offline.ToString()
+            };
+        }
+
         public ConversationViewModel ConnectVisitor()
         {
             var httpContext = Context.Request.GetHttpContext();
