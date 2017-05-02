@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Kookaburra.Services
 {
@@ -115,20 +116,19 @@ namespace Kookaburra.Services
         {
             var query = new AvailableOperatorQuery(accountKey, Context.User.Identity.GetUserId());
             var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(query);
-
-            var httpContext = Context.Request.GetHttpContext();
-            var sessionId = httpContext.Request.Cookies[COOKIE_SESSION_ID];
+           
+            var sessionId = GetSessionId();
 
             if (operatorResult != null) // Is there any available operator
             {
-                if (sessionId != null && !string.IsNullOrWhiteSpace(sessionId.Value)) // check if it's a returning visitor
+                if (sessionId != null) // check if it's a returning visitor
                 {
-                    var sessionQuery = new CurrentSessionQuery(Context.User.Identity.GetUserId()) { VisitorSessionId = sessionId.Value };
+                    var sessionQuery = new CurrentSessionQuery(Context.User.Identity.GetUserId()) { VisitorSessionId = sessionId };
                     var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(sessionQuery);
 
                     if (currentSession != null) // check if the session still alive 
                     {
-                        var queryResume = new ContinueConversationQuery(sessionId.Value, Context.ConnectionId, Context.User.Identity.GetUserId());
+                        var queryResume = new ContinueConversationQuery(sessionId, Context.ConnectionId, Context.User.Identity.GetUserId());
                         var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(queryResume);
 
                         if (resumedConversation != null)
@@ -137,7 +137,7 @@ namespace Kookaburra.Services
                             {
                                 var visitorInfo = new OperatorConversationViewModel
                                 {
-                                    SessionId = sessionId.Value,
+                                    SessionId = sessionId,
                                     VisitorName = resumedConversation.VisitorInfo.Name,
                                     Location = @"{resumedConversation.VisitorInfo.Country}, {resumedConversation.VisitorInfo.City}",
                                     CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
@@ -179,43 +179,58 @@ namespace Kookaburra.Services
             };
         }
 
-        public void StartChat()
+        public void StartChat(IntroductionViewModel visitor)
         {
+            var query = new AvailableOperatorQuery(visitor.AccountKey, Context.User.Identity.GetUserId());
+            var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(query);
 
+            // if operator is available - establish connection
+            if (availableOperator != null)
+            {
+                var newSessionId = Guid.NewGuid().ToString();
+
+                var command = new StartConversationCommand(availableOperator.OperatorId, visitor.Name, newSessionId, Context.User.Identity.GetUserId())
+                {
+                    Page = visitor.PageUrl,
+                    VisitorIP = WebHelper.GetIPAddress(),
+                    VisitorEmail = visitor.Email
+                };
+                _commandDispatcher.Execute(command);
+
+                // add sessionId cookie
+                SetSessionId(newSessionId);            
+            }          
         }
 
         public ConversationViewModel ConnectVisitor()
         {
-            var httpContext = Context.Request.GetHttpContext();
-            var sessionId = httpContext.Request.Cookies[COOKIE_SESSION_ID];
+            var sessionId = GetSessionId();
 
-            if (sessionId == null || string.IsNullOrWhiteSpace(sessionId.Value))
+            if (sessionId != null)
             {
-                return null;
-            }
+                var query = new ContinueConversationQuery(sessionId, Context.ConnectionId, Context.User.Identity.GetUserId());
+                var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(query);
 
-            var query = new ContinueConversationQuery(sessionId.Value, Context.ConnectionId, Context.User.Identity.GetUserId());
-            var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(query);
-
-            if (resumedConversation != null)
-            {
-                if (resumedConversation.IsNewConversation)
+                if (resumedConversation != null)
                 {
-                    var visitorInfo = new OperatorConversationViewModel
+                    if (resumedConversation.IsNewConversation)
                     {
-                        SessionId = sessionId.Value,
-                        VisitorName = resumedConversation.VisitorInfo.Name,
-                        Location = @"{resumedConversation.VisitorInfo.Country}, {resumedConversation.VisitorInfo.City}",
-                        CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
-                        StartTime = DateTime.UtcNow.JsDateTime()
-                    };
+                        var visitorInfo = new OperatorConversationViewModel
+                        {
+                            SessionId = sessionId,
+                            VisitorName = resumedConversation.VisitorInfo.Name,
+                            Location = @"{resumedConversation.VisitorInfo.Country}, {resumedConversation.VisitorInfo.City}",
+                            CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
+                            StartTime = DateTime.UtcNow.JsDateTime()
+                        };
 
-                    // Notify all operator instances about this visitor
-                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorInfo.SessionId);
-                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
+                        // Notify all operator instances about this visitor
+                        Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorInfo.SessionId);
+                        Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
+                    }
+
+                    return Mapper.Map<ConversationViewModel>(resumedConversation);
                 }
-
-                return Mapper.Map<ConversationViewModel>(resumedConversation);
             }
 
             return null;
@@ -255,7 +270,7 @@ namespace Kookaburra.Services
         /// </summary>
         public void FinishChattingWithOperator()
         {
-            var visitorSessionId = GetVisitorSessionId();
+            var visitorSessionId = GetSessionId();
 
             var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
             {
@@ -306,7 +321,8 @@ namespace Kookaburra.Services
             return base.OnReconnected();
         }
 
-        private string GetVisitorSessionId()
+        #region Helpers
+        private string GetSessionId()
         {
             var httpContext = Context.Request.GetHttpContext();
 
@@ -319,5 +335,12 @@ namespace Kookaburra.Services
 
             return sessionId.Value;
         }
+
+        private void SetSessionId(string newSessionId)
+        {
+            var httpContext = Context.Request.GetHttpContext();
+            httpContext.Response.Cookies.Set(new HttpCookie(COOKIE_SESSION_ID, newSessionId));
+        }
+        #endregion
     }
 }

@@ -1,16 +1,26 @@
 ﻿function Message(data) {
-    this.author = ko.observable(data.author);
-    this.text = ko.observable(data.text);
-    this.sentBy = ko.observable(data.sentBy);
-    this.time = ko.observable(moment(data.time).format('LT'));
+    var self = this;
+
+    self.author = ko.observable(data.author);
+    self.text = ko.observable(data.text);
+    self.sentBy = ko.observable(data.sentBy);
+    self.time = ko.observable(moment(data.time).format('LT'));
+}
+
+function Visitor(accountKey) {
+    var self = this;
+
+    self.name = ko.observable("");
+    self.email = ko.observable("");
+    self.url = ko.observable("");
+    self.accountKey = accountKey;
 }
 
 function WidgetViewModel(accountKey) {
     var self = this;
 
-    self.visitorName = ko.observable("");
-    self.visitorEmail = ko.observable("");
-         
+    self.visitor = ko.observable(new Visitor(accountKey));
+
     self.operatorName = ko.observable("");
     self.messages = ko.observableArray([]);
     self.newMessage = ko.observable("");
@@ -59,11 +69,13 @@ function WidgetViewModel(accountKey) {
     };
 
     self.startChat = function () {
-        var url = (window.location != window.parent.location)
-            ? document.referrer
-            : document.location.href;
+        self.visitor.url = (window.location != window.parent.location)
+                            ? document.referrer
+                            : document.location.href;
 
-
+        chatHubProxy.server.startChat(self.visitor).done(function () {
+            self.view('Chat')
+        });
     };
 
     self.leaveMessage = function () {
