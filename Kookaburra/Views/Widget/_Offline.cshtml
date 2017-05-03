@@ -1,1 +1,24 @@
-﻿
+﻿<div data-bind="visible: view() == 'Offline'">
+    <div class="offline">
+        <div class="heading">
+            Sorry, we aren't online at the moment. Please leave a message and we'll get back to you soon.
+        </div>
+        <div class="name">
+            <input placeholder="Name" autocomplete="off" data-bind="offline.name" />
+        </div>
+        <div class="email">
+            <input placeholder="Email" autocomplete="off" data-bind="offline.email" />
+        </div>
+        <div class="message">
+            <textarea placeholder="Message" autocomplete="off" data-bind="offline.message" />
+        </div>
+        <div class="submit">
+            <input class="btn start" type="button" value="SEND" data-bind="sendOfflineMessage" />
+        </div>
+    </div>
+
+    <div class="footer">
+        <label><a href="https://www.kookaburra.chat/" target="_blank">Powered by KOOKABURRA</a></label>
+        <div style="clear:both;"></div>
+    </div>
+</div>

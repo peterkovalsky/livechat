@@ -1,4 +1,15 @@
-﻿function Message(data) {
+﻿function Offline(accountKey) {
+    var self = this;
+
+    self.name = ko.observable("");
+    self.email = ko.observable("");
+    self.message = ko.observable("");
+
+    self.accountKey = accountKey;
+    self.focusName = ko.observable(true);
+}
+
+function Message(data) {
     var self = this;
 
     self.author = ko.observable(data.author);
@@ -13,13 +24,16 @@ function Visitor(accountKey) {
     self.name = ko.observable("");
     self.email = ko.observable("");
     self.url = ko.observable("");
+
     self.accountKey = accountKey;
+    self.focusName = ko.observable(true);
 }
 
 function WidgetViewModel(accountKey) {
     var self = this;
 
     self.visitor = ko.observable(new Visitor(accountKey));
+    self.offline = ko.observable(new Offline(accountKey));
 
     self.operatorName = ko.observable("");
     self.messages = ko.observableArray([]);
@@ -58,11 +72,13 @@ function WidgetViewModel(accountKey) {
                 }
                 else if (initResult.step == 'Introduction') {
                     // introduction
+                    self.visitor.focusName(true);
                     self.view('Intro')
                 }
                 else {
-                    // operator gone offline                
-                    self.view('GoneOffline')
+                    // operator gone offline
+                    self.offline.focusName(true);
+                    self.view('Offline')
                 }
             });
         });
@@ -74,6 +90,7 @@ function WidgetViewModel(accountKey) {
                             : document.location.href;
 
         chatHubProxy.server.startChat(self.visitor).done(function () {
+            self.isMessageBoxFocus(true);
             self.view('Chat')
         });
     };
