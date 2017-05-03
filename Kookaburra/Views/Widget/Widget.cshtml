@@ -14,17 +14,19 @@
         @Html.Partial("_Intro")
         @Html.Partial("_Chat")
         @Html.Partial("_GoneOffline")
+        @Html.Partial("_Offline")
+        @Html.Partial("_ThankYou")
 
         <script type="text/javascript">
 
             var accountKey = '@(ViewBag.AccountKey)';
 
             $(document).ready(function () {
-                var widgetViewModel = new WidgetViewModel(accountKey, url);
+                var widgetViewModel = new WidgetViewModel(accountKey);
                 ko.applyBindings(widgetViewModel);
 
                 // initialise the chat
-                chatWidgetModel.init();
+                widgetViewModel.init();
             });
          
         </script>

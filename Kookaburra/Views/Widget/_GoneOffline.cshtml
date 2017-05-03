@@ -1,5 +1,5 @@
-﻿<div data-bind="visisble: view() == 'GoneOffline'">
-    <div class="gone-offline" data-bind="if: goneOffline">
-        Operator has gone offline. Click <a href="#" data-bind="leaveMessage">here</a> if you wish leave a message.
+﻿<div style="display: none;" data-bind="visisble: view() == 'GoneOffline'">
+    <div class="gone-offline">
+        Operator has gone offline. Click <a href="javascript:void(0)" data-bind="click: gotoOfflineForm">here</a> if you wish leave a message.
     </div>
 </div>

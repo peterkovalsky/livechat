@@ -20,10 +20,12 @@ function Message(data) {
 
 function Visitor(accountKey) {
     var self = this;
-
+   
     self.name = ko.observable("");
     self.email = ko.observable("");
-    self.url = ko.observable("");
+    self.url = (window.location != window.parent.location)
+                ? document.referrer
+                : document.location.href;
 
     self.accountKey = accountKey;
     self.focusName = ko.observable(true);
@@ -84,26 +86,29 @@ function WidgetViewModel(accountKey) {
         });
     };
 
-    self.startChat = function () {
-        self.visitor.url = (window.location != window.parent.location)
-                            ? document.referrer
-                            : document.location.href;
-
+    self.startChat = function () {       
         chatHubProxy.server.startChat(self.visitor).done(function () {
             self.isMessageBoxFocus(true);
             self.view('Chat')
         });
     };
 
-    self.leaveMessage = function () {
+    self.gotoOfflineForm = function () {
+        self.offline.focusName(true);
         self.view('Offline')
+    };
+
+    self.sendOfflineMessage = function () {
+        chatHubProxy.server.sendOfflineMessage(self.offline).done(function () {
+            self.view('ThankYou')
+        });
     };
 
     // resume chat
     // -----------
     self.resumeChat = function (previousConversation) {
         self.messages(previousConversation);
-        self.conversationStarted(true);
+       
         self.addEnterPressEvent();
         self.scrollDown();
     };

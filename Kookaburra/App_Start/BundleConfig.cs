@@ -91,6 +91,7 @@ namespace Kookaburra
             bundles.Add(new StyleBundle("~/bundles/css/widget")
                 .Include("~/Content/kookaburra/widget.css")
                 .Include("~/Content/perfect-scrollbar.css")
+                .Include("~/remark/global/fonts/linecons/css/linecons.css")
             );
 
             #endregion

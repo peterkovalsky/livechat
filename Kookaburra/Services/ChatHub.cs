@@ -200,40 +200,11 @@ namespace Kookaburra.Services
                 // add sessionId cookie
                 SetSessionId(newSessionId);            
             }          
-        }
+        }     
 
-        public ConversationViewModel ConnectVisitor()
+        public void SendOfflineMessage(OfflineViewModel offlineMessage)
         {
-            var sessionId = GetSessionId();
 
-            if (sessionId != null)
-            {
-                var query = new ContinueConversationQuery(sessionId, Context.ConnectionId, Context.User.Identity.GetUserId());
-                var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(query);
-
-                if (resumedConversation != null)
-                {
-                    if (resumedConversation.IsNewConversation)
-                    {
-                        var visitorInfo = new OperatorConversationViewModel
-                        {
-                            SessionId = sessionId,
-                            VisitorName = resumedConversation.VisitorInfo.Name,
-                            Location = @"{resumedConversation.VisitorInfo.Country}, {resumedConversation.VisitorInfo.City}",
-                            CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
-                            StartTime = DateTime.UtcNow.JsDateTime()
-                        };
-
-                        // Notify all operator instances about this visitor
-                        Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorInfo.SessionId);
-                        Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
-                    }
-
-                    return Mapper.Map<ConversationViewModel>(resumedConversation);
-                }
-            }
-
-            return null;
         }
 
         /// <summary>
