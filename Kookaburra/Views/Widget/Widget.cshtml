@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    Layout = null;
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Kookaburra Chat</title>
@@ -20,14 +24,16 @@
         <script type="text/javascript">
 
             var accountKey = '@(ViewBag.AccountKey)';
+            alert('widget load');
 
-            $(document).ready(function () {
+            function init() {
+                alert('widget ready');
                 var widgetViewModel = new WidgetViewModel(accountKey);
                 ko.applyBindings(widgetViewModel);
 
                 // initialise the chat
                 widgetViewModel.init();
-            });
+            }
          
         </script>
     </div>

@@ -44,8 +44,17 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet]
-        [Route("widget/{key}")]
+        [Route("widget/light/{key}")]
         public ActionResult Widget(string key)
+        {
+            ViewBag.AccountKey = key;
+
+            return View();
+        }
+
+        [HttpGet]
+        [Route("widget/{key}")]
+        public ActionResult WidgetOld(string key)
         {
             var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(key, User.Identity.GetUserId()));
             var sessionId = Request.Cookies[COOKIE_SESSION_ID];
