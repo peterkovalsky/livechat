@@ -73,14 +73,14 @@ function WidgetViewModel(accountKey) {
                     self.view('Chat')
                 }
                 else if (initResult.step == 'Introduction') {
-                    // introduction
-                    self.visitor.focusName(true);
-                    self.view('Intro')
+                    // introduction                    
+                    self.view('Intro');
+                    self.visitor().focusName(true);
                 }
                 else {
-                    // operator gone offline
-                    self.offline.focusName(true);
-                    self.view('Offline')
+                    // operator gone offline                    
+                    self.view('Offline');
+                    self.offline().focusName(true);
                 }
             });
         });
@@ -94,7 +94,7 @@ function WidgetViewModel(accountKey) {
     };
 
     self.gotoOfflineForm = function () {
-        self.offline.focusName(true);
+        self.offline().focusName(true);
         self.view('Offline')
     };
 
@@ -190,8 +190,4 @@ function WidgetViewModel(accountKey) {
         catch (e)
         { }
     }
-
-    self.init = function () {
-        $('#name').focus();
-    };
 }

@@ -1,7 +1,6 @@
-﻿@{ 
+﻿@{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,28 +13,24 @@
 </head>
 <body>
     <div class="widget">
-
         @Html.Partial("_Intro")
         @Html.Partial("_Chat")
         @Html.Partial("_GoneOffline")
         @Html.Partial("_Offline")
         @Html.Partial("_ThankYou")
-
-        <script type="text/javascript">
-
-            var accountKey = '@(ViewBag.AccountKey)';
-            alert('widget load');
-
-            function init() {
-                alert('widget ready');
-                var widgetViewModel = new WidgetViewModel(accountKey);
-                ko.applyBindings(widgetViewModel);
-
-                // initialise the chat
-                widgetViewModel.init();
-            }
-         
-        </script>
     </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            
+            var widgetViewModel = new WidgetViewModel('@(ViewBag.AccountKey)');
+            ko.applyBindings(widgetViewModel);
+
+            // initialise the chat
+            widgetViewModel.init();
+        });
+
+    </script>
 </body>
 </html>
