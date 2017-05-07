@@ -4,10 +4,10 @@
             Please intoduce yourself
         </div>
         <div class="name">
-            <input type="text" placeholder="Name" autocomplete="off" data-bind="textInput: visitor().name, hasFocus: visitor().focusName" />
+            <input type="text" placeholder="Name" autocomplete="off" data-bind="textInput: visitor().name, hasFocus: visitor().focusName, enterkey: startChat" />
         </div>
         <div class="email">
-            <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="textInput: visitor().email" />
+            <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="textInput: visitor().email, enterkey: startChat" />
         </div>
         <div>
             <input class="btn start" type="button" value="START CHAT" data-bind="click: startChat" />

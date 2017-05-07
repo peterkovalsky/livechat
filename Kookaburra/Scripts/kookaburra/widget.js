@@ -1,4 +1,18 @@
-﻿function Offline(accountKey) {
+﻿ko.bindingHandlers.enterkey = {
+    init: function (element, valueAccessor, allBindings, viewModel) {
+        var callback = valueAccessor();
+        $(element).keypress(function (event) {
+            var keyCode = (event.which ? event.which : event.keyCode);
+            if (keyCode === 13) {
+                callback.call(viewModel);
+                return false;
+            }
+            return true;
+        });
+    }
+};
+
+function Offline(accountKey) {
     var self = this;
 
     self.name = ko.observable("");
@@ -86,8 +100,8 @@ function WidgetViewModel(accountKey) {
         });
     };
 
-    self.startChat = function () {       
-        chatHubProxy.server.startChat(self.visitor).done(function () {
+    self.startChat = function () {
+        chatHubProxy.server.startChat(self.visitor()).done(function () {
             self.isMessageBoxFocus(true);
             self.view('Chat')
         });
@@ -99,7 +113,7 @@ function WidgetViewModel(accountKey) {
     };
 
     self.sendOfflineMessage = function () {
-        chatHubProxy.server.sendOfflineMessage(self.offline).done(function () {
+        chatHubProxy.server.sendOfflineMessage(self.offline()).done(function () {
             self.view('ThankYou')
         });
     };
@@ -120,30 +134,16 @@ function WidgetViewModel(accountKey) {
     }
 
     // Sends message to operator on Enter Press
-    // ----------------------------------------
-    self.addEnterPressEvent = function () {
-        $(document).keypress(function (e) {
-            if (e.which == 13) {
+    // ----------------------------------------  
+    self.sendMessage = function () {
+        chatHubProxy.server.sendToOperator(self.newMessage());
 
-                //self.messages.push(new Message({
-                //    author: self.visitorName(),
-                //    text: self.newMessage(),
-                //    time: moment().format('LT'),
-                //    sentBy: 'visitor'
-                //}));
-
-                chatHubProxy.server.sendToOperator(self.newMessage());
-
-                self.newMessage('');
-                self.scrollDown();
-
-                e.preventDefault();
-            }
-        });
+        self.newMessage('');
+        self.scrollDown();  
     };
 
     self.scrollDown = function () {
-        $('#conversation').animate({ scrollTop: $('#messages').prop('scrollHeight') }, "slow");
+        $('.chat-window').animate({ scrollTop: $('#messages').prop('scrollHeight') }, "slow");
     }
 
     // register SignalR callback functions
@@ -174,20 +174,5 @@ function WidgetViewModel(accountKey) {
 
             window.location = "/widget/stop";
         }
-    };
-
-
-    // On enter press event handler
-    // ----------------------------
-    self.onEnterStartChat = function (data, event) {
-        try {
-            if (event.which == 13) {
-                self.startConversation();
-                return false;
-            }
-            return true;
-        }
-        catch (e)
-        { }
-    }
+    }; 
 }

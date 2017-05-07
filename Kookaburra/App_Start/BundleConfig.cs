@@ -22,7 +22,7 @@ namespace Kookaburra
             );
 
             bundles.Add(new ScriptBundle("~/bundles/js/widget")
-                .Include("~/Scripts/jquery-{version}.js")
+                .Include("~/Scripts/jquery-{version}.js")                
                 .Include("~/Scripts/jquery.signalR-{version}.js")
                 .Include("~/Scripts/knockout-{version}.js")
                 .Include("~/Scripts/chat/widget.js")
