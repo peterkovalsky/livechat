@@ -1,6 +1,8 @@
 ﻿using Kookaburra.Common;
+using Kookaburra.Domain.AvailableOperator;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.Model;
+using Kookaburra.Domain.Command.StartVisitorChat;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
@@ -30,7 +32,7 @@ namespace Kookaburra.Controllers
 
         [HttpGet]
         [Route("widget/container/{key}")]
-        public ActionResult Container(string key)
+        public ActionResult ContainerJS(string key)
         {
             var model = new ContainerViewModel
             {
@@ -99,7 +101,7 @@ namespace Kookaburra.Controllers
             {
                 var sessionId = Guid.NewGuid().ToString();
 
-                var command = new StartConversationCommand(availableOperator.OperatorId, model.Name, sessionId, User.Identity.GetUserId())
+                var command = new StartVisitorChatCommand(availableOperator.OperatorId, model.Name, sessionId, User.Identity.GetUserId())
                 {
                     Page = model.PageUrl,
                     VisitorIP = WebHelper.GetIPAddress(),

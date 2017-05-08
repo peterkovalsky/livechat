@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Kookaburra.Domain.Query.Result
+namespace Kookaburra.Domain.ResumeVisitorChat
 {
-    public class ContinueConversationQueryResult
+    public class ResumeVisitorChatQueryResult
     {
         public bool IsNewConversation { get; set; }
 

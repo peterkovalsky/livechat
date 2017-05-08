@@ -1,8 +1,8 @@
-﻿namespace Kookaburra.Domain.Command.Model
+﻿namespace Kookaburra.Domain.Command.StartVisitorChat
 {
-    public class StartConversationCommand : ICommand
+    public class StartVisitorChatCommand : ICommand
     {
-        public StartConversationCommand(int operatorId, string visitorName, string sessionId, string operatorIdentity)
+        public StartVisitorChatCommand(int operatorId, string visitorName, string sessionId, string operatorIdentity)
         {
             OperatorId = operatorId;
             SessionId = sessionId;

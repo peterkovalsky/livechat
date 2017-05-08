@@ -28,10 +28,13 @@ namespace Kookaburra.DependencyResolution
     using Domain.Query.Model;
     using Domain.Query.Result;
     using Integration.freegeoip;
+    using Kookaburra.Domain.AvailableOperator;
+    using Kookaburra.Domain.Command.StartVisitorChat;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;
     using Kookaburra.Domain.Query.OfflineMessages;
     using Kookaburra.Domain.Query.SearchOfflineMessages;
+    using Kookaburra.Domain.ResumeVisitorChat;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
@@ -56,7 +59,7 @@ namespace Kookaburra.DependencyResolution
             For<IDependencyResolver>().Add<StructureMapSignalRDependencyResolver>();
 
             // Commands
-            For<ICommandHandler<StartConversationCommand>>().Add<StartConversationCommandHandler>();
+            For<ICommandHandler<StartVisitorChatCommand>>().Add<StartVisitorChatCommandHandler>();
             For<ICommandHandler<ConnectOperatorCommand>>().Add<ConnectOperatorCommandHandler>();
             For<ICommandHandler<LeaveMessageCommand>>().Add<LeaveMessageCommandHandler>();
             For<ICommandHandler<OperatorMessagedCommand>>().Add<OperatorMessagedCommandHandler>();
@@ -67,7 +70,7 @@ namespace Kookaburra.DependencyResolution
             
             // Queries
             For<IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>>().Add<AvailableOperatorQueryHandler>();       
-            For<IQueryHandler<ContinueConversationQuery, ContinueConversationQueryResult>>().Add<ContinueConversationQueryHandler>();
+            For<IQueryHandler<ResumeVisitorChatQuery, ResumeVisitorChatQueryResult>>().Add<ResumeVisitorChatQueryHandler>();
             For<IQueryHandler<CurrentSessionQuery, CurrentSessionQueryResult>>().Add<CurrentSessionQueryHandler>();
             For<IQueryHandler<CurrentChatsQuery, CurrentChatsQueryResult>>().Add<CurrentChatsQueryHandler>();
             For<IQueryHandler<ResumeOperatorQuery, ResumeOperatorQueryResult>>().Add<ResumeOperatorQueryHandler>();

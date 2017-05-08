@@ -1,7 +1,6 @@
-﻿using Kookaburra.Domain.Query.Model;
-using Kookaburra.Domain.Query.Result;
+﻿using Kookaburra.Domain.Query;
 
-namespace Kookaburra.Domain.Query.Handler
+namespace Kookaburra.Domain.AvailableOperator
 {
     public class AvailableOperatorQueryHandler : IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>
     {      
@@ -21,6 +20,7 @@ namespace Kookaburra.Domain.Query.Handler
                 return new AvailableOperatorQueryResult
                 {
                     OperatorId = operatorSession.Id,
+                    OperatorName = operatorSession.Name,
                     OperatorConnectionIds = operatorSession.ConnectionIds
                 };
             }

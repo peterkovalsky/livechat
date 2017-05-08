@@ -64,7 +64,7 @@
     <Compile Include="Handler\LeaveMessageCommandHandler.cs" />
     <Compile Include="Handler\MarkMessageAsReadCommandHandler.cs" />
     <Compile Include="Handler\OperatorMessagedCommandHandler.cs" />
-    <Compile Include="Handler\StartConversationCommandHandler.cs" />
+    <Compile Include="StartVisitorChat\StartVisitorChatCommandHandler.cs" />
     <Compile Include="Handler\StopConversationCommandHandler.cs" />
     <Compile Include="Handler\VisitorMessagedCommandHandler.cs" />
     <Compile Include="ICommand.cs" />
@@ -73,7 +73,7 @@
     <Compile Include="Model\LeaveMessageCommand.cs" />
     <Compile Include="Model\MarkMessageAsReadCommand.cs" />
     <Compile Include="Model\OperatorMessagedCommand.cs" />
-    <Compile Include="Model\StartConversationCommand.cs" />
+    <Compile Include="StartVisitorChat\StartVisitorChatCommand.cs" />
     <Compile Include="Model\StopConversationCommand.cs" />
     <Compile Include="Model\VisitorMessagedCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

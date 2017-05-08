@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kookaburra.Domain.ResumeVisitorChat;
+using System.Collections.Generic;
 
 namespace Kookaburra.Domain.Query.Result
 {

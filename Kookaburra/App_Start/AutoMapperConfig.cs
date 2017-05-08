@@ -3,6 +3,7 @@ using Kookaburra.Common;
 using Kookaburra.Domain.Query.ChatHistory;
 using Kookaburra.Domain.Query.OfflineMessages;
 using Kookaburra.Domain.Query.Result;
+using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.History;
@@ -18,7 +19,7 @@ namespace Kookaburra.App_Start
             Mapper.Initialize(cfg => {              
                 cfg.CreateMap<MessageResult, MessageViewModel>();
 
-                cfg.CreateMap<ContinueConversationQueryResult, ConversationViewModel>()
+                cfg.CreateMap<ResumeVisitorChatQueryResult, ConversationViewModel>()
                     .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.VisitorInfo.Name))
                     .ForMember(dest => dest.OperatorName, opt => opt.MapFrom(src => src.OperatorInfo.Name));
 

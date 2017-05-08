@@ -15,8 +15,8 @@
 function Offline(accountKey) {
     var self = this;
 
-    self.name = ko.observable("");
-    self.email = ko.observable("");
+    self.name = '';
+    self.email = '';
     self.message = ko.observable("");
 
     self.accountKey = accountKey;
@@ -35,14 +35,13 @@ function Message(data) {
 function Visitor(accountKey) {
     var self = this;
    
-    self.name = ko.observable("");
-    self.email = ko.observable("");
+    self.name = '';
+    self.email = '';
     self.url = (window.location != window.parent.location)
                 ? document.referrer
                 : document.location.href;
 
-    self.accountKey = accountKey;
-    self.focusName = ko.observable(true);
+    self.accountKey = accountKey;    
 }
 
 function WidgetViewModel(accountKey) {
@@ -105,7 +104,7 @@ function WidgetViewModel(accountKey) {
     self.startChat = function () {
         chatHubProxy.server.startChat(self.visitor()).done(function (result) {
 
-            if (result.operatorAvailable)
+            if (result != null)
             {
                 $.cookie(SESSION_ID_COOKIE, result.sessionId, { path: '/' });
 

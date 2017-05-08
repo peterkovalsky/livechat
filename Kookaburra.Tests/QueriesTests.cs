@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Kookaburra.Domain.Query.Handler;
+﻿using Kookaburra.Domain;
+using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Repository;
-using Kookaburra.Domain;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Kookaburra.Tests
 {
@@ -18,7 +18,7 @@ namespace Kookaburra.Tests
             session.AddOrUpdateOperator(1, Guid.NewGuid().ToString(), "John", Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
             //session.AddVisitor("",);
 
-            var handler = new ContinueConversationQueryHandler(context, session);
+            var handler = new ResumeVisitorChatQueryHandler(context, session);
         }
     }
 }

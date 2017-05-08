@@ -1,6 +1,6 @@
-﻿using Kookaburra.Domain.Query.Result;
+﻿using Kookaburra.Domain.Query;
 
-namespace Kookaburra.Domain.Query.Model
+namespace Kookaburra.Domain.AvailableOperator
 {
     public class AvailableOperatorQuery : IQuery<AvailableOperatorQueryResult>
     {

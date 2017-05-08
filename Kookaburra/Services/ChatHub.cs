@@ -1,19 +1,20 @@
 ﻿using AutoMapper;
 using Kookaburra.Common;
+using Kookaburra.Domain.AvailableOperator;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.Model;
+using Kookaburra.Domain.Command.StartVisitorChat;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.Model;
 using Kookaburra.Domain.Query.Result;
+using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.Widget;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -56,7 +57,7 @@ namespace Kookaburra.Services
                 VisitorSessionId = visitorSessionId
             };
             var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
-            
+
             var messageView = new MessageViewModel
             {
                 Author = operatorName,
@@ -68,7 +69,7 @@ namespace Kookaburra.Services
             // Notify all operator instances (mutiple tabs)            
             Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, visitorSessionId);
             // Notify all visitor instances (mutiple tabs)
-            Clients.Clients(currentSession.VisitorConnectionIds).sendMessageToVisitor(messageView);            
+            Clients.Clients(currentSession.VisitorConnectionIds).sendMessageToVisitor(messageView);
 
             _commandDispatcher.Execute(new OperatorMessagedCommand(visitorSessionId, message, dateSent, Context.User.Identity.GetUserId()));
         }
@@ -106,7 +107,7 @@ namespace Kookaburra.Services
             Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(visitorSessionId);
             Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedByOperator(diconnectView);
             // Notify all visitor instances
-            Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByOperator(diconnectView);            
+            Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByOperator(diconnectView);
         }
         #endregion
 
@@ -116,54 +117,41 @@ namespace Kookaburra.Services
         {
             var query = new AvailableOperatorQuery(accountKey, Context.User.Identity.GetUserId());
             var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(query);
-           
-            var sessionId = GetSessionId();
 
             if (operatorResult != null) // Is there any available operator
             {
+                var sessionId = GetSessionId();
                 if (sessionId != null) // check if it's a returning visitor
                 {
-                    var sessionQuery = new CurrentSessionQuery(Context.User.Identity.GetUserId()) { VisitorSessionId = sessionId };
-                    var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(sessionQuery);
+                    var queryResume = new ResumeVisitorChatQuery(sessionId, Context.ConnectionId, Context.User.Identity.GetUserId());
+                    var resumedConversation = _queryDispatcher.Execute<ResumeVisitorChatQuery, ResumeVisitorChatQueryResult>(queryResume);
 
-                    if (currentSession != null) // check if the session still alive 
+                    if (resumedConversation != null) // check if session is still alive
                     {
-                        var queryResume = new ContinueConversationQuery(sessionId, Context.ConnectionId, Context.User.Identity.GetUserId());
-                        var resumedConversation = _queryDispatcher.Execute<ContinueConversationQuery, ContinueConversationQueryResult>(queryResume);
-
-                        if (resumedConversation != null)
+                        if (resumedConversation.IsNewConversation)
                         {
-                            if (resumedConversation.IsNewConversation)
+                            var visitorInfo = new OperatorConversationViewModel
                             {
-                                var visitorInfo = new OperatorConversationViewModel
-                                {
-                                    SessionId = sessionId,
-                                    VisitorName = resumedConversation.VisitorInfo.Name,
-                                    Location = @"{resumedConversation.VisitorInfo.Country}, {resumedConversation.VisitorInfo.City}",
-                                    CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
-                                    StartTime = DateTime.UtcNow.JsDateTime()
-                                };
-
-                                // Notify all operator instances about this visitor
-                                Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorInfo.SessionId);
-                                Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
-                            }
-
-                            // Online - resume chat
-                            return new InitWidgetViewModel
-                            {
-                                Step = WidgetStepType.Resume.ToString(),
-                                ResumedChat = Mapper.Map<ConversationViewModel>(resumedConversation)
+                                SessionId = sessionId,
+                                VisitorName = resumedConversation.VisitorInfo.Name,
+                                Location = @"{resumedConversation.VisitorInfo.Country}, {resumedConversation.VisitorInfo.City}",
+                                CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
+                                StartTime = DateTime.UtcNow.JsDateTime()
                             };
-                        }                    
-                    }
 
-                    // Introduction                 
-                    return new InitWidgetViewModel
-                    {
-                        Step = WidgetStepType.Introduction.ToString()
-                    };
-                }
+                            // Notify all operator instances about this visitor
+                            Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorInfo.SessionId);
+                            Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
+                        }
+
+                        // Online - resume chat
+                        return new InitWidgetViewModel
+                        {
+                            Step = WidgetStepType.Resume.ToString(),
+                            ResumedChat = Mapper.Map<ConversationViewModel>(resumedConversation)
+                        };
+                    }
+                }              
 
                 // Introduction                 
                 return new InitWidgetViewModel
@@ -189,27 +177,23 @@ namespace Kookaburra.Services
             {
                 var newSessionId = Guid.NewGuid().ToString();
 
-                var command = new StartConversationCommand(availableOperator.OperatorId, visitor.Name, newSessionId, Context.User.Identity.GetUserId())
+                var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, newSessionId, Context.User.Identity.GetUserId())
                 {
                     Page = visitor.PageUrl,
                     VisitorIP = WebHelper.GetIPAddress(),
                     VisitorEmail = visitor.Email
                 };
                 _commandDispatcher.Execute(command);
-                
+
                 return new StartChatViewModel
                 {
-                    SessionId = newSessionId,
-                    OperatorAvailable = true,
-                    OperatorName = "hello"
+                    SessionId = newSessionId,                   
+                    OperatorName = availableOperator.OperatorName
                 };
             }
 
-            return new StartChatViewModel
-            {
-                OperatorAvailable = false
-            };
-        }     
+            return null;
+        }
 
         public void SendOfflineMessage(OfflineViewModel offlineMessage)
         {
@@ -228,11 +212,11 @@ namespace Kookaburra.Services
                 VisitorConnectionId = Context.ConnectionId
             };
             var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
-          
+
             var messageView = new MessageViewModel
             {
                 Author = currentSession.VisitorName,
-                Text = message,                
+                Text = message,
                 SentBy = UserType.Visitor,
                 SentOn = dateSent
             };
@@ -241,9 +225,9 @@ namespace Kookaburra.Services
             Clients.Clients(currentSession.VisitorConnectionIds).sendMessageToVisitor(messageView);
             // Notify all operator instances (mutiple tabs)   
             Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, currentSession.VisitorSessionId);
-            
-            _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent, Context.User.Identity.GetUserId()));            
-        }        
+
+            _commandDispatcher.Execute(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent, Context.User.Identity.GetUserId()));
+        }
 
         /// <summary>
         /// Visitor wants to stop the conversation with operator
@@ -270,7 +254,7 @@ namespace Kookaburra.Services
             Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedByVisitor(diconnectView);
 
             // Notify all visitor instances       
-            Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByVisitor();            
+            Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByVisitor();
         }
         #endregion
 
@@ -287,7 +271,7 @@ namespace Kookaburra.Services
 
         public override Task OnDisconnected(bool stopCalled)
         {
-     
+
 
             return base.OnDisconnected(stopCalled);
         }

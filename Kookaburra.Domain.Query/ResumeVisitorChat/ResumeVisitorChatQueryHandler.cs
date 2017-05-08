@@ -1,29 +1,28 @@
 ﻿using Kookaburra.Domain.Command.Handler;
 using Kookaburra.Domain.Command.Model;
 using Kookaburra.Domain.Common;
-using Kookaburra.Domain.Query.Model;
-using Kookaburra.Domain.Query.Result;
+using Kookaburra.Domain.Query;
 using Kookaburra.Repository;
 using System;
 using System.Data.Entity;
 using System.Linq;
 
-namespace Kookaburra.Domain.Query.Handler
+namespace Kookaburra.Domain.ResumeVisitorChat
 {
-    public class ContinueConversationQueryHandler : IQueryHandler<ContinueConversationQuery, ContinueConversationQueryResult>
+    public class ResumeVisitorChatQueryHandler : IQueryHandler<ResumeVisitorChatQuery, ResumeVisitorChatQueryResult>
     {
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;
         private readonly OperatorMessagedCommandHandler _operatorMessagedHandler;
 
-        public ContinueConversationQueryHandler(KookaburraContext context, ChatSession chatSession)
+        public ResumeVisitorChatQueryHandler(KookaburraContext context, ChatSession chatSession)
         {
             _context = context;
             _chatSession = chatSession;
             _operatorMessagedHandler = new OperatorMessagedCommandHandler(_context, _chatSession);
         }
 
-        public ContinueConversationQueryResult Execute(ContinueConversationQuery query)
+        public ResumeVisitorChatQueryResult Execute(ResumeVisitorChatQuery query)
         {
             if (string.IsNullOrWhiteSpace(query.VisitorSessionId))
             {
@@ -65,7 +64,7 @@ namespace Kookaburra.Domain.Query.Handler
 
                     var operatorSession = _chatSession.GetOperatorByVisitorSessionId(query.VisitorSessionId);
 
-                    return new ContinueConversationQueryResult
+                    return new ResumeVisitorChatQueryResult
                     {
                         IsNewConversation = isNewConversation,
                         OperatorInfo = new OperatorInfo

@@ -5,15 +5,15 @@ using Kookaburra.Repository;
 using System;
 using System.Linq;
 
-namespace Kookaburra.Domain.Command.Handler
+namespace Kookaburra.Domain.Command.StartVisitorChat
 {
-    public class StartConversationCommandHandler : ICommandHandler<StartConversationCommand>
+    public class StartVisitorChatCommandHandler : ICommandHandler<StartVisitorChatCommand>
     {
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;
         private readonly IGeoLocator _geoLocator;
 
-        public StartConversationCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator)
+        public StartVisitorChatCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator)
         {
             _context = context;
             _chatSession = chatSession;
@@ -21,7 +21,7 @@ namespace Kookaburra.Domain.Command.Handler
         }
 
 
-        public void Execute(StartConversationCommand command)
+        public void Execute(StartVisitorChatCommand command)
         {
             // record new/returning visitor
             var returningVisitor = CheckForVisitor(command.VisitorName, command.VisitorEmail, command.SessionId);

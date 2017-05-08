@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kookaburra.Domain.Query.Result
+namespace Kookaburra.Domain.ResumeVisitorChat
 {
     public class VisitorInfoResult
     {

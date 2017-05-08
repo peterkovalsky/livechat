@@ -23,13 +23,17 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            
+
             var widgetViewModel = new WidgetViewModel('@(ViewBag.AccountKey)');
             ko.applyBindings(widgetViewModel);
 
             // initialise the chat
             widgetViewModel.init();
         });
+
+        function init() {
+            $('#visitor-name').focus();
+        }
 
     </script>
 </body>

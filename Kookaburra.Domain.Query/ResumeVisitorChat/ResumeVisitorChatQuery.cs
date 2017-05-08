@@ -1,10 +1,10 @@
-﻿using Kookaburra.Domain.Query.Result;
+﻿using Kookaburra.Domain.Query;
 
-namespace Kookaburra.Domain.Query.Model
+namespace Kookaburra.Domain.ResumeVisitorChat
 {
-    public class ContinueConversationQuery : IQuery<ContinueConversationQueryResult>
+    public class ResumeVisitorChatQuery : IQuery<ResumeVisitorChatQueryResult>
     {
-        public ContinueConversationQuery(string visitorSessionId, string visitorConnectionId, string operatorIdentity)
+        public ResumeVisitorChatQuery(string visitorSessionId, string visitorConnectionId, string operatorIdentity)
         {
             VisitorSessionId = visitorSessionId;
             VisitorConnectionId = visitorConnectionId;
