@@ -8,6 +8,6 @@ namespace Kookaburra.Models.Widget
         public string Step { get; set; }
 
         [JsonProperty("resumedChat")]
-        public ConversationViewModel ResumedChat { get; set; }
+        public ConversationViewModel ResumedChat { get; set; }       
     }
 }

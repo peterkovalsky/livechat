@@ -60,6 +60,8 @@ function WidgetViewModel(accountKey) {
 
     self.view = ko.observable('');
 
+    var SESSION_ID_COOKIE = "kookaburra.visitor.sessionid";
+
     var chatHubProxy = $.connection.chatHub;
 
     // init widget
@@ -101,9 +103,20 @@ function WidgetViewModel(accountKey) {
     };
 
     self.startChat = function () {
-        chatHubProxy.server.startChat(self.visitor()).done(function () {
-            self.isMessageBoxFocus(true);
-            self.view('Chat')
+        chatHubProxy.server.startChat(self.visitor()).done(function (result) {
+
+            if (result.operatorAvailable)
+            {
+                $.cookie(SESSION_ID_COOKIE, result.sessionId, { path: '/' });
+
+                self.operatorName(result.operatorName);
+                self.isMessageBoxFocus(true);
+                self.view('Chat')
+            }
+            else
+            {
+                self.view('GoneOffline')
+            }            
         });
     };
 

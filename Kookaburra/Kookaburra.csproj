@@ -286,6 +286,7 @@
     <Compile Include="Models\MessageViewModel.cs" />
     <Compile Include="Models\Widget\OfflineViewModel.cs" />
     <Compile Include="Models\Widget\OnlineBoxViewModel.cs" />
+    <Compile Include="Models\Widget\StartChatViewModel.cs" />
     <Compile Include="Models\Widget\ThankYouViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChatHub.cs" />

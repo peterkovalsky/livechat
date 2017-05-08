@@ -179,7 +179,7 @@ namespace Kookaburra.Services
             };
         }
 
-        public void StartChat(IntroductionViewModel visitor)
+        public StartChatViewModel StartChat(IntroductionViewModel visitor)
         {
             var query = new AvailableOperatorQuery(visitor.AccountKey, Context.User.Identity.GetUserId());
             var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(query);
@@ -196,10 +196,19 @@ namespace Kookaburra.Services
                     VisitorEmail = visitor.Email
                 };
                 _commandDispatcher.Execute(command);
+                
+                return new StartChatViewModel
+                {
+                    SessionId = newSessionId,
+                    OperatorAvailable = true,
+                    OperatorName = "hello"
+                };
+            }
 
-                // add sessionId cookie
-                SetSessionId(newSessionId);            
-            }          
+            return new StartChatViewModel
+            {
+                OperatorAvailable = false
+            };
         }     
 
         public void SendOfflineMessage(OfflineViewModel offlineMessage)
