@@ -1,10 +1,9 @@
-﻿using Kookaburra.Domain.Command.Model;
-using Kookaburra.Domain.Common;
+﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
 using System;
 
-namespace Kookaburra.Domain.Command.Handler
+namespace Kookaburra.Domain.Command.OperatorMessaged
 {
     public class OperatorMessagedCommandHandler : ICommandHandler<OperatorMessagedCommand>
     {

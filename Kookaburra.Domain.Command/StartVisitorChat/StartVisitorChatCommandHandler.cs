@@ -1,4 +1,4 @@
-﻿using Kookaburra.Domain.Command.Model;
+﻿using Kookaburra.Domain.Command.OperatorMessaged;
 using Kookaburra.Domain.Integration;
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
@@ -12,12 +12,14 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;
         private readonly IGeoLocator _geoLocator;
+        private readonly ICommandHandler<OperatorMessagedCommand> _operatorMessagedHandler;
 
-        public StartVisitorChatCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator)
+        public StartVisitorChatCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator, ICommandHandler<OperatorMessagedCommand> operatorMessagedHandler)
         {
             _context = context;
             _chatSession = chatSession;
             _geoLocator = geoLocator;
+            _operatorMessagedHandler = operatorMessagedHandler;
         }
 
 
@@ -68,13 +70,22 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
                 TimeStarted = DateTime.UtcNow,
                 Page = command.Page
             };
-            _context.Conversations.Add(conversation);
+            _context.Conversations.Add(conversation);      
 
             _context.SaveChanges();
 
            
             // add visitor to session
-            _chatSession.AddVisitor(conversation.Id, command.OperatorId, null, returningVisitor.Id, returningVisitor.Name, returningVisitor.SessionId);            
+            _chatSession.AddVisitor(conversation.Id, command.OperatorId, null, returningVisitor.Id, returningVisitor.Name, returningVisitor.SessionId);
+
+            // add greeting if needed           
+            _operatorMessagedHandler.Execute(new OperatorMessagedCommand
+                (
+                    command.SessionId,
+                    DefaultSettings.CHAT_GREETING,
+                    DateTime.UtcNow,
+                    command.OperatorIdentity
+                ));
         }
 
         private Visitor CheckForVisitor(string name, string email, string sessionId)

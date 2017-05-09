@@ -29,6 +29,7 @@ namespace Kookaburra.DependencyResolution
     using Domain.Query.Result;
     using Integration.freegeoip;
     using Kookaburra.Domain.AvailableOperator;
+    using Kookaburra.Domain.Command.OperatorMessaged;
     using Kookaburra.Domain.Command.StartVisitorChat;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;

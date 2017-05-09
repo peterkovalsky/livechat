@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kookaburra.Domain.Command.Model
+namespace Kookaburra.Domain.Command.OperatorMessaged
 {
     public class OperatorMessagedCommand : ICommand
     {

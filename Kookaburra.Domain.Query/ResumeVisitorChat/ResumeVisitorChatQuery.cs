@@ -4,11 +4,10 @@ namespace Kookaburra.Domain.ResumeVisitorChat
 {
     public class ResumeVisitorChatQuery : IQuery<ResumeVisitorChatQueryResult>
     {
-        public ResumeVisitorChatQuery(string visitorSessionId, string visitorConnectionId, string operatorIdentity)
+        public ResumeVisitorChatQuery(string visitorSessionId, string visitorConnectionId)
         {
             VisitorSessionId = visitorSessionId;
-            VisitorConnectionId = visitorConnectionId;
-            OperatorIdentity = operatorIdentity;
+            VisitorConnectionId = visitorConnectionId;        
         }
 
         public string VisitorSessionId { get; }

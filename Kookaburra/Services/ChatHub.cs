@@ -3,6 +3,7 @@ using Kookaburra.Common;
 using Kookaburra.Domain.AvailableOperator;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.Model;
+using Kookaburra.Domain.Command.OperatorMessaged;
 using Kookaburra.Domain.Command.StartVisitorChat;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
@@ -115,7 +116,7 @@ namespace Kookaburra.Services
 
         public InitWidgetViewModel InitWidget(string accountKey)
         {
-            var query = new AvailableOperatorQuery(accountKey, Context.User.Identity.GetUserId());
+            var query = new AvailableOperatorQuery(accountKey);
             var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(query);
 
             if (operatorResult != null) // Is there any available operator
@@ -123,27 +124,11 @@ namespace Kookaburra.Services
                 var sessionId = GetSessionId();
                 if (sessionId != null) // check if it's a returning visitor
                 {
-                    var queryResume = new ResumeVisitorChatQuery(sessionId, Context.ConnectionId, Context.User.Identity.GetUserId());
+                    var queryResume = new ResumeVisitorChatQuery(sessionId, Context.ConnectionId);
                     var resumedConversation = _queryDispatcher.Execute<ResumeVisitorChatQuery, ResumeVisitorChatQueryResult>(queryResume);
 
                     if (resumedConversation != null) // check if session is still alive
-                    {
-                        if (resumedConversation.IsNewConversation)
-                        {
-                            var visitorInfo = new OperatorConversationViewModel
-                            {
-                                SessionId = sessionId,
-                                VisitorName = resumedConversation.VisitorInfo.Name,
-                                Location = @"{resumedConversation.VisitorInfo.Country}, {resumedConversation.VisitorInfo.City}",
-                                CurrentUrl = resumedConversation.VisitorInfo.CurrentUrl,
-                                StartTime = DateTime.UtcNow.JsDateTime()
-                            };
-
-                            // Notify all operator instances about this visitor
-                            Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorInfo.SessionId);
-                            Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
-                        }
-
+                    {                    
                         // Online - resume chat
                         return new InitWidgetViewModel
                         {
@@ -169,7 +154,7 @@ namespace Kookaburra.Services
 
         public StartChatViewModel StartChat(IntroductionViewModel visitor)
         {
-            var query = new AvailableOperatorQuery(visitor.AccountKey, Context.User.Identity.GetUserId());
+            var query = new AvailableOperatorQuery(visitor.AccountKey);
             var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(query);
 
             // if operator is available - establish connection
@@ -185,11 +170,31 @@ namespace Kookaburra.Services
                 };
                 _commandDispatcher.Execute(command);
 
-                return new StartChatViewModel
+
+                var queryResume = new ResumeVisitorChatQuery(newSessionId, Context.ConnectionId);
+                var resumedConversation = _queryDispatcher.Execute<ResumeVisitorChatQuery, ResumeVisitorChatQueryResult>(queryResume);
+
+                if (resumedConversation != null)
                 {
-                    SessionId = newSessionId,                   
-                    OperatorName = availableOperator.OperatorName
-                };
+                    var visitorInfo = new OperatorConversationViewModel
+                    {
+                        SessionId = newSessionId,
+                        VisitorName = visitor.Name,
+                        Location = @"{resumedConversation.VisitorInfo.Country}, {resumedConversation.VisitorInfo.City}",
+                        CurrentUrl = visitor.PageUrl,
+                        StartTime = DateTime.UtcNow.JsDateTime()
+                    };
+
+                    // Notify all operator instances about this visitor
+                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(newSessionId);
+                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
+
+                    return new StartChatViewModel
+                    {
+                        SessionId = newSessionId,
+                        OperatorName = availableOperator.OperatorName
+                    };
+                }
             }
 
             return null;

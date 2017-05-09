@@ -58,7 +58,7 @@ namespace Kookaburra.Controllers
         [Route("widget/{key}")]
         public ActionResult WidgetOld(string key)
         {
-            var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(key, User.Identity.GetUserId()));
+            var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(key));
             var sessionId = Request.Cookies[COOKIE_SESSION_ID];
 
             if (operatorResult != null) // There is someone online
@@ -94,7 +94,7 @@ namespace Kookaburra.Controllers
         {
             if (!ModelState.IsValid) return View(model);
        
-            var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(model.AccountKey, User.Identity.GetUserId()));
+            var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(model.AccountKey));
             
             // if operator is available - establish connection
             if (availableOperator != null)

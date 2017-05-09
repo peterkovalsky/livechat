@@ -4,8 +4,6 @@ namespace Kookaburra.Domain.ResumeVisitorChat
 {
     public class ResumeVisitorChatQueryResult
     {
-        public bool IsNewConversation { get; set; }
-
         public OperatorInfo OperatorInfo { get; set; }
 
         public VisitorInfoResult VisitorInfo { get; set; }

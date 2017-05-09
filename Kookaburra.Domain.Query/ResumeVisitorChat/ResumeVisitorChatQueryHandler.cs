@@ -1,9 +1,6 @@
-﻿using Kookaburra.Domain.Command.Handler;
-using Kookaburra.Domain.Command.Model;
-using Kookaburra.Domain.Common;
+﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Repository;
-using System;
 using System.Data.Entity;
 using System.Linq;
 
@@ -12,15 +9,14 @@ namespace Kookaburra.Domain.ResumeVisitorChat
     public class ResumeVisitorChatQueryHandler : IQueryHandler<ResumeVisitorChatQuery, ResumeVisitorChatQueryResult>
     {
         private readonly KookaburraContext _context;
-        private readonly ChatSession _chatSession;
-        private readonly OperatorMessagedCommandHandler _operatorMessagedHandler;
+        private readonly ChatSession _chatSession;        
 
         public ResumeVisitorChatQueryHandler(KookaburraContext context, ChatSession chatSession)
         {
             _context = context;
-            _chatSession = chatSession;
-            _operatorMessagedHandler = new OperatorMessagedCommandHandler(_context, _chatSession);
+            _chatSession = chatSession;           
         }
+
 
         public ResumeVisitorChatQueryResult Execute(ResumeVisitorChatQuery query)
         {
@@ -33,15 +29,6 @@ namespace Kookaburra.Domain.ResumeVisitorChat
             var visitorSession = _chatSession.GetVisitorByVisitorSessionId(query.VisitorSessionId);
             if (visitorSession != null)
             {
-                bool isNewConversation = visitorSession.ConnectionIds.Count == 0;
-
-                if (isNewConversation)
-                {
-                    // add greeting if needed
-                    var command = new OperatorMessagedCommand(query.VisitorSessionId, DefaultSettings.CHAT_GREETING, DateTime.UtcNow, query.OperatorIdentity);
-                    _operatorMessagedHandler.Execute(command);
-                }
-
                 var conversation = _context.Conversations
                     .Include(i => i.Messages)
                     .Include(i => i.Visitor)
@@ -65,8 +52,7 @@ namespace Kookaburra.Domain.ResumeVisitorChat
                     var operatorSession = _chatSession.GetOperatorByVisitorSessionId(query.VisitorSessionId);
 
                     return new ResumeVisitorChatQueryResult
-                    {
-                        IsNewConversation = isNewConversation,
+                    {                    
                         OperatorInfo = new OperatorInfo
                         {
                             Name = conversation.Operator.FirstName,

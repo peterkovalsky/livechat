@@ -4,10 +4,9 @@ namespace Kookaburra.Domain.AvailableOperator
 {
     public class AvailableOperatorQuery : IQuery<AvailableOperatorQueryResult>
     {
-        public AvailableOperatorQuery(string accountKey, string operatorIdentity)
+        public AvailableOperatorQuery(string accountKey)
         {
-            AccountKey = accountKey;
-            OperatorIdentity = operatorIdentity;
+            AccountKey = accountKey;         
         }
 
         public string AccountKey { get; }
