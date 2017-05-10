@@ -297,11 +297,13 @@
     <Content Include="Content\kookaburra\operator-chat.css" />
     <Content Include="Content\kookaburra\offline-messages.css" />
     <Content Include="Content\kookaburra\portal.css" />
+    <Content Include="Content\kookaburra\public.css" />
     <Content Include="Content\perfect-scrollbar.css" />
     <Content Include="Content\perfect-scrollbar.min.css" />
     <Content Include="Content\kookaburra\widget.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="images\login.jpg" />
     <Content Include="images\logo-small.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\placeholder.png" />
