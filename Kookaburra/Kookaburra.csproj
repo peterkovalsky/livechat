@@ -304,6 +304,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="images\login.jpg" />
+    <Content Include="images\logo-bird.ico" />
+    <Content Include="images\logo-bird.png" />
     <Content Include="images\logo-small.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\placeholder.png" />

@@ -89,9 +89,17 @@ input[type="checkbox"].input-validation-error {
     }
 }
 
+.page-login.page-dark.layout-full {
+    color: #37474f;
+}
+
 .page-login.page-dark.layout-full .brand-text {
     font-size: 28px;
     color: #37474f;    
     font-family: 'Didact Gothic', sans-serif;
     text-transform: lowercase;
+}
+
+.brand-img {
+    height: 75px;
 }
