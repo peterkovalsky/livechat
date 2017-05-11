@@ -64,6 +64,8 @@
     <Compile Include="Handler\LeaveMessageCommandHandler.cs" />
     <Compile Include="Handler\MarkMessageAsReadCommandHandler.cs" />
     <Compile Include="OperatorMessaged\OperatorMessagedCommandHandler.cs" />
+    <Compile Include="SignUp\SignUpCommand.cs" />
+    <Compile Include="SignUp\SignUpCommandHandler.cs" />
     <Compile Include="StartVisitorChat\StartVisitorChatCommandHandler.cs" />
     <Compile Include="Handler\StopConversationCommandHandler.cs" />
     <Compile Include="Handler\VisitorMessagedCommandHandler.cs" />
