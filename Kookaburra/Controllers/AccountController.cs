@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Kookaburra.Models;
 using Kookaburra.Domain.Repository;
+using Kookaburra.Domain.Command;
+using Kookaburra.Domain.Command.SignUp;
 
 namespace Kookaburra.Controllers
 {
@@ -18,8 +20,11 @@ namespace Kookaburra.Controllers
 
         private readonly IOperatorRepository _operatorRepository;
 
-        public AccountController(IOperatorRepository operatorRepository)
+        private readonly ICommandDispatcher _commandDispatcher;
+
+        public AccountController(ICommandDispatcher commandDispatcher, IOperatorRepository operatorRepository)
         {
+            _commandDispatcher = commandDispatcher;
             _operatorRepository = operatorRepository;
         }
 
@@ -118,14 +123,15 @@ namespace Kookaburra.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                 
+                    var command = new SignUpCommand
+                    {
+                        Company = model.Company,
+                        OperatorIdentity = user.Id
+                    };
+                    _commandDispatcher.Execute(command);
 
-                    return RedirectToAction("Index", "Home");
+                    return Redirect("/dashboard");
                 }
                 AddErrors(result);
             }

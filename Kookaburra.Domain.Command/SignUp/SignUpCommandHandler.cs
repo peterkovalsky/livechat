@@ -21,8 +21,16 @@ namespace Kookaburra.Domain.Command.SignUp
         {
             var account = new Account
             {
-
+                Identifier = Guid.NewGuid().ToString(),
+                Name = command.Company,
+                Operators = new List<Operator> {
+                    new Operator{
+                        FirstName = 
+                    }
+                }
             };
+            account.
+
             _context.Accounts.Add(account);
         }
     }
