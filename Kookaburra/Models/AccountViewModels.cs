@@ -65,7 +65,7 @@ namespace Kookaburra.Models
     public class RegisterViewModel
     {
         [Required]
-        public string Name { get; set; }
+        public string ClientName { get; set; }
 
         [Required]
         public string Company { get; set; }

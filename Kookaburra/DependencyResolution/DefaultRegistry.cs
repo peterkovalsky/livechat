@@ -30,6 +30,7 @@ namespace Kookaburra.DependencyResolution
     using Integration.freegeoip;
     using Kookaburra.Domain.AvailableOperator;
     using Kookaburra.Domain.Command.OperatorMessaged;
+    using Kookaburra.Domain.Command.SignUp;
     using Kookaburra.Domain.Command.StartVisitorChat;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;
@@ -56,7 +57,7 @@ namespace Kookaburra.DependencyResolution
                 });
    
             For<KookaburraContext>().Use<KookaburraContext>().Ctor<string>().Is("name=DefaultConnection");
-            ForConcreteType<AccountController>().Configure.SelectConstructor(() => new AccountController(null));
+            //ForConcreteType<AccountController>().Configure.SelectConstructor(() => new AccountController(null));
             For<IDependencyResolver>().Add<StructureMapSignalRDependencyResolver>();
 
             // Commands
@@ -68,7 +69,8 @@ namespace Kookaburra.DependencyResolution
             For<ICommandHandler<VisitorMessagedCommand>>().Add<VisitorMessagedCommandHandler>();
             For<ICommandHandler<MarkMessageAsReadCommand>>().Add<MarkMessageAsReadCommandHandler>();
             For<ICommandHandler<DeleteMessageCommand>>().Add<DeleteMessageCommandHandler>();
-            
+            For<ICommandHandler<SignUpCommand>>().Add<SignUpCommandHandler>();
+
             // Queries
             For<IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>>().Add<AvailableOperatorQueryHandler>();       
             For<IQueryHandler<ResumeVisitorChatQuery, ResumeVisitorChatQueryResult>>().Add<ResumeVisitorChatQueryHandler>();

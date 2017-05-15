@@ -19,19 +19,13 @@ namespace Kookaburra.Controllers
         private ApplicationUserManager _userManager;
 
         private readonly IOperatorRepository _operatorRepository;
-
         private readonly ICommandDispatcher _commandDispatcher;
+   
 
         public AccountController(ICommandDispatcher commandDispatcher, IOperatorRepository operatorRepository)
-        {
+        {          
             _commandDispatcher = commandDispatcher;
             _operatorRepository = operatorRepository;
-        }
-
-        public AccountController(IOperatorRepository operatorRepository, ApplicationUserManager userManager, ApplicationSignInManager signInManager )
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
         }
 
         public ApplicationSignInManager SignInManager
@@ -127,7 +121,9 @@ namespace Kookaburra.Controllers
                     var command = new SignUpCommand
                     {
                         Company = model.Company,
-                        OperatorIdentity = user.Id
+                        OperatorIdentity = user.Id,
+                        ClientName = model.ClientName,
+                        Email = model.Email
                     };
                     _commandDispatcher.Execute(command);
 

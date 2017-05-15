@@ -1,10 +1,8 @@
-﻿using Kookaburra.Domain.Model;
+﻿using Kookaburra.Domain.Common;
+using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Command.SignUp
 {
@@ -23,13 +21,17 @@ namespace Kookaburra.Domain.Command.SignUp
             {
                 Identifier = Guid.NewGuid().ToString(),
                 Name = command.Company,
-                Operators = new List<Operator> {
-                    new Operator{
-                        FirstName = 
+                Operators = new List<Operator>
+                {
+                    new Operator
+                    {
+                        FirstName = command.ClientName,
+                        Email = command.Email,
+                        Identity = command.OperatorIdentity,
+                        Type = OperatorType.OWNER.ToString()
                     }
                 }
-            };
-            account.
+            };            
 
             _context.Accounts.Add(account);
         }
