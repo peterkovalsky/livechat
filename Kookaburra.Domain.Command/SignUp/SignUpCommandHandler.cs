@@ -34,6 +34,7 @@ namespace Kookaburra.Domain.Command.SignUp
             };            
 
             _context.Accounts.Add(account);
+            _context.SaveChanges();
         }
     }
 }
