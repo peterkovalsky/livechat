@@ -60,6 +60,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EmailTests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="QueriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +77,10 @@
     <ProjectReference Include="..\Kookaburra.Domain\Kookaburra.Domain.csproj">
       <Project>{1f955ef9-25d2-4a38-be51-c81aebfdb41c}</Project>
       <Name>Kookaburra.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kookaburra.Email\Kookaburra.Email.csproj">
+      <Project>{f8477f6c-7b20-4a32-8c4e-a838fc29fdea}</Project>
+      <Name>Kookaburra.Email</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kookaburra.Integration.freegeoip\Kookaburra.Integration.freegeoip.csproj">
       <Project>{f95250a3-88c4-4ede-b23c-c0c4fd4e0462}</Project>
