@@ -1,27 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RazorEngine;
+using RazorEngine.Templating;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kookaburra.Email
 {
     public class Mailer : IMailer
     {
-        public void SendEmail<T>(T model) where T : IEmailModel
-        {
+        private readonly IEmailSender _emailSender;
 
+        public Mailer(IEmailSender emailSender)
+        {
+            _emailSender = emailSender;
         }
 
-        public string GetTemplate<T>(T model) where T : IEmailModel
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            Type myType = model.GetType();
-            var n = myType.Namespace;
+        public void SendEmail<T>(AddressInfo from, AddressInfo to, T model) where T : IEmailModel
+        {            
+            var body = AssembleMessageBody(model);
+            var subject = GetSubject(body);
 
-            var resourceName = $"{assembly.FullName}.{myType.Namespace}.html";
+            var message = new EmailMessage
+            {
+                From = from,
+                To = to,
+                Subject = subject,
+                Body = body,
+                IsHtml = true
+            };
+
+            _emailSender.Send(message);
+        }
+
+        private string GetTemplate<T>(T model) where T : IEmailModel
+        {
+            var assembly = Assembly.GetExecutingAssembly();            
+
+            var resourceName = $"{model.GetType().FullName}.html";
 
             string template = string.Empty;
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
@@ -31,6 +45,20 @@ namespace Kookaburra.Email
             }
 
             return template;
+        }
+
+        private string AssembleMessageBody<T>(T model) where T : IEmailModel
+        {
+            var template = GetTemplate(model);
+            return Engine.Razor.RunCompile(template, model.GetType().Name, null, model);
+        }
+
+        private string GetSubject(string processedTemplate)
+        {
+            int indexOfTitleText = processedTemplate.ToLower().IndexOf("<title>") + 7; //Adding 8 to get to start of actual text
+            int lastIndexOfTitle = processedTemplate.ToLower().IndexOf("</title>", indexOfTitleText);
+
+            return processedTemplate.Substring(indexOfTitleText, lastIndexOfTitle - indexOfTitleText);
         }
     }
 }

@@ -1,42 +1,23 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Kookaburra.Email;
+﻿using Kookaburra.Email;
 using Kookaburra.Email.Public.SignUpWelcome;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Kookaburra.Tests
 {
-    /// <summary>
-    /// Summary description for EmailTests
-    /// </summary>
     [TestClass]
     public class EmailTests
     {
+        private readonly IMailer _mailer;
+        private readonly AddressInfo _from;
+        private readonly AddressInfo _to;        
+
         public EmailTests()
         {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+            var sender = new DefaultEmailSender("mail.kookaburra.chat", "info@kookaburra.chat", "Private123!");
+            _mailer = new Mailer(sender);
+            _from = new AddressInfo("Kookaburra Chat", "info@kookaburra.chat");
+            _to = new AddressInfo("peter.kovalskyy@gmail.com");
+        } 
 
         #region Additional test attributes
         //
@@ -62,13 +43,13 @@ namespace Kookaburra.Tests
 
         [TestMethod]
         public void TestSignUpWelcomeEmail()
-        {
-            var mailer = new Mailer();
-            var model = new SignUpWelcomeEmail {
+        {            
+            var model = new SignUpWelcomeEmail
+            {
                 FirstName = "John"
             };
 
-            var template = mailer.GetTemplate<SignUpWelcomeEmail>(model);
+            _mailer.SendEmail(_from, _to, model);
         }
     }
 }

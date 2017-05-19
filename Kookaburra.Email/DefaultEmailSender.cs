@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 
 namespace Kookaburra.Email
@@ -13,8 +15,8 @@ namespace Kookaburra.Email
             _smtpClient = new SmtpClient
             {
                 Host = host,
-                Port = 587,
-                EnableSsl = true,
+                Port = 25,
+                EnableSsl = false,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(username, password)
@@ -25,13 +27,27 @@ namespace Kookaburra.Email
         {
             if (message == null) return;
 
-            var mailMessage = new MailMessage(new MailAddress(message.From, message.DisplayName), new MailAddress(message.To));
+            var mailMessage = new MailMessage(new MailAddress(message.From.Email, message.From.DisplayName), new MailAddress(message.To.Email, message.To.DisplayName))
+            {
+                Body = message.Body,
+                Subject = message.Subject,
+                BodyEncoding = UTF8Encoding.UTF8,
+                IsBodyHtml = message.IsHtml,
+                DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
+            };
 
-            mailMessage.Body = message.Body;
-            mailMessage.Subject = message.Subject;
-            mailMessage.BodyEncoding = UTF8Encoding.UTF8;
-            mailMessage.IsBodyHtml = message.IsHtml;
-            mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+            if (message.Attachments != null)
+            {
+                foreach (var attachment in message.Attachments)
+                {
+                    var contentType = new ContentType
+                    {
+                        MediaType = attachment.MIME,
+                        Name = attachment.Filename
+                    };
+                    mailMessage.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment.File), contentType));
+                }
+            }
 
             _smtpClient.Send(mailMessage);
         }
