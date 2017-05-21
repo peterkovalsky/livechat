@@ -1,4 +1,5 @@
-﻿using Kookaburra.App_Start;
+﻿using Hangfire;
+using Kookaburra.App_Start;
 using Microsoft.Owin;
 using Owin;
 
@@ -12,7 +13,12 @@ namespace Kookaburra
             ConfigureAuth(app);
             AutoMapperConfig.Initialize();
 
-            app.MapSignalR();            
+            app.MapSignalR();
+
+            GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
+
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
         }
     }
 }
