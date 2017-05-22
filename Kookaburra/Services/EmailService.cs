@@ -10,16 +10,11 @@ namespace Kookaburra.Services
 {
     public class EmailService
     {
-        private readonly KookaburraContext _context;
-        private readonly IMailer _mailer;
-        private readonly AddressInfo _from;
+        private readonly KookaburraContext _context;   
 
-        public EmailService(KookaburraContext context, IMailer mailer)
+        public EmailService(KookaburraContext context)
         {
-            _context = context;
-            _mailer = mailer;
-
-            _from = new AddressInfo("Kookaburra Chat", "info@kookaburra.chat");           
+            _context = context;                
         }
 
         public void SendSignUpWelcomeEmail(int operatorId)
@@ -34,9 +29,7 @@ namespace Kookaburra.Services
             var model = new SignUpWelcomeEmail
             {
                 FirstName = owner.FirstName
-            };
-
-            _mailer.SendEmail(_from, to, model);
+            };           
         }
     }
 }

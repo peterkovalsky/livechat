@@ -37,6 +37,7 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Query.OfflineMessages;
     using Kookaburra.Domain.Query.SearchOfflineMessages;
     using Kookaburra.Domain.ResumeVisitorChat;
+    using Kookaburra.Email;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
@@ -86,6 +87,11 @@ namespace Kookaburra.DependencyResolution
 
             ForSingletonOf<ChatSession>();
             ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();
+            For<IMailer>().Add<Mailer>();
+            For<IEmailSender>().Add<DefaultEmailSender>().Ctor<string>("host").Is(AppSettings.EmailHost)
+                                                                    .Ctor<string>("username").Is(AppSettings.EmailUsername)
+                                                                    .Ctor<string>("password").Is(AppSettings.EmailPassword);
+            For<EmailService>().Add<EmailService>();
         }       
     }
 }

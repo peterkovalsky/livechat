@@ -1,14 +1,15 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+﻿using Hangfire;
+using Kookaburra.Domain.Command;
+using Kookaburra.Domain.Command.SignUp;
+using Kookaburra.Domain.Repository;
+using Kookaburra.Models;
+using Kookaburra.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Kookaburra.Models;
-using Kookaburra.Domain.Repository;
-using Kookaburra.Domain.Command;
-using Kookaburra.Domain.Command.SignUp;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Kookaburra.Controllers
 {
@@ -20,12 +21,15 @@ namespace Kookaburra.Controllers
 
         private readonly IOperatorRepository _operatorRepository;
         private readonly ICommandDispatcher _commandDispatcher;
-   
 
-        public AccountController(ICommandDispatcher commandDispatcher, IOperatorRepository operatorRepository)
+        private readonly EmailService _emailService;
+
+
+        public AccountController(ICommandDispatcher commandDispatcher, IOperatorRepository operatorRepository, EmailService emailService)
         {          
             _commandDispatcher = commandDispatcher;
             _operatorRepository = operatorRepository;
+            _emailService = emailService;
         }
 
         public ApplicationSignInManager SignInManager
@@ -113,6 +117,7 @@ namespace Kookaburra.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {                                     
@@ -124,6 +129,8 @@ namespace Kookaburra.Controllers
                         Email = model.Email
                     };
                     _commandDispatcher.Execute(command);
+
+                    BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmail();
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
