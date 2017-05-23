@@ -2,9 +2,7 @@
 using Kookaburra.Email.Public.SignUpWelcome;
 using Kookaburra.Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace Kookaburra.Services
 {
@@ -17,12 +15,12 @@ namespace Kookaburra.Services
             _context = context;                
         }
 
-        public void SendSignUpWelcomeEmail(int operatorId)
+        public void SendSignUpWelcomeEmail(string operatorIdentity)
         {
-            var owner = _context.Operators.Where(o => o.Id == operatorId).SingleOrDefault();
+            var owner = _context.Operators.Where(o => o.Identity == operatorIdentity).SingleOrDefault();
             if (owner == null)
             {
-                throw new ArgumentException($"Operator with id {operatorId} doesn't exists");
+                throw new ArgumentException($"Operator with id {operatorIdentity} doesn't exists");
             }
 
             var to = new AddressInfo(owner.Email);

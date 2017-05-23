@@ -17,7 +17,6 @@
 
 namespace Kookaburra.DependencyResolution
 {
-    using Controllers;
     using Domain;
     using Domain.Command;
     using Domain.Command.Handler;
@@ -38,6 +37,7 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Query.SearchOfflineMessages;
     using Kookaburra.Domain.ResumeVisitorChat;
     using Kookaburra.Email;
+    using Kookaburra.Services;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;

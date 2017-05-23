@@ -130,7 +130,7 @@ namespace Kookaburra.Controllers
                     };
                     _commandDispatcher.Execute(command);
 
-                    BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmail();
+                    BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmail(user.Id));
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
