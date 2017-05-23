@@ -17,9 +17,9 @@ namespace Kookaburra.Services
             _context = context;                
         }
 
-        public void SendSignUpWelcomeEmail(int operatorId)
+        public void SendSignUpWelcomeEmail(string operatorId)
         {
-            var owner = _context.Operators.Where(o => o.Id == operatorId).SingleOrDefault();
+            var owner = _context.Operators.Where(o => o.Identity == operatorId).SingleOrDefault();
             if (owner == null)
             {
                 throw new ArgumentException($"Operator with id {operatorId} doesn't exists");

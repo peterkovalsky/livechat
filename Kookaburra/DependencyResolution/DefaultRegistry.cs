@@ -38,6 +38,7 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Query.SearchOfflineMessages;
     using Kookaburra.Domain.ResumeVisitorChat;
     using Kookaburra.Email;
+    using Kookaburra.Services;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
