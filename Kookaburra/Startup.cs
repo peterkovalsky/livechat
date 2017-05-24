@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using Hangfire.StructureMap;
 using Kookaburra.App_Start;
 using Microsoft.Owin;
 using Owin;
@@ -14,6 +15,9 @@ namespace Kookaburra
             AutoMapperConfig.Initialize();
 
             app.MapSignalR();
+
+            var container = StructuremapMvc.StructureMapDependencyScope.Container;
+            GlobalConfiguration.Configuration.UseStructureMapActivator(container);
 
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
 

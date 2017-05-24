@@ -7,6 +7,7 @@ using Kookaburra.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -235,6 +236,12 @@ namespace Kookaburra.Controllers
 
         private void AddErrors(IdentityResult result)
         {
+            if (result.Errors.Any(e => e.Contains("is already taken")))
+            {
+                ModelState.AddModelError("", "Email is already taken");
+                return;
+            }
+
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error);

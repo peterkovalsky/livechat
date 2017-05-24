@@ -58,7 +58,7 @@ namespace Kookaburra
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
             });
-   
+       
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
