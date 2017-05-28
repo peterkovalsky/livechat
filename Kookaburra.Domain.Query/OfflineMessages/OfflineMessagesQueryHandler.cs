@@ -1,6 +1,4 @@
 ﻿using Kookaburra.Domain.Common;
-using Kookaburra.Domain.Query.Model;
-using Kookaburra.Domain.Query.Result;
 using Kookaburra.Repository;
 using System;
 using System.Linq;

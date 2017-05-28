@@ -1956,7 +1956,7 @@
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Chat\RoomOld.cshtml" />
-    <Content Include="Views\History\List.cshtml" />
+    <Content Include="Views\History\Chats.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Widget\Offline.cshtml" />
     <Content Include="Views\Widget\Online.cshtml" />

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Kookaburra.Domain.Query.Result
+namespace Kookaburra.Domain.Query.CurrentChats
 {
     public class CurrentChatsQueryResult
     {

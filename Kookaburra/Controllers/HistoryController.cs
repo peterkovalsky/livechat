@@ -3,8 +3,7 @@ using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.ChatHistory;
-using Kookaburra.Domain.Query.Model;
-using Kookaburra.Domain.Query.Result;
+using Kookaburra.Domain.Query.Transcript;
 using Kookaburra.Models.History;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
@@ -27,7 +26,7 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet, Route("history")]
-        public ActionResult List()
+        public ActionResult Chats()
         {
             var query = new ChatHistoryQuery(TimeFilterType.All, User.Identity.GetUserId())
             {

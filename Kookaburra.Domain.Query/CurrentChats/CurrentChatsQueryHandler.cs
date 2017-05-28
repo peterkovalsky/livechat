@@ -1,9 +1,7 @@
-﻿using Kookaburra.Domain.Query.Model;
-using Kookaburra.Domain.Query.Result;
-using Kookaburra.Repository;
+﻿using Kookaburra.Repository;
 using System.Linq;
 
-namespace Kookaburra.Domain.Query.Handler
+namespace Kookaburra.Domain.Query.CurrentChats
 {
     public class CurrentChatsQueryHandler : IQueryHandler<CurrentChatsQuery, CurrentChatsQueryResult>
     {

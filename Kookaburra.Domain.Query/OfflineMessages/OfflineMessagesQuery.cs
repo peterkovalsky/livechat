@@ -1,5 +1,4 @@
 ﻿using Kookaburra.Domain.Common;
-using Kookaburra.Domain.Query.Result;
 
 namespace Kookaburra.Domain.Query.OfflineMessages
 {

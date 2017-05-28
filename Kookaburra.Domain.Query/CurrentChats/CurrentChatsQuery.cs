@@ -1,6 +1,4 @@
-﻿using Kookaburra.Domain.Query.Result;
-
-namespace Kookaburra.Domain.Query.Model
+﻿namespace Kookaburra.Domain.Query.CurrentChats
 {
     public class CurrentChatsQuery : IQuery<CurrentChatsQueryResult>
     {

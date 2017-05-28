@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Kookaburra.Common;
 using Kookaburra.Domain.Query.ChatHistory;
+using Kookaburra.Domain.Query.CurrentChats;
 using Kookaburra.Domain.Query.OfflineMessages;
-using Kookaburra.Domain.Query.Result;
+using Kookaburra.Domain.Query.ResumeOperator;
+using Kookaburra.Domain.Query.Transcript;
 using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;

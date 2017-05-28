@@ -37,6 +37,7 @@ function ChatHistoryViewModel(initialData) {
 
     self.filters = ['All', 'Today', 'Week', 'Month'];
     self.selectedFilter = ko.observable(self.filters[0]);
+    self.filtering = ko.observable(false);
 
     self.addConversations = function (newConversations) {
         $.each(newConversations, function (index, item) {
@@ -68,6 +69,7 @@ function ChatHistoryViewModel(initialData) {
     self.filter = function (filterBy) {
         self.selectedFilter(filterBy);
         self.currentPage(1);
+        self.filtering(true);
 
         $.get("/api/history/" + self.selectedFilter() + "/" + self.currentPage())
             .done(function (data) {
@@ -75,6 +77,10 @@ function ChatHistoryViewModel(initialData) {
 
                 self.addConversations(data.conversations);
                 self.totalConversations(data.totalConversations);
+
+                if (self.selectedFilter() == self.filters[0]) {
+                    self.filtering(false);
+                }
             });
     };
 

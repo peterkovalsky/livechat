@@ -23,9 +23,6 @@ namespace Kookaburra.DependencyResolution
     using Domain.Command.Model;
     using Domain.Integration;
     using Domain.Query;
-    using Domain.Query.Handler;
-    using Domain.Query.Model;
-    using Domain.Query.Result;
     using Integration.freegeoip;
     using Kookaburra.Domain.AvailableOperator;
     using Kookaburra.Domain.Command.OperatorMessaged;
@@ -33,15 +30,18 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Command.StartVisitorChat;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;
+    using Kookaburra.Domain.Query.CurrentChats;
+    using Kookaburra.Domain.Query.CurrentSession;
     using Kookaburra.Domain.Query.OfflineMessages;
+    using Kookaburra.Domain.Query.ResumeOperator;
     using Kookaburra.Domain.Query.SearchOfflineMessages;
+    using Kookaburra.Domain.Query.Transcript;
     using Kookaburra.Domain.ResumeVisitorChat;
     using Kookaburra.Email;
     using Kookaburra.Services;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
-    using StructureMap.Graph;
 
     public class DefaultRegistry : Registry {       
 

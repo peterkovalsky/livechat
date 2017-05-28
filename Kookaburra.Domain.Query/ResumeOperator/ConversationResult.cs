@@ -1,7 +1,7 @@
 ﻿using Kookaburra.Domain.ResumeVisitorChat;
 using System.Collections.Generic;
 
-namespace Kookaburra.Domain.Query.Result
+namespace Kookaburra.Domain.Query.ResumeOperator
 {
     public class ConversationResult
     {

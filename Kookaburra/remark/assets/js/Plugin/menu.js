@@ -51,6 +51,27 @@
       value: function render() {
         this.bindEvents();
         this.$el.data('menuApi', this);
+
+        var path = window.location.pathname;
+
+        var selectedItem = $('.site-menu .site-menu-item a[href="' + path + '"]');
+
+        if (selectedItem.length == 1) {
+            var $item = $(selectedItem[0]).parent();
+
+            if ($item.parent().parent().is('.has-sub')) {
+                if ($item.parent().parent().is('.open')) {
+                    $item.parent().parent().trigger('close.site.menu');
+                } else {
+                    $item.parent().parent().trigger('open.site.menu');
+                }
+            } 
+
+            if (!$item.is('.active')) {
+                $item.siblings('.active').trigger('deactive.site.menu');
+                $item.trigger('active.site.menu');
+            }          
+        }
       }
     }, {
       key: 'bindEvents',

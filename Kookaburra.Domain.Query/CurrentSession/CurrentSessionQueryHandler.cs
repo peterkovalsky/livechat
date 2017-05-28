@@ -1,7 +1,4 @@
-﻿using Kookaburra.Domain.Query.Model;
-using Kookaburra.Domain.Query.Result;
-
-namespace Kookaburra.Domain.Query.Handler
+﻿namespace Kookaburra.Domain.Query.CurrentSession
 {
     public class CurrentSessionQueryHandler : IQueryHandler<CurrentSessionQuery, CurrentSessionQueryResult>
     {
