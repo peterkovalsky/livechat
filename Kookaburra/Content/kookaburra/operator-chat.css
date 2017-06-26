@@ -21,7 +21,7 @@
 
 .chat .panel-body ul
 {
-    list-style-type: none;
+    list-style-type: none;    
 }
 
 .chat .panel-body .chat-message textarea{
@@ -89,6 +89,7 @@ li.conversation-item.active {
     height: -webkit-calc(100% - 135px);
     height: calc(100% - 135px);
     position: relative;
+    overflow-y: auto;
 }
 
 .chat .conversation {   
@@ -123,7 +124,7 @@ li.conversation-item.active {
 
 .chat .conversation .message.operator .text {          
     margin-left: 10px;
-    margin-right: 200px; 
+    margin-right: 300px; 
 }
 
 .chat .conversation .message.operator .text:before {
@@ -142,7 +143,7 @@ li.conversation-item.active {
 }
 
 .chat .conversation .message.visitor .text {
-    margin-left: 200px;
+    margin-left: 300px;
     margin-right: 10px;
     background-color: #00b19d; 
     color: white;
