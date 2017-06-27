@@ -77,6 +77,7 @@ namespace Kookaburra
             );
 
             bundles.Add(new StyleBundle("~/bundles/css/chatroom")
+                .Include("~/remark/global/vendor/alertify/alertify.css")
                 .Include("~/Content/kookaburra/operator-chat.css")
             );
 

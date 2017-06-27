@@ -19,11 +19,13 @@
     // -----------------------
     self.init = function () {        
         self.registerCallbackFunctions();
-        self.addEnterPressEvent();
+        self.addEnterPressEvent();        
 
         $(window).on('signalr.start', function (e) {
             self.startOrResumeChat();
         });        
+
+        $('#conversation').asScrollable();
     };
 
     // Resume operator chats
@@ -70,9 +72,9 @@
     // Operator wants to disconnect visitor
     // ------------------------------------
     self.disconnect = function () {
-        if (confirm("Are you sure you want to disconnect " + self.currentChat().visitorName() + "?")) {
+        alertify.confirm("Are you sure you want to disconnect " + self.currentChat().visitorName() + "?", function () {
             $.connection.chatHub.server.finishChattingWithVisitor(self.currentChat().sessionId());
-        }        
+        });
     };
 
 
@@ -166,7 +168,7 @@
                 self.conversations.remove(conversationToClose);                
             }
         };
-    };  
+    };
 }
 
 function Message(data, isRead) {
