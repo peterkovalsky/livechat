@@ -88,31 +88,34 @@
                     </div>
                 </div>
 
-                <div class="col-sm-3 chat-list">
+                <!-- Current Visitor Info Card -->
+                <div class="col-sm-3 chat-list" data-bind="with: currentChat">
                     <div class="row">
-                        <div class="col-sm-12" data-bind="with: currentChat">
+                        <div class="col-sm-12">
 
                             <div class="card">                                
                                 <div class="card-block">
-                                    <h4 class="card-title" data-bind="text: visitorNameFormatted"></h4>
-                                    <p class="card-text">
-                                        Some quick example text to build on the card title and make up
-                                        the bulk of the card's content.
-                                    </p>
+                                    <h4 class="card-title" data-bind="text: visitorNameFormatted"></h4>                              
                                 </div>
                                 <ul class="list-group list-group-dividered p-x-20 m-b-0">
-                                    <li class="list-group-item p-x-0" data-bind="text: location"></li>
+                                    <li class="list-group-item p-x-0" data-bind="visible: country() && city(), text: country() + ', ' + city()"></li>
+                                    <li class="list-group-item p-x-0" data-bind="visible: country() && city()">
+                                        <iframe width="100%"
+                                                height="100%"
+                                                frameborder="0" style="border:0"
+                                                data-bind="attr: {src: 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBJKfcdLS3ElMk-gfaFJ67CUKDYfoaSeMY&q=' + country() + ',' + city()}"
+                                                allowfullscreen>
+                                        </iframe>
+                                    </li>
                                     <li class="list-group-item p-x-0" data-bind="text: currentUrl"></li>                               
                                 </ul>
                                 <div class="card-block" data-bind="visible: !isClosed()">
-                                    <a href="#" class="card-link" data-bind="click: $parent.disconnect">Disconnect</a>
-                                    <a href="#" class="card-link">Another link</a>
+                                    <a href="#" class="card-link" data-bind="click: $parent.disconnect">Disconnect</a>                               
                                 </div>
                             </div>                
 
                         </div>
-                    </div>
-
+                    </div>    
                 </div>
             </div>
 
@@ -132,77 +135,7 @@
     </div>
 </div>
 
-
-              <!-- Example Basic -->
-              <div class="example-wrap">
-                <h4 class="example-title">Basic</h4>
-                <div class="example">
-                  <div class="h-300" data-plugin="scrollable">
-                    <div data-role="container">
-                      <div data-role="content">
-                        <p>Aspernatur, disserendi tempora initiis tria sitne vituperata
-                          consentientis timiditatem plus, idque reprehendunt eveniet
-                          curiosi dixerit pararetur recte defendere obruamus excruciant,
-                          fames. Maior, disserendi philosophorum, probantur geometriaque
-                          vetuit militaris, istis pars porrecta, litteras possit
-                          sententia, liquidae conducunt atqui istis cognosci philosophi
-                          ignorare tutiorem, statua consumeret idcirco.</p>
-                        <p>Explicabo. Mererer declinabunt scribentur compositis vita
-                          referuntur dicit, incurrunt efficitur, chorusque quosque
-                          iudico mollitia vidisse detracto. Comprehenderit anteponant
-                          triarius manilium, sic quoque perpessio, labitur temeritas
-                          incorruptis curis duxit sum putet diogenem plura, veniam
-                          insatiabiles delectet studiis scientiam manilium, puto
-                          imbutus dicat optio ferre ex bonum.</p>
-                        <p>Apud manus mortem ostendis, parte facile errata dissensio
-                          imbutus amentur acuti efficiat pauca. Aegritudo consumere
-                          sabinum eaque magnus libidinem, hosti doctrinis consentinis
-                          maximisque apud privamur definitiones quaerenda medeam,
-                          poetarum diuturnum legat electram voluerint quapropter
-                          dicas, pluribus, amatoriis cognomen deserere ipsos movere
-                          vivendo diligenter, eloquentiam concertationesque.</p>
-                        <p>Sequimur seditione vita arbitrarer quoddam tranquillat
-                          me, sumus suscipit, veri secumque iudicio, omnis efficeretur
-                          atque perciperet, interesset, pater miraretur eruditus
-                          paene aperta primis etiamsi multa appellantur ei, disciplinis
-                          oderit subtilius. Petentium redeamus blanditiis, temperantiamque
-                          utilitatibus eisque amicorum fruuntur reliquarum laudatum,
-                          asperiores tantalo. Democriti posidonium urbes.</p>
-                        <p>Omittam voluptatis inopem, medium fatendum loquerer commodis,
-                          sapientes laudem exaudita fugienda expectant diligi t
-                          gravitate genus optinere. Liberavisse cn clamat nasci
-                          periculum ignavi geometriaque, fodere bono faciam reliquerunt
-                          spatio legantur inmortalibus inopem, infimum amicitiae
-                          modi servata, finiri voluntates videtis uti. Nacti anteponant
-                          amplificarique legendi versuum.</p>
-                        <p>Placuit pellat oportet sinat optimi consequi natum, naturalem
-                          monstret nominant delectatum homines inane fruentem accedunt.
-                          Cognosci regione phaedrum contenta. Putavisset fatendum
-                          laetetur inventore malit eventurum ostendis tenetur praesentium
-                          admonere. Iusto nullas odia salutatus dicturum videatur
-                          patientiamque accusamus, inmensae corporum efficerent,
-                          futuris affirmatis expeteremus meis torquato.</p>
-                        <p>Utriusque iucunditas misisti. Necessitatibus repellere
-                          dediti, efficeret vestra dicturam amoris credo, parentes
-                          similique feramus iudicare triarium. Labefactetur videre
-                          disciplinae malit, secutus hominibus quanti pararetur
-                          optabilem est permanentes, dignissimos epicurei petulantes
-                          disciplinam breviter idque magnus oportet dicant studia.
-                          Indignius persequeris accusamus, versatur concessum velit
-                          pariuntur vivatur.</p>
-                        <p>Inveniri partes conscientia earumque rationis intemperantiam
-                          causa choro delectant miseram, numeris temeritate capti
-                          specie expetendum earum. Pulcherrimum susceperant corpora
-                          sapienti insequitur inciderint censet praetermittatur
-                          notionem coercendi. Inducitur salutatus inesse clamat
-                          probaretur mediocriterne relinqueret antiquitate, expetenda
-                          vitium severitatem benivole. Status fugiendis musicis
-                          doleamus ignota desperantes eram.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+     
 <script type="text/javascript">
 
     $(document).ready(function () {

@@ -194,7 +194,8 @@ function Conversation(data) {
     self.sessionId = ko.observable(data.sessionId);
     self.visitorName = ko.observable(data.visitorName);
     self.startTime = ko.observable(data.startTime);
-    self.location = ko.observable(data.location);
+    self.country = ko.observable(data.country);
+    self.city = ko.observable(data.city);
     self.currentUrl = ko.observable(data.currentUrl);
     self.messages = ko.observableArray([]);
     self.isClosed = ko.observable(false);

@@ -44,6 +44,11 @@ input[type="checkbox"].input-validation-error {
 
 .page-aside {
     border-left: 1px solid #e4eaec;
+    width: 230px;
+}
+
+.page-aside-right .page-aside + .page-main {
+    margin-right: 230px;
 }
 
 .page-aside-right .page-aside .page-aside-inner {
@@ -58,7 +63,7 @@ input[type="checkbox"].input-validation-error {
 
 .operator-chats.page .page-main,
 .operator-chats.page .page-main .page-content,
-.operator-chats.page .page-main .page-content .row,
+.operator-chats.page .page-main .page-content .current-chat .row,
 .operator-chats.page .page-main .page-content .current-chat,
 .operator-chats.page .page-main .page-content .current-chat .chat,
 .operator-chats.page .page-main .page-content .current-chat .chat .panel-body,
