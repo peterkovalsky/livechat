@@ -8,6 +8,8 @@ namespace Kookaburra.Domain.ResumeVisitorChat
 
         public string Name { get; set; }
 
+        public string Email { get; set; }
+
         public string CurrentUrl { get; set; }
 
         public DateTime StartTime { get; set; }

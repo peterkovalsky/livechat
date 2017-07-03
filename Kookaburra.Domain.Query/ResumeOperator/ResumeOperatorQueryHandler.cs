@@ -59,6 +59,7 @@ namespace Kookaburra.Domain.Query.ResumeOperator
                                                 {
                                                     SessionId = c.Visitor.SessionId,
                                                     Name = c.Visitor.Name,
+                                                    Email = c.Visitor.Email,
                                                     CurrentUrl = c.Page,
                                                     StartTime = c.TimeStarted,
                                                     Country = c.Visitor.Country,

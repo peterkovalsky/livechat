@@ -72,7 +72,7 @@
     // Operator wants to disconnect visitor
     // ------------------------------------
     self.disconnect = function () {
-        alertify.confirm("Are you sure you want to disconnect " + self.currentChat().visitorName() + "?", function () {
+        alertify.confirm("Are you sure you want to end chat with " + self.currentChat().visitorName() + "?", function () {
             $.connection.chatHub.server.finishChattingWithVisitor(self.currentChat().sessionId());
         });
     };
@@ -193,6 +193,7 @@ function Conversation(data) {
 
     self.sessionId = ko.observable(data.sessionId);
     self.visitorName = ko.observable(data.visitorName);
+    self.email = ko.observable(data.email);
     self.startTime = ko.observable(data.startTime);
     self.country = ko.observable(data.country);
     self.city = ko.observable(data.city);

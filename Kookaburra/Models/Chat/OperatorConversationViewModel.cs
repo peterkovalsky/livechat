@@ -11,6 +11,9 @@ namespace Kookaburra.Models.Chat
         [JsonProperty("visitorName")]
         public string VisitorName { get; set; }
 
+        [JsonProperty("email")]
+        public string Email { get; set; }
+
         [JsonProperty("country")]
         public string Country { get; set; }
 
