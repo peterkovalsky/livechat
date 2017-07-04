@@ -42,7 +42,7 @@
 
         <div class="page-content">
 
-
+            <!-- Chatting Box -->
             <div class="row" style="display: none;" data-bind="visible: conversations().length > 0">
                 <div class="col-sm-9 current-chat" data-bind="with: currentChat">
                     <div class="panel panel-bordered panel-action chat">
@@ -50,8 +50,7 @@
                         <div class="panel-heading text-center">
                             <h1 class="panel-title">
                                 Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
-                                <br />
-                                <small> Started <span data-bind="text: startTimeFormatted"></span></small>
+                                <br />                                
                             </h1>
                         </div>
 
@@ -94,8 +93,9 @@
                         <div class="col-sm-12">
 
                             <div class="card">                                
-                                <div class="card-block">
-                                    <h4 class="card-title" data-bind="text: visitorNameFormatted"></h4>                              
+                                <div class="card-block text-xs-center">
+                                    <h4 class="card-title" data-bind="text: visitorNameFormatted"></h4>
+                                    <p>Started <span data-bind="text: startTimeFormatted"></span></p>
                                 </div>
                                 <ul class="list-group list-group-dividered p-x-20 m-b-0">
                                     <li class="list-group-item p-x-0" data-bind="visible: country() && city(), text: country() + ', ' + city()"></li>
@@ -108,9 +108,13 @@
                                         </iframe>
                                     </li>
                                     <li class="list-group-item p-x-0" data-bind="visible: email()">
+                                        <i class="icon wb-envelope" aria-hidden="true"></i>
                                         <a data-bind="attr: {href: 'mailto:' + email()}, text: email"></a>
                                     </li>
-                                    <li class="list-group-item p-x-0" data-bind="text: currentUrl"></li>                                                                   
+                                    <li class="list-group-item p-x-0">
+                                        <i class="icon fa-external-link-square" aria-hidden="true"></i>                                        
+                                        <a data-bind="attr: {href: currentUrl()}, text: currentUrl" target="_blank"></a>
+                                    </li>                                                                   
                                 </ul>
                                 <div class="card-block" data-bind="visible: !isClosed()">
                                     <button type="button" class="btn btn-block btn-danger" data-bind="click: $parent.disconnect">End Chat</button>                                                              

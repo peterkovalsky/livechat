@@ -254,7 +254,6 @@ li.conversation-item.active {
   color: #a3afb7;
 }
 
-
 @media (max-width: 1199px) {
   #layout-chatroom .page-aside .list-group-item {
     padding: 14px 16px;
