@@ -181,8 +181,10 @@ namespace Kookaburra.Services
                     {
                         SessionId = newSessionId,
                         VisitorName = visitor.Name,
+                        Email = visitor.Email,
                         Country = resumedConversation.VisitorInfo.Country,
-                        City = resumedConversation.VisitorInfo.City,                   
+                        City = resumedConversation.VisitorInfo.City, 
+                        Region = resumedConversation.VisitorInfo.Region,
                         CurrentUrl = visitor.PageUrl,
                         StartTime = DateTime.UtcNow.JsDateTime()
                     };

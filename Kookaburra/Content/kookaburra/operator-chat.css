@@ -254,6 +254,14 @@ li.conversation-item.active {
   color: #a3afb7;
 }
 
+.operator-chats .list-group-dividered .list-group-item:first-child {
+    border-top-color: #e4eaec;
+}
+
+.operator-chats .list-group-dividered .list-group-item {
+    border-bottom-color: #e4eaec;
+}
+
 @media (max-width: 1199px) {
   #layout-chatroom .page-aside .list-group-item {
     padding: 14px 16px;

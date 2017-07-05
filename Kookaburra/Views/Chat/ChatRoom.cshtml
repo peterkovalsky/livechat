@@ -107,15 +107,15 @@
                                         <i class="icon md-mouse" aria-hidden="true"></i>                                        
                                         <a data-bind="attr: {href: currentUrl()}" target="_blank">Visiting Page</a>
                                     </li>  
-                                    <li class="list-group-item p-x-0" data-bind="visible: country() && city()">                                        
+                                    <li class="list-group-item p-x-0" data-bind="visible: city() && region() && country()">
                                         <i class="icon md-pin" aria-hidden="true"></i>  
-                                        <span data-bind="text: country() + ', ' + city()"></span>
+                                        <span data-bind="text: city() + ', ' + region() + ', ' + country()"></span>
                                     </li>
-                                    <li class="list-group-item p-x-0" data-bind="visible: country() && city()">
+                                    <li class="list-group-item p-x-0" data-bind="visible: city() && region() && country()">
                                         <iframe width="100%"
                                                 height="100%"
                                                 frameborder="0" style="border:0"
-                                                data-bind="attr: {src: 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBJKfcdLS3ElMk-gfaFJ67CUKDYfoaSeMY&q=' + city() + ', ' + country()}"
+                                                data-bind="attr: {src: 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBJKfcdLS3ElMk-gfaFJ67CUKDYfoaSeMY&q=' + city() + ',' + region() + ',' + country()}"
                                                 allowfullscreen></iframe>
                                     </li>
                                 </ul>

@@ -64,6 +64,7 @@ namespace Kookaburra.Domain.Query.ResumeOperator
                                                     StartTime = c.TimeStarted,
                                                     Country = c.Visitor.Country,
                                                     City = c.Visitor.City,
+                                                    Region = c.Visitor.Region,
                                                     Latitude = c.Visitor.Latitude,
                                                     Longitude = c.Visitor.Longitude
                                                 },

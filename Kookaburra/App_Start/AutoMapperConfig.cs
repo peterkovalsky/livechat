@@ -34,6 +34,7 @@ namespace Kookaburra.App_Start
                     .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.VisitorInfo.Email))
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.VisitorInfo.Country))
                     .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.VisitorInfo.City))
+                    .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.VisitorInfo.Region))
                     .ForMember(dest => dest.CurrentUrl, opt => opt.MapFrom(src => src.VisitorInfo.CurrentUrl))
                     .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.VisitorInfo.StartTime.JsDateTime()))
                     .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.VisitorInfo.Latitude))

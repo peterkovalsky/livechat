@@ -197,6 +197,7 @@ function Conversation(data) {
     self.startTime = ko.observable(data.startTime);
     self.country = ko.observable(data.country);
     self.city = ko.observable(data.city);
+    self.region = ko.observable(data.region);    
     self.currentUrl = ko.observable(data.currentUrl);
     self.messages = ko.observableArray([]);
     self.isClosed = ko.observable(false);

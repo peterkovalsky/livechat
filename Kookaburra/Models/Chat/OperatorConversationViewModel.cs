@@ -20,6 +20,9 @@ namespace Kookaburra.Models.Chat
         [JsonProperty("city")]
         public string City { get; set; }
 
+        [JsonProperty("region")]
+        public string Region { get; set; }
+
         [JsonProperty("currentUrl")]
         public string CurrentUrl { get; set; }
 

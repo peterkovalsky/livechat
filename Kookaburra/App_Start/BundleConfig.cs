@@ -42,7 +42,7 @@ namespace Kookaburra
 
             bundles.Add(new ScriptBundle("~/bundles/js/chatroom")
                 .Include("~/Scripts/moment-with-locales.min.js")
-                .Include("~/Scripts/chat/chat-room.js")
+                .Include("~/Scripts/kookaburra/chat-room.js")
             //.Include("~/Scripts/perfect-scrollbar.jquery.js")
             );
             
