@@ -63,10 +63,6 @@ input[type="checkbox"].input-validation-error {
 
 .operator-chats.page .page-main,
 .operator-chats.page .page-main .page-content,
-.operator-chats.page .page-main .page-content .current-chat .row,
-.operator-chats.page .page-main .page-content .current-chat,
-.operator-chats.page .page-main .page-content .current-chat .chat,
-.operator-chats.page .page-main .page-content .current-chat .chat .panel-body,
 .operator-chats.page .page-main .page-content .chat-list {
     height: 100%;
 }

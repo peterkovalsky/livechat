@@ -1,4 +1,4 @@
-﻿/* ----------- Chat window ----------------*/
+﻿/* ----------- Chat window ----------------
 .chat .chat-header {
 
 }
@@ -58,8 +58,8 @@ li.conversation-item.active {
 .operator-chats .panel-bordered > .panel-heading > .panel-title {
     text-align: center;
 }
-
-/* Chat room */
+    */
+/* Chat room 
 .current-chat.xe-widget.xe-progress-counter .xe-lower span,
 .current-chat.xe-widget.xe-progress-counter .xe-lower strong {
     font-size: 12px;
@@ -83,8 +83,8 @@ li.conversation-item.active {
 .chat.panel .panel-body {
     padding-top: 0;
 }
-
-/* Messages */
+*/
+/* Messages
 
 .chat .chat-window {
     height: -webkit-calc(100% - 135px);
@@ -216,7 +216,7 @@ li.conversation-item.active {
     text-decoration: none;
     color: #fff;
 }
-
+     */
 
 .page-aside-inner {
   height: 100%;
@@ -262,8 +262,24 @@ li.conversation-item.active {
     border-bottom-color: #e4eaec;
 }
 
+
+
+
+/* new chat */
+.operator-chats .chat,
+.operator-chats .chat-box-row,
+.operator-chats .chat-box-col {
+    height: 100%;
+}
+
+.operator-chats .chat .type-message-box {
+    position: absolute;
+    bottom: 0;
+}
+
+
 @media (max-width: 1199px) {
-  #layout-chatroom .page-aside .list-group-item {
+    #layout-chatroom .page-aside .list-group-item {
     padding: 14px 16px;
     font-size: 12px;
   }

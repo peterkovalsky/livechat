@@ -43,10 +43,76 @@
         <div class="page-content">
 
             <!-- Chatting Box -->
-            <div class="row" style="display: none;" data-bind="visible: conversations().length > 0">
-                <div class="col-sm-9 current-chat" data-bind="with: currentChat">
-                    <div class="panel panel-bordered panel-action chat">
-                        <!-- Add class "collapsed" to minimize the panel -->
+            <div class="row chat-box-row" style="display: none;" data-bind="visible: conversations().length > 0">
+                <div class="col-md-12 col-lg-9 chat-box-col" data-bind="with: currentChat">
+
+                    <div class="panel chat">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <i class="icon wb-chat-text" aria-hidden="true"></i> Chat
+                            </h3>
+                            <div class="panel-actions panel-actions-keep">
+                                <div class="dropdown">
+                                    <a class="panel-action" id="examplePanelDropdown" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="icon wb-more-vertical" aria-hidden="true"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-bullet dropdown-menu-right" aria-labelledby="examplePanelDropdown" role="menu">
+                                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-flag" aria-hidden="true"></i> Action</a>
+                                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-print" aria-hidden="true"></i> Another action</a>
+                                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-heart" aria-hidden="true"></i> Something else here</a>
+                                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-share" aria-hidden="true"></i> Separated link</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body p-b-0">
+                            <div class="chats" id="messages" data-bind="foreach: messages">
+
+                                <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator'}">
+                                    <div class="chat-avatar">
+                                        <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title="June Lane">
+                                            <img src="/images/operator3.png" alt="...">
+                                            <i></i>
+                                        </a>
+                                    </div>
+                                    <div class="chat-body">
+                                        <div class="chat-content">
+                                            <p data-bind="text: text"></p>
+                                            <time class="chat-time" data-bind="text: time"></time>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="chat chat-left">
+                                    <div class="chat-avatar">
+                                        <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="left" title="" data-original-title="Edward Fletcher">
+                                            <img src="../../../global/portraits/5.jpg" alt="...">
+                                            <i></i>
+                                        </a>
+                                    </div>
+                                    <div class="chat-body">
+                                        <div class="chat-content">
+                                            <p>Well, I am just looking around.</p>
+                                            <time class="chat-time" datetime="2017-07-01T11:39">11:39:57 am</time>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                 
+
+                            </div>
+                        </div>
+                        <div class="panel-footer type-message-box">
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Say something">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button">Send</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    @*<div class="panel panel-bordered panel-action chat">                      
                         <div class="panel-heading text-center">
                             <h1 class="panel-title">
                                 Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
@@ -84,11 +150,13 @@
                             </div>
 
                         </div>
-                    </div>
+                 
+                    </div>*@
+
                 </div>
 
                 <!-- Current Visitor Info Card -->
-                <div class="col-sm-3 chat-list" data-bind="with: currentChat">
+                <div class="col-lg-3 chat-list hidden-md-down" data-bind="with: currentChat">
                     <div class="row">
                         <div class="col-sm-12">
 
