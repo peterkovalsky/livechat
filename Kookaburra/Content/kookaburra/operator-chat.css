@@ -272,6 +272,10 @@ li.conversation-item.active {
     height: 100%;
 }
 
+.operator-chats .chat-avatar .avatar {
+    width: 50px;
+}
+
 .operator-chats .chat .type-message-box {
     position: absolute;
     bottom: 0;
