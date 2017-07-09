@@ -46,13 +46,13 @@
             <div class="row chat-box-row" style="display: none;" data-bind="visible: conversations().length > 0">
                 <div class="col-md-12 col-lg-9 chat-box-col" data-bind="with: currentChat">
 
-                    <div class="panel chat">
+                    <div class="panel chat-box-panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">
+                            <h3 class="panel-title text-sm-center">
                                 <i class="icon wb-chat-text" aria-hidden="true"></i>
                                 Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
                             </h3>
-                            <div class="panel-actions panel-actions-keep">
+                            <div class="panel-actions panel-actions-keep hidden-lg-up">
                                 <div class="dropdown">
                                     <a class="panel-action" id="examplePanelDropdown" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="icon wb-more-vertical" aria-hidden="true"></i></a>
                                     <div class="dropdown-menu dropdown-menu-bullet dropdown-menu-right" aria-labelledby="examplePanelDropdown" role="menu">
@@ -63,40 +63,34 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-body p-b-0">
-                            <div class="chats" id="messages" data-bind="foreach: messages">
-
-                                <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator'}">
-                                    <div class="chat-avatar">
-                                        <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title="June Lane">
-                                            <div data-bind="if: sentBy() == 'operator'">
-                                                <img src="/images/operator-default.png">
+                        <div id="messages" class="panel-body">                         
+                                <div>
+                                    <div>
+                                        <div id="conversation" class="chats" data-bind="foreach: messages">
+                                            <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator'}">
+                                                <div class="chat-avatar">
+                                                    <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title="June Lane">
+                                                        <div data-bind="if: sentBy() == 'operator'">
+                                                            <img src="/images/operator-default.png">
+                                                        </div>
+                                                        <div data-bind="if: sentBy() == 'visitor'">
+                                                            <img src="/images/visitor-default.png">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="chat-body">
+                                                    <div class="chat-content">
+                                                        <p data-bind="text: text"></p>
+                                                        <time class="chat-time" data-bind="text: time"></time>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div data-bind="if: sentBy() == 'visitor'">
-                                                <img src="/images/visitor-default.png">
-                                            </div>                                           
-                                        </a>
-                                    </div>
-                                    <div class="chat-body">
-                                        <div class="chat-content">
-                                            <p data-bind="text: text"></p>
-                                            <time class="chat-time" data-bind="text: time"></time>
                                         </div>
                                     </div>
                                 </div>
-
-                                @*<div class="chat chat-left">
-                                        <div class="chat-avatar">
-                                            <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="left" title="" data-original-title="Edward Fletcher">
-                                                <img src="../../../global/portraits/5.jpg" alt="...">
-                                                <i></i>
-                                            </a>
-                                        </div>
-                               
-                                    </div>*@
-                            </div>
+                          
                         </div>
-                        <div class="panel-footer type-message-box">
+                        <div class="panel-footer">
                             <div class="input-group">
                                 <textarea data-bind="textInput: $parent.newText" class="form-control" placeholder="Enter your message..."></textarea>
                             </div>
@@ -213,6 +207,11 @@
         ko.applyBindings(chatRoomViewModel, document.getElementById("layout-chatroom"));
 
         chatRoomViewModel.init();
+
+        $('#msg').asScrollable({
+            contentSelector: '>',
+            containerSelector: '>'
+        });
     });
 
 </script>

@@ -1025,7 +1025,6 @@
     <Content Include="remark\global\vendor\ashoverscroll\jquery-asHoverScroll.js" />
     <Content Include="remark\global\vendor\ashoverscroll\jquery-asHoverScroll.min.js" />
     <Content Include="remark\global\vendor\asscrollable\asScrollable.css" />
-    <Content Include="remark\global\vendor\asscrollable\asScrollable.min.css" />
     <Content Include="remark\global\vendor\asscrollable\jquery-asScrollable.es.js" />
     <Content Include="remark\global\vendor\asscrollable\jquery-asScrollable.js" />
     <Content Include="remark\global\vendor\asscrollable\jquery-asScrollable.min.js" />

@@ -23,9 +23,7 @@
 
         $(window).on('signalr.start', function (e) {
             self.startOrResumeChat();
-        });        
-
-        $('#conversation').asScrollable();
+        });
     };
 
     // Resume operator chats
@@ -38,14 +36,20 @@
                 });
                
                 self.setCurrentChat();
-                //$('#conversation').perfectScrollbar();
+
+                $('#messages').asScrollable({
+                    namespace: 'scrollable',
+                    contentSelector: '>',
+                    containerSelector: '>'
+                });
                 self.scrollDown();
-            }
+            }            
         });
     };
 
     self.scrollDown = function () {
-        $('#conversation').animate({ scrollTop: $('#messages').prop('scrollHeight') }, "slow");
+        //$('#messages').animate({ scrollTop: $('#conversation').prop('scrollHeight') }, "slow");
+        $('#messages').asScrollable('scrollTo', 'vertical', '100%');
     }
 
     // Sends message to visitor on Enter Press
@@ -116,6 +120,12 @@
 
             self.conversations.push(new Conversation(conversationView))
             self.setCurrentChat();
+
+            $('#messages').asScrollable({
+                namespace: 'scrollable',
+                contentSelector: '>',
+                containerSelector: '>'
+            });            
         };
 
         // Message from visitor/operator
@@ -128,7 +138,9 @@
             if (conversation) {
                 conversation.messages.push(new Message(message, conversation.isCurrent()));
 
-                //$('#conversation').perfectScrollbar('update');
+                //$('#messages').perfectScrollbar('update');
+                //$('#messages').asScrollable(); 
+                //$('#messages').asScrollable("update"); 
                 self.scrollDown();
             }
         };
