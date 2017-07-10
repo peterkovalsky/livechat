@@ -6,6 +6,7 @@
 
 <div id="layout-chatroom" class="page operator-chats">
 
+    <!-- Switch chats -->
     <div class="page-aside">
         <div class="page-aside-switch">
             <i class="icon md-chevron-left" aria-hidden="true"></i>
@@ -20,7 +21,7 @@
                         <div class="media">
                             <div class="media-left">
                                 <a class="avatar avatar-online" href="javascript:void(0)">
-                                    <img class="img-fluid" src="~/images/user-1.png"><i></i>
+                                    <img class="img-fluid" src="~/images/visitor-default-white.png"><i></i>
                                 </a>
                             </div>
                             <div class="media-body">
@@ -182,6 +183,7 @@
                 </div>
             </div>
 
+            <!-- No chats message -->
             <div class="row" style="display: none;" data-bind="visible: conversations().length == 0">
                 <div class="col-sm-12">
                     <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
