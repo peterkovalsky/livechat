@@ -64,12 +64,26 @@
     padding-bottom: 0;
 }
 
+.panel-body.scrollable-vertical > .scrollable-bar {
+    margin-top: 0;
+    margin-bottom: 0;    
+    height: 100%;
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+}
+
 .operator-chats .chat-box-panel .chats {
   width: 100%;
 }
 
 .operator-chats .chat-avatar .avatar {
     width: 50px;
+}
+
+.operator-chats .chat-body .chat-content {
+    max-width: 75%;
 }
 
 .operator-chats .chat-box-panel .panel-footer {
