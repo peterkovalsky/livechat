@@ -137,10 +137,7 @@
 
             if (conversation) {
                 conversation.messages.push(new Message(message, conversation.isCurrent()));
-
-                //$('#messages').perfectScrollbar('update');
-                //$('#messages').asScrollable(); 
-                //$('#messages').asScrollable("update"); 
+          
                 self.scrollDown();
             }
         };
@@ -200,6 +197,14 @@ function Message(data, isRead) {
     self.read = ko.observable(isRead);
 }
 
+function MessageGroup(author, sentBy, messages) {
+    var self = this;
+
+    self.author = ko.observable(author);    
+    self.sentBy = ko.observable(sentBy);
+    self.messages = ko.observableArray(messages);
+}
+
 function Conversation(data) {
     var self = this;
 
@@ -250,5 +255,36 @@ function Conversation(data) {
             return unreadMessages.length;
         else
             return 0;
+    });
+
+    self.groupedMessages = ko.computed(function () {
+        var groups = [];
+        var tempMessages = [];
+
+        for (var i = 0; i < self.messages().length; i++) {
+
+            var currentMessage = self.messages()[i];            
+            
+            tempMessages.push(currentMessage);
+
+            // check if it's not the last message
+            if (i+1 < self.messages().length)
+            {
+                var nextMessage = self.messages()[i + 1];
+
+                if (currentMessage.sentBy() != nextMessage.sentBy())
+                {
+                    groups.push(new MessageGroup(currentMessage.author(), currentMessage.sentBy(), tempMessages));
+                    tempMessages = [];
+                }
+            }
+            else
+            {
+                groups.push(new MessageGroup(currentMessage.author(), currentMessage.sentBy(), tempMessages));
+                tempMessages = [];
+            }
+        }
+
+        return groups;
     });
 }

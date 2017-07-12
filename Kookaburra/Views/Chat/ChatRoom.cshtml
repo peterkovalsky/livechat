@@ -67,19 +67,20 @@
                         <div id="messages" class="panel-body">                         
                                 <div>
                                     <div>
-                                        <div id="conversation" class="chats" data-bind="foreach: messages">
+                                        <div id="conversation" class="chats" data-bind="foreach: groupedMessages">
                                             <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator'}">
                                                 <div class="chat-avatar">
                                                     <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title="June Lane">
-                                                        <div data-bind="if: sentBy() == 'operator'">
-                                                            <img src="/images/operator-default.png">
-                                                        </div>
-                                                        <div data-bind="if: sentBy() == 'visitor'">
-                                                            <img src="/images/visitor-default.png">
-                                                        </div>
+                                                        <!-- ko if: sentBy() == 'operator' -->                                                    
+                                                            <img src="/images/operator-default.png">                                                       
+                                                        <!-- /ko -->
+
+                                                        <!-- ko if: sentBy() == 'visitor' -->                                                         
+                                                            <img src="/images/visitor-default.png">                                                   
+                                                        <!-- /ko -->
                                                     </a>
                                                 </div>
-                                                <div class="chat-body">
+                                                <div class="chat-body" data-bind="foreach: messages">
                                                     <div class="chat-content">
                                                         <p data-bind="text: text"></p>
                                                         <time class="chat-time" data-bind="text: time"></time>
