@@ -28,7 +28,8 @@
 
         // In case operator is disconnected from the server
         $.connection.hub.disconnected(function () {
-            alert('You were disconnected from the messaging server. Please refresh the page.');
+            //alert('You were disconnected from the messaging server. Please refresh the page.');
+            console.log('You were disconnected from the messaging server. Please refresh the page.');
         });
 
  

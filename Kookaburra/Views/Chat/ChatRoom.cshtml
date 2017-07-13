@@ -94,7 +94,7 @@
                         </div>
                         <div class="panel-footer">
                             <div class="input-group">
-                                <textarea data-bind="textInput: $parent.newText" class="form-control" placeholder="Enter your message..."></textarea>
+                                <textarea data-bind="textInput: $parent.newText, hasFocus: $parent.enterMessageFocus, disable: isClosed" class="form-control" placeholder="Enter your message..."></textarea>
                             </div>
                         </div>
                     </div>

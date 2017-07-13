@@ -4,6 +4,7 @@
 
     self.operatorName = operatorName;
     self.newText = ko.observable("");
+    self.enterMessageFocus = ko.observable(true);
     self.conversations = ko.observableArray([]);
     self.currentChat = ko.computed(function () {
         var result = $.grep(self.conversations(), function (e) { return e.isCurrent() == true; });
@@ -43,6 +44,7 @@
                     containerSelector: '>'
                 });
                 self.scrollDown();
+                self.enterMessageFocus(true);
             }            
         });
     };
@@ -78,6 +80,14 @@
     self.disconnect = function () {
         alertify.confirm("Are you sure you want to end chat with " + self.currentChat().visitorName() + "?", function () {
             $.connection.chatHub.server.finishChattingWithVisitor(self.currentChat().sessionId());
+
+            self.currentChat().messages.push(new Message({
+                text: 'You ended chat with .' + self.currentChat().visitorName(),
+                sentBy: 'system',
+                time: null
+            }, true));
+
+            self.currentChat().isClosed(true);
         });
     };
 
@@ -92,6 +102,12 @@
         ko.utils.arrayForEach(conversation.messages(), function (item) {
             item.read(true);
         });
+
+        $('#messages').asScrollable({
+            namespace: 'scrollable',
+            contentSelector: '>',
+            containerSelector: '>'
+        }); 
     };
       
     // Set a current chat. If null argument - set first chat as a current one
@@ -167,16 +183,16 @@
         };
 
         // Operator stopped chat
-        $.connection.chatHub.client.visitorDisconnectedByOperator = function (result) {
+        //$.connection.chatHub.client.visitorDisconnectedByOperator = function (result) {
 
-            var conversationToClose = ko.utils.arrayFirst(self.conversations(), function (c) {
-                return c.sessionId() == result.visitorSessionId;
-            });
+        //    var conversationToClose = ko.utils.arrayFirst(self.conversations(), function (c) {
+        //        return c.sessionId() == result.visitorSessionId;
+        //    });
 
-            if (conversationToClose) {
-                self.conversations.remove(conversationToClose);                
-            }
-        };
+        //    if (conversationToClose) {
+        //        self.conversations.remove(conversationToClose);                
+        //    }
+        //};
     };
 }
 
