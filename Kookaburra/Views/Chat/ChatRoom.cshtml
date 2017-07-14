@@ -68,6 +68,7 @@
                                 <div>
                                     <div>
                                         <div id="conversation" class="chats" data-bind="foreach: groupedMessages">
+                                            <!-- ko if: sentBy() == 'operator' || sentBy() == 'visitor' -->
                                             <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator'}">
                                                 <div class="chat-avatar">
                                                     <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title="June Lane">
@@ -87,6 +88,18 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- /ko -->
+
+                                            <!-- ko if: sentBy() == 'system' -->
+                                            <div class="chat">                                                
+                                                <div class="chat-body" data-bind="foreach: messages">
+                                                    <div class="system-content">
+                                                        <p data-bind="text: text"></p>
+                                                        <time class="chat-time" data-bind="text: time"></time>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /ko -->
                                         </div>
                                     </div>
                                 </div>

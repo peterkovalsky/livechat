@@ -86,6 +86,22 @@
     max-width: 75%;
 }
 
+.operator-chats .chat-body .system-content {
+    position: relative;
+    display: block;
+    float: right;
+    padding: 8px 15px;
+    width: 100%;    
+    clear: both;
+    color: #fff;
+    background-color: #62a8ea;
+    border-radius: .286rem;
+}
+
+.operator-chats .chat-body .system-content p {
+    margin-bottom: .5rem;
+}
+
 .operator-chats .chat-box-panel .panel-footer {
     position: absolute;
     bottom: 0;
