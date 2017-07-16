@@ -61,7 +61,10 @@
                 //    sentBy: 'operator',
                 //    time: moment()                                                  
                 //}, true));
-                $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId());
+
+                if (!isNullOrWhitespace(self.newText())) {
+                    $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId());
+                }
 
                 self.newText(''); // clear input area
 
