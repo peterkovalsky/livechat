@@ -64,95 +64,46 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="messages" class="panel-body">                         
-                                <div>
-                                    <div>
-                                        <div id="conversation" class="chats" data-bind="foreach: groupedMessages">
-                                            <!-- ko if: sentBy() == 'operator' || sentBy() == 'visitor' -->
-                                            <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator'}">
-                                                <div class="chat-avatar">
-                                                    <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title="June Lane">
-                                                        <!-- ko if: sentBy() == 'operator' -->                                                    
-                                                            <img src="/images/operator-default.png">                                                       
-                                                        <!-- /ko -->
-
-                                                        <!-- ko if: sentBy() == 'visitor' -->                                                         
-                                                            <img src="/images/visitor-default.png">                                                   
-                                                        <!-- /ko -->
-                                                    </a>
-                                                </div>
-                                                <div class="chat-body" data-bind="foreach: messages">
-                                                    <div class="chat-content">
-                                                        <p data-bind="text: text"></p>
-                                                        <time class="chat-time" data-bind="text: time"></time>
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div id="messages" class="panel-body">
+                            <div id="conversation" class="chats scrollbar-macosx" data-bind="foreach: groupedMessages">
+                                <!-- ko if: sentBy() == 'operator' || sentBy() == 'visitor' -->
+                                <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator'}">
+                                    <div class="chat-avatar">
+                                        <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title="June Lane">
+                                            <!-- ko if: sentBy() == 'operator' -->
+                                            <img src="/images/operator-default.png">
                                             <!-- /ko -->
-
-                                            <!-- ko if: sentBy() == 'system' -->
-                                            <div class="chat">                                                
-                                                <div class="chat-body" data-bind="foreach: messages">
-                                                    <div class="system-content">
-                                                        <p data-bind="text: text"></p>
-                                                        <time class="chat-time" data-bind="text: time"></time>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <!-- ko if: sentBy() == 'visitor' -->
+                                            <img src="/images/visitor-default.png">
                                             <!-- /ko -->
+                                        </a>
+                                    </div>
+                                    <div class="chat-body" data-bind="foreach: messages">
+                                        <div class="chat-content">
+                                            <p data-bind="text: text"></p>
+                                            <time class="chat-time" data-bind="text: time"></time>
                                         </div>
                                     </div>
                                 </div>
-                          
+                                <!-- /ko -->
+                                <!-- ko if: sentBy() == 'system' -->
+                                <div class="chat">
+                                    <div class="chat-body" data-bind="foreach: messages">
+                                        <div class="system-content">
+                                            <p data-bind="text: text"></p>
+                                            <time class="chat-time" data-bind="text: time"></time>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+                            </div>
                         </div>
                         <div class="panel-footer">
                             <div class="input-group">
-                                <textarea data-bind="textInput: $parent.newText, hasFocus: $parent.enterMessageFocus, disable: isClosed" class="form-control" placeholder="Enter your message..."></textarea>
+                                <textarea id="message-input" data-bind="textInput: $parent.newText, hasFocus: $parent.enterMessageFocus, disable: isClosed" class="form-control textarea-scrollbar scrollbar-macosx" placeholder="Enter your message..."></textarea>
                             </div>
                         </div>
                     </div>
-
-                    @*<div class="panel panel-bordered panel-action chat">
-                            <div class="panel-heading text-center">
-                                <h1 class="panel-title">
-                                    Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
-                                    <br />
-                                </h1>
-                            </div>
-
-                            <div class="panel-body">
-
-                                <div id="conversation" class="chat-window" data-plugin="scrollable">
-
-                                    <ul id="messages" class="conversation" data-bind="foreach: messages">
-                                        <li class="row message" data-bind="css: sentBy">
-
-                                            <div class="col-sm-1 author" data-bind="visible: sentBy() == 'operator'">
-                                                <img src="/images/operator3.png" class="img-circle" alt="user-pic">
-                                                <div class="author-name" data-bind="text: author"></div>
-                                            </div>
-                                            <div class="col-sm-11">
-                                                <div class="time" data-bind="text: time"></div>
-                                                <div class="text" data-bind="text: text"></div>
-                                            </div>
-                                            <div class="col-sm-1 author" data-bind="visible: sentBy() == 'visitor'">
-                                                <img src="/images/visitor.png" class="img-circle" alt="user-pic">
-                                                <div class="author-name" data-bind="text: author"></div>
-                                            </div>
-
-                                        </li>
-                                    </ul>
-
-                                </div>
-
-                                <div class="chat-message">
-                                    <textarea data-bind="textInput: $parent.newText" class="form-control" placeholder="Enter your message..."></textarea>
-                                </div>
-
-                            </div>
-
-                        </div>*@
-
                 </div>
 
                 <!-- Current Visitor Info Card -->

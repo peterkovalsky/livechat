@@ -24,7 +24,7 @@
 
         $(window).on('signalr.start', function (e) {
             self.startOrResumeChat();
-        });
+        });    
     };
 
     // Resume operator chats
@@ -36,13 +36,10 @@
                     self.conversations.push(new Conversation(item));
                 });
                
-                self.setCurrentChat();
+                self.setCurrentChat();                
 
-                $('#messages').asScrollable({
-                    namespace: 'scrollable',
-                    contentSelector: '>',
-                    containerSelector: '>'
-                });
+                jQuery('#conversation, #message-input').scrollbar({ scrollStep: 5});
+
                 self.scrollDown();
                 self.enterMessageFocus(true);
             }            
@@ -50,8 +47,7 @@
     };
 
     self.scrollDown = function () {
-        //$('#messages').animate({ scrollTop: $('#conversation').prop('scrollHeight') }, "slow");
-        $('#messages').asScrollable('scrollTo', 'vertical', '100%');
+        $('#conversation').animate({ scrollTop: $('#conversation').prop('scrollHeight') }, "slow");        
     }
 
     // Sends message to visitor on Enter Press
@@ -98,16 +94,13 @@
 
         self.setCurrentChat(conversation);
 
+        jQuery('#conversation, #message-input').scrollbar({ scrollStep: 5 });
+        $('#conversation').scrollTop($('#conversation').prop("scrollHeight"));
+
         // mark all messages as READ in the current conversation
         ko.utils.arrayForEach(conversation.messages(), function (item) {
             item.read(true);
-        });
-
-        $('#messages').asScrollable({
-            namespace: 'scrollable',
-            contentSelector: '>',
-            containerSelector: '>'
-        }); 
+        });        
     };
       
     // Set a current chat. If null argument - set first chat as a current one
@@ -137,11 +130,7 @@
             self.conversations.push(new Conversation(conversationView))
             self.setCurrentChat();
 
-            $('#messages').asScrollable({
-                namespace: 'scrollable',
-                contentSelector: '>',
-                containerSelector: '>'
-            });            
+            jQuery('#conversation, #message-input').scrollbar({ scrollStep: 5 });            
         };
 
         // Message from visitor/operator

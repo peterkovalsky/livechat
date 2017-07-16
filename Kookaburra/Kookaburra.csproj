@@ -299,6 +299,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\jquery.scrollbar.css" />
     <Content Include="Content\kookaburra\chat-history.css" />
     <Content Include="Content\kookaburra\operator-chat.css" />
     <Content Include="Content\kookaburra\offline-messages.css" />
@@ -1829,6 +1830,8 @@
     <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery.scrollbar.js" />
+    <Content Include="Scripts\jquery.scrollbar.min.js" />
     <Content Include="Scripts\kookaburra\chat-room.js" />
     <Content Include="Scripts\chat\chatbox.js" />
     <Content Include="Scripts\kookaburra\chat-history.js" />

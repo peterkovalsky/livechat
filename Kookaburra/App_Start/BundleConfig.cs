@@ -42,8 +42,9 @@ namespace Kookaburra
 
             bundles.Add(new ScriptBundle("~/bundles/js/chatroom")
                 .Include("~/Scripts/moment-with-locales.min.js")
+                .Include("~/Scripts/jquery.scrollbar.js")
                 .Include("~/Scripts/kookaburra/chat-room.js")
-                .Include("~/Scripts/perfect-scrollbar.jquery.js")
+                //.Include("~/Scripts/perfect-scrollbar.jquery.js")
             );
             
             bundles.Add(new ScriptBundle("~/bundles/js/offlinemessage")
@@ -78,7 +79,8 @@ namespace Kookaburra
 
             bundles.Add(new StyleBundle("~/bundles/css/chatroom")
                 .Include("~/remark/global/vendor/alertify/alertify.css")
-                .Include("~/Content/perfect-scrollbar.css")
+                //.Include("~/Content/perfect-scrollbar.css")
+                .Include("~/Content/jquery.scrollbar.css")
                 .Include("~/Content/kookaburra/operator-chat.css")
             );
 
