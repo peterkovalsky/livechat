@@ -81,16 +81,10 @@
     max-width: 75%;
 }
 
-.operator-chats .chat-body .system-content {
-    position: relative;
-    display: block;
-    float: right;
-    padding: 8px 15px;
-    width: 100%;    
-    clear: both;
-    color: #fff;
-    background-color: #62a8ea;
-    border-radius: .286rem;
+.operator-chats .chat.system .chat-body .chat-content {    
+    background-color: #526069;  
+    width: 100%;
+    max-width: 100%;
 }
 
 .operator-chats .chat-body .system-content p {

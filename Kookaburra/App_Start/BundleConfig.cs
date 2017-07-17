@@ -27,17 +27,17 @@ namespace Kookaburra
                 .Include("~/Scripts/knockout-{version}.js")
                 .Include("~/Scripts/chat/widget.js")
                 .Include("~/Scripts/moment-with-locales.min.js")
-                .Include("~/Scripts/perfect-scrollbar.jquery.js")
+                .Include("~/Scripts/jquery.scrollbar.js")
             );
 
             bundles.Add(new ScriptBundle("~/bundles/js/widget/2")
                .Include("~/Scripts/jquery-{version}.js")
                .Include("~/Scripts/jquery.cookie.js")
                .Include("~/Scripts/jquery.signalR-{version}.js")
-               .Include("~/Scripts/knockout-{version}.js")
-               .Include("~/Scripts/kookaburra/widget.js")
+               .Include("~/Scripts/knockout-{version}.js")               
                .Include("~/Scripts/moment-with-locales.min.js")
-               .Include("~/Scripts/perfect-scrollbar.jquery.js")
+               .Include("~/Scripts/jquery.scrollbar.js")
+               .Include("~/Scripts/kookaburra/widget.js")
            );
 
             bundles.Add(new ScriptBundle("~/bundles/js/chatroom")
@@ -73,13 +73,12 @@ namespace Kookaburra
             #region CSS
 
             bundles.Add(new StyleBundle("~/bundles/css/portal")
-                .Include("~/remark/assets/skins/pink.min.css")
+                .Include("~/remark/assets/skins/cyan.min.css")
                 .Include("~/Content/kookaburra/portal.css")
             );
 
             bundles.Add(new StyleBundle("~/bundles/css/chatroom")
-                .Include("~/remark/global/vendor/alertify/alertify.css")
-                //.Include("~/Content/perfect-scrollbar.css")
+                .Include("~/remark/global/vendor/alertify/alertify.css")               
                 .Include("~/Content/jquery.scrollbar.css")
                 .Include("~/Content/kookaburra/operator-chat.css")
             );
@@ -95,7 +94,7 @@ namespace Kookaburra
 
             bundles.Add(new StyleBundle("~/bundles/css/widget")
                 .Include("~/Content/kookaburra/widget.css")
-                .Include("~/Content/perfect-scrollbar.css")
+                .Include("~/Content/jquery.scrollbar.css")
                 .Include("~/remark/global/fonts/linecons/css/linecons.css")
             );
 
