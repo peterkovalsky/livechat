@@ -81,7 +81,7 @@
             $.connection.chatHub.server.finishChattingWithVisitor(self.currentChat().sessionId());
 
             self.currentChat().messages.push(new Message({
-                text: 'You ended chat with .' + self.currentChat().visitorName(),
+                text: 'You ended chat with ' + self.currentChat().visitorName(),
                 sentBy: 'system',
                 time: null
             }, true));

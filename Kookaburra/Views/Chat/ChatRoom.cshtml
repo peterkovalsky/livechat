@@ -90,8 +90,7 @@
                                 <div class="chat system">
                                     <div class="chat-body" data-bind="foreach: messages">
                                         <div class="chat-content">
-                                            <p data-bind="text: text"></p>
-                                            <time class="chat-time" data-bind="text: time"></time>
+                                            <p data-bind="text: text"></p>                                            
                                         </div>
                                     </div>
                                 </div>
@@ -138,8 +137,8 @@
                                                 allowfullscreen></iframe>
                                     </li>
                                 </ul>
-                                <div class="card-block" data-bind="visible: !isClosed()">
-                                    <button type="button" class="btn btn-block btn-danger" data-bind="click: $parent.disconnect">End Chat</button>
+                                <div class="card-block">
+                                    <button type="button" class="btn btn-block btn-danger" data-bind="click: $parent.disconnect, visible: !isClosed()">End Chat</button>
                                 </div>
                             </div>
 
