@@ -1,9 +1,10 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query.ChatHistory;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.ChatHistorySearch
 {
-    public class ChatHistorySearchQuery : IQuery<ChatHistoryQueryResult>
+    public class ChatHistorySearchQuery : IQuery<Task<ChatHistoryQueryResult>>
     {
         public ChatHistorySearchQuery(string query, string operatorIdentity)
         {

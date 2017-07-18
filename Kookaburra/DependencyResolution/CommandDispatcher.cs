@@ -1,5 +1,6 @@
 ﻿using Kookaburra.Domain.Command;
 using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Kookaburra.DependencyResolution
@@ -13,8 +14,7 @@ namespace Kookaburra.DependencyResolution
             _resolver = DependencyResolver.Current;
         }
 
-        public void Execute<TCommand>(TCommand command)
-            where TCommand : ICommand
+        public async Task ExecuteAsync<TCommand>(TCommand command) where TCommand : ICommand
         {
             if (command == null)
             {
@@ -28,7 +28,7 @@ namespace Kookaburra.DependencyResolution
                 throw new CommandHandlerNotFoundException(typeof(TCommand));
             }
 
-            handler.Execute(command);
+            await handler.ExecuteAsync(command);
         }
     }
 }

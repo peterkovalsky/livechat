@@ -1,19 +1,19 @@
-﻿namespace Kookaburra.Domain.Command
+﻿using System.Threading.Tasks;
+
+namespace Kookaburra.Domain.Command
 {
     public interface ICommand
     {
         string OperatorIdentity { get; }
     }
 
-    public interface ICommandHandler<in TCommand>
-        where TCommand : ICommand
+    public interface ICommandHandler<in TCommand> where TCommand : ICommand
     {
-        void Execute(TCommand command);
+        Task ExecuteAsync(TCommand command);
     }
 
     public interface ICommandDispatcher
     {
-        void Execute<TCommand>(TCommand command)
-            where TCommand : ICommand;
+        Task ExecuteAsync<TCommand>(TCommand command) where TCommand : ICommand;
     }
 }

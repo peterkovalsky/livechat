@@ -1,11 +1,13 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Repository;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.Transcript
 {
-    public class TranscriptQueryHandler : IQueryHandler<TranscriptQuery, TranscriptQueryResult>
+    public class TranscriptQueryHandler : IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>>
     {
         private readonly KookaburraContext _context;
 
@@ -14,11 +16,11 @@ namespace Kookaburra.Domain.Query.Transcript
             _context = context;
         }
 
-        public TranscriptQueryResult Execute(TranscriptQuery query)
+        public async Task<TranscriptQueryResult> ExecuteAsync(TranscriptQuery query)
         {
-            var account = _context.Accounts.Where(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity)).SingleOrDefault();
+            var account = await _context.Accounts.Where(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity)).SingleOrDefaultAsync();
 
-            var result = _context.Conversations
+            var result = await _context.Conversations
                 .Where(c => c.Id == query.ConversationId && c.Operator.AccountId == account.Id && c.TimeFinished != null)
                 .Select(c =>
                 new
@@ -45,7 +47,7 @@ namespace Kookaburra.Domain.Query.Transcript
                             SentBy = m.SentBy.ToLower()
                         }).ToList()
                     }
-                }).SingleOrDefault();
+                }).SingleOrDefaultAsync();
 
             if (result == null) return null;
 

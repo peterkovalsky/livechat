@@ -1,6 +1,8 @@
-﻿namespace Kookaburra.Domain.Query.CurrentSession
+﻿using System.Threading.Tasks;
+
+namespace Kookaburra.Domain.Query.CurrentSession
 {
-    public class CurrentSessionQuery : IQuery<CurrentSessionQueryResult>
+    public class CurrentSessionQuery : IQuery<Task<CurrentSessionQueryResult>>
     {
         public CurrentSessionQuery(string operatorIdentity)
         {

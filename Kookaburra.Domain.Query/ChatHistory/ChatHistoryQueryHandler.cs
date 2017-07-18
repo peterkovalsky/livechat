@@ -1,11 +1,13 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Repository;
 using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.ChatHistory
 {
-    public class ChatHistoryQueryHandler : IQueryHandler<ChatHistoryQuery, ChatHistoryQueryResult>
+    public class ChatHistoryQueryHandler : IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>>
     {
         private readonly KookaburraContext _context;
 
@@ -14,9 +16,9 @@ namespace Kookaburra.Domain.Query.ChatHistory
             _context = context;
         }
 
-        public ChatHistoryQueryResult Execute(ChatHistoryQuery query)
+        public async Task<ChatHistoryQueryResult> ExecuteAsync(ChatHistoryQuery query)
         {
-            var account = _context.Accounts.SingleOrDefault(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity));
+            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity));
 
             var conversations = _context.Conversations.Where(c => 
                                 c.Operator.AccountId == account.Id
@@ -57,7 +59,7 @@ namespace Kookaburra.Domain.Query.ChatHistory
             {
             }
 
-            var total = conversations.Count();
+            var total = await conversations.CountAsync();
 
             if (query.Pagination != null)
             {
@@ -68,7 +70,7 @@ namespace Kookaburra.Domain.Query.ChatHistory
             {
                 TotalConversations = total,
 
-                Conversations = conversations.Select(c => new ConversationItemQueryResult
+                Conversations = await conversations.Select(c => new ConversationItemQueryResult
                 {
                     Id = c.Id,
                     VisitorName = c.Visitor.Name,
@@ -76,7 +78,7 @@ namespace Kookaburra.Domain.Query.ChatHistory
                     Text = c.Messages.FirstOrDefault(m => m.SentBy == UserType.Visitor.ToString()).Text,
                     StartTime = c.TimeStarted,
                     TotalMessages = c.Messages.Count()
-                }).ToList()
+                }).ToListAsync()
             };
         }
     }

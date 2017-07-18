@@ -1,9 +1,10 @@
-﻿using Kookaburra.Domain.Command.Model;
-using Kookaburra.Repository;
+﻿using Kookaburra.Repository;
 using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Kookaburra.Domain.Command.Handler
+namespace Kookaburra.Domain.Command.StopConversation
 {
     public class StopConversationCommandHandler : ICommandHandler<StopConversationCommand>
     {
@@ -17,10 +18,10 @@ namespace Kookaburra.Domain.Command.Handler
         }
 
 
-        public void Execute(StopConversationCommand command)
+        public async Task ExecuteAsync(StopConversationCommand command)
         {
             var visitorSession = _chatSession.GetVisitorByVisitorSessionId(command.VisitorSessionId);
-            var conversation = _context.Conversations.Where(c => c.Id == visitorSession.ConversationId).SingleOrDefault();
+            var conversation = await _context.Conversations.Where(c => c.Id == visitorSession.ConversationId).SingleOrDefaultAsync();
 
             if (conversation == null)
             {
@@ -29,7 +30,7 @@ namespace Kookaburra.Domain.Command.Handler
 
             conversation.TimeFinished = DateTime.UtcNow;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             _chatSession.RemoveVisitor(command.VisitorSessionId);
         }

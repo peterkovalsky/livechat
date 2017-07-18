@@ -19,15 +19,19 @@ namespace Kookaburra.DependencyResolution
 {
     using Domain;
     using Domain.Command;
-    using Domain.Command.Handler;
-    using Domain.Command.Model;
     using Domain.Integration;
     using Domain.Query;
     using Integration.freegeoip;
     using Kookaburra.Domain.AvailableOperator;
+    using Kookaburra.Domain.Command.ConnectOperator;
+    using Kookaburra.Domain.Command.DeleteMessage;
+    using Kookaburra.Domain.Command.LeaveMessage;
+    using Kookaburra.Domain.Command.MarkMessageAsRead;
     using Kookaburra.Domain.Command.OperatorMessaged;
     using Kookaburra.Domain.Command.SignUp;
     using Kookaburra.Domain.Command.StartVisitorChat;
+    using Kookaburra.Domain.Command.StopConversation;
+    using Kookaburra.Domain.Command.VisitorMessaged;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;
     using Kookaburra.Domain.Query.CurrentChats;
@@ -42,6 +46,7 @@ namespace Kookaburra.DependencyResolution
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
+    using System.Threading.Tasks;
 
     public class DefaultRegistry : Registry {       
 
@@ -73,16 +78,16 @@ namespace Kookaburra.DependencyResolution
             For<ICommandHandler<SignUpCommand>>().Add<SignUpCommandHandler>();
 
             // Queries
-            For<IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>>().Add<AvailableOperatorQueryHandler>();       
-            For<IQueryHandler<ResumeVisitorChatQuery, ResumeVisitorChatQueryResult>>().Add<ResumeVisitorChatQueryHandler>();
-            For<IQueryHandler<CurrentSessionQuery, CurrentSessionQueryResult>>().Add<CurrentSessionQueryHandler>();
-            For<IQueryHandler<CurrentChatsQuery, CurrentChatsQueryResult>>().Add<CurrentChatsQueryHandler>();
-            For<IQueryHandler<ResumeOperatorQuery, ResumeOperatorQueryResult>>().Add<ResumeOperatorQueryHandler>();
-            For<IQueryHandler<OfflineMessagesQuery, OfflineMessagesQueryResult>>().Add<OfflineMessagesQueryHandler>();
-            For<IQueryHandler<SearchOfflineMessagesQuery, OfflineMessagesQueryResult>>().Add<SearchOfflineMessagesQueryHandler>();
-            For<IQueryHandler<TranscriptQuery, TranscriptQueryResult>>().Add<TranscriptQueryHandler>();
-            For<IQueryHandler<ChatHistorySearchQuery, ChatHistoryQueryResult>>().Add<ChatHistorySearchQueryHandler>();            
-            For<IQueryHandler<ChatHistoryQuery, ChatHistoryQueryResult>>().Add<ChatHistoryQueryHandler>();
+            For<IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>>().Add<AvailableOperatorQueryHandler>();       
+            For<IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>>>().Add<ResumeVisitorChatQueryHandler>();
+            For<IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>>>().Add<CurrentSessionQueryHandler>();
+            For<IQueryHandler<CurrentChatsQuery, Task<CurrentChatsQueryResult>>>().Add<CurrentChatsQueryHandler>();
+            For<IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>>>().Add<ResumeOperatorQueryHandler>();
+            For<IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>>>().Add<OfflineMessagesQueryHandler>();
+            For<IQueryHandler<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>>>().Add<SearchOfflineMessagesQueryHandler>();
+            For<IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>>>().Add<TranscriptQueryHandler>();
+            For<IQueryHandler<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistorySearchQueryHandler>();            
+            For<IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistoryQueryHandler>();
             
 
             ForSingletonOf<ChatSession>();

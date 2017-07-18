@@ -1,11 +1,12 @@
-﻿using Kookaburra.Domain.Command.Model;
-using Kookaburra.Domain.Integration;
+﻿using Kookaburra.Domain.Integration;
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
 using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Kookaburra.Domain.Command.Handler
+namespace Kookaburra.Domain.Command.LeaveMessage
 {
     public class LeaveMessageCommandHandler : ICommandHandler<LeaveMessageCommand>
     {
@@ -20,9 +21,9 @@ namespace Kookaburra.Domain.Command.Handler
             _geoLocator = geoLocator;
         }
 
-        public void Execute(LeaveMessageCommand command)
+        public async Task ExecuteAsync(LeaveMessageCommand command)
         {
-            var account = _context.Accounts.Where(a => a.Identifier == command.AccountKey).SingleOrDefault();
+            var account = await _context.Accounts.Where(a => a.Identifier == command.AccountKey).SingleOrDefaultAsync();
 
             if (account == null)
             {
@@ -45,7 +46,7 @@ namespace Kookaburra.Domain.Command.Handler
 
             try
             {
-                var location = _geoLocator.GetLocation(command.VisitorIP);
+                var location = await _geoLocator.GetLocationAsync(command.VisitorIP);
 
                 if (location != null)
                 {
@@ -63,7 +64,7 @@ namespace Kookaburra.Domain.Command.Handler
             }          
 
             _context.OfflineMessages.Add(offlineMessage);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

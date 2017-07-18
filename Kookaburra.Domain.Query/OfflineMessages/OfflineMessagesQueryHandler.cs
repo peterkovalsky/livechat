@@ -1,11 +1,13 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Repository;
 using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.OfflineMessages
 {
-    public class OfflineMessagesQueryHandler : IQueryHandler<OfflineMessagesQuery, OfflineMessagesQueryResult>
+    public class OfflineMessagesQueryHandler : IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>>
     {
         private readonly KookaburraContext _context;
 
@@ -14,7 +16,7 @@ namespace Kookaburra.Domain.Query.OfflineMessages
             _context = context;
         }
 
-        public OfflineMessagesQueryResult Execute(OfflineMessagesQuery query)
+        public async Task<OfflineMessagesQueryResult> ExecuteAsync(OfflineMessagesQuery query)
         {
             var offlineMessages = _context.OfflineMessages.Where(om => om.Account.Operators.Any(o => o.Identity == query.OperatorIdentity));       
 
@@ -52,7 +54,7 @@ namespace Kookaburra.Domain.Query.OfflineMessages
             {                
             }
 
-            var total = offlineMessages.Count();
+            var total = await offlineMessages.CountAsync();
 
             if (query.Pagination != null)
             {
@@ -63,7 +65,7 @@ namespace Kookaburra.Domain.Query.OfflineMessages
             {
                 TotalMessages = total,
 
-                OfflineMessages = offlineMessages.Select(om => new OfflineMessageResult
+                OfflineMessages = await offlineMessages.Select(om => new OfflineMessageResult
                 {
                     Id = om.Id,
                     VisitorName = om.Visitor.Name,
@@ -74,7 +76,7 @@ namespace Kookaburra.Domain.Query.OfflineMessages
                     Country = om.Visitor.Country,
                     CountryCode = om.Visitor.CountryCode,
                     City = om.Visitor.City
-                }).ToList()
+                }).ToListAsync()
             };
         }
     }

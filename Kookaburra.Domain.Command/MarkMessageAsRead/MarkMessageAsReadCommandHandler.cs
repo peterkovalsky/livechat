@@ -1,8 +1,9 @@
-﻿using Kookaburra.Domain.Command.Model;
-using Kookaburra.Repository;
+﻿using Kookaburra.Repository;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Kookaburra.Domain.Command.Handler
+namespace Kookaburra.Domain.Command.MarkMessageAsRead
 {
     public class MarkMessageAsReadCommandHandler : ICommandHandler<MarkMessageAsReadCommand>
     {
@@ -13,17 +14,17 @@ namespace Kookaburra.Domain.Command.Handler
             _context = context;         
         }
 
-        public void Execute(MarkMessageAsReadCommand command)
+        public async Task ExecuteAsync(MarkMessageAsReadCommand command)
         {
-            var message = _context.OfflineMessages.Where(om => 
+            var message = await _context.OfflineMessages.Where(om => 
                                                          om.Id == command.MessageId 
                                                       && om.Account.Operators.Any(o => o.Identity == command.OperatorIdentity))
-                                                  .SingleOrDefault();
+                                                  .SingleOrDefaultAsync();
 
             if (message != null)
             {
                 message.IsRead = true;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

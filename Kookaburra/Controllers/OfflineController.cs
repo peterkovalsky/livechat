@@ -5,6 +5,7 @@ using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.OfflineMessages;
 using Kookaburra.Models.Offline;
 using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Kookaburra.Controllers
@@ -23,13 +24,13 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet, Route("messages")]
-        public ActionResult Messages()
+        public async Task<ActionResult> Messages()
         {
             var query = new OfflineMessagesQuery(TimeFilterType.All, User.Identity.GetUserId())
             {
                 Pagination = new Pagination(PageSize, 1)
             };
-            var result = _queryDispatcher.Execute<OfflineMessagesQuery, OfflineMessagesQueryResult>(query);
+            var result = await _queryDispatcher.ExecuteAsync<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>>(query);
 
             var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
             viewModel.PageSize = PageSize;

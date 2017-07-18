@@ -3,10 +3,11 @@ using Kookaburra.Domain.Query;
 using Kookaburra.Repository;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.ResumeVisitorChat
 {
-    public class ResumeVisitorChatQueryHandler : IQueryHandler<ResumeVisitorChatQuery, ResumeVisitorChatQueryResult>
+    public class ResumeVisitorChatQueryHandler : IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>>
     {
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;        
@@ -18,7 +19,7 @@ namespace Kookaburra.Domain.ResumeVisitorChat
         }
 
 
-        public ResumeVisitorChatQueryResult Execute(ResumeVisitorChatQuery query)
+        public async Task<ResumeVisitorChatQueryResult> ExecuteAsync(ResumeVisitorChatQuery query)
         {
             if (string.IsNullOrWhiteSpace(query.VisitorSessionId))
             {
@@ -29,12 +30,12 @@ namespace Kookaburra.Domain.ResumeVisitorChat
             var visitorSession = _chatSession.GetVisitorByVisitorSessionId(query.VisitorSessionId);
             if (visitorSession != null)
             {
-                var conversation = _context.Conversations
+                var conversation = await _context.Conversations
                     .Include(i => i.Messages)
                     .Include(i => i.Visitor)
                     .Include(i => i.Operator)
                     .Where(c => c.Visitor.SessionId == query.VisitorSessionId && c.TimeFinished == null)
-                    .SingleOrDefault();
+                    .SingleOrDefaultAsync();
 
                 // check if operator still there            
                 if (conversation != null)

@@ -1,7 +1,7 @@
 ﻿using Kookaburra.Common;
 using Kookaburra.Domain.AvailableOperator;
 using Kookaburra.Domain.Command;
-using Kookaburra.Domain.Command.Model;
+using Kookaburra.Domain.Command.LeaveMessage;
 using Kookaburra.Domain.Command.StartVisitorChat;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.CurrentSession;
@@ -10,6 +10,7 @@ using Kookaburra.ViewModels.Widget;
 using Microsoft.AspNet.Identity;
 using SimpleHoneypot.ActionFilters;
 using System;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -89,7 +90,7 @@ namespace Kookaburra.Controllers
         [Honeypot]
         [Route("widget/introduction")]
         [ValidateAntiForgeryToken]      
-        public ActionResult Introduction(IntroductionViewModel model)
+        public async Task<ActionResult> Introduction(IntroductionViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
        
@@ -106,7 +107,7 @@ namespace Kookaburra.Controllers
                     VisitorIP = WebHelper.GetIPAddress(),
                     VisitorEmail = model.Email
                 };
-                _commandDispatcher.Execute(command);
+                await _commandDispatcher.ExecuteAsync(command);
 
                 // add sessionId cookie
                 Response.Cookies.Set(new HttpCookie(COOKIE_SESSION_ID, sessionId));
@@ -149,7 +150,7 @@ namespace Kookaburra.Controllers
         [Honeypot]
         [ValidateAntiForgeryToken]
         [Route("widget/offline")]
-        public ActionResult Offline(OfflineViewModel model)
+        public async Task<ActionResult> Offline(OfflineViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
@@ -157,7 +158,7 @@ namespace Kookaburra.Controllers
             {
                 VisitorIP = WebHelper.GetIPAddress()
             };
-            _commandDispatcher.Execute(command);
+            await _commandDispatcher.ExecuteAsync(command);
 
             return RedirectToAction(nameof(WidgetController.ThankYou));
         }

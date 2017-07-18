@@ -1,8 +1,9 @@
 ﻿using Kookaburra.Domain.Query;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.AvailableOperator
 {
-    public class AvailableOperatorQueryHandler : IQueryHandler<AvailableOperatorQuery, AvailableOperatorQueryResult>
+    public class AvailableOperatorQueryHandler : IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>
     {      
         private readonly ChatSession _chatSession;
 
@@ -11,7 +12,7 @@ namespace Kookaburra.Domain.AvailableOperator
             _chatSession = chatSession;
         }
 
-        public AvailableOperatorQueryResult Execute(AvailableOperatorQuery query)
+        public async Task<AvailableOperatorQueryResult> ExecuteAsync(AvailableOperatorQuery query)
         {
             var operatorSession = _chatSession.GetFirstAvailableOperator(query.AccountKey);
 

@@ -1,8 +1,9 @@
 ﻿using Kookaburra.Domain.Query;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.ResumeVisitorChat
 {
-    public class ResumeVisitorChatQuery : IQuery<ResumeVisitorChatQueryResult>
+    public class ResumeVisitorChatQuery : IQuery<Task<ResumeVisitorChatQueryResult>>
     {
         public ResumeVisitorChatQuery(string visitorSessionId, string visitorConnectionId)
         {

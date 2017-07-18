@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kookaburra.Domain.Command.Model
+namespace Kookaburra.Domain.Command.VisitorMessaged
 {
     public class VisitorMessagedCommand : ICommand
     {

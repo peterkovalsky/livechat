@@ -1,10 +1,12 @@
 ﻿using Kookaburra.Domain.Query.OfflineMessages;
 using Kookaburra.Repository;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.SearchOfflineMessages
 {
-    public class SearchOfflineMessagesQueryHandler : IQueryHandler<SearchOfflineMessagesQuery, OfflineMessagesQueryResult>
+    public class SearchOfflineMessagesQueryHandler : IQueryHandler<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>>
     {
         private readonly KookaburraContext _context;
 
@@ -13,7 +15,7 @@ namespace Kookaburra.Domain.Query.SearchOfflineMessages
             _context = context;
         }
 
-        public OfflineMessagesQueryResult Execute(SearchOfflineMessagesQuery query)
+        public async Task<OfflineMessagesQueryResult> ExecuteAsync(SearchOfflineMessagesQuery query)
         {
             var offlineMessages = _context.OfflineMessages.Where(om =>
                                         om.Account.Operators.Any(o => o.Identity == query.OperatorIdentity) &&
@@ -21,7 +23,7 @@ namespace Kookaburra.Domain.Query.SearchOfflineMessages
                                         om.Visitor.Name.Contains(query.Query) ||
                                         om.Visitor.Email.Contains(query.Query)));
 
-            var total = offlineMessages.Count();
+            var total = await offlineMessages.CountAsync();
 
             if (query.Pagination != null)
             {
@@ -32,7 +34,7 @@ namespace Kookaburra.Domain.Query.SearchOfflineMessages
             {
                 TotalMessages = total,
 
-                OfflineMessages = offlineMessages.Select(om => new OfflineMessageResult
+                OfflineMessages = await offlineMessages.Select(om => new OfflineMessageResult
                 {
                     Id = om.Id,
                     VisitorName = om.Visitor.Name,
@@ -43,7 +45,7 @@ namespace Kookaburra.Domain.Query.SearchOfflineMessages
                     Country = om.Visitor.Country,
                     CountryCode = om.Visitor.CountryCode,
                     City = om.Visitor.City
-                }).ToList()
+                }).ToListAsync()
             };
         }
     }

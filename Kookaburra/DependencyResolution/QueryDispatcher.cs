@@ -13,8 +13,7 @@ namespace Kookaburra.DependencyResolution
             _resolver = DependencyResolver.Current;
         }
 
-        public TResult Execute<TQuery, TResult>(TQuery query)
-            where TQuery : IQuery<TResult>
+        public TResult ExecuteAsync<TQuery, TResult>(TQuery query) where TQuery : IQuery<TResult>
         {
             if (query == null)
             {
@@ -28,7 +27,7 @@ namespace Kookaburra.DependencyResolution
                 throw new QueryHandlerNotFoundException(typeof(TQuery));
             }
 
-            return handler.Execute(query);
+            return handler.ExecuteAsync(query);
         }
     }
 }

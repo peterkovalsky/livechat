@@ -1,9 +1,9 @@
-﻿using Kookaburra.Domain.Command.Model;
-using Kookaburra.Domain.Common;
+﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
+using System.Threading.Tasks;
 
-namespace Kookaburra.Domain.Command.Handler
+namespace Kookaburra.Domain.Command.VisitorMessaged
 {
     public class VisitorMessagedCommandHandler : ICommandHandler<VisitorMessagedCommand>
     {
@@ -16,7 +16,7 @@ namespace Kookaburra.Domain.Command.Handler
             _chatSession = chatSession;
         }
 
-        public void Execute(VisitorMessagedCommand command)
+        public async Task ExecuteAsync(VisitorMessagedCommand command)
         {
             var visitorSession = _chatSession.GetVisitorByVisitorConnId(command.VisitorConnectionId);
             var message = new Message
@@ -28,7 +28,7 @@ namespace Kookaburra.Domain.Command.Handler
             };
 
             _context.Messages.Add(message);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Kookaburra.Domain.Command;
-using Kookaburra.Domain.Command.Model;
+using Kookaburra.Domain.Command.DeleteMessage;
+using Kookaburra.Domain.Command.MarkMessageAsRead;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.OfflineMessages;
@@ -8,6 +9,7 @@ using Kookaburra.Domain.Query.SearchOfflineMessages;
 using Kookaburra.Models.Offline;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Kookaburra.Controllers
@@ -59,17 +61,17 @@ namespace Kookaburra.Controllers
         }
 
         [HttpPatch, Route("api/messages/mark-read/{id}")]
-        public void MarkMessageAsRead(int id)
+        public async Task MarkMessageAsRead(int id)
         {            
             var command = new MarkMessageAsReadCommand(id, RequestContext.Principal.Identity.GetUserId());
-            _commandDispatcher.Execute(command);
+            await _commandDispatcher.ExecuteAsync(command);
         }
 
         [HttpDelete, Route("api/messages/{id}")]
-        public void DeleteMessage(int id)
+        public async Task DeleteMessage(int id)
         {
             var command = new DeleteMessageCommand(id, RequestContext.Principal.Identity.GetUserId());
-            _commandDispatcher.Execute(command);
+            await _commandDispatcher.ExecuteAsync(command);
         }
     }
 }

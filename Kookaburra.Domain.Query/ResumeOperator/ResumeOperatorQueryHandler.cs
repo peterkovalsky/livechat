@@ -1,11 +1,13 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Repository;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.ResumeOperator
 {
-    public class ResumeOperatorQueryHandler : IQueryHandler<ResumeOperatorQuery, ResumeOperatorQueryResult>
+    public class ResumeOperatorQueryHandler : IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>>
     {
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;
@@ -17,7 +19,7 @@ namespace Kookaburra.Domain.Query.ResumeOperator
         }
 
 
-        public ResumeOperatorQueryResult Execute(ResumeOperatorQuery query)
+        public async Task<ResumeOperatorQueryResult> ExecuteAsync(ResumeOperatorQuery query)
         {
             var operatorSession = _chatSession.GetOperatorByIdentity(query.OperatorIdentity);
 
@@ -50,7 +52,7 @@ namespace Kookaburra.Domain.Query.ResumeOperator
 
                 var liveConversations = operatorSession.Visitors.Select(v => v.ConversationId).ToList();
 
-                var conversations = _context.Conversations
+                var conversations = await _context.Conversations
                                             .Where(c => c.Operator.Identity == query.OperatorIdentity
                                                     && liveConversations.Contains(c.Id))
                                             .Select(c => new ConversationResult
@@ -75,7 +77,7 @@ namespace Kookaburra.Domain.Query.ResumeOperator
                                                     SentOn = m.DateSent,
                                                     SentBy = m.SentBy.ToLower()
                                                 }).ToList()
-                                            }).ToList();
+                                            }).ToListAsync();
 
                 return new ResumeOperatorQueryResult { Conversations = conversations };
             }

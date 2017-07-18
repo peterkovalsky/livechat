@@ -1,8 +1,9 @@
 ﻿using Kookaburra.Domain.Common;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.OfflineMessages
 {
-    public class OfflineMessagesQuery : IQuery<OfflineMessagesQueryResult>
+    public class OfflineMessagesQuery : IQuery<Task<OfflineMessagesQueryResult>>
     {
         public OfflineMessagesQuery(TimeFilterType timeFilter, string operatorIdentity)
         {

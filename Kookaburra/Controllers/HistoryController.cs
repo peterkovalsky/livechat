@@ -6,6 +6,7 @@ using Kookaburra.Domain.Query.ChatHistory;
 using Kookaburra.Domain.Query.Transcript;
 using Kookaburra.Models.History;
 using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 
@@ -26,13 +27,13 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet, Route("history")]
-        public ActionResult Chats()
+        public async Task<ActionResult> Chats()
         {
             var query = new ChatHistoryQuery(TimeFilterType.All, User.Identity.GetUserId())
             {
                 Pagination = new Pagination(PageSize, 1)
             };
-            var result = _queryDispatcher.Execute<ChatHistoryQuery, ChatHistoryQueryResult>(query);
+            var result = await _queryDispatcher.ExecuteAsync<ChatHistoryQuery, Task<ChatHistoryQueryResult>>(query);
 
             var viewModel = Mapper.Map<ChatHistoryViewModel>(result);            
 
@@ -40,10 +41,10 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet, Route("transcript/{id}")]       
-        public ActionResult Transcript(long id)
+        public async Task<ActionResult> Transcript(long id)
         {
             var query = new TranscriptQuery(id, User.Identity.GetUserId());
-            var result = _queryDispatcher.Execute<TranscriptQuery, TranscriptQueryResult>(query);
+            var result = await _queryDispatcher.ExecuteAsync<TranscriptQuery, Task<TranscriptQueryResult>>(query);
 
             if (result == null)
             {

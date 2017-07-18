@@ -7,6 +7,7 @@ using Kookaburra.Domain.Query.ChatHistorySearch;
 using Kookaburra.Models.History;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Kookaburra.Controllers
@@ -27,7 +28,7 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet, Route("api/history/{filter}/{page}")]
-        public ChatHistoryViewModel LoadMore(string filter, int page)
+        public async Task<ChatHistoryViewModel> LoadMore(string filter, int page)
         {
             TimeFilterType timeFilter = TimeFilterType.All;
             Enum.TryParse(filter, out timeFilter);
@@ -36,7 +37,7 @@ namespace Kookaburra.Controllers
             {
                 Pagination = new Pagination(PageSize, page)
             };
-            var result = _queryDispatcher.Execute<ChatHistoryQuery, ChatHistoryQueryResult>(query);
+            var result = await _queryDispatcher.ExecuteAsync<ChatHistoryQuery, Task<ChatHistoryQueryResult>>(query);
 
             var viewModel = Mapper.Map<ChatHistoryViewModel>(result);
 
@@ -44,13 +45,13 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet, Route("api/history/search/{queryTerm}/{page}")]
-        public ChatHistoryViewModel Search(string queryTerm, int page)
+        public async Task<ChatHistoryViewModel> Search(string queryTerm, int page)
         {
             var query = new ChatHistorySearchQuery(queryTerm, User.Identity.GetUserId())
             {
                 Pagination = new Pagination(PageSize, page)
             };
-            var result = _queryDispatcher.Execute<ChatHistorySearchQuery, ChatHistoryQueryResult>(query);
+            var result = await _queryDispatcher.ExecuteAsync<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>>(query);
 
             var viewModel = Mapper.Map<ChatHistoryViewModel>(result);
 

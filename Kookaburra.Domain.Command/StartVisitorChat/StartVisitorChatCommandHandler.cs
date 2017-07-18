@@ -3,7 +3,9 @@ using Kookaburra.Domain.Integration;
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
 using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Command.StartVisitorChat
 {
@@ -23,10 +25,10 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
         }
 
 
-        public void Execute(StartVisitorChatCommand command)
+        public async Task ExecuteAsync(StartVisitorChatCommand command)
         {
             // record new/returning visitor
-            var returningVisitor = CheckForVisitor(command.VisitorName, command.VisitorEmail, command.SessionId);
+            var returningVisitor = await CheckForVisitorAsync(command.VisitorName, command.VisitorEmail, command.SessionId);
 
             // new visitor
             if (returningVisitor == null)
@@ -41,7 +43,7 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
 
                 try
                 {
-                    var location = _geoLocator.GetLocation(command.VisitorIP);
+                    var location = await _geoLocator.GetLocationAsync(command.VisitorIP);
 
                     if (location != null)
                     {
@@ -72,14 +74,14 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
             };
             _context.Conversations.Add(conversation);      
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
            
             // add visitor to session
             _chatSession.AddVisitor(conversation.Id, command.OperatorId, null, returningVisitor.Id, returningVisitor.Name, returningVisitor.SessionId);
 
             // add greeting if needed           
-            _operatorMessagedHandler.Execute(new OperatorMessagedCommand
+            await _operatorMessagedHandler.ExecuteAsync(new OperatorMessagedCommand
                 (
                     command.SessionId,
                     DefaultSettings.CHAT_GREETING,
@@ -88,11 +90,11 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
                 ));
         }
 
-        private Visitor CheckForVisitor(string name, string email, string sessionId)
+        private async Task<Visitor> CheckForVisitorAsync(string name, string email, string sessionId)
         {
-            var existingVisitor = _context.Visitors
+            var existingVisitor = await _context.Visitors
                 .Where(v => v.SessionId == sessionId)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             return existingVisitor;
         }

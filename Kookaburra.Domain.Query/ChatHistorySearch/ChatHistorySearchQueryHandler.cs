@@ -1,11 +1,13 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query.ChatHistory;
 using Kookaburra.Repository;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.ChatHistorySearch
 {
-    public class ChatHistorySearchQueryHandler : IQueryHandler<ChatHistorySearchQuery, ChatHistoryQueryResult>
+    public class ChatHistorySearchQueryHandler : IQueryHandler<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>>
     {
         private readonly KookaburraContext _context;
 
@@ -14,9 +16,9 @@ namespace Kookaburra.Domain.Query.ChatHistorySearch
             _context = context;
         }
 
-        public ChatHistoryQueryResult Execute(ChatHistorySearchQuery query)
+        public async Task<ChatHistoryQueryResult> ExecuteAsync(ChatHistorySearchQuery query)
         {
-            var account = _context.Accounts.SingleOrDefault(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity));
+            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity));
 
             var conversations = _context.Conversations.Where(c =>
                                 c.Operator.AccountId == account.Id
@@ -27,7 +29,7 @@ namespace Kookaburra.Domain.Query.ChatHistorySearch
                                    c.Messages.Any(m => m.Text.Contains(query.Query))
                                 || c.Visitor.Name.Contains(query.Query));
 
-            var total = conversations.Count();
+            var total = await conversations.CountAsync();
 
             if (query.Pagination != null)
             {
@@ -38,7 +40,7 @@ namespace Kookaburra.Domain.Query.ChatHistorySearch
             {
                 TotalConversations = total,
 
-                Conversations = conversations.Select(c => new ConversationItemQueryResult
+                Conversations = await conversations.Select(c => new ConversationItemQueryResult
                 {
                     Id = c.Id,
                     VisitorName = c.Visitor.Name,
@@ -46,7 +48,7 @@ namespace Kookaburra.Domain.Query.ChatHistorySearch
                     Text = c.Messages.FirstOrDefault(m => m.SentBy == UserType.Visitor.ToString()).Text,
                     StartTime = c.TimeStarted,
                     TotalMessages = c.Messages.Count()
-                }).ToList()
+                }).ToListAsync()
             };
         }
     }

@@ -1,6 +1,8 @@
-﻿namespace Kookaburra.Domain.Query.ResumeOperator
+﻿using System.Threading.Tasks;
+
+namespace Kookaburra.Domain.Query.ResumeOperator
 {
-    public class ResumeOperatorQuery : IQuery<ResumeOperatorQueryResult>
+    public class ResumeOperatorQuery : IQuery<Task<ResumeOperatorQueryResult>>
     {
         public ResumeOperatorQuery(string operatorIdentity)
         {

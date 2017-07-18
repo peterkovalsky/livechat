@@ -5,8 +5,6 @@ namespace Kookaburra.Domain.Integration
 {
     public interface IGeoLocator
     {
-        Task<VisitorLocation> GetLocationAsync(string ip);
-
-        VisitorLocation GetLocation(string ip);
+        Task<VisitorLocation> GetLocationAsync(string ip);       
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace Kookaburra.Domain.Query.CurrentChats
+﻿using System.Threading.Tasks;
+
+namespace Kookaburra.Domain.Query.CurrentChats
 {
-    public class CurrentChatsQuery : IQuery<CurrentChatsQueryResult>
+    public class CurrentChatsQuery : IQuery<Task<CurrentChatsQueryResult>>
     {
         public CurrentChatsQuery(string operatorIdentity)
         {

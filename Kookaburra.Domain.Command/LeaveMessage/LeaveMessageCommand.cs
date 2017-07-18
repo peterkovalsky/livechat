@@ -1,4 +1,4 @@
-﻿namespace Kookaburra.Domain.Command.Model
+﻿namespace Kookaburra.Domain.Command.LeaveMessage
 {
     public class LeaveMessageCommand : ICommand
     {

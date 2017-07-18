@@ -59,25 +59,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handler\ConnectOperatorCommandHandler.cs" />
-    <Compile Include="Handler\DeleteMessageCommandHandler.cs" />
-    <Compile Include="Handler\LeaveMessageCommandHandler.cs" />
-    <Compile Include="Handler\MarkMessageAsReadCommandHandler.cs" />
+    <Compile Include="ConnectOperator\ConnectOperatorCommandHandler.cs" />
+    <Compile Include="DeleteMessage\DeleteMessageCommandHandler.cs" />
+    <Compile Include="LeaveMessage\LeaveMessageCommandHandler.cs" />
+    <Compile Include="MarkMessageAsRead\MarkMessageAsReadCommandHandler.cs" />
     <Compile Include="OperatorMessaged\OperatorMessagedCommandHandler.cs" />
     <Compile Include="SignUp\SignUpCommand.cs" />
     <Compile Include="SignUp\SignUpCommandHandler.cs" />
     <Compile Include="StartVisitorChat\StartVisitorChatCommandHandler.cs" />
-    <Compile Include="Handler\StopConversationCommandHandler.cs" />
-    <Compile Include="Handler\VisitorMessagedCommandHandler.cs" />
+    <Compile Include="StopConversation\StopConversationCommandHandler.cs" />
+    <Compile Include="VisitorMessaged\VisitorMessagedCommandHandler.cs" />
     <Compile Include="ICommand.cs" />
-    <Compile Include="Model\ConnectOperatorCommand.cs" />
-    <Compile Include="Model\DeleteMessageCommand.cs" />
-    <Compile Include="Model\LeaveMessageCommand.cs" />
-    <Compile Include="Model\MarkMessageAsReadCommand.cs" />
+    <Compile Include="ConnectOperator\ConnectOperatorCommand.cs" />
+    <Compile Include="DeleteMessage\DeleteMessageCommand.cs" />
+    <Compile Include="LeaveMessage\LeaveMessageCommand.cs" />
+    <Compile Include="MarkMessageAsRead\MarkMessageAsReadCommand.cs" />
     <Compile Include="OperatorMessaged\OperatorMessagedCommand.cs" />
     <Compile Include="StartVisitorChat\StartVisitorChatCommand.cs" />
-    <Compile Include="Model\StopConversationCommand.cs" />
-    <Compile Include="Model\VisitorMessagedCommand.cs" />
+    <Compile Include="StopConversation\StopConversationCommand.cs" />
+    <Compile Include="VisitorMessaged\VisitorMessagedCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

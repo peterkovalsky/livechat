@@ -1,6 +1,8 @@
-﻿namespace Kookaburra.Domain.Query.CurrentSession
+﻿using System.Threading.Tasks;
+
+namespace Kookaburra.Domain.Query.CurrentSession
 {
-    public class CurrentSessionQueryHandler : IQueryHandler<CurrentSessionQuery, CurrentSessionQueryResult>
+    public class CurrentSessionQueryHandler : IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>>
     {
         private readonly ChatSession _chatSession;
 
@@ -9,7 +11,7 @@
             _chatSession = chatSession;
         }
 
-        public CurrentSessionQueryResult Execute(CurrentSessionQuery query)
+        public async Task<CurrentSessionQueryResult> ExecuteAsync(CurrentSessionQuery query)
         {
             if (!string.IsNullOrWhiteSpace(query.VisitorConnectionId))
             {

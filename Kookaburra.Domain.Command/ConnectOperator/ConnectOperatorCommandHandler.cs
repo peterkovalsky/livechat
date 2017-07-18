@@ -1,9 +1,9 @@
-﻿using Kookaburra.Domain.Command.Model;
-using Kookaburra.Repository;
-using System.Linq;
+﻿using Kookaburra.Repository;
 using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Kookaburra.Domain.Command.Handler
+namespace Kookaburra.Domain.Command.ConnectOperator
 {
     public class ConnectOperatorCommandHandler : ICommandHandler<ConnectOperatorCommand>
     {
@@ -17,7 +17,7 @@ namespace Kookaburra.Domain.Command.Handler
         }
 
 
-        public void Execute(ConnectOperatorCommand command)
+        public async Task ExecuteAsync(ConnectOperatorCommand command)
         {
             var operatorEntity = _context.Operators.Include(i => i.Account).Where(o => o.Identity == command.OperatorIdentity).SingleOrDefault();
 

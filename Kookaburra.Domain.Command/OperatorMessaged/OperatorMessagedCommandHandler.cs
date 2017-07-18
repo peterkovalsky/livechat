@@ -2,6 +2,7 @@
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
 using System;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Command.OperatorMessaged
 {
@@ -16,7 +17,7 @@ namespace Kookaburra.Domain.Command.OperatorMessaged
             _chatSession = chatSession;
         }
 
-        public void Execute(OperatorMessagedCommand command)
+        public async Task ExecuteAsync(OperatorMessagedCommand command)
         {
             var visitorSession = _chatSession.GetVisitorByVisitorSessionId(command.VisitorSessionId);
             if (visitorSession == null)
@@ -33,7 +34,7 @@ namespace Kookaburra.Domain.Command.OperatorMessaged
             };
 
             _context.Messages.Add(message);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

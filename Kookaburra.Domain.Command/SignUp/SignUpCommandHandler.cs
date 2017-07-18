@@ -3,6 +3,7 @@ using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Command.SignUp
 {
@@ -15,7 +16,7 @@ namespace Kookaburra.Domain.Command.SignUp
             _context = context;
         }
 
-        public void Execute(SignUpCommand command)
+        public async Task ExecuteAsync(SignUpCommand command)
         {
             var account = new Account
             {
@@ -34,7 +35,7 @@ namespace Kookaburra.Domain.Command.SignUp
             };            
 
             _context.Accounts.Add(account);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

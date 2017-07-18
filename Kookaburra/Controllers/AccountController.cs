@@ -129,7 +129,7 @@ namespace Kookaburra.Controllers
                         ClientName = model.ClientName,
                         Email = model.Email
                     };
-                    _commandDispatcher.Execute(command);
+                    await _commandDispatcher.ExecuteAsync(command);
 
                     BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmail(user.Id));
 

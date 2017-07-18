@@ -1,6 +1,8 @@
-﻿namespace Kookaburra.Domain.Query.Transcript
+﻿using System.Threading.Tasks;
+
+namespace Kookaburra.Domain.Query.Transcript
 {
-    public class TranscriptQuery : IQuery<TranscriptQueryResult>
+    public class TranscriptQuery : IQuery<Task<TranscriptQueryResult>>
     {
         public TranscriptQuery(long conversationId, string operatorIdentity)
         {
