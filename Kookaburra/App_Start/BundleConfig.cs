@@ -73,7 +73,7 @@ namespace Kookaburra
             #region CSS
 
             bundles.Add(new StyleBundle("~/bundles/css/portal")
-                .Include("~/remark/assets/skins/cyan.min.css")
+                .Include("~/remark/assets/skins/purple.min.css")
                 .Include("~/Content/kookaburra/portal.css")
             );
 

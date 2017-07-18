@@ -30,7 +30,7 @@ namespace Kookaburra.Controllers
         }
       
         [HttpGet, Route("api/messages/{filter}/{page}")]
-        public OfflineMessagesViewModel GetMoreMessages(string filter, int page)
+        public async Task<OfflineMessagesViewModel> GetMoreMessages(string filter, int page)
         {
             TimeFilterType timeFilter = TimeFilterType.All;         
             Enum.TryParse(filter, out timeFilter);            
@@ -39,7 +39,7 @@ namespace Kookaburra.Controllers
             {
                 Pagination = new Pagination(PageSize, page)
             };
-            var result = _queryDispatcher.Execute<OfflineMessagesQuery, OfflineMessagesQueryResult>(query);
+            var result = await _queryDispatcher.ExecuteAsync<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>>(query);
 
             var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
 
@@ -47,13 +47,13 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet, Route("api/messages/search/{queryTerm}/{page}")]
-        public OfflineMessagesViewModel SearchMessages(string queryTerm, int page)
+        public async Task<OfflineMessagesViewModel> SearchMessages(string queryTerm, int page)
         {
             var query = new SearchOfflineMessagesQuery(queryTerm, RequestContext.Principal.Identity.GetUserId())
             {
                 Pagination = new Pagination(PageSize, page)
             };
-            var result = _queryDispatcher.Execute<SearchOfflineMessagesQuery, OfflineMessagesQueryResult>(query);
+            var result = await _queryDispatcher.ExecuteAsync<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>>(query);
             
             var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
 

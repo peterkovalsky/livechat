@@ -56,9 +56,9 @@ namespace Kookaburra.Controllers
 
         [HttpGet]
         [Route("widget/{key}")]
-        public ActionResult WidgetOld(string key)
+        public async Task<ActionResult> WidgetOld(string key)
         {
-            var operatorResult = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(key));
+            var operatorResult = await _queryDispatcher.ExecuteAsync<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>(new AvailableOperatorQuery(key));
             var sessionId = Request.Cookies[COOKIE_SESSION_ID];
 
             if (operatorResult != null) // There is someone online
@@ -66,7 +66,7 @@ namespace Kookaburra.Controllers
                 if (sessionId != null && !string.IsNullOrWhiteSpace(sessionId.Value))
                 {
                     var query = new CurrentSessionQuery(User.Identity.GetUserId()) { VisitorSessionId = sessionId.Value };
-                    var currentSession = _queryDispatcher.Execute<CurrentSessionQuery, CurrentSessionQueryResult>(query);
+                    var currentSession = await _queryDispatcher.ExecuteAsync<CurrentSessionQuery, Task<CurrentSessionQueryResult>>(query);
 
                     if (currentSession != null)
                     {
@@ -94,7 +94,7 @@ namespace Kookaburra.Controllers
         {
             if (!ModelState.IsValid) return View(model);
        
-            var availableOperator = _queryDispatcher.Execute<AvailableOperatorQuery, AvailableOperatorQueryResult>(new AvailableOperatorQuery(model.AccountKey));
+            var availableOperator = await _queryDispatcher.ExecuteAsync<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>(new AvailableOperatorQuery(model.AccountKey));
             
             // if operator is available - establish connection
             if (availableOperator != null)
