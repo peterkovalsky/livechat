@@ -7,7 +7,7 @@
 <div id="layout-chatroom" class="page operator-chats">
 
     <!-- Switch chats -->
-    <div class="page-aside">
+    <div class="page-aside" style="display: none;" data-bind="visible: conversations().length > 0">
         <div class="page-aside-switch">
             <i class="icon md-chevron-left" aria-hidden="true"></i>
             <i class="icon md-chevron-right" aria-hidden="true"></i>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div class="page-main">
+    <div class="page-main" data-bind="css: {'no-margin': conversations().length == 0 }">
 
         <div class="page-content">
 
@@ -148,6 +148,8 @@
             </div>
 
             <!-- No chats message -->
+
+            <!-- ko if: conversations().length == 0 -->
             <div class="row" style="display: none;" data-bind="visible: conversations().length == 0">
                 <div class="col-sm-12">
                     <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
@@ -158,12 +160,13 @@
                         </p>
                     </div>
                 </div>
-
-                <div class="bg-icon">
-                    <i class="md-comments"></i>
-                </div>
+                <div class="col-sm-12">
+                    <div class="bg-icon">
+                        <i class="md-comments"></i>
+                    </div>
+                </div>                
             </div>
-
+            <!-- /ko -->
         </div>
     </div>
 </div>

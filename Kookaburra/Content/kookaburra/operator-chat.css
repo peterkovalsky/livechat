@@ -48,14 +48,18 @@
 
 
 /* new chat */
+
+.page-aside-right .operator-chats .page-aside +.page-main.no-margin {
+    margin-right: 0;
+}
+
 .operator-chats .bg-icon {
     text-align: center;
 }
 
 .operator-chats .bg-icon i {
     font-size: 350px;
-    display: block;
-    line-height: 1;
+    display: block;  
     zoom: 1;
     -webkit-opacity: .1;
     -moz-opacity: .1;
