@@ -86,7 +86,8 @@
                 time: null
             }, true));
 
-            self.currentChat().isClosed(true);
+            self.scrollDown();
+            self.currentChat().isClosed(true);            
         });
     };
 

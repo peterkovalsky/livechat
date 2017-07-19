@@ -20,7 +20,7 @@
                     <li class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
                         <div class="media">
                             <div class="media-left">
-                                <a class="avatar avatar-online" href="javascript:void(0)">
+                                <a class="avatar" href="javascript:void(0)" data-bind="css: {'avatar-away': isClosed(), 'avatar-online': !isClosed() }">
                                     <img class="img-fluid" src="~/images/visitor-default-white.png"><i></i>
                                 </a>
                             </div>
@@ -47,7 +47,7 @@
             <div class="row chat-box-row" style="display: none;" data-bind="visible: conversations().length > 0">
                 <div class="col-md-12 col-lg-9 chat-box-col" data-bind="with: currentChat">
 
-                    <div class="panel chat-box-panel">
+                    <div class="panel chat-box-panel" data-bind="css: {disabled: isClosed()}">
                         <div class="panel-heading">
                             <h3 class="panel-title text-sm-center">
                                 <i class="icon wb-chat-text" aria-hidden="true"></i>
@@ -99,7 +99,7 @@
                         </div>
                         <div class="panel-footer">
                             <div class="input-group">
-                                <textarea id="message-input" data-bind="textInput: $parent.newText, hasFocus: $parent.enterMessageFocus, disable: isClosed" class="form-control textarea-scrollbar scrollbar-macosx" placeholder="Enter your message..."></textarea>
+                                <textarea id="message-input" data-bind="textInput: $parent.newText, hasFocus: $parent.enterMessageFocus, disable: isClosed()" class="form-control textarea-scrollbar scrollbar-macosx" placeholder="Enter your message..."></textarea>
                             </div>
                         </div>
                     </div>
