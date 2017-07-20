@@ -329,6 +329,7 @@
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Properties\PublishProfiles\Staging.pubxml" />
     <None Include="Properties\PublishProfiles\LocalFolder.pubxml" />
+    <Content Include="images\visitor-default-white.png" />
     <Content Include="images\visitor-default.png" />
     <Content Include="images\visitor.png" />
     <Content Include="remark\assets\css\site.css" />

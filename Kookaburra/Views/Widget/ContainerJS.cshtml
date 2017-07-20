@@ -21,9 +21,7 @@ function toggleChat() {
         wrapper.style.height = '377px';
         var containerIframe = document.getElementById('container-iframe');
         if (containerIframe) {
-            if (typeof containerIframe.contentWindow.init === "function") {
-                containerIframe.contentWindow.init();
-            }            
+            containerIframe.contentWindow.postMessage('init', '*');                   
         }
     }
 }

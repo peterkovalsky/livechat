@@ -41,7 +41,8 @@ function Visitor(accountKey) {
                 ? document.referrer
                 : document.location.href;
 
-    self.accountKey = accountKey;    
+    self.accountKey = accountKey;  
+    self.focusName = ko.observable(true);
 }
 
 function WidgetViewModel(accountKey) {

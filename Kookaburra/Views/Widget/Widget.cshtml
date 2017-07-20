@@ -20,7 +20,13 @@
         @Html.Partial("_ThankYou")
     </div>
 
-    <script type="text/javascript">
+    <script type="text/javascript">         
+
+        window.addEventListener('message', function (event) {
+            if (event.data == 'init') {             
+                $('#visitor-name').focus();
+            }
+        }); 
 
         $(document).ready(function () {
 
@@ -29,11 +35,7 @@
 
             // initialise the chat
             widgetViewModel.init();
-        });
-
-        function init() {
-            $('#visitor-name').focus();
-        }
+        });    
 
     </script>
 </body>

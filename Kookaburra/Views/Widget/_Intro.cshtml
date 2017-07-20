@@ -4,7 +4,7 @@
             Please intoduce yourself
         </div>
         <div class="name">
-            <input id="visitor-name" type="text" placeholder="Name" autocomplete="off" data-bind="textInput: visitor().name, enterkey: startChat" />
+            <input id="visitor-name" type="text" placeholder="Name" autocomplete="off" data-bind="textInput: visitor().name, hasFocus: visitor().focusName; enterkey: startChat" />
         </div>
         <div class="email">
             <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="textInput: visitor().email, enterkey: startChat" />
