@@ -266,6 +266,16 @@ function Conversation(data) {
             return 0;
     });
 
+    self.lastMessageTime = ko.computed(function () {
+        var lastMessage = self.messages()[self.messages().length - 1];
+
+        if (lastMessage) {
+            return lastMessage.time();
+        }
+
+        return null;
+    });
+
     self.groupedMessages = ko.computed(function () {
         var groups = [];
         var tempMessages = [];
