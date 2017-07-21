@@ -38,7 +38,7 @@
                
                 self.setCurrentChat();                
 
-                jQuery('#conversation, #message-input').scrollbar({ scrollStep: 5});
+                $('.scrollbar-macosx').scrollbar({ scrollStep: 5});
 
                 self.scrollDown();
                 self.enterMessageFocus(true);
@@ -83,7 +83,7 @@
             self.currentChat().messages.push(new Message({
                 text: 'You ended chat with ' + self.currentChat().visitorName(),
                 sentBy: 'system',
-                time: null
+                time: moment()
             }, true));
 
             self.scrollDown();
@@ -98,7 +98,7 @@
 
         self.setCurrentChat(conversation);
 
-        jQuery('#conversation, #message-input').scrollbar({ scrollStep: 5 });
+        $('.scrollbar-macosx').scrollbar({ scrollStep: 5 });
         $('#conversation').scrollTop($('#conversation').prop("scrollHeight"));
 
         // mark all messages as READ in the current conversation
@@ -134,7 +134,7 @@
             self.conversations.push(new Conversation(conversationView))
             self.setCurrentChat();
 
-            jQuery('#conversation, #message-input').scrollbar({ scrollStep: 5 });            
+            $('.scrollbar-macosx').scrollbar({ scrollStep: 5 });            
         };
 
         // Message from visitor/operator
@@ -195,12 +195,13 @@ function Message(data, isRead) {
     self.author = ko.observable(data.author);
     self.text = ko.observable(data.text);
     self.sentBy = ko.observable(data.sentBy);
+    self.timeSent = ko.observable(data.time);
 
     var now = ko.observable(new Date());
     setInterval(function () { now(new Date()); }, 60 * 1000);
 
     self.time = ko.computed(function () {
-        return moment(data.time).startOf('minute').from(now());
+        return moment(data.timeSent).startOf('minute').from(now());
     });
 
     self.read = ko.observable(isRead);

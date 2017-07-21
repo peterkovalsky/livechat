@@ -12,32 +12,30 @@
             <i class="icon wb-chevron-left" aria-hidden="true"></i>
             <i class="icon wb-chevron-right" aria-hidden="true"></i>
         </div>
-        <div class="page-aside-inner page-aside-scroll">
-            <div data-role="container">
-                <div data-role="content">
-                    <section class="page-aside-section current-chats" style="display: none;" data-bind="visible: conversations().length > 0">
-                        <h5 class="page-aside-title">Current Chats</h5>
-                        <ul class="list-group" data-bind="foreach: conversations">
-                            <li class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a class="avatar" href="javascript:void(0)" data-bind="css: {'avatar-away': isClosed(), 'avatar-online': !isClosed() }">
-                                            <img class="img-fluid" src="~/images/visitor-default-white.png"><i></i>
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4 class="media-heading" data-bind="text: visitorName"></h4>
-                                        <span class="media-time" data-bind="text: lastMessageTime"></span>
-                                    </div>
-                                    <div class="media-right">
-                                        <span class="tag tag-pill tag-danger" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
-                                    </div>
+        <div class="page-aside-inner scrollbar-macosx">
+
+            <section class="page-aside-section current-chats" style="display: none;" data-bind="visible: conversations().length > 0">
+                <h5 class="page-aside-title">Current Chats</h5>
+                <ul class="list-group" data-bind="foreach: conversations">
+                    <li class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
+                        <div class="media">
+                            <div class="media-left">
+                                <div class="avatar" data-bind="css: {'avatar-away': isClosed(), 'avatar-online': !isClosed() }">
+                                    <img class="img-fluid" src="~/images/visitor-default-white.png"><i></i>
                                 </div>
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-            </div>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading" data-bind="text: visitorName"></h4>
+                                <span class="media-time" data-bind="text: lastMessageTime"></span>
+                            </div>
+                            <div class="media-right">
+                                <span class="tag tag-pill tag-danger" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
         </div>
     </div>
 
