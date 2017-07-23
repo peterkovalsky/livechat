@@ -201,7 +201,7 @@ function Message(data, isRead) {
     setInterval(function () { now(new Date()); }, 60 * 1000);
 
     self.time = ko.computed(function () {
-        return moment(data.timeSent).startOf('minute').from(now());
+        return moment(data.timeSent()).startOf('minute').from(now());
     });
 
     self.read = ko.observable(isRead);

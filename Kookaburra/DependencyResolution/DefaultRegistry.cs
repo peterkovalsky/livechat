@@ -31,6 +31,7 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Command.SignUp;
     using Kookaburra.Domain.Command.StartVisitorChat;
     using Kookaburra.Domain.Command.StopConversation;
+    using Kookaburra.Domain.Command.TimeoutConversations;
     using Kookaburra.Domain.Command.VisitorMessaged;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;
@@ -76,6 +77,7 @@ namespace Kookaburra.DependencyResolution
             For<ICommandHandler<MarkMessageAsReadCommand>>().Add<MarkMessageAsReadCommandHandler>();
             For<ICommandHandler<DeleteMessageCommand>>().Add<DeleteMessageCommandHandler>();
             For<ICommandHandler<SignUpCommand>>().Add<SignUpCommandHandler>();
+            For<ICommandHandler<TimeoutConversationsCommand>>().Add<TimeoutConversationsCommandHandler>();
 
             // Queries
             For<IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>>().Add<AvailableOperatorQueryHandler>();       

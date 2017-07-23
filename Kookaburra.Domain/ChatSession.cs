@@ -58,7 +58,10 @@ namespace Kookaburra.Domain
         {
             var operatorSession = GetOperatorByVisitorSessionId(visitorSessionId);
 
-            operatorSession.Visitors.RemoveAll(i => i.SessionId == visitorSessionId);
+            if (operatorSession != null)
+            {
+                operatorSession.Visitors.RemoveAll(i => i.SessionId == visitorSessionId);
+            }
         }
 
         public void UpdateVisitor(string visitorSessionId, string newConnectionId)

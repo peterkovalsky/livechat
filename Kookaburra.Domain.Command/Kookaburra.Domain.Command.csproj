@@ -68,6 +68,8 @@
     <Compile Include="SignUp\SignUpCommandHandler.cs" />
     <Compile Include="StartVisitorChat\StartVisitorChatCommandHandler.cs" />
     <Compile Include="StopConversation\StopConversationCommandHandler.cs" />
+    <Compile Include="TimeoutConversations\TimeoutConversationsCommand.cs" />
+    <Compile Include="TimeoutConversations\TimeoutConversationsCommandHandler.cs" />
     <Compile Include="VisitorMessaged\VisitorMessagedCommandHandler.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="ConnectOperator\ConnectOperatorCommand.cs" />

@@ -23,6 +23,13 @@ namespace Kookaburra
 
             app.UseHangfireDashboard();
             app.UseHangfireServer();
+
+           
+        }
+
+        private void Jobs()
+        {
+            RecurringJob.AddOrUpdate(() => Console.WriteLine("Recurring!"), Cron.Minutely());
         }
     }
 }
