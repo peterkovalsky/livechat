@@ -1,5 +1,4 @@
 ﻿using Kookaburra.Domain;
-using Kookaburra.Domain.Command.TimeoutConversations;
 using Kookaburra.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
@@ -15,9 +14,9 @@ namespace Kookaburra.Tests
             var context = new KookaburraContext("Data Source=.;Initial Catalog=kookaburra;uid=sa;password=bazz1983petro;MultipleActiveResultSets=True");
             var session = new ChatSession();
 
-            var timeoutHandler = new TimeoutConversationsCommandHandler(context, session);
+            //var timeoutHandler = new TimeoutConversationsCommandHandler(context, session);
 
-            await timeoutHandler.ExecuteAsync(new TimeoutConversationsCommand(30));
+            //await timeoutHandler.ExecuteAsync(new TimeoutConversationsCommand(30));
         }
     }
 }

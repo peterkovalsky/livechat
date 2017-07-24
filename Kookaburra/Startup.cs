@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Hangfire.StructureMap;
 using Kookaburra.App_Start;
+using Kookaburra.DependencyResolution;
 using Microsoft.Owin;
 using Owin;
 
@@ -16,7 +17,7 @@ namespace Kookaburra
 
             app.MapSignalR();
 
-            var container = StructuremapMvc.StructureMapDependencyScope.Container;
+            var container = IoC.Initialize();
             GlobalConfiguration.Configuration.UseStructureMapActivator(container);
 
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
@@ -24,12 +25,7 @@ namespace Kookaburra
             app.UseHangfireDashboard();
             app.UseHangfireServer();
 
-           
-        }
-
-        private void Jobs()
-        {
-            RecurringJob.AddOrUpdate(() => Console.WriteLine("Recurring!"), Cron.Minutely());
-        }
+            JobsConfig.RegisterJobs();
+        }      
     }
 }

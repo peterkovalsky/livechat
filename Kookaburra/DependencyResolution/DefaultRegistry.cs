@@ -31,7 +31,6 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Command.SignUp;
     using Kookaburra.Domain.Command.StartVisitorChat;
     using Kookaburra.Domain.Command.StopConversation;
-    using Kookaburra.Domain.Command.TimeoutConversations;
     using Kookaburra.Domain.Command.VisitorMessaged;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;
@@ -102,6 +101,7 @@ namespace Kookaburra.DependencyResolution
                                                                     .Ctor<string>("username").Is(AppSettings.EmailUsername)
                                                                     .Ctor<string>("password").Is(AppSettings.EmailPassword);
             For<EmailService>().Add<EmailService>();
+            For<BackgroundJobs>().Add<BackgroundJobs>();            
         }       
     }
 }
