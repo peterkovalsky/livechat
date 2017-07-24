@@ -236,6 +236,7 @@
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\StructuremapWebApi.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BackgroundJobs.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\WebHelper.cs" />
     <Compile Include="Common\WidgetStepType.cs" />

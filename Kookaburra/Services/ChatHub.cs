@@ -267,6 +267,30 @@ namespace Kookaburra.Services
             // Notify all visitor instances       
             Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByVisitor();
         }
+
+        public async Task StopConversation(string visitorSessionId)
+        {
+            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
+            {
+                VisitorSessionId = visitorSessionId
+            };
+            var currentSession = await _queryDispatcher.ExecuteAsync<CurrentSessionQuery, Task<CurrentSessionQueryResult>>(query);
+
+            if (currentSession != null)
+            {
+                var diconnectView = new DisconnectViewModel
+                {
+                    VisitorSessionId = visitorSessionId,
+                    TimeStamp = DateTime.UtcNow.JsDateTime()
+                };
+                // Notify all operator instances
+                Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(visitorSessionId);
+                Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedByVisitor(diconnectView);
+
+                // Notify all visitor instances       
+                Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByVisitor();
+            }
+        }
         #endregion
 
         public override Task OnConnected()

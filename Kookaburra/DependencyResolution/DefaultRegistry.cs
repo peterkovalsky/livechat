@@ -40,6 +40,7 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Query.OfflineMessages;
     using Kookaburra.Domain.Query.ResumeOperator;
     using Kookaburra.Domain.Query.SearchOfflineMessages;
+    using Kookaburra.Domain.Query.TimmedOutConversations;
     using Kookaburra.Domain.Query.Transcript;
     using Kookaburra.Domain.ResumeVisitorChat;
     using Kookaburra.Email;
@@ -47,6 +48,7 @@ namespace Kookaburra.DependencyResolution
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public class DefaultRegistry : Registry {       
@@ -77,7 +79,7 @@ namespace Kookaburra.DependencyResolution
             For<ICommandHandler<MarkMessageAsReadCommand>>().Add<MarkMessageAsReadCommandHandler>();
             For<ICommandHandler<DeleteMessageCommand>>().Add<DeleteMessageCommandHandler>();
             For<ICommandHandler<SignUpCommand>>().Add<SignUpCommandHandler>();
-            For<ICommandHandler<TimeoutConversationsCommand>>().Add<TimeoutConversationsCommandHandler>();
+           
 
             // Queries
             For<IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>>().Add<AvailableOperatorQueryHandler>();       
@@ -90,7 +92,8 @@ namespace Kookaburra.DependencyResolution
             For<IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>>>().Add<TranscriptQueryHandler>();
             For<IQueryHandler<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistorySearchQueryHandler>();            
             For<IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistoryQueryHandler>();
-            
+            For<IQueryHandler<TimmedOutConversationsQuery, Task<List<string>>>>().Add<TimmedOutConversationsQueryHandler>();
+
 
             ForSingletonOf<ChatSession>();
             ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();
