@@ -252,12 +252,10 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\OfflineWebApiController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
-    <Compile Include="DependencyResolution\CommandDispatcher.cs" />
     <Compile Include="DependencyResolution\CommandHandlerNotFoundException.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
-    <Compile Include="DependencyResolution\QueryDispatcher.cs" />
     <Compile Include="DependencyResolution\QueryHandlerNotFoundException.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />

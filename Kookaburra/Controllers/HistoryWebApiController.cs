@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.ChatHistory;
@@ -15,16 +14,17 @@ namespace Kookaburra.Controllers
     [Authorize]
     public class HistoryWebApiController : ApiController
     {
-        private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IQueryDispatcher _queryDispatcher;
-
+        private readonly IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>> _chatHistoryQueryHandler;
+        private readonly IQueryHandler<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>> _chatHistorySearchQueryHandler;
+        
         private readonly int PageSize = 5;
 
 
-        public HistoryWebApiController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public HistoryWebApiController(IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>> chatHistoryQueryHandler,
+            IQueryHandler<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>> chatHistorySearchQueryHandler)
         {
-            _commandDispatcher = commandDispatcher;
-            _queryDispatcher = queryDispatcher;
+            _chatHistoryQueryHandler = chatHistoryQueryHandler;
+            _chatHistorySearchQueryHandler = chatHistorySearchQueryHandler;
         }
 
         [HttpGet, Route("api/history/{filter}/{page}")]
@@ -37,7 +37,7 @@ namespace Kookaburra.Controllers
             {
                 Pagination = new Pagination(PageSize, page)
             };
-            var result = await _queryDispatcher.ExecuteAsync<ChatHistoryQuery, Task<ChatHistoryQueryResult>>(query);
+            var result = await _chatHistoryQueryHandler.ExecuteAsync(query);
 
             var viewModel = Mapper.Map<ChatHistoryViewModel>(result);
 
@@ -51,7 +51,7 @@ namespace Kookaburra.Controllers
             {
                 Pagination = new Pagination(PageSize, page)
             };
-            var result = await _queryDispatcher.ExecuteAsync<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>>(query);
+            var result = await _chatHistorySearchQueryHandler.ExecuteAsync(query);
 
             var viewModel = Mapper.Map<ChatHistoryViewModel>(result);
 

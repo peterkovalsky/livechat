@@ -18,15 +18,26 @@ namespace Kookaburra.Controllers
 {
     public class WidgetController : Controller
     {
-        private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IQueryDispatcher _queryDispatcher;       
+        private readonly ICommandHandler<StartVisitorChatCommand> _startVisitorChatCommandHandler;
+        private readonly ICommandHandler<LeaveMessageCommand> _leaveMessageCommandHandler;
 
+        private readonly IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> _availableOperatorQueryHandler;
+        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
+        
         public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";
 
-        public WidgetController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public WidgetController(
+            ICommandHandler<StartVisitorChatCommand> startVisitorChatCommandHandler,
+            ICommandHandler<LeaveMessageCommand> leaveMessageCommandHandler,
+            IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> availableOperatorQueryHandler,
+            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler
+            )
         {
-            _commandDispatcher = commandDispatcher;
-            _queryDispatcher = queryDispatcher;           
+            _startVisitorChatCommandHandler = startVisitorChatCommandHandler;
+            _leaveMessageCommandHandler = leaveMessageCommandHandler;
+
+            _availableOperatorQueryHandler = availableOperatorQueryHandler;
+            _currentSessionQueryHandler = currentSessionQueryHandler;
         }
 
 
@@ -58,7 +69,7 @@ namespace Kookaburra.Controllers
         [Route("widget/{key}")]
         public async Task<ActionResult> WidgetOld(string key)
         {
-            var operatorResult = await _queryDispatcher.ExecuteAsync<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>(new AvailableOperatorQuery(key));
+            var operatorResult = await _availableOperatorQueryHandler.ExecuteAsync(new AvailableOperatorQuery(key));
             var sessionId = Request.Cookies[COOKIE_SESSION_ID];
 
             if (operatorResult != null) // There is someone online
@@ -66,7 +77,7 @@ namespace Kookaburra.Controllers
                 if (sessionId != null && !string.IsNullOrWhiteSpace(sessionId.Value))
                 {
                     var query = new CurrentSessionQuery(User.Identity.GetUserId()) { VisitorSessionId = sessionId.Value };
-                    var currentSession = await _queryDispatcher.ExecuteAsync<CurrentSessionQuery, Task<CurrentSessionQueryResult>>(query);
+                    var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
 
                     if (currentSession != null)
                     {
@@ -94,7 +105,7 @@ namespace Kookaburra.Controllers
         {
             if (!ModelState.IsValid) return View(model);
        
-            var availableOperator = await _queryDispatcher.ExecuteAsync<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>(new AvailableOperatorQuery(model.AccountKey));
+            var availableOperator = await _availableOperatorQueryHandler.ExecuteAsync(new AvailableOperatorQuery(model.AccountKey));
             
             // if operator is available - establish connection
             if (availableOperator != null)
@@ -107,7 +118,7 @@ namespace Kookaburra.Controllers
                     VisitorIP = WebHelper.GetIPAddress(),
                     VisitorEmail = model.Email
                 };
-                await _commandDispatcher.ExecuteAsync(command);
+                await _startVisitorChatCommandHandler.ExecuteAsync(command);
 
                 // add sessionId cookie
                 Response.Cookies.Set(new HttpCookie(COOKIE_SESSION_ID, sessionId));
@@ -158,7 +169,7 @@ namespace Kookaburra.Controllers
             {
                 VisitorIP = WebHelper.GetIPAddress()
             };
-            await _commandDispatcher.ExecuteAsync(command);
+            await _leaveMessageCommandHandler.ExecuteAsync(command);
 
             return RedirectToAction(nameof(WidgetController.ThankYou));
         }

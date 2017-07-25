@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.ChatHistory;
@@ -15,15 +14,16 @@ namespace Kookaburra.Controllers
     [Authorize]
     public class HistoryController : Controller
     {
-        private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IQueryDispatcher _queryDispatcher;
-
+        private readonly IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>> _chatHistoryQueryHandler;
+        private readonly IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>> _transcriptQueryHandler;
+        
         private readonly int PageSize = 10;
 
-        public HistoryController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public HistoryController(IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>> chatHistoryQueryHandler,
+            IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>> transcriptQueryHandler)
         {
-            _commandDispatcher = commandDispatcher;
-            _queryDispatcher = queryDispatcher;
+            _chatHistoryQueryHandler = chatHistoryQueryHandler;
+            _transcriptQueryHandler = transcriptQueryHandler;
         }
 
         [HttpGet, Route("history")]
@@ -33,7 +33,7 @@ namespace Kookaburra.Controllers
             {
                 Pagination = new Pagination(PageSize, 1)
             };
-            var result = await _queryDispatcher.ExecuteAsync<ChatHistoryQuery, Task<ChatHistoryQueryResult>>(query);
+            var result = await _chatHistoryQueryHandler.ExecuteAsync(query);
 
             var viewModel = Mapper.Map<ChatHistoryViewModel>(result);            
 
@@ -44,7 +44,7 @@ namespace Kookaburra.Controllers
         public async Task<ActionResult> Transcript(long id)
         {
             var query = new TranscriptQuery(id, User.Identity.GetUserId());
-            var result = await _queryDispatcher.ExecuteAsync<TranscriptQuery, Task<TranscriptQueryResult>>(query);
+            var result = await _transcriptQueryHandler.ExecuteAsync(query);
 
             if (result == null)
             {

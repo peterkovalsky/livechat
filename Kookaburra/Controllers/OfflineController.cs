@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.OfflineMessages;
@@ -12,16 +11,15 @@ namespace Kookaburra.Controllers
 {
     public class OfflineController : Controller
     {
-        private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IQueryDispatcher _queryDispatcher;
+        private readonly IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>> _offlineMessagesQuery;
 
         private readonly int PageSize = 10;
 
-        public OfflineController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public OfflineController(IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>> offlineMessagesQuery)
         {
-            _commandDispatcher = commandDispatcher;
-            _queryDispatcher = queryDispatcher;
+            _offlineMessagesQuery = offlineMessagesQuery;
         }
+
 
         [HttpGet, Route("messages")]
         public async Task<ActionResult> Messages()
@@ -30,7 +28,7 @@ namespace Kookaburra.Controllers
             {
                 Pagination = new Pagination(PageSize, 1)
             };
-            var result = await _queryDispatcher.ExecuteAsync<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>>(query);
+            var result = await _offlineMessagesQuery.ExecuteAsync(query);
 
             var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
             viewModel.PageSize = PageSize;

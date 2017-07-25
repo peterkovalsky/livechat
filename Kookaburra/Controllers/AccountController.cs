@@ -21,14 +21,16 @@ namespace Kookaburra.Controllers
         private ApplicationUserManager _userManager;
 
         private readonly IOperatorRepository _operatorRepository;
-        private readonly ICommandDispatcher _commandDispatcher;
+        private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;
 
         private readonly EmailService _emailService;
 
 
-        public AccountController(ICommandDispatcher commandDispatcher, IOperatorRepository operatorRepository, EmailService emailService)
-        {          
-            _commandDispatcher = commandDispatcher;
+        public AccountController(ICommandHandler<SignUpCommand> signUpCommandHandler,
+            IOperatorRepository operatorRepository, 
+            EmailService emailService)
+        {
+            _signUpCommandHandler = signUpCommandHandler;
             _operatorRepository = operatorRepository;
             _emailService = emailService;
         }
@@ -129,7 +131,7 @@ namespace Kookaburra.Controllers
                         ClientName = model.ClientName,
                         Email = model.Email
                     };
-                    await _commandDispatcher.ExecuteAsync(command);
+                    await _signUpCommandHandler.ExecuteAsync(command);
 
                     BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmail(user.Id));
 

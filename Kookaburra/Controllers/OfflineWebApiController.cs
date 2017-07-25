@@ -17,18 +17,29 @@ namespace Kookaburra.Controllers
     [Authorize]
     public class WebAPIController : ApiController
     {
-        private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IQueryDispatcher _queryDispatcher;
+        private readonly ICommandHandler<MarkMessageAsReadCommand> _markMessageAsReadCommandHandler;
+        private readonly ICommandHandler<DeleteMessageCommand> _deleteMessageCommandHandler;
 
-        private readonly int PageSize = 10;
-  
+        private readonly IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>> _offlineMessagesQueryHandler;
+        private readonly IQueryHandler<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>> _searchOfflineMessagesQueryHandler;
+        
+        private readonly int PageSize = 10;  
 
-        public WebAPIController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public WebAPIController(
+            ICommandHandler<MarkMessageAsReadCommand> markMessageAsReadCommandHandler,
+            ICommandHandler<DeleteMessageCommand> deleteMessageCommandHandler,
+            IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>> offlineMessagesQueryHandler,
+            IQueryHandler<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>> searchOfflineMessagesQueryHandler
+        )
         {
-            _commandDispatcher = commandDispatcher;
-            _queryDispatcher = queryDispatcher;
+            _markMessageAsReadCommandHandler = markMessageAsReadCommandHandler;
+            _deleteMessageCommandHandler = deleteMessageCommandHandler;
+
+            _offlineMessagesQueryHandler = offlineMessagesQueryHandler;
+            _searchOfflineMessagesQueryHandler = searchOfflineMessagesQueryHandler;
         }
       
+
         [HttpGet, Route("api/messages/{filter}/{page}")]
         public async Task<OfflineMessagesViewModel> GetMoreMessages(string filter, int page)
         {
@@ -39,7 +50,7 @@ namespace Kookaburra.Controllers
             {
                 Pagination = new Pagination(PageSize, page)
             };
-            var result = await _queryDispatcher.ExecuteAsync<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>>(query);
+            var result = await _offlineMessagesQueryHandler.ExecuteAsync(query);
 
             var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
 
@@ -53,7 +64,7 @@ namespace Kookaburra.Controllers
             {
                 Pagination = new Pagination(PageSize, page)
             };
-            var result = await _queryDispatcher.ExecuteAsync<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>>(query);
+            var result = await _searchOfflineMessagesQueryHandler.ExecuteAsync(query);
             
             var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
 
@@ -64,14 +75,14 @@ namespace Kookaburra.Controllers
         public async Task MarkMessageAsRead(int id)
         {            
             var command = new MarkMessageAsReadCommand(id, RequestContext.Principal.Identity.GetUserId());
-            await _commandDispatcher.ExecuteAsync(command);
+            await _markMessageAsReadCommandHandler.ExecuteAsync(command);
         }
 
         [HttpDelete, Route("api/messages/{id}")]
         public async Task DeleteMessage(int id)
         {
             var command = new DeleteMessageCommand(id, RequestContext.Principal.Identity.GetUserId());
-            await _commandDispatcher.ExecuteAsync(command);
+            await _deleteMessageCommandHandler.ExecuteAsync(command);
         }
     }
 }
