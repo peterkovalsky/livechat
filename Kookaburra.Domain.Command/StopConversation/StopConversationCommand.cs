@@ -10,6 +10,8 @@
 
         public string VisitorSessionId { get; }
 
+        public long ConversationId { get; set; }
+
         public string OperatorIdentity { get; }
     }
 }

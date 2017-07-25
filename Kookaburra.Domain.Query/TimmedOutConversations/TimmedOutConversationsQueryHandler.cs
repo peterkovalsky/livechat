@@ -1,13 +1,12 @@
 ﻿using Kookaburra.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.TimmedOutConversations
 {
-    public class TimmedOutConversationsQueryHandler : IQueryHandler<TimmedOutConversationsQuery, Task<List<string>>>
+    public class TimmedOutConversationsQueryHandler : IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>>
     {
         private readonly KookaburraContext _context;
 
@@ -16,15 +15,24 @@ namespace Kookaburra.Domain.Query.TimmedOutConversations
             _context = context;
         }
 
-        public async Task<List<string>> ExecuteAsync(TimmedOutConversationsQuery query)
+        public async Task<TimmedOutConversationsQueryResult> ExecuteAsync(TimmedOutConversationsQuery query)
         {
             var cutOffTime = DateTime.UtcNow.AddMinutes(-query.TimeoutInMinutes);
 
-            return await _context.Conversations
+            var conversations = await _context.Conversations
                 .Include(i => i.Visitor)
                 .Where(c => c.TimeFinished == null && c.Messages.Any() && c.Messages.OrderByDescending(m => m.DateSent).FirstOrDefault().DateSent < cutOffTime)
-                .Select(c => c.Visitor.SessionId)
+                .Select(c => new ConversationResult
+                {
+                    VisitorSessionId = c.Visitor.SessionId,
+                    ConversationId = c.Id
+                })
                 .ToListAsync();
+
+            return new TimmedOutConversationsQueryResult
+            {
+                Conversations = conversations
+            };
         }
     }
 }

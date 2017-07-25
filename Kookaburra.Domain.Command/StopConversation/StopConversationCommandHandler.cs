@@ -20,8 +20,15 @@ namespace Kookaburra.Domain.Command.StopConversation
 
         public async Task ExecuteAsync(StopConversationCommand command)
         {
-            var visitorSession = _chatSession.GetVisitorByVisitorSessionId(command.VisitorSessionId);
-            var conversation = await _context.Conversations.Where(c => c.Id == visitorSession.ConversationId).SingleOrDefaultAsync();
+            var conversationId = command.ConversationId;
+
+            if (conversationId == default(long))
+            {
+                var visitorSession = _chatSession.GetVisitorByVisitorSessionId(command.VisitorSessionId);
+                conversationId = visitorSession.ConversationId;
+            }
+
+            var conversation = await _context.Conversations.Where(c => c.Id == conversationId).SingleOrDefaultAsync();
 
             if (conversation == null)
             {

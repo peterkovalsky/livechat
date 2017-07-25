@@ -6,6 +6,7 @@ namespace Kookaburra.App_Start
     {
         public static void RegisterJobs()
         {
+            //RecurringJob.AddOrUpdate<BackgroundJobs>(backgroundJobs => backgroundJobs.TimeoutInactiveConversations(), Cron.MinuteInterval(5));
             RecurringJob.AddOrUpdate<BackgroundJobs>(backgroundJobs => backgroundJobs.TimeoutInactiveConversations(), Cron.Minutely());
         }
     }

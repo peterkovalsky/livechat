@@ -17,7 +17,8 @@ namespace Kookaburra
 
             app.MapSignalR();
 
-            var container = IoC.Initialize();
+            //var container = IoC.Initialize();
+            var container = StructuremapMvc.StructureMapDependencyScope.Container;
             GlobalConfiguration.Configuration.UseStructureMapActivator(container);
 
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");

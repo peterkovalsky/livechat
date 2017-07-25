@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.TimmedOutConversations
 {
-    public class TimmedOutConversationsQuery : IQuery<Task<List<string>>>
+    public class TimmedOutConversationsQuery : IQuery<Task<TimmedOutConversationsQueryResult>>
     {
         public TimmedOutConversationsQuery(int timeoutInMinutes)
         {

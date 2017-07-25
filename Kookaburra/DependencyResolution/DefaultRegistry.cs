@@ -91,7 +91,7 @@ namespace Kookaburra.DependencyResolution
             For<IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>>>().Add<TranscriptQueryHandler>();
             For<IQueryHandler<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistorySearchQueryHandler>();            
             For<IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistoryQueryHandler>();
-            For<IQueryHandler<TimmedOutConversationsQuery, Task<List<string>>>>().Add<TimmedOutConversationsQueryHandler>();
+            For<IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>>>().Add<TimmedOutConversationsQueryHandler>();
 
 
             ForSingletonOf<ChatSession>();

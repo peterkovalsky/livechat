@@ -1,4 +1,5 @@
-﻿using Kookaburra.Common;
+﻿using Hangfire;
+using Kookaburra.Common;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.StopConversation;
 using Kookaburra.Domain.Query;
@@ -8,48 +9,56 @@ using Kookaburra.Models;
 using Kookaburra.Services;
 using Microsoft.AspNet.SignalR;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Kookaburra
 {
     public class BackgroundJobs
     {
-        private readonly ICommandHandler _commandDispatcher;
-        private readonly IQueryHandler _queryDispatcher;
+        private readonly ICommandHandler<StopConversationCommand> _stopConversationCommandHandler;
+        private readonly IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> _timmedOutConversationsQueryHandler;
+        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
 
-        public BackgroundJobs(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public BackgroundJobs(IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> timmedOutConversationsQueryHandler,
+            ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
+            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler)
         {
-            _commandDispatcher = commandDispatcher;
-            _queryDispatcher = queryDispatcher;
+            _timmedOutConversationsQueryHandler = timmedOutConversationsQueryHandler;
+            _stopConversationCommandHandler = stopConversationCommandHandler;
+            _currentSessionQueryHandler = currentSessionQueryHandler;
         }
 
+        [AutomaticRetry(Attempts = 0)]
         public async Task TimeoutInactiveConversations()
         {
-            var visitors = await _queryDispatcher.ExecuteAsync<TimmedOutConversationsQuery, Task<List<string>>>(new TimmedOutConversationsQuery(30));
+            var result = await _timmedOutConversationsQueryHandler.ExecuteAsync(new TimmedOutConversationsQuery(5));
 
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
 
-            foreach (var visitorSessionId in visitors)
-            {
-                await _commandDispatcher.ExecuteAsync(new StopConversationCommand(visitorSessionId, null));
-
+            foreach (var conversation in result.Conversations)
+            {            
                 var query = new CurrentSessionQuery(null)
                 {
-                    VisitorSessionId = visitorSessionId
+                    VisitorSessionId = conversation.VisitorSessionId
                 };
-                var currentSession = await _queryDispatcher.ExecuteAsync<CurrentSessionQuery, Task<CurrentSessionQueryResult>>(query);
+                var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
+
+                var stopCommand = new StopConversationCommand(conversation.VisitorSessionId, null)
+                {
+                    ConversationId = conversation.ConversationId
+                };
+                await _stopConversationCommandHandler.ExecuteAsync(stopCommand);
 
                 if (currentSession != null)
                 {
                     var diconnectView = new DisconnectViewModel
                     {
-                        VisitorSessionId = visitorSessionId,
+                        VisitorSessionId = conversation.VisitorSessionId,
                         TimeStamp = DateTime.UtcNow.JsDateTime()
                     };
 
                     // Notify all operator instances
-                    hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(visitorSessionId);
+                    hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(conversation.VisitorSessionId);
                     hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedByVisitor(diconnectView);
 
                     // Notify all visitor instances       

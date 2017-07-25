@@ -63,6 +63,7 @@
     <Compile Include="SearchOfflineMessages\SearchOfflineMessagesQueryHandler.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQuery.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQueryHandler.cs" />
+    <Compile Include="TimmedOutConversations\TimmedOutConversationsQueryResult.cs" />
     <Compile Include="Transcript\TranscriptQueryHandler.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="AvailableOperator\AvailableOperatorQuery.cs" />
