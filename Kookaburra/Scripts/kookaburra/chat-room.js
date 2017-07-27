@@ -152,7 +152,7 @@
         };
 
         // Visitor stopped chat
-        $.connection.chatHub.client.visitorDisconnectedByVisitor = function (result) {
+        $.connection.chatHub.client.visitorDisconnected = function (result) {
 
             var conversationToClose = ko.utils.arrayFirst(self.conversations(), function (c) {
                 return c.sessionId() == result.visitorSessionId;
@@ -161,8 +161,22 @@
             if (conversationToClose)
             {
                 if (conversationToClose.isCurrent()) {
+                    var disconnectMessage = 'Chat has been stopped.';
+                    if (result.disconnectedBy == 'Operator')
+                    {
+                        disconnectMessage = 'You ended chat with ' + conversationToClose.visitorName();
+                    }
+                    else if (result.disconnectedBy == 'Visitor')
+                    {
+                        disconnectMessage = 'Visitor closed the chat.';
+                    }
+                    else if (result.disconnectedBy == 'System')
+                    {
+                        disconnectMessage = 'Chat was closed due to inactivity.';
+                    }
+
                     conversationToClose.messages.push(new Message({                        
-                        text: 'Visitor closed the chat.',
+                        text: disconnectMessage,
                         sentBy: 'system',
                         time: result.time
                     }, true));

@@ -3,6 +3,7 @@
     public enum UserType
     {
         Visitor,
-        Operator
+        Operator,
+        System
     }
 }

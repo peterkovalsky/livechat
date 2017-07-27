@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kookaburra.Domain.Common;
+using Newtonsoft.Json;
 
 namespace Kookaburra.Models
 {
@@ -9,5 +10,8 @@ namespace Kookaburra.Models
 
         [JsonProperty("time")]
         public double TimeStamp { get; set; }
+
+        [JsonProperty("disconnectedBy")]
+        public UserType DisconnectedBy { get; set; }
     }
 }

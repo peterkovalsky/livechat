@@ -2,6 +2,7 @@
 using Kookaburra.Common;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.StopConversation;
+using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.CurrentSession;
 using Kookaburra.Domain.Query.TimmedOutConversations;
@@ -54,15 +55,16 @@ namespace Kookaburra
                     var diconnectView = new DisconnectViewModel
                     {
                         VisitorSessionId = conversation.VisitorSessionId,
-                        TimeStamp = DateTime.UtcNow.JsDateTime()
+                        TimeStamp = DateTime.UtcNow.JsDateTime(),
+                        DisconnectedBy = UserType.System
                     };
 
                     // Notify all operator instances
                     hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(conversation.VisitorSessionId);
-                    hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedByVisitor(diconnectView);
+                    hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnected(diconnectView);
 
                     // Notify all visitor instances       
-                    hubContext.Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByVisitor();
+                    hubContext.Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnected(diconnectView);
                 }
             }
         }

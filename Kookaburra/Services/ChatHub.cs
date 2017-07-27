@@ -133,7 +133,8 @@ namespace Kookaburra.Services
             var diconnectView = new DisconnectViewModel
             {
                 VisitorSessionId = visitorSessionId,
-                TimeStamp = DateTime.UtcNow.JsDateTime()
+                TimeStamp = DateTime.UtcNow.JsDateTime(),
+                DisconnectedBy = UserType.Operator
             };
 
             // Notify all operator instances
@@ -287,7 +288,8 @@ namespace Kookaburra.Services
             var diconnectView = new DisconnectViewModel
             {
                 VisitorSessionId = visitorSessionId,
-                TimeStamp = DateTime.UtcNow.JsDateTime()
+                TimeStamp = DateTime.UtcNow.JsDateTime(),
+                DisconnectedBy = UserType.Visitor
             };
             // Notify all operator instances
             Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(visitorSessionId);
