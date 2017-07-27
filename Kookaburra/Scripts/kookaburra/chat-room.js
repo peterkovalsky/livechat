@@ -187,19 +187,7 @@
                     self.conversations.remove(conversationToClose);
                 }
             }            
-        };
-
-        // Operator stopped chat
-        //$.connection.chatHub.client.visitorDisconnectedByOperator = function (result) {
-
-        //    var conversationToClose = ko.utils.arrayFirst(self.conversations(), function (c) {
-        //        return c.sessionId() == result.visitorSessionId;
-        //    });
-
-        //    if (conversationToClose) {
-        //        self.conversations.remove(conversationToClose);                
-        //    }
-        //};
+        };    
     };
 }
 

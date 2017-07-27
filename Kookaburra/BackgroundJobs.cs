@@ -32,9 +32,7 @@ namespace Kookaburra
         [AutomaticRetry(Attempts = 0)]
         public async Task TimeoutInactiveConversations()
         {
-            var result = await _timmedOutConversationsQueryHandler.ExecuteAsync(new TimmedOutConversationsQuery(5));
-
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            var result = await _timmedOutConversationsQueryHandler.ExecuteAsync(new TimmedOutConversationsQuery(5));            
 
             foreach (var conversation in result.Conversations)
             {            
@@ -50,22 +48,28 @@ namespace Kookaburra
                 };
                 await _stopConversationCommandHandler.ExecuteAsync(stopCommand);
 
-                if (currentSession != null)
+                DisconnectVisitor(currentSession, UserType.System);              
+            }
+        }
+
+        private void DisconnectVisitor(CurrentSessionQueryResult currentSession, UserType disconnectedBy)
+        {
+            if (currentSession != null)
+            {
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+
+                var diconnectView = new DisconnectViewModel
                 {
-                    var diconnectView = new DisconnectViewModel
-                    {
-                        VisitorSessionId = conversation.VisitorSessionId,
-                        TimeStamp = DateTime.UtcNow.JsDateTime(),
-                        DisconnectedBy = UserType.System
-                    };
+                    VisitorSessionId = currentSession.VisitorSessionId,
+                    TimeStamp = DateTime.UtcNow.JsDateTime(),
+                    DisconnectedBy = disconnectedBy
+                };
 
-                    // Notify all operator instances
-                    hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(conversation.VisitorSessionId);
-                    hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnected(diconnectView);
-
-                    // Notify all visitor instances       
-                    hubContext.Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnected(diconnectView);
-                }
+                // Notify all operator instances
+                hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(currentSession.VisitorSessionId);
+                hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnected(diconnectView);
+                // Notify all visitor instances
+                hubContext.Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnected(diconnectView);
             }
         }
     }

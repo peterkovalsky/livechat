@@ -170,22 +170,28 @@ function WidgetViewModel(accountKey) {
             self.scrollDown();
         };
 
-        chatHubProxy.client.visitorDisconnectedByOperator = function (result) {
+        chatHubProxy.client.visitorDisconnected = function (result) {
             $.connection.hub.stop();
 
+            var disconnectMessage = 'Chat has been stopped.';
+            if (result.disconnectedBy == 'Operator') {
+                disconnectMessage = 'Operator ended chat with you.';
+            }
+            else if (result.disconnectedBy == 'Visitor') {
+                disconnectMessage = 'You ended chat.';
+                self.view('ThankYou')
+            }
+            else if (result.disconnectedBy == 'System') {
+                disconnectMessage = 'Chat was closed due to inactivity.';
+            }
+
             self.messages.push(new Message({
-                text: 'You were disconnected by the operator',
+                text: disconnectMessage,
                 sentBy: 'system',
                 time: result.time
             }));
 
             self.scrollDown();
-        };
-
-        chatHubProxy.client.visitorDisconnectedByVisitor = function () {
-            $.connection.hub.stop();
-
-            window.location = "/widget/stop";
-        }
+        };       
     }; 
 }

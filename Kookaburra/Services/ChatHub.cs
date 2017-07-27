@@ -130,18 +130,7 @@ namespace Kookaburra.Services
 
             await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorSessionId, Context.User.Identity.GetUserId()));
 
-            var diconnectView = new DisconnectViewModel
-            {
-                VisitorSessionId = visitorSessionId,
-                TimeStamp = DateTime.UtcNow.JsDateTime(),
-                DisconnectedBy = UserType.Operator
-            };
-
-            // Notify all operator instances
-            Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(visitorSessionId);
-            Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedByOperator(diconnectView);
-            // Notify all visitor instances
-            Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByOperator(diconnectView);
+            DisconnectVisitor(currentSession, UserType.Operator);          
         }
         #endregion
 
@@ -285,42 +274,7 @@ namespace Kookaburra.Services
 
             await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorSessionId, Context.User.Identity.GetUserId()));
 
-            var diconnectView = new DisconnectViewModel
-            {
-                VisitorSessionId = visitorSessionId,
-                TimeStamp = DateTime.UtcNow.JsDateTime(),
-                DisconnectedBy = UserType.Visitor
-            };
-            // Notify all operator instances
-            Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(visitorSessionId);
-            Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedByVisitor(diconnectView);
-
-            // Notify all visitor instances       
-            Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByVisitor();
-        }
-
-        public async Task StopConversation(string visitorSessionId)
-        {
-            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
-            {
-                VisitorSessionId = visitorSessionId
-            };
-            var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
-
-            if (currentSession != null)
-            {
-                var diconnectView = new DisconnectViewModel
-                {
-                    VisitorSessionId = visitorSessionId,
-                    TimeStamp = DateTime.UtcNow.JsDateTime()
-                };
-                // Notify all operator instances
-                Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(visitorSessionId);
-                Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedByVisitor(diconnectView);
-
-                // Notify all visitor instances       
-                Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnectedByVisitor();
-            }
+            DisconnectVisitor(currentSession, UserType.Visitor);           
         }
         #endregion
 
@@ -352,6 +306,25 @@ namespace Kookaburra.Services
         }
 
         #region Helpers
+        private void DisconnectVisitor(CurrentSessionQueryResult currentSession, UserType disconnectedBy)
+        {
+            if (currentSession != null)
+            {
+                var diconnectView = new DisconnectViewModel
+                {
+                    VisitorSessionId = currentSession.VisitorSessionId,
+                    TimeStamp = DateTime.UtcNow.JsDateTime(),
+                    DisconnectedBy = disconnectedBy
+                };
+
+                // Notify all operator instances
+                Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(currentSession.VisitorSessionId);
+                Clients.Clients(currentSession.OperatorConnectionIds.AllBut(Context.ConnectionId)).visitorDisconnected(diconnectView);
+                // Notify all visitor instances
+                Clients.Clients(currentSession.VisitorConnectionIds.AllBut(Context.ConnectionId)).visitorDisconnected(diconnectView);
+            }
+        }
+
         private string GetSessionId()
         {
             var httpContext = Context.Request.GetHttpContext();
