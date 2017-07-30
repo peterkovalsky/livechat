@@ -100,9 +100,9 @@ namespace Kookaburra.Services
             };
 
             // Notify all operator instances (mutiple tabs)            
-            Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, visitorSessionId);
+            Clients.Clients(currentSession.OperatorConnectionIds.AllBut(Context.ConnectionId)).sendMessageToOperator(messageView, visitorSessionId);
             // Notify all visitor instances (mutiple tabs)
-            Clients.Clients(currentSession.VisitorConnectionIds).sendMessageToVisitor(messageView);
+            Clients.Clients(currentSession.VisitorConnectionIds.AllBut(Context.ConnectionId)).sendMessageToVisitor(messageView);
 
             await _operatorMessagedCommandHandler.ExecuteAsync(new OperatorMessagedCommand(visitorSessionId, message, dateSent, Context.User.Identity.GetUserId()));
         }

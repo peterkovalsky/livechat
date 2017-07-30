@@ -55,15 +55,20 @@
     // ----------------------------------------
     self.addEnterPressEvent = function () {
         $(document).keypress(function (e) {
-            if (e.which == 13) {
-                //self.currentChat().messages.push(new Message({
-                //    author: self.operatorName,
-                //    text: self.newText(),
-                //    sentBy: 'operator',
-                //    time: moment()                                                  
-                //}, true));
+            if (e.which == 13) {                
 
                 if (!isNullOrWhitespace(self.newText())) {
+
+                    self.currentChat().messages.push(new Message({
+                        author: self.operatorName,
+                        text: self.newText(),
+                        sentBy: 'operator',
+                        time: moment()
+                    }, true));
+
+                    self.scrollDown();
+                    $('[data-toggle="tooltip"]').tooltip();
+
                     $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId());
                 }
 
