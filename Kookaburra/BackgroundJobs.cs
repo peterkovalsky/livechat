@@ -32,7 +32,7 @@ namespace Kookaburra
         [AutomaticRetry(Attempts = 0)]
         public async Task TimeoutInactiveConversations()
         {
-            var result = await _timmedOutConversationsQueryHandler.ExecuteAsync(new TimmedOutConversationsQuery(5));            
+            var result = await _timmedOutConversationsQueryHandler.ExecuteAsync(new TimmedOutConversationsQuery(30));            
 
             foreach (var conversation in result.Conversations)
             {            
@@ -62,7 +62,7 @@ namespace Kookaburra
                 {
                     VisitorSessionId = currentSession.VisitorSessionId,
                     TimeStamp = DateTime.UtcNow.JsDateTime(),
-                    DisconnectedBy = disconnectedBy
+                    DisconnectedBy = disconnectedBy.ToString()
                 };
 
                 // Notify all operator instances

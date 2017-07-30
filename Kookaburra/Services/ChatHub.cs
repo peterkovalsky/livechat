@@ -314,7 +314,7 @@ namespace Kookaburra.Services
                 {
                     VisitorSessionId = currentSession.VisitorSessionId,
                     TimeStamp = DateTime.UtcNow.JsDateTime(),
-                    DisconnectedBy = disconnectedBy
+                    DisconnectedBy = disconnectedBy.ToString()
                 };
 
                 // Notify all operator instances

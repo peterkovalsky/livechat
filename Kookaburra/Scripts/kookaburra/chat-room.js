@@ -39,6 +39,7 @@
                 self.setCurrentChat();                
 
                 $('.scrollbar-macosx').scrollbar({ scrollStep: 5});
+                $('[data-toggle="tooltip"]').tooltip();
 
                 self.scrollDown();
                 self.enterMessageFocus(true);
@@ -99,6 +100,7 @@
         self.setCurrentChat(conversation);
 
         $('.scrollbar-macosx').scrollbar({ scrollStep: 5 });
+        $('[data-toggle="tooltip"]').tooltip();
         $('#conversation').scrollTop($('#conversation').prop("scrollHeight"));
 
         // mark all messages as READ in the current conversation
@@ -134,7 +136,8 @@
             self.conversations.push(new Conversation(conversationView))
             self.setCurrentChat();
 
-            $('.scrollbar-macosx').scrollbar({ scrollStep: 5 });            
+            $('.scrollbar-macosx').scrollbar({ scrollStep: 5 });
+            $('[data-toggle="tooltip"]').tooltip();
         };
 
         // Message from visitor/operator
@@ -148,6 +151,7 @@
                 conversation.messages.push(new Message(message, conversation.isCurrent()));
           
                 self.scrollDown();
+                $('[data-toggle="tooltip"]').tooltip();
             }
         };
 

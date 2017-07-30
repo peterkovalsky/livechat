@@ -69,14 +69,21 @@
                                 <!-- ko if: sentBy() == 'operator' || sentBy() == 'visitor' -->
                                 <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator'}">
                                     <div class="chat-avatar">
-                                        <a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title="June Lane">
-                                            <!-- ko if: sentBy() == 'operator' -->
+
+                                        <!-- ko if: sentBy() == 'operator' -->
+                                        <div class="avatar avatar-online" data-bind="attr: {'data-original-title': author() }"
+                                             data-toggle="tooltip" data-placement="left" data-trigger="hover">
                                             <img src="/images/operator-default.png">
-                                            <!-- /ko -->
-                                            <!-- ko if: sentBy() == 'visitor' -->
+                                        </div>
+                                        <!-- /ko -->
+
+                                        <!-- ko if: sentBy() == 'visitor' -->
+                                        <div class="avatar avatar-online" data-bind="attr: {'data-original-title': author() }"
+                                             data-toggle="tooltip" data-placement="right" data-trigger="hover">
                                             <img src="/images/visitor-default.png">
-                                            <!-- /ko -->
-                                        </a>
+                                        </div>
+                                        <!-- /ko -->
+
                                     </div>
                                     <div class="chat-body" data-bind="foreach: messages">
                                         <div class="chat-content">
