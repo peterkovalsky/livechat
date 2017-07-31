@@ -301,7 +301,7 @@
   <ItemGroup>
     <Content Include="Content\jquery.scrollbar.css" />
     <Content Include="Content\kookaburra\chat-history.css" />
-    <Content Include="Content\kookaburra\operator-chat.css" />
+    <Content Include="Content\kookaburra\chat-room.css" />
     <Content Include="Content\kookaburra\offline-messages.css" />
     <Content Include="Content\kookaburra\portal.css" />
     <Content Include="Content\kookaburra\public.css" />

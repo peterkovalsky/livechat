@@ -80,7 +80,7 @@ namespace Kookaburra
             bundles.Add(new StyleBundle("~/bundles/css/chatroom")
                 .Include("~/remark/global/vendor/alertify/alertify.css")               
                 .Include("~/Content/jquery.scrollbar.css")
-                .Include("~/Content/kookaburra/operator-chat.css")
+                .Include("~/Content/kookaburra/chat-room.css")
             );
 
             bundles.Add(new StyleBundle("~/bundles/css/offlinemessages")

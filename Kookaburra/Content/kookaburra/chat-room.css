@@ -109,6 +109,10 @@
     margin: 20px 0;
 }
 
+.chat-left .chat-content.sending  {   
+    background-color: #F9CD48;
+}
+
 .operator-chats .chat.system .chat-body .chat-content {    
     background-color: #526069;  
     max-width: 100%;

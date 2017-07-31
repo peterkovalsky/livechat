@@ -64,12 +64,15 @@
                         text: self.newText(),
                         sentBy: 'operator',
                         time: moment()
-                    }, true));
+                    }, true, true));
 
                     self.scrollDown();
                     $('[data-toggle="tooltip"]').tooltip();
 
-                    $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId());
+                    $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId())
+                        .done(function () {
+
+                        });
                 }
 
                 self.newText(''); // clear input area
@@ -90,7 +93,7 @@
                 text: 'You ended chat with ' + self.currentChat().visitorName(),
                 sentBy: 'system',
                 time: moment()
-            }, true));
+            }, true, false));
 
             self.scrollDown();
             self.currentChat().isClosed(true);            
@@ -153,7 +156,7 @@
             });
 
             if (conversation) {
-                conversation.messages.push(new Message(message, conversation.isCurrent()));
+                conversation.messages.push(new Message(message, conversation.isCurrent(), false));
           
                 self.scrollDown();
                 $('[data-toggle="tooltip"]').tooltip();
@@ -188,7 +191,7 @@
                         text: disconnectMessage,
                         sentBy: 'system',
                         time: result.time
-                    }, true));
+                    }, true, false));
 
                     conversationToClose.isClosed(true);
                 }
@@ -200,13 +203,14 @@
     };
 }
 
-function Message(data, isRead) {
+function Message(data, isRead, isSending) {
     var self = this;
 
     self.author = ko.observable(data.author);
     self.text = ko.observable(data.text);
     self.sentBy = ko.observable(data.sentBy);
     self.timeSent = ko.observable(data.time);
+    self.sending = ko.observable(isSending);
 
     var now = ko.observable(new Date());
     setInterval(function () { now(new Date()); }, 60 * 1000);
@@ -242,7 +246,7 @@ function Conversation(data) {
 
     if (data.messages) {
         $.each(data.messages, function (index, item) {
-            self.messages.push(new Message(item, true));
+            self.messages.push(new Message(item, true, false));
         });
     }
 

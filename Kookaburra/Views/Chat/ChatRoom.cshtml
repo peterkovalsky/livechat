@@ -67,7 +67,7 @@
                         <div id="messages" class="panel-body">
                             <div id="conversation" class="chats scrollbar-macosx" data-bind="foreach: groupedMessages">
                                 <!-- ko if: sentBy() == 'operator' || sentBy() == 'visitor' -->
-                                <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator'}">
+                                <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator' }">
                                     <div class="chat-avatar">
 
                                         <!-- ko if: sentBy() == 'operator' -->
@@ -86,7 +86,7 @@
 
                                     </div>
                                     <div class="chat-body" data-bind="foreach: messages">
-                                        <div class="chat-content">
+                                        <div class="chat-content" data-bind="css: {sending: sending() }">
                                             <p data-bind="text: text"></p>
                                             <time class="chat-time" data-bind="text: time"></time>
                                         </div>
