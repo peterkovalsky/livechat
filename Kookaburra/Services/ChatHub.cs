@@ -81,7 +81,7 @@ namespace Kookaburra.Services
         /// Message from OPERATOR to VISITOR
         /// </summary>
         [Authorize]
-        public async Task SendToVisitor(string operatorName, string message, string visitorSessionId)
+        public async Task<dynamic> SendToVisitor(string operatorName, string message, string visitorSessionId, long messageId)
         {
             var dateSent = DateTime.UtcNow;
 
@@ -105,6 +105,12 @@ namespace Kookaburra.Services
             Clients.Clients(currentSession.VisitorConnectionIds.AllBut(Context.ConnectionId)).sendMessageToVisitor(messageView);
 
             await _operatorMessagedCommandHandler.ExecuteAsync(new OperatorMessagedCommand(visitorSessionId, message, dateSent, Context.User.Identity.GetUserId()));
+
+            return new
+            {
+                visitorSessionId = visitorSessionId,
+                messageId = messageId
+            };
         }
 
         [Authorize]

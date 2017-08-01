@@ -31,7 +31,7 @@
     // -------------------------
     self.startOrResumeChat = function () {
         $.connection.chatHub.server.resumeOperatorChat().done(function (result) {
-            if (result.conversations && result.conversations.length > 0) {
+            if (result && result.conversations && result.conversations.length > 0) {
                 $.each(result.conversations, function (index, item) {
                     self.conversations.push(new Conversation(item));
                 });
@@ -59,7 +59,10 @@
 
                 if (!isNullOrWhitespace(self.newText())) {
 
+                    var newMessageId = new Date().valueOf();
+
                     self.currentChat().messages.push(new Message({
+                        id: newMessageId,
                         author: self.operatorName,
                         text: self.newText(),
                         sentBy: 'operator',
@@ -69,9 +72,15 @@
                     self.scrollDown();
                     $('[data-toggle="tooltip"]').tooltip();
 
-                    $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId())
-                        .done(function () {
-
+                    $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId(), newMessageId)
+                        .done(function (data) {
+                            var conversations = $.grep(self.conversations(), function (e) { return e.sessionId() == data.visitorSessionId; });
+                            if (conversations && conversations.length > 0) {
+                                var messages = $.grep(conversations[0].messages(), function (e) { return e.id == data.messageId; });
+                                if (messages && messages.length > 0) {
+                                    messages[0].sending(false);
+                                }
+                            }
                         });
                 }
 
@@ -206,6 +215,7 @@
 function Message(data, isRead, isSending) {
     var self = this;
 
+    self.id = data.id;
     self.author = ko.observable(data.author);
     self.text = ko.observable(data.text);
     self.sentBy = ko.observable(data.sentBy);

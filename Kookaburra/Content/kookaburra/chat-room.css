@@ -109,8 +109,12 @@
     margin: 20px 0;
 }
 
-.chat-left .chat-content.sending  {   
-    background-color: #F9CD48;
+.chat-left .chat-content.sending:before {
+    border-right-color: #F3F7F9;
+}
+
+.chat-left .chat-content.sending {
+    background-color: #F3F7F9;
 }
 
 .operator-chats .chat.system .chat-body .chat-content {    
