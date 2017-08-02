@@ -4,7 +4,8 @@
             Please intoduce yourself
         </div>
         <div class="name">
-            <input id="visitor-name" type="text" placeholder="Name" autocomplete="off" data-bind="textInput: visitor().name, hasFocus: visitor().focusName; enterkey: startChat" />
+            <input id="visitor-name" type="text" placeholder="Name" autocomplete="off" 
+                   data-bind="textInput: visitor().name, hasFocus: visitor().focusName; enterkey: startChat, css: { 'input-validation-error': visitor().name.hasError }" />
         </div>
         <div class="email">
             <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="textInput: visitor().email, enterkey: startChat" />
@@ -15,7 +16,7 @@
     </div>
 
     <div class="footer">
-        <label><a href="https://www.kookaburra.chat/" target="_blank">Powered by KOOKABURRA</a></label>
+        <label><a href="https://www.kookaburra.chat/" target="_blank">Powered by kookaburra.chat</a></label>
         <div style="clear:both;"></div>
     </div>
 </div>

@@ -12,6 +12,27 @@
     }
 };
 
+ko.extenders.required = function (target, overrideMessage) {
+    //add some sub-observables to our observable
+    target.hasError = ko.observable();
+    target.validationMessage = ko.observable();
+
+    //define a function to do validation
+    function validate(newValue) {
+        target.hasError(newValue ? false : true);
+        target.validationMessage(newValue ? "" : overrideMessage || "This field is required");
+    }
+
+    //initial validation
+    //validate(target());
+
+    //validate whenever the value changes
+    target.subscribe(validate);
+
+    //return the original observable
+    return target;
+};
+
 function Offline(accountKey) {
     var self = this;
 
@@ -34,14 +55,14 @@ function Message(data) {
 
 function Visitor(accountKey) {
     var self = this;
-   
-    self.name = '';
+
+    self.name = ko.observable('').extend({ required: "Please enter your name" });
     self.email = '';
     self.url = (window.location != window.parent.location)
-                ? document.referrer
-                : document.location.href;
+        ? document.referrer
+        : document.location.href;
 
-    self.accountKey = accountKey;  
+    self.accountKey = accountKey;
     self.focusName = ko.observable(true);
 }
 
@@ -84,7 +105,7 @@ function WidgetViewModel(accountKey) {
                     self.operatorName(conversationViewModel.operatorName);
                     self.resumeChat(conversationViewModel.conversation);
 
-                    self.isMessageBoxFocus(true); 
+                    self.isMessageBoxFocus(true);
 
                     self.view('Chat')
                 }
@@ -103,21 +124,23 @@ function WidgetViewModel(accountKey) {
     };
 
     self.startChat = function () {
-        chatHubProxy.server.startChat(self.visitor()).done(function (result) {
+        self.visitor().name.hasError(self.visitor().name() ? false : true);
 
-            if (result != null)
-            {
-                $.cookie(SESSION_ID_COOKIE, result.sessionId, { path: '/' });
+        if (!self.visitor().name.hasError()) {
+            chatHubProxy.server.startChat(self.visitor()).done(function (result) {
 
-                self.operatorName(result.operatorName);
-                self.isMessageBoxFocus(true);
-                self.view('Chat')
-            }
-            else
-            {
-                self.view('GoneOffline')
-            }            
-        });
+                if (result != null) {
+                    $.cookie(SESSION_ID_COOKIE, result.sessionId, { path: '/' });
+
+                    self.operatorName(result.operatorName);
+                    self.isMessageBoxFocus(true);
+                    self.view('Chat')
+                }
+                else {
+                    self.view('GoneOffline')
+                }
+            });
+        }
     };
 
     self.gotoOfflineForm = function () {
@@ -135,7 +158,7 @@ function WidgetViewModel(accountKey) {
     // -----------
     self.resumeChat = function (previousConversation) {
         self.messages(previousConversation);
-       
+
         self.addEnterPressEvent();
         self.scrollDown();
     };
@@ -152,7 +175,7 @@ function WidgetViewModel(accountKey) {
         chatHubProxy.server.sendToOperator(self.newMessage());
 
         self.newMessage('');
-        self.scrollDown();  
+        self.scrollDown();
     };
 
     self.scrollDown = function () {
@@ -192,6 +215,6 @@ function WidgetViewModel(accountKey) {
             }));
 
             self.scrollDown();
-        };       
-    }; 
+        };
+    };
 }
