@@ -5,7 +5,7 @@
         </div>
         <div class="name">
             <input id="visitor-name" type="text" placeholder="Name" autocomplete="off" 
-                   data-bind="textInput: visitor().name, hasFocus: visitor().focusName; enterkey: startChat, css: { 'input-validation-error': visitor().name.hasError }" />
+                   data-bind="textInput: visitor().name, hasFocus: visitor().focusName, enterkey: startChat, css: { 'input-validation-error': visitor().name.hasError }" />
         </div>
         <div class="email">
             <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="textInput: visitor().email, enterkey: startChat" />

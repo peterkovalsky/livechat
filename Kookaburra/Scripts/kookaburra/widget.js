@@ -127,7 +127,9 @@ function WidgetViewModel(accountKey) {
         self.visitor().name.hasError(self.visitor().name() ? false : true);
 
         if (!self.visitor().name.hasError()) {
-            chatHubProxy.server.startChat(self.visitor()).done(function (result) {
+            var visitorView = ko.toJS(self.visitor());
+
+            chatHubProxy.server.startChat(visitorView).done(function (result) {
 
                 if (result != null) {
                     $.cookie(SESSION_ID_COOKIE, result.sessionId, { path: '/' });
