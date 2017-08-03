@@ -19,6 +19,7 @@ using Kookaburra.Models.Widget;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -213,7 +214,7 @@ namespace Kookaburra.Services
                         City = resumedConversation.VisitorInfo.City, 
                         Region = resumedConversation.VisitorInfo.Region,
                         CurrentUrl = visitor.PageUrl,
-                        StartTime = DateTime.UtcNow.JsDateTime()
+                        StartTime = DateTime.UtcNow.JsDateTime()                        
                     };
 
                     // Notify all operator instances about this visitor
@@ -223,7 +224,8 @@ namespace Kookaburra.Services
                     return new StartChatViewModel
                     {
                         SessionId = newSessionId,
-                        OperatorName = availableOperator.OperatorName
+                        OperatorName = availableOperator.OperatorName,
+                        Messages = Mapper.Map<List<MessageViewModel>>(resumedConversation.Conversation)
                     };
                 }
             }

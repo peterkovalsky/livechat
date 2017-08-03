@@ -134,6 +134,10 @@ function WidgetViewModel(accountKey) {
                 if (result != null) {
                     $.cookie(SESSION_ID_COOKIE, result.sessionId, { path: '/' });
 
+                    if (result.messages) {
+                        self.messages(result.messages);
+                    }
+
                     self.operatorName(result.operatorName);
                     self.isMessageBoxFocus(true);
                     self.view('Chat')
