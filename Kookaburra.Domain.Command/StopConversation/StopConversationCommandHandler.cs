@@ -25,6 +25,8 @@ namespace Kookaburra.Domain.Command.StopConversation
             if (conversationId == default(long))
             {
                 var visitorSession = _chatSession.GetVisitorByVisitorSessionId(command.VisitorSessionId);
+                if (visitorSession == null) return;
+
                 conversationId = visitorSession.ConversationId;
             }
 

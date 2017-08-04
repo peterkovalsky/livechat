@@ -189,7 +189,12 @@ namespace Kookaburra.Services
             // if operator is available - establish connection
             if (availableOperator != null)
             {
-                var newSessionId = Guid.NewGuid().ToString();
+                // check if it's a returning visitor
+                var newSessionId = GetSessionId();
+                if (string.IsNullOrWhiteSpace(newSessionId))
+                {
+                    newSessionId = Guid.NewGuid().ToString();
+                }                
 
                 var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, newSessionId, Context.User.Identity.GetUserId())
                 {

@@ -11,4 +11,9 @@ namespace Kookaburra.Domain.Command
     {
         Task ExecuteAsync(TCommand command);
     }
+
+    public interface ICommandHandler<in TCommand> where TCommand : ICommand
+    {
+        Task ExecuteAsync(TCommand command);
+    }
 }
