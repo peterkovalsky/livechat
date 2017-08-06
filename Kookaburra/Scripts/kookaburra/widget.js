@@ -138,9 +138,9 @@ function WidgetViewModel(accountKey) {
                         self.messages(result.messages);
                     }
 
-                    self.operatorName(result.operatorName);
+                    self.operatorName(result.operatorName);                   
+                    self.view('Chat');
                     self.isMessageBoxFocus(true);
-                    self.view('Chat')
                 }
                 else {
                     self.view('GoneOffline')
@@ -173,6 +173,7 @@ function WidgetViewModel(accountKey) {
     // ------------------
     self.closeChat = function () {
         chatHubProxy.server.finishChattingWithOperator();
+        self.view('ThankYouEndChat');
     }
 
     // Sends message to operator on Enter Press
@@ -200,7 +201,7 @@ function WidgetViewModel(accountKey) {
         };
 
         chatHubProxy.client.visitorDisconnected = function (result) {
-            $.connection.hub.stop();
+            //$.connection.hub.stop();
 
             var disconnectMessage = 'Chat has been stopped.';
             if (result.disconnectedBy == 'Operator') {
@@ -220,7 +221,7 @@ function WidgetViewModel(accountKey) {
                 time: result.time
             }));
 
-            self.scrollDown();
+            self.scrollDown();           
         };
     };
 }

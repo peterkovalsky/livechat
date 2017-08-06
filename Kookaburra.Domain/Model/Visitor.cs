@@ -36,5 +36,9 @@ namespace Kookaburra.Domain.Model
         public virtual IEnumerable<Conversation> Conversations { get; set; }
 
         public virtual IEnumerable<OfflineMessage> OfflineMessages { get; set; }
+
+        public virtual Account Account { get; set; }
+
+        public int AccountId { get; set; }
     }
 }

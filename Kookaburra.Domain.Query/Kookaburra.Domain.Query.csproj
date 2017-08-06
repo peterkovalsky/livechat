@@ -60,6 +60,9 @@
     <Compile Include="CurrentSession\CurrentSessionQueryHandler.cs" />
     <Compile Include="OfflineMessages\OfflineMessagesQueryHandler.cs" />
     <Compile Include="ResumeOperator\ResumeOperatorQueryHandler.cs" />
+    <Compile Include="ReturningVisitor\ReturningVisitorQuery.cs" />
+    <Compile Include="ReturningVisitor\ReturningVisitorQueryHandler.cs" />
+    <Compile Include="ReturningVisitor\ReturningVisitorQueryResult.cs" />
     <Compile Include="SearchOfflineMessages\SearchOfflineMessagesQueryHandler.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQuery.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQueryHandler.cs" />

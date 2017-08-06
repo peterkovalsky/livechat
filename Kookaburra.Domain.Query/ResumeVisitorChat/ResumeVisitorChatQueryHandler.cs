@@ -34,7 +34,7 @@ namespace Kookaburra.Domain.ResumeVisitorChat
                     .Include(i => i.Messages)
                     .Include(i => i.Visitor)
                     .Include(i => i.Operator)
-                    .Where(c => c.Visitor.SessionId == query.VisitorSessionId && c.TimeFinished == null)
+                    .Where(c => c.Id == visitorSession.ConversationId && c.TimeFinished == null)
                     .SingleOrDefaultAsync();
 
                 // check if operator still there            

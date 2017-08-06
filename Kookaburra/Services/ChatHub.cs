@@ -41,6 +41,8 @@ namespace Kookaburra.Services
         
         public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";
 
+        private readonly VisitorCookie _visitorCookie;
+
         public ChatHub(ICommandHandler<ConnectOperatorCommand> connectOperatorCommandHandler,
             ICommandHandler<OperatorMessagedCommand> operatorMessagedCommandHandler,
             ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
@@ -64,6 +66,8 @@ namespace Kookaburra.Services
             _resumeOperatorQueryHandler = resumeOperatorQueryHandler;
             _availableOperatorQueryHandler = availableOperatorQueryHandler;
             _resumeVisitorChatQueryHandler = resumeVisitorChatQueryHandler;
+
+            _visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
         }
 
 
@@ -141,155 +145,7 @@ namespace Kookaburra.Services
         }
         #endregion
 
-        #region Visitor Calls
-
-        public async Task<InitWidgetViewModel> InitWidget(string accountKey)
-        {
-            var query = new AvailableOperatorQuery(accountKey);
-            var operatorResult = await _availableOperatorQueryHandler.ExecuteAsync(query);
-
-            if (operatorResult != null) // Is there any available operator
-            {
-                var sessionId = GetSessionId();
-                if (sessionId != null) // check if it's a returning visitor
-                {
-                    var queryResume = new ResumeVisitorChatQuery(sessionId, Context.ConnectionId);
-                    var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
-
-                    if (resumedConversation != null) // check if session is still alive
-                    {                    
-                        // Online - resume chat
-                        return new InitWidgetViewModel
-                        {
-                            Step = WidgetStepType.Resume.ToString(),
-                            ResumedChat = Mapper.Map<ConversationViewModel>(resumedConversation)
-                        };
-                    }
-                }              
-
-                // Introduction                 
-                return new InitWidgetViewModel
-                {
-                    Step = WidgetStepType.Introduction.ToString()
-                };
-            }
-
-            // Offline - no operator available
-            return new InitWidgetViewModel
-            {
-                Step = WidgetStepType.Offline.ToString()
-            };
-        }
-
-        public async Task<StartChatViewModel> StartChat(IntroductionViewModel visitor)
-        {
-            var query = new AvailableOperatorQuery(visitor.AccountKey);
-            var availableOperator = await _availableOperatorQueryHandler.ExecuteAsync(query);
-
-            // if operator is available - establish connection
-            if (availableOperator != null)
-            {
-                // check if it's a returning visitor
-                var newSessionId = GetSessionId();
-                if (string.IsNullOrWhiteSpace(newSessionId))
-                {
-                    newSessionId = Guid.NewGuid().ToString();
-                }                
-
-                var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, newSessionId, Context.User.Identity.GetUserId())
-                {
-                    Page = visitor.PageUrl,
-                    VisitorIP = WebHelper.GetIPAddress(),
-                    VisitorEmail = visitor.Email
-                };
-                await _startVisitorChatCommandHandler.ExecuteAsync(command);
-
-
-                var queryResume = new ResumeVisitorChatQuery(newSessionId, Context.ConnectionId);
-                var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
-
-                if (resumedConversation != null)
-                {
-                    var visitorInfo = new OperatorConversationViewModel
-                    {
-                        SessionId = newSessionId,
-                        VisitorName = visitor.Name,
-                        Email = visitor.Email,
-                        Country = resumedConversation.VisitorInfo.Country,
-                        City = resumedConversation.VisitorInfo.City, 
-                        Region = resumedConversation.VisitorInfo.Region,
-                        CurrentUrl = visitor.PageUrl,
-                        StartTime = DateTime.UtcNow.JsDateTime()                        
-                    };
-
-                    // Notify all operator instances about this visitor
-                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(newSessionId);
-                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
-
-                    return new StartChatViewModel
-                    {
-                        SessionId = newSessionId,
-                        OperatorName = availableOperator.OperatorName,
-                        Messages = Mapper.Map<List<MessageViewModel>>(resumedConversation.Conversation)
-                    };
-                }
-            }
-
-            return null;
-        }
-
-        public void SendOfflineMessage(OfflineViewModel offlineMessage)
-        {
-
-        }
-
-        /// <summary>
-        /// Message from VISITOR to OPERATOR
-        /// </summary>
-        public async Task SendToOperator(string message)
-        {
-            var dateSent = DateTime.UtcNow;
-
-            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
-            {
-                VisitorConnectionId = Context.ConnectionId
-            };
-            var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
-
-            var messageView = new MessageViewModel
-            {
-                Author = currentSession.VisitorName,
-                Text = message,
-                SentBy = UserType.Visitor,
-                SentOn = dateSent
-            };
-
-            // Notify all visitor instances (mutiple tabs)
-            Clients.Clients(currentSession.VisitorConnectionIds).sendMessageToVisitor(messageView);
-            // Notify all operator instances (mutiple tabs)   
-            Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, currentSession.VisitorSessionId);
-
-            await _visitorMessagedCommandHandler.ExecuteAsync(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent, Context.User.Identity.GetUserId()));
-        }
-
-        /// <summary>
-        /// Visitor wants to stop the conversation with operator
-        /// </summary>
-        public async Task FinishChattingWithOperator()
-        {
-            var visitorSessionId = GetSessionId();
-
-            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
-            {
-                VisitorSessionId = visitorSessionId
-            };
-            var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
-
-            await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorSessionId, Context.User.Identity.GetUserId()));
-
-            DisconnectVisitor(currentSession, UserType.Visitor);           
-        }
-        #endregion
+        
 
         public override Task OnConnected()
         {
@@ -336,27 +192,7 @@ namespace Kookaburra.Services
                 // Notify all visitor instances
                 Clients.Clients(currentSession.VisitorConnectionIds.AllBut(Context.ConnectionId)).visitorDisconnected(diconnectView);
             }
-        }
-
-        private string GetSessionId()
-        {
-            var httpContext = Context.Request.GetHttpContext();
-
-            var sessionId = httpContext.Request.Cookies[COOKIE_SESSION_ID];
-
-            if (sessionId == null || string.IsNullOrWhiteSpace(sessionId.Value))
-            {
-                return null;
-            }
-
-            return sessionId.Value;
-        }
-
-        private void SetSessionId(string newSessionId)
-        {
-            var httpContext = Context.Request.GetHttpContext();
-            httpContext.Response.Cookies.Set(new HttpCookie(COOKIE_SESSION_ID, newSessionId));
-        }
+        }     
         #endregion
     }
 }

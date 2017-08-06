@@ -38,6 +38,7 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Query.CurrentSession;
     using Kookaburra.Domain.Query.OfflineMessages;
     using Kookaburra.Domain.Query.ResumeOperator;
+    using Kookaburra.Domain.Query.ReturningVisitor;
     using Kookaburra.Domain.Query.SearchOfflineMessages;
     using Kookaburra.Domain.Query.TimmedOutConversations;
     using Kookaburra.Domain.Query.Transcript;
@@ -92,8 +93,8 @@ namespace Kookaburra.DependencyResolution
             For<IQueryHandler<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistorySearchQueryHandler>();            
             For<IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistoryQueryHandler>();
             For<IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>>>().Add<TimmedOutConversationsQueryHandler>();
-
-
+            For<IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>>>().Add<ReturningVisitorQueryHandler>();
+            
             ForSingletonOf<ChatSession>();
             ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();
             For<IMailer>().Add<Mailer>();

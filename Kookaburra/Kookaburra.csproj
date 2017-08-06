@@ -239,6 +239,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BackgroundJobs.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Common\VisitorCookie.cs" />
     <Compile Include="Common\WebHelper.cs" />
     <Compile Include="Common\WidgetStepType.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChatHub.cs" />
     <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\VisitorHub.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1991,6 +1993,7 @@
     <Content Include="Views\Widget\_Offline.cshtml" />
     <Content Include="Views\Widget\_ThankYou.cshtml" />
     <Content Include="Views\Widget\_GoneOffline.cshtml" />
+    <Content Include="Views\Widget\_ThankYouEndChat.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

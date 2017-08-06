@@ -1,0 +1,277 @@
+﻿using AutoMapper;
+using Kookaburra.Common;
+using Kookaburra.Domain.AvailableOperator;
+using Kookaburra.Domain.Command;
+using Kookaburra.Domain.Command.StartVisitorChat;
+using Kookaburra.Domain.Command.StopConversation;
+using Kookaburra.Domain.Command.VisitorMessaged;
+using Kookaburra.Domain.Common;
+using Kookaburra.Domain.Query;
+using Kookaburra.Domain.Query.CurrentSession;
+using Kookaburra.Domain.Query.ReturningVisitor;
+using Kookaburra.Domain.ResumeVisitorChat;
+using Kookaburra.Models;
+using Kookaburra.Models.Chat;
+using Kookaburra.Models.Widget;
+using Microsoft.AspNet.SignalR;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Kookaburra.Services
+{
+    public class VisitorHub : Hub
+    {      
+        private readonly ICommandHandler<StopConversationCommand> _stopConversationCommandHandler;
+        private readonly ICommandHandler<StartVisitorChatCommand> _startVisitorChatCommandHandler;
+        private readonly ICommandHandler<VisitorMessagedCommand> _visitorMessagedCommandHandler;
+       
+        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;    
+        private readonly IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> _availableOperatorQueryHandler;
+        private readonly IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> _resumeVisitorChatQueryHandler;
+        private readonly IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> _returningVisitorQueryHandler;
+        
+        private readonly VisitorCookie _visitorCookie;
+
+        public VisitorHub(
+            ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
+            ICommandHandler<StartVisitorChatCommand> startVisitorChatCommandHandler,
+            ICommandHandler<VisitorMessagedCommand> visitorMessagedCommandHandler,            
+            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,           
+            IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> availableOperatorQueryHandler,
+            IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> resumeVisitorChatQueryHandler,
+            IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> returningVisitorQueryHandler)
+        {           
+            _stopConversationCommandHandler = stopConversationCommandHandler;
+            _startVisitorChatCommandHandler = startVisitorChatCommandHandler;
+            _visitorMessagedCommandHandler = visitorMessagedCommandHandler;
+           
+            _currentSessionQueryHandler = currentSessionQueryHandler;           
+            _availableOperatorQueryHandler = availableOperatorQueryHandler;
+            _resumeVisitorChatQueryHandler = resumeVisitorChatQueryHandler;
+            _returningVisitorQueryHandler = returningVisitorQueryHandler;
+
+            _visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
+        }
+
+
+        public async Task<InitWidgetViewModel> InitWidget(string accountKey)
+        {
+            var query = new AvailableOperatorQuery(accountKey);
+            var operatorResult = await _availableOperatorQueryHandler.ExecuteAsync(query);
+
+            if (operatorResult != null) // Is there any available operator
+            {
+                var visitorId = _visitorCookie.GetVisitorId(accountKey);
+
+                // check if it's a returning visitor
+                if (visitorId != null) 
+                {
+                    var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
+                    var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
+
+                    if (resumedConversation != null) // check if session is still alive
+                    {
+                        // resume chat session
+                        return Resume(resumedConversation);
+                    }
+                    else
+                    {
+                        var queryReturning = new ReturningVisitorQuery(accountKey, visitorId);
+                        var returningVisitor = await _returningVisitorQueryHandler.ExecuteAsync(queryReturning);
+                        if (returningVisitor != null)
+                        {
+                            // returning visitor
+                            return Returning(returningVisitor);
+                        }
+                    }
+                }
+
+                // new visitor                 
+                return Introduction();
+            }
+
+            // no operators available
+            return Offline();
+        }   
+
+        public async Task<StartChatViewModel> StartChat(IntroductionViewModel visitor)
+        {
+            var query = new AvailableOperatorQuery(visitor.AccountKey);
+            var availableOperator = await _availableOperatorQueryHandler.ExecuteAsync(query);
+
+            // if operator is available - establish connection
+            if (availableOperator != null)
+            {
+                // check if it's a returning visitor
+                var newSessionId = GetSessionId();
+                if (string.IsNullOrWhiteSpace(newSessionId))
+                {
+                    newSessionId = Guid.NewGuid().ToString();
+                }
+
+                var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, newSessionId, Context.User.Identity.GetUserId())
+                {
+                    Page = visitor.PageUrl,
+                    VisitorIP = WebHelper.GetIPAddress(),
+                    VisitorEmail = visitor.Email
+                };
+                await _startVisitorChatCommandHandler.ExecuteAsync(command);
+
+
+                var queryResume = new ResumeVisitorChatQuery(newSessionId, Context.ConnectionId);
+                var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
+
+                if (resumedConversation != null)
+                {
+                    var visitorInfo = new OperatorConversationViewModel
+                    {
+                        SessionId = newSessionId,
+                        VisitorName = visitor.Name,
+                        Email = visitor.Email,
+                        Country = resumedConversation.VisitorInfo.Country,
+                        City = resumedConversation.VisitorInfo.City,
+                        Region = resumedConversation.VisitorInfo.Region,
+                        CurrentUrl = visitor.PageUrl,
+                        StartTime = DateTime.UtcNow.JsDateTime()
+                    };
+
+                    // Notify all operator instances about this visitor
+                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(newSessionId);
+                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
+
+                    return new StartChatViewModel
+                    {
+                        SessionId = newSessionId,
+                        OperatorName = availableOperator.OperatorName,
+                        Messages = Mapper.Map<List<MessageViewModel>>(resumedConversation.Conversation)
+                    };
+                }
+            }
+
+            return null;
+        }
+
+        public void SendOfflineMessage(OfflineViewModel offlineMessage)
+        {
+
+        }
+
+        /// <summary>
+        /// Message from VISITOR to OPERATOR
+        /// </summary>
+        public async Task SendToOperator(string message)
+        {
+            var dateSent = DateTime.UtcNow;
+
+            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
+            {
+                VisitorConnectionId = Context.ConnectionId
+            };
+            var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
+
+            var messageView = new MessageViewModel
+            {
+                Author = currentSession.VisitorName,
+                Text = message,
+                SentBy = UserType.Visitor,
+                SentOn = dateSent
+            };
+
+            // Notify all visitor instances (mutiple tabs)
+            Clients.Clients(currentSession.VisitorConnectionIds).sendMessageToVisitor(messageView);
+            // Notify all operator instances (mutiple tabs)   
+            Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, currentSession.VisitorSessionId);
+
+            await _visitorMessagedCommandHandler.ExecuteAsync(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent, Context.User.Identity.GetUserId()));
+        }
+
+        /// <summary>
+        /// Visitor wants to stop the conversation with operator
+        /// </summary>
+        public async Task FinishChattingWithOperator()
+        {
+            var visitorSessionId = GetSessionId();
+
+            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
+            {
+                VisitorSessionId = visitorSessionId
+            };
+            var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
+
+            await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorSessionId, Context.User.Identity.GetUserId()));
+
+            DisconnectVisitor(currentSession, UserType.Visitor);
+        }
+
+        #region Private Methods
+
+        /// <summary>
+        /// Introduction of a new visitor
+        /// </summary>        
+        private InitWidgetViewModel Introduction()
+        {
+            return new InitWidgetViewModel
+            {
+                Step = WidgetStepType.Introduction.ToString()
+            };
+        }
+
+        /// <summary>
+        /// Returning visitor - pre-fill intro form
+        /// </summary>     
+        private InitWidgetViewModel Returning(ReturningVisitorQueryResult returningVisitor)
+        {
+            return new InitWidgetViewModel
+            {
+                Step = WidgetStepType.Returning.ToString(),
+                VisitorName = returningVisitor.VisitorName,
+                VisitorEmail = returningVisitor.VisitorEmail
+            };
+        }
+
+        /// <summary>
+        /// Resume chat session from where it was left off
+        /// </summary> 
+        private InitWidgetViewModel Resume(ResumeVisitorChatQueryResult resumedConversation)
+        {
+            return new InitWidgetViewModel
+            {
+                Step = WidgetStepType.Resume.ToString(),
+                ResumedChat = Mapper.Map<ConversationViewModel>(resumedConversation)
+            };
+        }
+
+        /// <summary>
+        /// Operator(s) offline - leave a message
+        /// </summary>        
+        private InitWidgetViewModel Offline()
+        {
+            return new InitWidgetViewModel
+            {
+                Step = WidgetStepType.Offline.ToString()
+            };
+        }
+
+        private void DisconnectVisitor(CurrentSessionQueryResult currentSession, UserType disconnectedBy)
+        {
+            if (currentSession != null)
+            {
+                var diconnectView = new DisconnectViewModel
+                {
+                    VisitorSessionId = currentSession.VisitorSessionId,
+                    TimeStamp = DateTime.UtcNow.JsDateTime(),
+                    DisconnectedBy = disconnectedBy.ToString()
+                };
+
+                // Notify all operator instances
+                Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(currentSession.VisitorSessionId);
+                Clients.Clients(currentSession.OperatorConnectionIds.AllBut(Context.ConnectionId)).visitorDisconnected(diconnectView);
+                // Notify all visitor instances
+                Clients.Clients(currentSession.VisitorConnectionIds.AllBut(Context.ConnectionId)).visitorDisconnected(diconnectView);
+            }
+        }
+
+        #endregion
+    }
+}

@@ -2,7 +2,8 @@
 {
     public enum WidgetStepType
     {
-        Introduction,       
+        Introduction,
+        Returning,
         Resume,
         Offline
     }
