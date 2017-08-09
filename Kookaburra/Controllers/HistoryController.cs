@@ -5,7 +5,9 @@ using Kookaburra.Domain.Query.ChatHistory;
 using Kookaburra.Domain.Query.Transcript;
 using Kookaburra.Models.History;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 
@@ -16,7 +18,9 @@ namespace Kookaburra.Controllers
     {
         private readonly IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>> _chatHistoryQueryHandler;
         private readonly IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>> _transcriptQueryHandler;
-        
+
+        private ApplicationUserManager _userManager;
+
         private readonly int PageSize = 10;
 
         public HistoryController(IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>> chatHistoryQueryHandler,
@@ -24,12 +28,17 @@ namespace Kookaburra.Controllers
         {
             _chatHistoryQueryHandler = chatHistoryQueryHandler;
             _transcriptQueryHandler = transcriptQueryHandler;
+
+            _userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
         }
+
 
         [HttpGet, Route("history")]
         public async Task<ActionResult> Chats()
         {
-            var query = new ChatHistoryQuery(TimeFilterType.All, User.Identity.GetUserId())
+            var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
+
+            var query = new ChatHistoryQuery(TimeFilterType.All, user.AccountKey)
             {
                 Pagination = new Pagination(PageSize, 1)
             };
@@ -43,7 +52,9 @@ namespace Kookaburra.Controllers
         [HttpGet, Route("transcript/{id}")]       
         public async Task<ActionResult> Transcript(long id)
         {
-            var query = new TranscriptQuery(id, User.Identity.GetUserId());
+            var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
+
+            var query = new TranscriptQuery(id, user.AccountKey);
             var result = await _transcriptQueryHandler.ExecuteAsync(query);
 
             if (result == null)

@@ -7,6 +7,7 @@ using Kookaburra.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -119,7 +120,8 @@ namespace Kookaburra.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var accountKey = Guid.NewGuid().ToString();
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, AccountKey = accountKey };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -129,7 +131,8 @@ namespace Kookaburra.Controllers
                         Company = model.Company,
                         OperatorIdentity = user.Id,
                         ClientName = model.ClientName,
-                        Email = model.Email
+                        Email = model.Email,
+                        AccountKey = accountKey
                     };
                     await _signUpCommandHandler.ExecuteAsync(command);
 

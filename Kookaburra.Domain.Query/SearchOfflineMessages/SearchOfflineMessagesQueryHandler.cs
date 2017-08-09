@@ -18,7 +18,7 @@ namespace Kookaburra.Domain.Query.SearchOfflineMessages
         public async Task<OfflineMessagesQueryResult> ExecuteAsync(SearchOfflineMessagesQuery query)
         {
             var offlineMessages = _context.OfflineMessages.Where(om =>
-                                        om.Account.Operators.Any(o => o.Identity == query.OperatorIdentity) &&
+                                        om.Account.Identifier == query.AccountKey &&
                                         (om.Message.Contains(query.Query) ||
                                         om.Visitor.Name.Contains(query.Query) ||
                                         om.Visitor.Email.Contains(query.Query)));

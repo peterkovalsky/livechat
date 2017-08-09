@@ -19,7 +19,10 @@ namespace Kookaburra.Domain.Command.ConnectOperator
 
         public async Task ExecuteAsync(ConnectOperatorCommand command)
         {
-            var operatorEntity = _context.Operators.Include(i => i.Account).Where(o => o.Identity == command.OperatorIdentity).SingleOrDefault();
+            var operatorEntity = await _context.Operators
+                .Include(i => i.Account)
+                .Where(o => o.Identity == command.OperatorIdentity && o.Account.Identifier == command.AccountKey)
+                .SingleOrDefaultAsync();
 
             _chatSession.AddOrUpdateOperator(operatorEntity.Id, operatorEntity.Identity, operatorEntity.FirstName, operatorEntity.Account.Identifier, command.OperatorConnectionId);
         }

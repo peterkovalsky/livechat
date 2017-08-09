@@ -2,13 +2,12 @@
 {
     public class LeaveMessageCommand : ICommand
     {
-        public LeaveMessageCommand(string accountKey, string name, string email, string message, string operatorIdentity)
+        public LeaveMessageCommand(string accountKey, string name, string email, string message)
         {
             AccountKey = accountKey;
             Name = name;
             Email = email;
-            Message = message;
-            OperatorIdentity = operatorIdentity;
+            Message = message;          
         }
 
         public string AccountKey { get; }
@@ -19,8 +18,6 @@
 
         public string Message { get; }
 
-        public string VisitorIP { get; set; }
-
-        public string OperatorIdentity { get; }
+        public string VisitorIP { get; set; }   
     }
 }

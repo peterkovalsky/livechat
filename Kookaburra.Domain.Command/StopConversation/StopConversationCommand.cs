@@ -2,16 +2,15 @@
 {
     public class StopConversationCommand : ICommand
     {
-        public StopConversationCommand(string visitorSessionId, string operatorIdentity)
+        public StopConversationCommand(string visitorSessionId)
         {
-            VisitorSessionId = visitorSessionId;
-            OperatorIdentity = operatorIdentity;
+            VisitorSessionId = visitorSessionId;           
         }
 
         public string VisitorSessionId { get; }
 
-        public long ConversationId { get; set; }
+        public long ConversationId { get; set; }     
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

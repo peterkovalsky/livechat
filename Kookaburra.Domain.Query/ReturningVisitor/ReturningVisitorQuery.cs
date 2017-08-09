@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Kookaburra.Domain.Query.ReturningVisitor
 {
@@ -12,8 +11,6 @@ namespace Kookaburra.Domain.Query.ReturningVisitor
         }
 
         public string VisitorId { get; }
-
-        public string OperatorIdentity => throw new NotImplementedException();
 
         public string AccountKey { get; }
     }

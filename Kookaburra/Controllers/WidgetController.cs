@@ -76,7 +76,7 @@ namespace Kookaburra.Controllers
             {
                 if (sessionId != null && !string.IsNullOrWhiteSpace(sessionId.Value))
                 {
-                    var query = new CurrentSessionQuery(User.Identity.GetUserId()) { VisitorSessionId = sessionId.Value };
+                    var query = new CurrentSessionQuery() { VisitorSessionId = sessionId.Value };
                     var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
 
                     if (currentSession != null)
@@ -165,7 +165,7 @@ namespace Kookaburra.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message, User.Identity.GetUserId())
+            var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message)
             {
                 VisitorIP = WebHelper.GetIPAddress()
             };

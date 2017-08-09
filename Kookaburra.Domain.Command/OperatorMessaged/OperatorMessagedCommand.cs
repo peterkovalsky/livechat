@@ -4,12 +4,11 @@ namespace Kookaburra.Domain.Command.OperatorMessaged
 {
     public class OperatorMessagedCommand : ICommand
     {
-        public OperatorMessagedCommand(string visitorSessionId, string message, DateTime dateSent, string operatorIdentity)
+        public OperatorMessagedCommand(string visitorSessionId, string message, DateTime dateSent)
         {
             VisitorSessionId = visitorSessionId;            
             Message = message;
-            DateSent = dateSent;
-            OperatorIdentity = operatorIdentity;
+            DateSent = dateSent;         
         }   
 
         public string VisitorSessionId { get; }        
@@ -18,6 +17,6 @@ namespace Kookaburra.Domain.Command.OperatorMessaged
 
         public DateTime DateSent { get; }
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

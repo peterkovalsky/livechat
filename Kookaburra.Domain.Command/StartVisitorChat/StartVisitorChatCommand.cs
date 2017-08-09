@@ -2,12 +2,12 @@
 {
     public class StartVisitorChatCommand : ICommand
     {
-        public StartVisitorChatCommand(int operatorId, string visitorName, string sessionId, string operatorIdentity)
+        public StartVisitorChatCommand(int operatorId, string visitorName, string sessionId, string accountKey)
         {
             OperatorId = operatorId;
             SessionId = sessionId;
             VisitorName = visitorName;
-            OperatorIdentity = operatorIdentity;
+            AccountKey = accountKey;
         }
 
         public int OperatorId { get; }  
@@ -22,6 +22,6 @@
 
         public string Page { get; set; }
 
-        public string OperatorIdentity { get; }     
+        public string AccountKey { get; }
     }
 }

@@ -18,10 +18,8 @@ namespace Kookaburra.Domain.Query.ChatHistorySearch
 
         public async Task<ChatHistoryQueryResult> ExecuteAsync(ChatHistorySearchQuery query)
         {
-            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity));
-
             var conversations = _context.Conversations.Where(c =>
-                                c.Operator.AccountId == account.Id
+                                c.Operator.Account.Identifier == query.AccountKey
                                 && c.Messages.Any(m => m.SentBy == UserType.Visitor.ToString())
                                 && c.TimeFinished != null);
 

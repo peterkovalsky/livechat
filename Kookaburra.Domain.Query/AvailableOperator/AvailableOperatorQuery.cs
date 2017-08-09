@@ -10,8 +10,6 @@ namespace Kookaburra.Domain.AvailableOperator
             AccountKey = accountKey;         
         }
 
-        public string AccountKey { get; }
-
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }        
     }
 }

@@ -85,8 +85,7 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
                 (
                     command.SessionId,
                     DefaultSettings.CHAT_GREETING,
-                    DateTime.UtcNow,
-                    command.OperatorIdentity
+                    DateTime.UtcNow
                 ));
         }
 

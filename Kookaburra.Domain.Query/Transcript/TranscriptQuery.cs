@@ -4,14 +4,14 @@ namespace Kookaburra.Domain.Query.Transcript
 {
     public class TranscriptQuery : IQuery<Task<TranscriptQueryResult>>
     {
-        public TranscriptQuery(long conversationId, string operatorIdentity)
+        public TranscriptQuery(long conversationId, string accountKey)
         {
             ConversationId = conversationId;
-            OperatorIdentity = operatorIdentity;
+            AccountKey = accountKey;
         }
 
-        public long ConversationId { get; }
+        public long ConversationId { get; }      
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

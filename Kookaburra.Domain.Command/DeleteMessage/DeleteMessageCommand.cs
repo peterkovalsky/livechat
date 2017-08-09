@@ -2,14 +2,14 @@
 {
     public class DeleteMessageCommand : ICommand
     {
-        public DeleteMessageCommand(long messageId, string operatorIdentity)
+        public DeleteMessageCommand(long messageId, string accountKey)
         {
             MessageId = messageId;
-            OperatorIdentity = operatorIdentity;
+            AccountKey = accountKey;
         }
 
-        public long MessageId { get; }
+        public long MessageId { get; }   
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

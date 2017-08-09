@@ -53,5 +53,22 @@ namespace Kookaburra.Common
         {
             return Guid.NewGuid().ToString();
         }
+
+        public string GetOrCreateVisitorId(string accountKey)
+        {
+            var visitorId = GetVisitorId(accountKey);
+
+            if (string.IsNullOrWhiteSpace(visitorId))
+            {
+                return visitorId;
+            }
+            else
+            {
+                visitorId = GenerateVisitorId();
+                SetVisitorId(accountKey, visitorId);
+
+                return visitorId;
+            }
+        }
     }
 }

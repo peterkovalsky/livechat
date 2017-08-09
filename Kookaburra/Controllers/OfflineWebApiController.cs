@@ -11,6 +11,8 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNet.Identity.Owin;
+using System.Web;
 
 namespace Kookaburra.Controllers
 {
@@ -22,21 +24,24 @@ namespace Kookaburra.Controllers
 
         private readonly IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>> _offlineMessagesQueryHandler;
         private readonly IQueryHandler<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>> _searchOfflineMessagesQueryHandler;
-        
+
+        private ApplicationUserManager _userManager;
+
         private readonly int PageSize = 10;  
 
         public WebAPIController(
             ICommandHandler<MarkMessageAsReadCommand> markMessageAsReadCommandHandler,
             ICommandHandler<DeleteMessageCommand> deleteMessageCommandHandler,
             IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>> offlineMessagesQueryHandler,
-            IQueryHandler<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>> searchOfflineMessagesQueryHandler
-        )
+            IQueryHandler<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>> searchOfflineMessagesQueryHandler)
         {
             _markMessageAsReadCommandHandler = markMessageAsReadCommandHandler;
             _deleteMessageCommandHandler = deleteMessageCommandHandler;
 
             _offlineMessagesQueryHandler = offlineMessagesQueryHandler;
             _searchOfflineMessagesQueryHandler = searchOfflineMessagesQueryHandler;
+
+            _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
         }
       
 
@@ -44,9 +49,11 @@ namespace Kookaburra.Controllers
         public async Task<OfflineMessagesViewModel> GetMoreMessages(string filter, int page)
         {
             TimeFilterType timeFilter = TimeFilterType.All;         
-            Enum.TryParse(filter, out timeFilter);            
+            Enum.TryParse(filter, out timeFilter);
 
-            var query = new OfflineMessagesQuery(timeFilter, RequestContext.Principal.Identity.GetUserId())
+            var user = await _userManager.FindByIdAsync(RequestContext.Principal.Identity.GetUserId());
+
+            var query = new OfflineMessagesQuery(timeFilter, user.AccountKey)
             {
                 Pagination = new Pagination(PageSize, page)
             };
@@ -60,7 +67,9 @@ namespace Kookaburra.Controllers
         [HttpGet, Route("api/messages/search/{queryTerm}/{page}")]
         public async Task<OfflineMessagesViewModel> SearchMessages(string queryTerm, int page)
         {
-            var query = new SearchOfflineMessagesQuery(queryTerm, RequestContext.Principal.Identity.GetUserId())
+            var user = await _userManager.FindByIdAsync(RequestContext.Principal.Identity.GetUserId());
+
+            var query = new SearchOfflineMessagesQuery(queryTerm, user.AccountKey)
             {
                 Pagination = new Pagination(PageSize, page)
             };
@@ -73,15 +82,19 @@ namespace Kookaburra.Controllers
 
         [HttpPatch, Route("api/messages/mark-read/{id}")]
         public async Task MarkMessageAsRead(int id)
-        {            
-            var command = new MarkMessageAsReadCommand(id, RequestContext.Principal.Identity.GetUserId());
+        {
+            var user = await _userManager.FindByIdAsync(RequestContext.Principal.Identity.GetUserId());
+
+            var command = new MarkMessageAsReadCommand(id, user.AccountKey);
             await _markMessageAsReadCommandHandler.ExecuteAsync(command);
         }
 
         [HttpDelete, Route("api/messages/{id}")]
         public async Task DeleteMessage(int id)
         {
-            var command = new DeleteMessageCommand(id, RequestContext.Principal.Identity.GetUserId());
+            var user = await _userManager.FindByIdAsync(RequestContext.Principal.Identity.GetUserId());
+
+            var command = new DeleteMessageCommand(id, user.AccountKey);
             await _deleteMessageCommandHandler.ExecuteAsync(command);
         }
     }

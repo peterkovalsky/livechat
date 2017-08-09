@@ -102,15 +102,10 @@ namespace Kookaburra.Services
 
             // if operator is available - establish connection
             if (availableOperator != null)
-            {
-                // check if it's a returning visitor
-                var newSessionId = GetSessionId();
-                if (string.IsNullOrWhiteSpace(newSessionId))
-                {
-                    newSessionId = Guid.NewGuid().ToString();
-                }
+            {               
+                var visitorId = _visitorCookie.GetOrCreateVisitorId(visitor.AccountKey);
 
-                var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, newSessionId, Context.User.Identity.GetUserId())
+                var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, visitorId, visitor.AccountKey)
                 {
                     Page = visitor.PageUrl,
                     VisitorIP = WebHelper.GetIPAddress(),
@@ -119,14 +114,14 @@ namespace Kookaburra.Services
                 await _startVisitorChatCommandHandler.ExecuteAsync(command);
 
 
-                var queryResume = new ResumeVisitorChatQuery(newSessionId, Context.ConnectionId);
+                var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
                 var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
 
                 if (resumedConversation != null)
                 {
                     var visitorInfo = new OperatorConversationViewModel
                     {
-                        SessionId = newSessionId,
+                        SessionId = visitorId,
                         VisitorName = visitor.Name,
                         Email = visitor.Email,
                         Country = resumedConversation.VisitorInfo.Country,
@@ -137,12 +132,12 @@ namespace Kookaburra.Services
                     };
 
                     // Notify all operator instances about this visitor
-                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(newSessionId);
+                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorId);
                     Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
 
                     return new StartChatViewModel
                     {
-                        SessionId = newSessionId,
+                        SessionId = visitorId,
                         OperatorName = availableOperator.OperatorName,
                         Messages = Mapper.Map<List<MessageViewModel>>(resumedConversation.Conversation)
                     };
@@ -164,7 +159,7 @@ namespace Kookaburra.Services
         {
             var dateSent = DateTime.UtcNow;
 
-            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
+            var query = new CurrentSessionQuery
             {
                 VisitorConnectionId = Context.ConnectionId
             };
@@ -183,23 +178,23 @@ namespace Kookaburra.Services
             // Notify all operator instances (mutiple tabs)   
             Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, currentSession.VisitorSessionId);
 
-            await _visitorMessagedCommandHandler.ExecuteAsync(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent, Context.User.Identity.GetUserId()));
+            await _visitorMessagedCommandHandler.ExecuteAsync(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));
         }
 
         /// <summary>
         /// Visitor wants to stop the conversation with operator
         /// </summary>
-        public async Task FinishChattingWithOperator()
+        public async Task FinishChattingWithOperator(string accountKey)
         {
-            var visitorSessionId = GetSessionId();
+            var visitorId = _visitorCookie.GetVisitorId(accountKey);
 
-            var query = new CurrentSessionQuery(Context.User.Identity.GetUserId())
+            var query = new CurrentSessionQuery
             {
-                VisitorSessionId = visitorSessionId
+                VisitorSessionId = visitorId
             };
             var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
 
-            await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorSessionId, Context.User.Identity.GetUserId()));
+            await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorId));
 
             DisconnectVisitor(currentSession, UserType.Visitor);
         }

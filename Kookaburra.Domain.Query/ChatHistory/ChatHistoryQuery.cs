@@ -5,16 +5,16 @@ namespace Kookaburra.Domain.Query.ChatHistory
 {
     public class ChatHistoryQuery : IQuery<Task<ChatHistoryQueryResult>>
     {
-        public ChatHistoryQuery(TimeFilterType timeFilter, string operatorIdentity)
+        public ChatHistoryQuery(TimeFilterType timeFilter, string accountKey)
         {
             TimeFilter = timeFilter;
-            OperatorIdentity = operatorIdentity;
+            AccountKey = accountKey;
         }
 
         public TimeFilterType TimeFilter { get; }
 
-        public Pagination Pagination { get; set; }
+        public Pagination Pagination { get; set; }    
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

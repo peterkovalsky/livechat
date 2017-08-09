@@ -2,8 +2,6 @@
 {
     public interface IQuery<TResult>
     {
-        string OperatorIdentity { get; }
-
         string AccountKey { get; }
     }
 

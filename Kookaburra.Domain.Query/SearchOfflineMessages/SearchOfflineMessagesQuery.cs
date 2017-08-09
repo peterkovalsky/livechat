@@ -6,16 +6,16 @@ namespace Kookaburra.Domain.Query.SearchOfflineMessages
 {
     public class SearchOfflineMessagesQuery : IQuery<Task<OfflineMessagesQueryResult>>
     {
-        public SearchOfflineMessagesQuery(string query, string operatorIdentity)
+        public SearchOfflineMessagesQuery(string query, string accountKey)
         {
             Query = query;
-            OperatorIdentity = operatorIdentity;
+            AccountKey = accountKey;
         }
 
         public string Query { get; }
 
-        public Pagination Pagination { get; set; }
+        public Pagination Pagination { get; set; }     
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

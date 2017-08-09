@@ -18,7 +18,7 @@ namespace Kookaburra.Domain.Query.OfflineMessages
 
         public async Task<OfflineMessagesQueryResult> ExecuteAsync(OfflineMessagesQuery query)
         {
-            var offlineMessages = _context.OfflineMessages.Where(om => om.Account.Operators.Any(o => o.Identity == query.OperatorIdentity));       
+            var offlineMessages = _context.OfflineMessages.Where(om => om.Account.Identifier == query.AccountKey);       
 
             if (query.TimeFilter == TimeFilterType.Today)
             {

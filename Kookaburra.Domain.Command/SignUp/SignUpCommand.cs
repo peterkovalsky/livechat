@@ -1,4 +1,6 @@
-﻿namespace Kookaburra.Domain.Command.SignUp
+﻿using System;
+
+namespace Kookaburra.Domain.Command.SignUp
 {
     public class SignUpCommand : ICommand
     {        
@@ -8,6 +10,8 @@
 
         public string Company { get; set; }
 
-        public string OperatorIdentity { get; set; }        
+        public string OperatorIdentity { get; set; }
+
+        public string AccountKey { get; set; }
     }
 }

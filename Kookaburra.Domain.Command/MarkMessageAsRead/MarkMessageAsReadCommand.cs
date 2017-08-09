@@ -2,14 +2,14 @@
 {
     public class MarkMessageAsReadCommand : ICommand
     {
-        public MarkMessageAsReadCommand(int messageId, string operatorIdentity)
+        public MarkMessageAsReadCommand(int messageId, string accountKey)
         {
             MessageId = messageId;
-            OperatorIdentity = operatorIdentity;
+            AccountKey = accountKey;
         }
 
-        public int MessageId { get; }
+        public int MessageId { get; }  
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Kookaburra.Domain.Query;
 using System.Threading.Tasks;
+using System;
 
 namespace Kookaburra.Domain.ResumeVisitorChat
 {
@@ -13,8 +14,8 @@ namespace Kookaburra.Domain.ResumeVisitorChat
 
         public string VisitorSessionId { get; }
 
-        public string VisitorConnectionId { get; }
+        public string VisitorConnectionId { get; }     
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

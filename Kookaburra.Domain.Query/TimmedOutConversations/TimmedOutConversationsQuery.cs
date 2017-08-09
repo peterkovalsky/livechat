@@ -9,8 +9,8 @@ namespace Kookaburra.Domain.Query.TimmedOutConversations
             TimeoutInMinutes = timeoutInMinutes;
         }
 
-        public int TimeoutInMinutes { get; }
+        public int TimeoutInMinutes { get; }      
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

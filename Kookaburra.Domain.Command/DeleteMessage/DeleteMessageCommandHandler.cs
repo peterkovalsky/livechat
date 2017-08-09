@@ -18,9 +18,9 @@ namespace Kookaburra.Domain.Command.DeleteMessage
         public async Task ExecuteAsync(DeleteMessageCommand command)
         {
             var message = await _context.OfflineMessages.Where(om =>
-                                                         om.Id == command.MessageId
-                                                      && om.Account.Operators.Any(o => o.Identity == command.OperatorIdentity))
-                                                  .SingleOrDefaultAsync();
+                                                               om.Id == command.MessageId
+                                                            && om.Account.Identifier == command.AccountKey)
+                                                        .SingleOrDefaultAsync();
 
             if (message != null)
             {                

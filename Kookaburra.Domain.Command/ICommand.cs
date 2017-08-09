@@ -4,7 +4,7 @@ namespace Kookaburra.Domain.Command
 {
     public interface ICommand
     {
-        string OperatorIdentity { get; }
+        string AccountKey { get; }
     }
 
     public interface ICommandHandler<in TCommand> where TCommand : ICommand

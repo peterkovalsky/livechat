@@ -6,16 +6,16 @@ namespace Kookaburra.Domain.Query.ChatHistorySearch
 {
     public class ChatHistorySearchQuery : IQuery<Task<ChatHistoryQueryResult>>
     {
-        public ChatHistorySearchQuery(string query, string operatorIdentity)
+        public ChatHistorySearchQuery(string query, string accountKey)
         {
             Query = query;
-            OperatorIdentity = operatorIdentity;
+            AccountKey = accountKey;
         }
 
         public string Query { get; }
 
         public Pagination Pagination { get; set; }
 
-        public string OperatorIdentity { get; }
+        public string AccountKey { get; }
     }
 }

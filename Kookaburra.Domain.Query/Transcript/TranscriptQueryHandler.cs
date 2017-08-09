@@ -18,10 +18,8 @@ namespace Kookaburra.Domain.Query.Transcript
 
         public async Task<TranscriptQueryResult> ExecuteAsync(TranscriptQuery query)
         {
-            var account = await _context.Accounts.Where(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity)).SingleOrDefaultAsync();
-
             var result = await _context.Conversations
-                .Where(c => c.Id == query.ConversationId && c.Operator.AccountId == account.Id && c.TimeFinished != null)
+                .Where(c => c.Id == query.ConversationId && c.Operator.Account.Identifier == query.AccountKey && c.TimeFinished != null)
                 .Select(c =>
                 new
                 {

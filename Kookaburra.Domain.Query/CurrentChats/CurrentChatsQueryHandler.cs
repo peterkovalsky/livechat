@@ -25,7 +25,7 @@ namespace Kookaburra.Domain.Query.CurrentChats
                 CurrentChats = operatorSession.Visitors.Select(v => new ChatInfoResult { VisitorSessionId = v.SessionId }).ToList(),
                 UnreadMessages = await _context.OfflineMessages
                                          .Where(om =>
-                                            om.Account.Operators.Any(o => o.Identity == query.OperatorIdentity)
+                                                om.Account.Identifier == query.AccountKey
                                             && !om.IsRead)
                                          .CountAsync()
             };

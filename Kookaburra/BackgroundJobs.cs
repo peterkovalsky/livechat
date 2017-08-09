@@ -36,13 +36,13 @@ namespace Kookaburra
 
             foreach (var conversation in result.Conversations)
             {            
-                var query = new CurrentSessionQuery(null)
+                var query = new CurrentSessionQuery()
                 {
                     VisitorSessionId = conversation.VisitorSessionId
                 };
                 var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
 
-                var stopCommand = new StopConversationCommand(conversation.VisitorSessionId, null)
+                var stopCommand = new StopConversationCommand(conversation.VisitorSessionId)
                 {
                     ConversationId = conversation.ConversationId
                 };

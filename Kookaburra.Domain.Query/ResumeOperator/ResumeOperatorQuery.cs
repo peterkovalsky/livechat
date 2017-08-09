@@ -9,6 +9,8 @@ namespace Kookaburra.Domain.Query.ResumeOperator
             OperatorIdentity = operatorIdentity;
         }
 
-        public string OperatorIdentity { get; private set; }
+        public string OperatorIdentity { get; }
+
+        public string AccountKey { get; }
     }
 }
