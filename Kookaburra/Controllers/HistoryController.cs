@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
+using Kookaburra.Domain.Query.Account;
 using Kookaburra.Domain.Query.ChatHistory;
 using Kookaburra.Domain.Query.Transcript;
 using Kookaburra.Models.History;
@@ -18,18 +19,18 @@ namespace Kookaburra.Controllers
     {
         private readonly IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>> _chatHistoryQueryHandler;
         private readonly IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>> _transcriptQueryHandler;
-
-        private ApplicationUserManager _userManager;
+        private readonly IQueryHandler<AccountQuery, Task<AccountQueryResult>> _accountQueryHandler;        
 
         private readonly int PageSize = 10;
 
         public HistoryController(IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>> chatHistoryQueryHandler,
-            IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>> transcriptQueryHandler)
+            IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>> transcriptQueryHandler,
+            IQueryHandler<AccountQuery, Task<AccountQueryResult>> accountQueryHandler)
         {
             _chatHistoryQueryHandler = chatHistoryQueryHandler;
             _transcriptQueryHandler = transcriptQueryHandler;
 
-            _userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            accountQueryHandler =
         }
 
 

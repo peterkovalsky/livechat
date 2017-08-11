@@ -14,5 +14,7 @@ namespace Kookaburra.Domain.Model
         public string Identifier { get; set; }
 
         public virtual ICollection<Operator> Operators { get; set; }
+
+        public virtual ICollection<Visitor> Visitors { get; set; }
     }
 } 

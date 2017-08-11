@@ -119,9 +119,8 @@ namespace Kookaburra.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
-            {
-                var accountKey = Guid.NewGuid().ToString();
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, AccountKey = accountKey };
+            {                
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -131,8 +130,7 @@ namespace Kookaburra.Controllers
                         Company = model.Company,
                         OperatorIdentity = user.Id,
                         ClientName = model.ClientName,
-                        Email = model.Email,
-                        AccountKey = accountKey
+                        Email = model.Email                   
                     };
                     await _signUpCommandHandler.ExecuteAsync(command);
 

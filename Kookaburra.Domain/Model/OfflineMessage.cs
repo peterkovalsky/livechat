@@ -10,16 +10,12 @@ namespace Kookaburra.Domain.Model
 
         public string Message { get; set; }
 
-        public DateTime DateSent { get; set; }
-
-        public int? VisitorId { get; set; }
+        public DateTime DateSent { get; set; }      
 
         public bool IsRead { get; set; }
 
+        public int VisitorId { get; set; }
+
         public virtual Visitor Visitor { get; set; }
-
-        public int AccountId { get; set; }
-
-        public virtual Account Account { get; set; }
     }
 }

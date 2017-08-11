@@ -19,7 +19,7 @@ namespace Kookaburra.Domain.Command.DeleteMessage
         {
             var message = await _context.OfflineMessages.Where(om =>
                                                                om.Id == command.MessageId
-                                                            && om.Account.Identifier == command.AccountKey)
+                                                            && om.Visitor.Account.Identifier == command.AccountKey)
                                                         .SingleOrDefaultAsync();
 
             if (message != null)

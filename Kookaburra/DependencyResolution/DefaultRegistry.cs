@@ -32,6 +32,7 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Command.StartVisitorChat;
     using Kookaburra.Domain.Command.StopConversation;
     using Kookaburra.Domain.Command.VisitorMessaged;
+    using Kookaburra.Domain.Query.Account;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;
     using Kookaburra.Domain.Query.CurrentChats;
@@ -94,6 +95,7 @@ namespace Kookaburra.DependencyResolution
             For<IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistoryQueryHandler>();
             For<IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>>>().Add<TimmedOutConversationsQueryHandler>();
             For<IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>>>().Add<ReturningVisitorQueryHandler>();
+            For<IQueryHandler<AccountQuery, Task<AccountQueryResult>>>().Add<AccountQueryHandler>();
             
             ForSingletonOf<ChatSession>();
             ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();

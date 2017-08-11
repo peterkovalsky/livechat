@@ -7,6 +7,7 @@ using Kookaburra.Domain.Command.StopConversation;
 using Kookaburra.Domain.Command.VisitorMessaged;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
+using Kookaburra.Domain.Query.Account;
 using Kookaburra.Domain.Query.CurrentChats;
 using Kookaburra.Domain.Query.CurrentSession;
 using Kookaburra.Domain.Query.ResumeOperator;
@@ -30,12 +31,12 @@ namespace Kookaburra.Services
 
         private readonly IQueryHandler<CurrentChatsQuery, Task<CurrentChatsQueryResult>> _currentChatsQueryHandler;
         private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
-        private readonly IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>> _resumeOperatorQueryHandler;       
-        
+        private readonly IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>> _resumeOperatorQueryHandler;
+        private readonly IQueryHandler<AccountQuery, Task<AccountQueryResult>> _accountQueryHandler;
+
         public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";
 
-        private readonly VisitorCookie _visitorCookie;
-        private ApplicationUserManager _userManager;
+        private readonly VisitorCookie _visitorCookie;      
        
 
         public ChatHub(ICommandHandler<ConnectOperatorCommand> connectOperatorCommandHandler,
@@ -44,7 +45,8 @@ namespace Kookaburra.Services
             ICommandHandler<VisitorMessagedCommand> visitorMessagedCommandHandler,
             IQueryHandler<CurrentChatsQuery, Task<CurrentChatsQueryResult>> currentChatsQueryHandler,
             IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
-            IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>> resumeOperatorQueryHandler)
+            IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>> resumeOperatorQueryHandler,
+            IQueryHandler<AccountQuery, Task<AccountQueryResult>> accountQueryHandler)
         {
             _connectOperatorCommandHandler = connectOperatorCommandHandler;
             _operatorMessagedCommandHandler = operatorMessagedCommandHandler;
@@ -53,22 +55,21 @@ namespace Kookaburra.Services
 
             _currentChatsQueryHandler = currentChatsQueryHandler;
             _currentSessionQueryHandler = currentSessionQueryHandler;
-            _resumeOperatorQueryHandler = resumeOperatorQueryHandler;         
+            _resumeOperatorQueryHandler = resumeOperatorQueryHandler;
+            _accountQueryHandler = accountQueryHandler;
 
-            _visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-            _userManager = Context.Request.GetHttpContext().GetOwinContext().GetUserManager<ApplicationUserManager>();
+            _visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());            
         }
 
-
-        #region Operator Calls
+        
         [Authorize]
         public async Task<OperatorCurrentChatsViewModel> ConnectOperator()
         {
-            var user = await _userManager.FindByIdAsync(Context.User.Identity.GetUserId());
+            var accountResult = await _accountQueryHandler.ExecuteAsync(new AccountQuery(Context.User.Identity.GetUserId()));
 
-            await _connectOperatorCommandHandler.ExecuteAsync(new ConnectOperatorCommand(Context.ConnectionId, Context.User.Identity.GetUserId(), user.AccountKey));
+            await _connectOperatorCommandHandler.ExecuteAsync(new ConnectOperatorCommand(Context.ConnectionId, Context.User.Identity.GetUserId(), accountResult.AccountKey));
 
-            var queryResult = await _currentChatsQueryHandler.ExecuteAsync(new CurrentChatsQuery(Context.User.Identity.GetUserId(), user.AccountKey));
+            var queryResult = await _currentChatsQueryHandler.ExecuteAsync(new CurrentChatsQuery(Context.User.Identity.GetUserId(), accountResult.AccountKey));
 
             return Mapper.Map<OperatorCurrentChatsViewModel>(queryResult);
         }
@@ -133,10 +134,7 @@ namespace Kookaburra.Services
             await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorSessionId));
 
             DisconnectVisitor(currentSession, UserType.Operator);          
-        }
-        #endregion
-
-        
+        }           
 
         public override Task OnConnected()
         {

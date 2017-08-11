@@ -34,13 +34,13 @@ namespace Kookaburra.Domain.Command.LeaveMessage
             {
                 Message = command.Message,
                 DateSent = DateTime.UtcNow,
-                IsRead = false,
-                AccountId = account.Id,
+                IsRead = false,          
                 Visitor = new Visitor
                 {
                     Name = command.Name,
                     Email = command.Email,
-                    IpAddress = command.VisitorIP
+                    IpAddress = command.VisitorIP,
+                    AccountId = account.Id
                 }
             };
 

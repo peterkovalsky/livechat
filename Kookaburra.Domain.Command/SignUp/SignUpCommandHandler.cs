@@ -1,6 +1,7 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,9 +18,11 @@ namespace Kookaburra.Domain.Command.SignUp
 
         public async Task ExecuteAsync(SignUpCommand command)
         {
+            var accountKey = Guid.NewGuid().ToString();
+
             var account = new Account
             {
-                Identifier = command.AccountKey,
+                Identifier = accountKey,
                 Name = command.Company,
                 Operators = new List<Operator>
                 {

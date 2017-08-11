@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\AccountQuery.cs" />
+    <Compile Include="Account\AccountQueryHandler.cs" />
+    <Compile Include="Account\AccountQueryResult.cs" />
     <Compile Include="ChatHistorySearch\ChatHistorySearchQuery.cs" />
     <Compile Include="ChatHistorySearch\ChatHistorySearchQueryHandler.cs" />
     <Compile Include="AvailableOperator\AvailableOperatorQueryHandler.cs" />

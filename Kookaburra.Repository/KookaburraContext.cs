@@ -23,12 +23,12 @@ namespace Kookaburra.Repository
         public DbSet<OfflineMessage> OfflineMessages { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
 
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Visitor>()
-        //        .HasOptional(s => s.Messages)
-        //        .WithMany()
-        //        .WillCascadeOnDelete(true);
-        //}
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            //modelBuilder.Entity<Visitor>()
+            //    .HasOptional(s => s.Messages)
+            //    .WithMany()
+            //    .WillCascadeOnDelete(true);
+        }
     }
 }

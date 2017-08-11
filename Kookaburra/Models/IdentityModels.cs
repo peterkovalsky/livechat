@@ -14,9 +14,7 @@ namespace Kookaburra.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
-        }
-
-        public string AccountKey { get; set; }
+        }     
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
