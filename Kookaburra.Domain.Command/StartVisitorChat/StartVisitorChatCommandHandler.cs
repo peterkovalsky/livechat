@@ -30,6 +30,12 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
             // record new/returning visitor
             var returningVisitor = await CheckForVisitorAsync(command.VisitorName, command.VisitorEmail, command.SessionId);
 
+            var account = await  _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == command.AccountKey);
+            if (account == null)
+            {
+                throw new ArgumentException($"Account {command.AccountKey} doesn't exist.");
+            }
+
             // new visitor
             if (returningVisitor == null)
             {                         
@@ -39,6 +45,7 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
                     Email = command.VisitorEmail,             
                     SessionId = command.SessionId,
                     IpAddress = command.VisitorIP,
+                    Account = account
                 };
 
                 try

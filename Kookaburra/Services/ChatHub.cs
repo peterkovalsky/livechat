@@ -14,11 +14,9 @@ using Kookaburra.Domain.Query.ResumeOperator;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.SignalR;
 using System;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Kookaburra.Services
 {
@@ -34,9 +32,7 @@ namespace Kookaburra.Services
         private readonly IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>> _resumeOperatorQueryHandler;
         private readonly IQueryHandler<AccountQuery, Task<AccountQueryResult>> _accountQueryHandler;
 
-        public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";
-
-        private readonly VisitorCookie _visitorCookie;      
+        public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";      
        
 
         public ChatHub(ICommandHandler<ConnectOperatorCommand> connectOperatorCommandHandler,
@@ -56,9 +52,7 @@ namespace Kookaburra.Services
             _currentChatsQueryHandler = currentChatsQueryHandler;
             _currentSessionQueryHandler = currentSessionQueryHandler;
             _resumeOperatorQueryHandler = resumeOperatorQueryHandler;
-            _accountQueryHandler = accountQueryHandler;
-
-            _visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());            
+            _accountQueryHandler = accountQueryHandler;              
         }
 
         

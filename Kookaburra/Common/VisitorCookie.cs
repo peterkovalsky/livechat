@@ -14,9 +14,14 @@ namespace Kookaburra.Common
             _httpContext = httpContext;
         }
 
+        public string GetCookieName(string accountKey)
+        {
+            return string.Format(COOKIE_TEMPLATE, accountKey);
+        }
+
         public string GetVisitorId(string accountKey)
         {            
-            var cookieName = string.Format(COOKIE_TEMPLATE, accountKey);
+            var cookieName = GetCookieName(accountKey);
 
             var visitorId = _httpContext.Request.Cookies[cookieName];
 
@@ -26,28 +31,7 @@ namespace Kookaburra.Common
             }
 
             return visitorId.Value;
-        }
-
-        public void SetVisitorId(string accountKey, string newVisitorId)
-        {            
-            var cookieName = string.Format(COOKIE_TEMPLATE, accountKey);
-
-            var visitorId = _httpContext.Request.Cookies[cookieName];
-
-            if (visitorId != null) // update cookie if it already exists
-            {
-                visitorId.Value = newVisitorId;
-            }
-            else // create new cookie
-            {
-                var cookie = new HttpCookie(cookieName, newVisitorId)
-                {
-                    Expires = DateTime.Now.AddYears(10)
-                };
-
-                _httpContext.Response.Cookies.Set(cookie);
-            }            
-        }
+        }  
 
         public string GenerateVisitorId()
         {
@@ -58,16 +42,13 @@ namespace Kookaburra.Common
         {
             var visitorId = GetVisitorId(accountKey);
 
-            if (string.IsNullOrWhiteSpace(visitorId))
+            if (!string.IsNullOrWhiteSpace(visitorId))
             {
                 return visitorId;
             }
             else
             {
-                visitorId = GenerateVisitorId();
-                SetVisitorId(accountKey, visitorId);
-
-                return visitorId;
+                return GenerateVisitorId();
             }
         }
     }

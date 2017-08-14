@@ -79,11 +79,9 @@ function WidgetViewModel(accountKey) {
     self.isStopChat = ko.observable(false);
     self.isMessageBoxFocus = ko.observable(true);
 
-    self.view = ko.observable('');
+    self.view = ko.observable('');    
 
-    var SESSION_ID_COOKIE = "kookaburra.visitor.sessionid";
-
-    var chatHubProxy = $.connection.chatHub;
+    var chatHubProxy = $.connection.visitorHub;
 
     // init widget
     // -----------
@@ -132,7 +130,7 @@ function WidgetViewModel(accountKey) {
             chatHubProxy.server.startChat(visitorView).done(function (result) {
 
                 if (result != null) {
-                    $.cookie(SESSION_ID_COOKIE, result.sessionId, { path: '/' });
+                    $.cookie(result.cookieName, result.sessionId, { path: '/' });
 
                     if (result.messages) {
                         self.messages(result.messages);

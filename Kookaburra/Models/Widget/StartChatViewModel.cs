@@ -5,6 +5,9 @@ namespace Kookaburra.Models.Widget
 {
     public class StartChatViewModel
     {
+        [JsonProperty("cookieName")]
+        public string CookieName { get; set; }
+
         [JsonProperty("sessionId")]
         public string SessionId { get; set; }      
 

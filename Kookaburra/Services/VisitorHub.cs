@@ -31,7 +31,6 @@ namespace Kookaburra.Services
         private readonly IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> _resumeVisitorChatQueryHandler;
         private readonly IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> _returningVisitorQueryHandler;
         
-        private readonly VisitorCookie _visitorCookie;
 
         public VisitorHub(
             ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
@@ -49,9 +48,7 @@ namespace Kookaburra.Services
             _currentSessionQueryHandler = currentSessionQueryHandler;           
             _availableOperatorQueryHandler = availableOperatorQueryHandler;
             _resumeVisitorChatQueryHandler = resumeVisitorChatQueryHandler;
-            _returningVisitorQueryHandler = returningVisitorQueryHandler;
-
-            _visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
+            _returningVisitorQueryHandler = returningVisitorQueryHandler;            
         }
 
 
@@ -62,7 +59,8 @@ namespace Kookaburra.Services
 
             if (operatorResult != null) // Is there any available operator
             {
-                var visitorId = _visitorCookie.GetVisitorId(accountKey);
+                var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
+                var visitorId = visitorCookie.GetVisitorId(accountKey);
 
                 // check if it's a returning visitor
                 if (visitorId != null) 
@@ -102,8 +100,9 @@ namespace Kookaburra.Services
 
             // if operator is available - establish connection
             if (availableOperator != null)
-            {               
-                var visitorId = _visitorCookie.GetOrCreateVisitorId(visitor.AccountKey);
+            {
+                var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
+                var visitorId = visitorCookie.GetOrCreateVisitorId(visitor.AccountKey);
 
                 var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, visitorId, visitor.AccountKey)
                 {
@@ -137,6 +136,7 @@ namespace Kookaburra.Services
 
                     return new StartChatViewModel
                     {
+                        CookieName = visitorCookie.GetCookieName(visitor.AccountKey),
                         SessionId = visitorId,
                         OperatorName = availableOperator.OperatorName,
                         Messages = Mapper.Map<List<MessageViewModel>>(resumedConversation.Conversation)
@@ -186,7 +186,8 @@ namespace Kookaburra.Services
         /// </summary>
         public async Task FinishChattingWithOperator(string accountKey)
         {
-            var visitorId = _visitorCookie.GetVisitorId(accountKey);
+            var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
+            var visitorId = visitorCookie.GetVisitorId(accountKey);
 
             var query = new CurrentSessionQuery
             {

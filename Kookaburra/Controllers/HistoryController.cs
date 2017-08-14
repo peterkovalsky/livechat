@@ -6,9 +6,7 @@ using Kookaburra.Domain.Query.ChatHistory;
 using Kookaburra.Domain.Query.Transcript;
 using Kookaburra.Models.History;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 
@@ -19,7 +17,7 @@ namespace Kookaburra.Controllers
     {
         private readonly IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>> _chatHistoryQueryHandler;
         private readonly IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>> _transcriptQueryHandler;
-        private readonly IQueryHandler<AccountQuery, Task<AccountQueryResult>> _accountQueryHandler;        
+        private readonly IQueryHandler<AccountQuery, Task<AccountQueryResult>> _accountQueryHandler;
 
         private readonly int PageSize = 10;
 
@@ -30,16 +28,16 @@ namespace Kookaburra.Controllers
             _chatHistoryQueryHandler = chatHistoryQueryHandler;
             _transcriptQueryHandler = transcriptQueryHandler;
 
-            accountQueryHandler =
+            _accountQueryHandler = accountQueryHandler;
         }
 
 
         [HttpGet, Route("history")]
         public async Task<ActionResult> Chats()
-        {
-            var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
+        {            
+            var account = await _accountQueryHandler.ExecuteAsync(new AccountQuery(User.Identity.GetUserId()));
 
-            var query = new ChatHistoryQuery(TimeFilterType.All, user.AccountKey)
+            var query = new ChatHistoryQuery(TimeFilterType.All, account.AccountKey)
             {
                 Pagination = new Pagination(PageSize, 1)
             };
@@ -53,9 +51,9 @@ namespace Kookaburra.Controllers
         [HttpGet, Route("transcript/{id}")]       
         public async Task<ActionResult> Transcript(long id)
         {
-            var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
+            var account = await _accountQueryHandler.ExecuteAsync(new AccountQuery(User.Identity.GetUserId()));
 
-            var query = new TranscriptQuery(id, user.AccountKey);
+            var query = new TranscriptQuery(id, account.AccountKey);
             var result = await _transcriptQueryHandler.ExecuteAsync(query);
 
             if (result == null)

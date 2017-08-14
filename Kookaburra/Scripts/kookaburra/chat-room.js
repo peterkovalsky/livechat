@@ -148,7 +148,7 @@
     self.registerCallbackFunctions = function () {
 
         // Visitor connected
-        $.connection.chatHub.client.visitorConnected = function (conversationView) {
+        $.connection.visitorHub.client.visitorConnected = function (conversationView) {
 
             self.conversations.push(new Conversation(conversationView))
             self.setCurrentChat();
@@ -158,7 +158,7 @@
         };
 
         // Message from visitor/operator
-        $.connection.chatHub.client.sendMessageToOperator = function (message, sessionId) {
+        $.connection.visitorHub.client.sendMessageToOperator = function (message, sessionId) {
 
             var conversation = ko.utils.arrayFirst(self.conversations(), function (c) {
                 return c.sessionId() == sessionId;
@@ -173,30 +173,26 @@
         };
 
         // Visitor stopped chat
-        $.connection.chatHub.client.visitorDisconnected = function (result) {
+        var visitorDisconnectedEventHandler = function (result) {
 
             var conversationToClose = ko.utils.arrayFirst(self.conversations(), function (c) {
                 return c.sessionId() == result.visitorSessionId;
             });
 
-            if (conversationToClose)
-            {
+            if (conversationToClose) {
                 if (conversationToClose.isCurrent()) {
                     var disconnectMessage = 'Chat has been stopped.';
-                    if (result.disconnectedBy == 'Operator')
-                    {
+                    if (result.disconnectedBy == 'Operator') {
                         disconnectMessage = 'You ended chat with ' + conversationToClose.visitorName();
                     }
-                    else if (result.disconnectedBy == 'Visitor')
-                    {
+                    else if (result.disconnectedBy == 'Visitor') {
                         disconnectMessage = 'Visitor closed the chat.';
                     }
-                    else if (result.disconnectedBy == 'System')
-                    {
+                    else if (result.disconnectedBy == 'System') {
                         disconnectMessage = 'Chat was closed due to inactivity.';
                     }
 
-                    conversationToClose.messages.push(new Message({                        
+                    conversationToClose.messages.push(new Message({
                         text: disconnectMessage,
                         sentBy: 'system',
                         time: result.time
@@ -207,8 +203,11 @@
                 else {
                     self.conversations.remove(conversationToClose);
                 }
-            }            
-        };    
+            }
+        };
+
+        $.connection.chatHub.client.visitorDisconnected = visitorDisconnectedEventHandler;
+        $.connection.visitorHub.client.visitorDisconnected = visitorDisconnectedEventHandler;
     };
 }
 
