@@ -11,25 +11,24 @@ namespace Kookaburra.Repository.Migrations
             DropForeignKey("dbo.OfflineMessages", "VisitorId", "dbo.Visitors");
             DropIndex("dbo.OfflineMessages", new[] { "VisitorId" });
             DropIndex("dbo.OfflineMessages", new[] { "AccountId" });
+            AddColumn("dbo.Visitors", "AccountId", c => c.Int(nullable: false));
             AlterColumn("dbo.OfflineMessages", "VisitorId", c => c.Int(nullable: false));
+            CreateIndex("dbo.Visitors", "AccountId");
             CreateIndex("dbo.OfflineMessages", "VisitorId");
-            AddForeignKey("dbo.OfflineMessages", "VisitorId", "dbo.Visitors", "Id", cascadeDelete: false);           
-
-            AddColumn("dbo.Visitors", "AccountId", c => c.Int(nullable: false));            
-            CreateIndex("dbo.Visitors", "AccountId");            
-            AddForeignKey("dbo.Visitors", "AccountId", "dbo.Accounts", "Id", cascadeDelete: false);                        
+            AddForeignKey("dbo.Visitors", "AccountId", "dbo.Accounts", "Id", cascadeDelete: false);
+            AddForeignKey("dbo.OfflineMessages", "VisitorId", "dbo.Visitors", "Id", cascadeDelete: false);
+            DropColumn("dbo.OfflineMessages", "AccountId");
         }
         
         public override void Down()
-        {                        
-            DropForeignKey("dbo.Visitors", "AccountId", "dbo.Accounts");            
-            DropIndex("dbo.Visitors", new[] { "AccountId" });           
-            DropColumn("dbo.Visitors", "AccountId");
-
-           
+        {
+            AddColumn("dbo.OfflineMessages", "AccountId", c => c.Int(nullable: false));
             DropForeignKey("dbo.OfflineMessages", "VisitorId", "dbo.Visitors");
+            DropForeignKey("dbo.Visitors", "AccountId", "dbo.Accounts");
             DropIndex("dbo.OfflineMessages", new[] { "VisitorId" });
+            DropIndex("dbo.Visitors", new[] { "AccountId" });
             AlterColumn("dbo.OfflineMessages", "VisitorId", c => c.Int());
+            DropColumn("dbo.Visitors", "AccountId");
             CreateIndex("dbo.OfflineMessages", "AccountId");
             CreateIndex("dbo.OfflineMessages", "VisitorId");
             AddForeignKey("dbo.OfflineMessages", "VisitorId", "dbo.Visitors", "Id");

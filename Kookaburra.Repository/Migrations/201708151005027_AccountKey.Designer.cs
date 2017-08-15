@@ -13,7 +13,7 @@ namespace Kookaburra.Repository.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201708100659310_AccountKey"; }
+            get { return "201708151005027_AccountKey"; }
         }
         
         string IMigrationMetadata.Source
