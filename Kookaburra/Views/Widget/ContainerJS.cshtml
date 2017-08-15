@@ -18,7 +18,7 @@ function toggleChat() {
     }
     else {                               // show chat box
         el.style.display = '';
-        wrapper.style.height = '377px';
+        wrapper.style.height = '400px';
         var containerIframe = document.getElementById('container-iframe');
         if (containerIframe) {
             containerIframe.contentWindow.postMessage('init', '*');                   
@@ -28,7 +28,7 @@ function toggleChat() {
 
 var widgetContainer = document.createElement("div");
 widgetContainer.id = 'onlinechatwrapper';
-widgetContainer.style.cssText = "display:none; position: fixed; bottom: 0px; right: 20px; margin: 0px; padding: 0px; overflow: hidden; z-index: 99999999; width: 300px; height: 37px; background-color: transparent;";
+widgetContainer.style.cssText = "display:none; position: fixed; bottom: 0px; right: 20px; margin: 0px; padding: 0px; overflow: hidden; z-index: 99999999; width: 330px; height: 37px; background-color: transparent;";
 
 var widgetButton = document.createElement("div");
 widgetButton.id = 'chat-box-header';

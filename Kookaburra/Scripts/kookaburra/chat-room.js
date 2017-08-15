@@ -74,7 +74,10 @@
 
                     $.connection.chatHub.server.sendToVisitor(self.operatorName, self.newText(), self.currentChat().sessionId(), newMessageId)
                         .done(function (data) {
-                            var conversations = $.grep(self.conversations(), function (e) { return e.sessionId() == data.visitorSessionId; });
+                            var conversations = $.grep(self.conversations(), function (e) {
+                                return e.sessionId() == data.visitorSessionId && !e.isClosed();
+                            });
+
                             if (conversations && conversations.length > 0) {
                                 var messages = $.grep(conversations[0].messages(), function (e) { return e.id == data.messageId; });
                                 if (messages && messages.length > 0) {
@@ -158,25 +161,28 @@
         };
 
         // Message from visitor/operator
-        $.connection.visitorHub.client.sendMessageToOperator = function (message, sessionId) {
+        var messageToOperatorEventHandler = function (message, sessionId) {
 
             var conversation = ko.utils.arrayFirst(self.conversations(), function (c) {
-                return c.sessionId() == sessionId;
+                return c.sessionId() == sessionId && !c.isClosed();
             });
 
             if (conversation) {
                 conversation.messages.push(new Message(message, conversation.isCurrent(), false));
-          
+
                 self.scrollDown();
                 $('[data-toggle="tooltip"]').tooltip();
             }
         };
 
+        $.connection.visitorHub.client.sendMessageToOperator = messageToOperatorEventHandler;
+        $.connection.chatHub.client.sendMessageToOperator = messageToOperatorEventHandler;
+
         // Visitor stopped chat
         var visitorDisconnectedEventHandler = function (result) {
 
             var conversationToClose = ko.utils.arrayFirst(self.conversations(), function (c) {
-                return c.sessionId() == result.visitorSessionId;
+                return c.sessionId() == result.visitorSessionId && !c.isClosed();
             });
 
             if (conversationToClose) {

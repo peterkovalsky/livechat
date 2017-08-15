@@ -93,7 +93,7 @@ function WidgetViewModel(accountKey) {
         // connect to SignalR
         $.connection.hub.start().done(function () {
 
-            chatHubProxy.server.initWidget(accountKey).done(function (initResult) {
+            $.connection.visitorHub.server.initWidget(accountKey).done(function (initResult) {
 
                 if (initResult.step == 'Resume') {
                     // resume started chat
@@ -127,7 +127,7 @@ function WidgetViewModel(accountKey) {
         if (!self.visitor().name.hasError()) {
             var visitorView = ko.toJS(self.visitor());
 
-            chatHubProxy.server.startChat(visitorView).done(function (result) {
+            $.connection.visitorHub.server.startChat(visitorView).done(function (result) {
 
                 if (result != null) {
                     $.cookie(result.cookieName, result.sessionId, { path: '/' });
@@ -153,7 +153,7 @@ function WidgetViewModel(accountKey) {
     };
 
     self.sendOfflineMessage = function () {
-        chatHubProxy.server.sendOfflineMessage(self.offline()).done(function () {
+        $.connection.visitorHub.server.sendOfflineMessage(self.offline()).done(function () {
             self.view('ThankYou')
         });
     };
@@ -170,14 +170,14 @@ function WidgetViewModel(accountKey) {
     // Visitor wants to stop conversation
     // ------------------
     self.closeChat = function () {
-        chatHubProxy.server.finishChattingWithOperator();
+        $.connection.visitorHub.server.finishChattingWithOperator();
         self.view('ThankYouEndChat');
     }
 
     // Sends message to operator on Enter Press
     // ----------------------------------------  
     self.sendMessage = function () {
-        chatHubProxy.server.sendToOperator(self.newMessage());
+        $.connection.visitorHub.server.sendToOperator(self.newMessage());
 
         self.newMessage('');
         self.scrollDown();
@@ -192,13 +192,16 @@ function WidgetViewModel(accountKey) {
     self.registerClientSideFunctions = function () {
 
         // Visitor received message from operator
-        chatHubProxy.client.sendMessageToVisitor = function (message) {
+        var messageToVisitorEventHandler = function (message) {
             self.messages.push(new Message(message));
 
             self.scrollDown();
         };
 
-        chatHubProxy.client.visitorDisconnected = function (result) {
+        $.connection.visitorHub.client.sendMessageToVisitor = messageToVisitorEventHandler;
+        $.connection.chatHub.client.sendMessageToVisitor = messageToVisitorEventHandler;
+
+        var visitorDisconnectedEventHandler = function (result) {
             //$.connection.hub.stop();
 
             var disconnectMessage = 'Chat has been stopped.';
@@ -219,7 +222,10 @@ function WidgetViewModel(accountKey) {
                 time: result.time
             }));
 
-            self.scrollDown();           
+            self.scrollDown();
         };
+
+        $.connection.visitorHub.client.visitorDisconnected = visitorDisconnectedEventHandler;
+        $.connection.chatHub.client.visitorDisconnected = visitorDisconnectedEventHandler;
     };
 }

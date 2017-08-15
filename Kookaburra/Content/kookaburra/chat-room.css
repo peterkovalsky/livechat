@@ -117,8 +117,10 @@
     background-color: #F3F7F9;
 }
 
-.operator-chats .chat.system .chat-body .chat-content {    
-    background-color: #526069;  
+.operator-chats .chat.system .chat-body .chat-content {
+    background-color: white;
+    color: #526069;
+    border: 1px solid #526069;
     max-width: 100%;
     margin: 0;
     float: none;

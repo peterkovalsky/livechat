@@ -40,7 +40,7 @@
 
     self.registerCallbackFunctions = function () {
         // Visitor CONNECTED 
-        $.connection.chatHub.client.visitorConnectedGlobal = function (sessionId) {
+        $.connection.visitorHub.client.visitorConnectedGlobal = function (sessionId) {
            
             var chat = ko.utils.arrayFirst(self.activeChats(), function (c) {
                 return c.visitorSessionId() == sessionId;
@@ -56,7 +56,7 @@
         };
 
         // Visitor DISCONNECTED 
-        $.connection.chatHub.client.visitorDisconnectedGlobal = function (visitorSessionId) {
+        var visitorDisconnectedGlobalEventHandler = function (visitorSessionId) {
 
             var chat = ko.utils.arrayFirst(self.activeChats(), function (c) {
                 return c.visitorSessionId() == visitorSessionId;
@@ -67,6 +67,9 @@
                 self.activeChats.remove(chat);
             }
         };
+
+        $.connection.visitorHub.client.visitorDisconnectedGlobal = visitorDisconnectedGlobalEventHandler;
+        $.connection.chatHub.client.visitorDisconnectedGlobal = visitorDisconnectedGlobalEventHandler;
     }
 }
 
