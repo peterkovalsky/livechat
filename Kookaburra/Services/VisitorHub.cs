@@ -234,6 +234,8 @@ namespace Kookaburra.Services
             return new InitWidgetViewModel
             {
                 Step = WidgetStepType.Resume.ToString(),
+                VisitorName = resumedConversation.VisitorInfo.Name,
+                VisitorEmail = resumedConversation.VisitorInfo.Email,
                 ResumedChat = Mapper.Map<ConversationViewModel>(resumedConversation)
             };
         }

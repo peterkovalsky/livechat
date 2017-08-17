@@ -99,13 +99,15 @@ function WidgetViewModel(accountKey) {
                     // resume started chat
                     var conversationViewModel = initResult.resumedChat;
 
-                    self.visitorName(conversationViewModel.visitorName);
-                    self.operatorName(conversationViewModel.operatorName);
-                    self.resumeChat(conversationViewModel.conversation);
-
-                    self.isMessageBoxFocus(true);
+                    self.visitor().name(conversationViewModel.visitorName);
+                    self.operatorName(conversationViewModel.operatorName);                  
+                    self.messages(conversationViewModel.conversation);
+                    
 
                     self.view('Chat')
+
+                    self.scrollDown();
+                    self.isMessageBoxFocus(true);
                 }
                 else if (initResult.step == 'Introduction') {
                     // introduction                    
@@ -156,15 +158,6 @@ function WidgetViewModel(accountKey) {
         $.connection.visitorHub.server.sendOfflineMessage(self.offline()).done(function () {
             self.view('ThankYou')
         });
-    };
-
-    // resume chat
-    // -----------
-    self.resumeChat = function (previousConversation) {
-        self.messages(previousConversation);
-
-        self.addEnterPressEvent();
-        self.scrollDown();
     };
 
     // Visitor wants to stop conversation
