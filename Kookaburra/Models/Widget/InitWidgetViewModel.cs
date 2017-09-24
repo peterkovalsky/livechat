@@ -1,9 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using Kookaburra.Common;
+using Newtonsoft.Json;
 
 namespace Kookaburra.Models.Widget
 {
     public class InitWidgetViewModel
     {
+        public InitWidgetViewModel(WidgetStepType step)
+        {
+            Step = step.ToString();
+        }
+
         [JsonProperty("step")]
         public string Step { get; set; }
 

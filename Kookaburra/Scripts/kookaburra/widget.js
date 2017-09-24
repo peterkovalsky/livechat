@@ -36,9 +36,9 @@ ko.extenders.required = function (target, overrideMessage) {
 function Offline(accountKey) {
     var self = this;
 
-    self.name = '';
-    self.email = '';
-    self.message = ko.observable("");
+    self.name = ko.observable("").extend({ required: "Please enter your name" });
+    self.email = ko.observable("").extend({ required: "Please enter your email" });
+    self.message = ko.observable("").extend({ required: "Please enter your message" });
 
     self.accountKey = accountKey;
     self.focusName = ko.observable(true);
@@ -56,8 +56,8 @@ function Message(data) {
 function Visitor(accountKey) {
     var self = this;
 
-    self.name = ko.observable('').extend({ required: "Please enter your name" });
-    self.email = '';
+    self.name = ko.observable("").extend({ required: "Please enter your name" });
+    self.email = ko.observable("");
     self.url = (window.location != window.parent.location)
         ? document.referrer
         : document.location.href;
@@ -111,12 +111,28 @@ function WidgetViewModel(accountKey) {
                 }
                 else if (initResult.step == 'Introduction') {
                     // introduction                    
-                    self.view('Intro');
+                    self.view('Intro');             
+
+                    if (initResult.visitorName) {
+                        self.visitor().name(initResult.visitorName);
+                    }
+                    if (initResult.visitorEmail) {
+                        self.visitor().email(initResult.visitorEmail);
+                    }
+
                     self.visitor().focusName(true);
                 }
                 else {
                     // operator gone offline                    
                     self.view('Offline');
+
+                    if (initResult.visitorName) {
+                        self.offline().name(initResult.visitorName);
+                    }
+                    if (initResult.visitorEmail) {
+                        self.offline().email(initResult.visitorEmail);
+                    }
+
                     self.offline().focusName(true);
                 }
             });
@@ -155,15 +171,21 @@ function WidgetViewModel(accountKey) {
     };
 
     self.sendOfflineMessage = function () {
-        $.connection.visitorHub.server.sendOfflineMessage(self.offline()).done(function () {
-            self.view('ThankYou')
-        });
+        // trigger validation
+        self.offline().name.hasError(self.offline().name() ? false : true);
+        self.offline().email.hasError(self.offline().email() ? false : true);
+        self.offline().message.hasError(self.offline().message() ? false : true);
+
+        if (!self.offline().name.hasError() && !self.offline().email.hasError() && !self.offline().message.hasError()) {
+            $.connection.visitorHub.server.sendOfflineMessage(self.offline());
+            self.view('ThankYou');
+        }
     };
 
     // Visitor wants to stop conversation
     // ------------------
     self.closeChat = function () {
-        $.connection.visitorHub.server.finishChattingWithOperator();
+        $.connection.visitorHub.server.finishChattingWithOperator(accountKey);
         self.view('ThankYouEndChat');
     }
 

@@ -1,4 +1,6 @@
-﻿function Conversation(data) {
+﻿"use strict";
+
+function Conversation(data) {
     var self = this;
 
     self.id = data.id;
@@ -6,7 +8,7 @@
     self.operatorName = data.operatorName;
     self.text = data.text;
     self.totalMessages = data.totalMessages;
-    self.startTime = moment(data.startTime).format('lll'); // Mar 27, 2017 4:29 PM
+    self.startTime = moment(data.startTime).format("lll"); // Mar 27, 2017 4:29 PM
 }
 
 ko.bindingHandlers.enterkey = {
@@ -25,17 +27,17 @@ ko.bindingHandlers.enterkey = {
 
 function ChatHistoryViewModel(initialData) {
     var self = this;
-    
+
     self.conversations = ko.observableArray([]);
     self.totalConversations = ko.observable(initialData.totalConversations);
     self.currentPage = ko.observable(1);
 
-    self.searchTerm = ko.observable('');
-    self.searchTermLabel = ko.observable('');
+    self.searchTerm = ko.observable("");
+    self.searchTermLabel = ko.observable("");
     self.searching = ko.observable(false);
     self.searchFocus = ko.observable(false);
 
-    self.filters = ['All', 'Today', 'Week', 'Month'];
+    self.filters = ["All", "Today", "Week", "Month"];
     self.selectedFilter = ko.observable(self.filters[0]);
     self.filtering = ko.observable(false);
 
@@ -48,7 +50,7 @@ function ChatHistoryViewModel(initialData) {
     self.search = function () {
         if (self.searchTerm() && self.searchTerm().length >= 3) {
 
-            $.get("/api/history/search/" + self.searchTerm() + '/' + + self.currentPage())
+            $.get("/api/history/search/" + self.searchTerm() + "/" + self.currentPage())
                 .done(function (data) {
                     self.searchTermLabel(self.searchTerm());
                     self.searching(true);
@@ -62,7 +64,7 @@ function ChatHistoryViewModel(initialData) {
     };
 
     self.clearSearch = function () {
-        self.searchTerm('');
+        self.searchTerm("");
         self.searchFocus(true);
     };
 
@@ -78,7 +80,7 @@ function ChatHistoryViewModel(initialData) {
                 self.addConversations(data.conversations);
                 self.totalConversations(data.totalConversations);
 
-                if (self.selectedFilter() == self.filters[0]) {
+                if (self.selectedFilter() === self.filters[0]) {
                     self.filtering(false);
                 }
             });
@@ -89,7 +91,7 @@ function ChatHistoryViewModel(initialData) {
         self.currentPage(self.currentPage() + 1);
 
         if (self.searching()) {
-            $.get("/api/history/search/" + self.searchTerm() + '/' + self.currentPage())
+            $.get("/api/history/search/" + self.searchTerm() + "/" + self.currentPage())
                 .done(function (data) {
                     self.addConversations(data.conversations);
                 });

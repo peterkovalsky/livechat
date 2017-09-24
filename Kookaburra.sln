@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra", "Kookaburra\Kookaburra.csproj", "{9EED0EF9-6DBE-4AC5-94D0-76038EFF37C7}"
 EndProject
@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Tests", "Kookabu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Integration.freegeoip", "Kookaburra.Integration.freegeoip\Kookaburra.Integration.freegeoip.csproj", "{F95250A3-88C4-4EDE-B23C-C0C4FD4E0462}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Website", "Kookaburra.Website\Kookaburra.Website.csproj", "{88025E79-B505-475E-9F67-F88038882071}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kookaburra.Website", "Kookaburra.Website\Kookaburra.Website.csproj", "{88025E79-B505-475E-9F67-F88038882071}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Email", "Kookaburra.Email\Kookaburra.Email.csproj", "{F8477F6C-7B20-4A32-8C4E-A838FC29FDEA}"
 EndProject
@@ -74,8 +74,8 @@ Global
 		{88025E79-B505-475E-9F67-F88038882071}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88025E79-B505-475E-9F67-F88038882071}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88025E79-B505-475E-9F67-F88038882071}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88025E79-B505-475E-9F67-F88038882071}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{88025E79-B505-475E-9F67-F88038882071}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{88025E79-B505-475E-9F67-F88038882071}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{88025E79-B505-475E-9F67-F88038882071}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{F8477F6C-7B20-4A32-8C4E-A838FC29FDEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F8477F6C-7B20-4A32-8C4E-A838FC29FDEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8477F6C-7B20-4A32-8C4E-A838FC29FDEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -85,5 +85,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AD5FF78D-7FAF-44F0-A500-28B54CC6EA57}
 	EndGlobalSection
 EndGlobal

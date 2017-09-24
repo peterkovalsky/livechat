@@ -19,18 +19,19 @@ namespace Kookaburra.Domain.Query.ReturningVisitor
 
         public async Task<ReturningVisitorQueryResult> ExecuteAsync(ReturningVisitorQuery query)
         {
-            var chatSession = _chatSession.GetVisitorByVisitorSessionId(query.VisitorId);
-            if (chatSession != null)
+            if (string.IsNullOrWhiteSpace(query.VisitorId) || string.IsNullOrWhiteSpace(query.AccountKey))
             {
-                var visitor = await _context.Visitors.Where(v => v.SessionId == query.VisitorId && v.Account.Identifier == query.AccountKey).SingleOrDefaultAsync();
-                if (visitor != null)
+                return null;
+            }
+
+            var visitor = await _context.Visitors.Where(v => v.SessionId == query.VisitorId && v.Account.Identifier == query.AccountKey).SingleOrDefaultAsync();
+            if (visitor != null)
+            {
+                return new ReturningVisitorQueryResult
                 {
-                    return new ReturningVisitorQueryResult
-                    {
-                        VisitorName = visitor.Name,
-                        VisitorEmail = visitor.Email
-                    };
-                }                
+                    VisitorName = visitor.Name,
+                    VisitorEmail = visitor.Email
+                };
             }
 
             return null;

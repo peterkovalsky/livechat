@@ -1,0 +1,33 @@
+﻿{
+  "output": "Warning",
+  "ignore": [
+    "remark",
+    "Scripts/bootstrap.js",
+    "Scripts/bootstrap.min.js",
+    "Scripts/jquery.scrollbar.js",
+    "Scripts/jquery.scrollbar.min.js",
+    "Scripts/jquery.signalR-2.2.2.js",
+    "Scripts/jquery.signalR-2.2.2.min.js",
+    "Scripts/knockout-3.4.2.debug.js",
+    "Scripts/jquery.validate.js",
+    "Scripts/knockout-3.4.2.js",
+    "Scripts/knockout.mapping-latest.debug.js",
+    "Scripts/jquery.validate.unobtrusive.js",
+    "Scripts/jquery.validate.unobtrusive.min.js",
+    "Scripts/jquery.cookie.js",
+    "Scripts/joinable.js",
+    "Scripts/jquery-1.10.2.js",
+    "Scripts/jquery-1.10.2.min.js",
+    "Scripts/jquery-1.11.1.min.js",
+    "Scripts/handlebars.min.js",
+    "Scripts/jquery.cookie-1.4.1.min.js",
+    "Scripts/jquery.mousewheel.js",
+    "Scripts/jquery.validate.min.js",
+    "Scripts/knockout.mapping-latest.debug.js",
+    "Scripts/knockout.mapping-latest.js",
+    "Scripts/modernizr-2.6.2.js",
+    "Scripts/modernizr-2.8.3.js",
+    "Scripts/typeahead.bundle.js",
+    "Scripts/TweenLite.min.js"
+  ]
+}

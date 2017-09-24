@@ -54,6 +54,7 @@
     <Compile Include="IMailer.cs" />
     <Compile Include="Mailer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Public\OfflineMessage\OfflineMessageEmail.cs" />
     <Compile Include="Public\SignUpWelcome\SignUpWelcomeEmail.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Public\SignUpWelcome\SignUpWelcomeEmail.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Public\OfflineMessage\OfflineMessageEmail.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

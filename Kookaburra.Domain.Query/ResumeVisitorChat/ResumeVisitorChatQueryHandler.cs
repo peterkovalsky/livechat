@@ -21,7 +21,7 @@ namespace Kookaburra.Domain.ResumeVisitorChat
 
         public async Task<ResumeVisitorChatQueryResult> ExecuteAsync(ResumeVisitorChatQuery query)
         {
-            if (string.IsNullOrWhiteSpace(query.VisitorSessionId))
+            if (string.IsNullOrWhiteSpace(query.VisitorSessionId) || string.IsNullOrWhiteSpace(query.VisitorConnectionId))
             {
                 return null;
             }

@@ -4,13 +4,13 @@
             Sorry, we aren't online at the moment. Please leave a message and we'll get back to you soon.
         </div>
         <div class="name">
-            <input type="text" placeholder="Name" autocomplete="off" data-bind="textInput: offline().name, hasFocus: offline().focusName" />
+            <input type="text" placeholder="Name" autocomplete="off" data-bind="textInput: offline().name, hasFocus: offline().focusName, css: { 'input-validation-error': offline().name.hasError }" />
         </div>
         <div class="email">
-            <input type="text" placeholder="Email" autocomplete="off" data-bind="textInput: offline().email" />
+            <input type="text" placeholder="Email" autocomplete="off" data-bind="textInput: offline().email, css: { 'input-validation-error': offline().email.hasError }" />
         </div>   
         <div class="message">
-            <textarea placeholder="Message" autocomplete="off" data-bind="textInput: offline().message"></textarea>
+            <textarea placeholder="Message" autocomplete="off" data-bind="textInput: offline().message, css: { 'input-validation-error': offline().message.hasError }"></textarea>
         </div>
         <div class="submit">
             <input class="btn start" type="button" value="SEND" data-bind="click: sendOfflineMessage" />

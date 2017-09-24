@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Hangfire;
 using Kookaburra.Common;
 using Kookaburra.Domain.AvailableOperator;
 using Kookaburra.Domain.Command;
+using Kookaburra.Domain.Command.LeaveMessage;
 using Kookaburra.Domain.Command.StartVisitorChat;
 using Kookaburra.Domain.Command.StopConversation;
 using Kookaburra.Domain.Command.VisitorMessaged;
@@ -21,34 +23,37 @@ using System.Threading.Tasks;
 namespace Kookaburra.Services
 {
     public class VisitorHub : Hub
-    {      
+    {
         private readonly ICommandHandler<StopConversationCommand> _stopConversationCommandHandler;
         private readonly ICommandHandler<StartVisitorChatCommand> _startVisitorChatCommandHandler;
         private readonly ICommandHandler<VisitorMessagedCommand> _visitorMessagedCommandHandler;
-       
-        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;    
+        private readonly ICommandHandler<LeaveMessageCommand> _leaveMessageCommandHandler;
+
+        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
         private readonly IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> _availableOperatorQueryHandler;
         private readonly IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> _resumeVisitorChatQueryHandler;
         private readonly IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> _returningVisitorQueryHandler;
-        
+
 
         public VisitorHub(
             ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
             ICommandHandler<StartVisitorChatCommand> startVisitorChatCommandHandler,
-            ICommandHandler<VisitorMessagedCommand> visitorMessagedCommandHandler,            
-            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,           
+            ICommandHandler<VisitorMessagedCommand> visitorMessagedCommandHandler,
+            ICommandHandler<LeaveMessageCommand> leaveMessageCommandHandler,
+            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
             IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> availableOperatorQueryHandler,
             IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> resumeVisitorChatQueryHandler,
             IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> returningVisitorQueryHandler)
-        {           
+        {
             _stopConversationCommandHandler = stopConversationCommandHandler;
             _startVisitorChatCommandHandler = startVisitorChatCommandHandler;
             _visitorMessagedCommandHandler = visitorMessagedCommandHandler;
-           
-            _currentSessionQueryHandler = currentSessionQueryHandler;           
+            _leaveMessageCommandHandler = leaveMessageCommandHandler;
+
+            _currentSessionQueryHandler = currentSessionQueryHandler;
             _availableOperatorQueryHandler = availableOperatorQueryHandler;
             _resumeVisitorChatQueryHandler = resumeVisitorChatQueryHandler;
-            _returningVisitorQueryHandler = returningVisitorQueryHandler;            
+            _returningVisitorQueryHandler = returningVisitorQueryHandler;
         }
 
 
@@ -57,41 +62,29 @@ namespace Kookaburra.Services
             var query = new AvailableOperatorQuery(accountKey);
             var operatorResult = await _availableOperatorQueryHandler.ExecuteAsync(query);
 
+            var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
+            var visitorId = visitorCookie.GetVisitorId(accountKey);
+
+            var queryReturning = new ReturningVisitorQuery(accountKey, visitorId);
+            var returningVisitor = await _returningVisitorQueryHandler.ExecuteAsync(queryReturning);
+
             if (operatorResult != null) // Is there any available operator
             {
-                var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-                var visitorId = visitorCookie.GetVisitorId(accountKey);
-
-                // check if it's a returning visitor
-                if (visitorId != null) 
+                var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
+                var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
+                if (resumedConversation != null) // check if session is still alive
                 {
-                    var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
-                    var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
-
-                    if (resumedConversation != null) // check if session is still alive
-                    {
-                        // resume chat session
-                        return Resume(resumedConversation);
-                    }
-                    else
-                    {
-                        var queryReturning = new ReturningVisitorQuery(accountKey, visitorId);
-                        var returningVisitor = await _returningVisitorQueryHandler.ExecuteAsync(queryReturning);
-                        if (returningVisitor != null)
-                        {
-                            // returning visitor
-                            return Returning(returningVisitor);
-                        }
-                    }
+                    // resume chat session
+                    return Resume(resumedConversation);
                 }
 
-                // new visitor                 
-                return Introduction();
+                // new session                 
+                return Introduction(returningVisitor);
             }
 
             // no operators available
-            return Offline();
-        }   
+            return Offline(returningVisitor);
+        }
 
         public async Task<StartChatViewModel> StartChat(IntroductionViewModel visitor)
         {
@@ -147,9 +140,15 @@ namespace Kookaburra.Services
             return null;
         }
 
-        public void SendOfflineMessage(OfflineViewModel offlineMessage)
+        public async Task SendOfflineMessage(OfflineViewModel offlineMessage)
         {
+            var command = new LeaveMessageCommand(offlineMessage.AccountKey, offlineMessage.Name, offlineMessage.Email, offlineMessage.Message)
+            {
+                VisitorIP = WebHelper.GetIPAddress()
+            };
+            await _leaveMessageCommandHandler.ExecuteAsync(command);
 
+            BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmail(user.Id));
         }
 
         /// <summary>
@@ -205,25 +204,16 @@ namespace Kookaburra.Services
         /// <summary>
         /// Introduction of a new visitor
         /// </summary>        
-        private InitWidgetViewModel Introduction()
+        private InitWidgetViewModel Introduction(ReturningVisitorQueryResult returningVisitor)
         {
-            return new InitWidgetViewModel
+            var viewModel = new InitWidgetViewModel(WidgetStepType.Introduction);
+            if (returningVisitor != null)
             {
-                Step = WidgetStepType.Introduction.ToString()
-            };
-        }
+                viewModel.VisitorName = returningVisitor.VisitorName;
+                viewModel.VisitorEmail = returningVisitor.VisitorEmail;
+            }
 
-        /// <summary>
-        /// Returning visitor - pre-fill intro form
-        /// </summary>     
-        private InitWidgetViewModel Returning(ReturningVisitorQueryResult returningVisitor)
-        {
-            return new InitWidgetViewModel
-            {
-                Step = WidgetStepType.Returning.ToString(),
-                VisitorName = returningVisitor.VisitorName,
-                VisitorEmail = returningVisitor.VisitorEmail
-            };
+            return viewModel;
         }
 
         /// <summary>
@@ -231,9 +221,8 @@ namespace Kookaburra.Services
         /// </summary> 
         private InitWidgetViewModel Resume(ResumeVisitorChatQueryResult resumedConversation)
         {
-            return new InitWidgetViewModel
+            return new InitWidgetViewModel(WidgetStepType.Resume)
             {
-                Step = WidgetStepType.Resume.ToString(),
                 VisitorName = resumedConversation.VisitorInfo.Name,
                 VisitorEmail = resumedConversation.VisitorInfo.Email,
                 ResumedChat = Mapper.Map<ConversationViewModel>(resumedConversation)
@@ -243,12 +232,17 @@ namespace Kookaburra.Services
         /// <summary>
         /// Operator(s) offline - leave a message
         /// </summary>        
-        private InitWidgetViewModel Offline()
+        private InitWidgetViewModel Offline(ReturningVisitorQueryResult returningVisitor)
         {
-            return new InitWidgetViewModel
+            var viewModel = new InitWidgetViewModel(WidgetStepType.Offline);
+
+            if (returningVisitor != null)
             {
-                Step = WidgetStepType.Offline.ToString()
-            };
+                viewModel.VisitorName = returningVisitor.VisitorName;
+                viewModel.VisitorEmail = returningVisitor.VisitorEmail;
+            }
+
+            return viewModel;
         }
 
         private void DisconnectVisitor(CurrentSessionQueryResult currentSession, UserType disconnectedBy)

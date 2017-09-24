@@ -69,6 +69,32 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
 
                 _context.Visitors.Add(returningVisitor);
             }
+            else // update visitor details
+            {
+                returningVisitor.Name = command.VisitorName;
+                returningVisitor.Email = command.VisitorEmail;
+                returningVisitor.SessionId = command.SessionId;
+                returningVisitor.IpAddress = command.VisitorIP;
+
+                try
+                {
+                    var location = await _geoLocator.GetLocationAsync(command.VisitorIP);
+
+                    if (location != null)
+                    {
+                        returningVisitor.Country = location.Country;
+                        returningVisitor.CountryCode = location.CountryCode;
+                        returningVisitor.Region = location.Region;
+                        returningVisitor.City = location.City;
+                        returningVisitor.Latitude = location.Latitude;
+                        returningVisitor.Longitude = location.Longitude;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // log geo location exception
+                }
+            }
 
             var operatorSession = _chatSession.GetOperatorById(command.OperatorId);
 
