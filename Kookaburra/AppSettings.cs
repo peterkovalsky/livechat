@@ -27,5 +27,21 @@ namespace Kookaburra
                 return ConfigurationManager.AppSettings["Email.Password"];
             }
         }
+
+        public static string UrlPortal
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["Url.Portal"];
+            }
+        }
+
+        public static string UrlWebsite
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["Url.Website"];
+            }
+        }
     }
 }

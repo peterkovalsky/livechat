@@ -18,6 +18,6 @@
 
         public string Message { get; }
 
-        public string VisitorIP { get; set; }   
+        public string VisitorIP { get; set; }
     }
 }

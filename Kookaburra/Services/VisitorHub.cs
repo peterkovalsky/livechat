@@ -140,15 +140,14 @@ namespace Kookaburra.Services
             return null;
         }
 
-        public async Task SendOfflineMessage(OfflineViewModel offlineMessage)
+        public void SendOfflineMessage(OfflineViewModel offlineMessage)
         {
             var command = new LeaveMessageCommand(offlineMessage.AccountKey, offlineMessage.Name, offlineMessage.Email, offlineMessage.Message)
             {
                 VisitorIP = WebHelper.GetIPAddress()
-            };
-            await _leaveMessageCommandHandler.ExecuteAsync(command);
+            };           
 
-            BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmail(user.Id));
+            BackgroundJob.Enqueue(() => _leaveMessageCommandHandler.ExecuteAsync(command));
         }
 
         /// <summary>

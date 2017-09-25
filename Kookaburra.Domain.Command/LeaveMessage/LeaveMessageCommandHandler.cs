@@ -1,5 +1,7 @@
 ﻿using Kookaburra.Domain.Integration;
 using Kookaburra.Domain.Model;
+using Kookaburra.Email;
+using Kookaburra.Email.Public.OfflineMessage;
 using Kookaburra.Repository;
 using System;
 using System.Data.Entity;
@@ -13,12 +15,14 @@ namespace Kookaburra.Domain.Command.LeaveMessage
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;
         private readonly IGeoLocator _geoLocator;
+        private readonly IMailer _mailer;
 
-        public LeaveMessageCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator)
+        public LeaveMessageCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator, IMailer mailer)
         {
             _context = context;
             _chatSession = chatSession;
             _geoLocator = geoLocator;
+            _mailer = mailer;
         }
 
         public async Task ExecuteAsync(LeaveMessageCommand command)
@@ -29,12 +33,12 @@ namespace Kookaburra.Domain.Command.LeaveMessage
             {
                 throw new ArgumentException(string.Format("Account {0} doesn't exists", command.AccountKey));
             }
-                   
+
             var offlineMessage = new OfflineMessage
             {
                 Message = command.Message,
                 DateSent = DateTime.UtcNow,
-                IsRead = false,          
+                IsRead = false,
                 Visitor = new Visitor
                 {
                     Name = command.Name,
@@ -61,10 +65,46 @@ namespace Kookaburra.Domain.Command.LeaveMessage
             catch (Exception ex)
             {
                 // log geo location exception   
-            }          
+            }
 
             _context.OfflineMessages.Add(offlineMessage);
             await _context.SaveChangesAsync();
+
+            SendEmailNotification(offlineMessage, command.AccountKey);
+        }
+
+        /// <summary>
+        /// Send email notification to all operators about new offline message
+        /// </summary>
+        private void SendEmailNotification(OfflineMessage offlineMessage, string accountKey)
+        {
+            try
+            {
+                var operators = _context.Operators.Where(o => o.Account.Identifier == accountKey).ToList();
+                var from = new AddressInfo("Kookaburra Chat", "info@kookaburra.chat");
+
+                foreach (var op in operators)
+                {
+                    var to = new AddressInfo(op.Email);
+
+                    var model = new OfflineMessageEmail
+                    {
+                        VisitorName = offlineMessage.Visitor.Name,
+                        VisitorEmail = offlineMessage.Visitor.Email,
+                        Page = offlineMessage.Page,
+                        QuestionLink = $"htt",
+                        Question = offlineMessage.Message,
+                        SentDate = offlineMessage.DateSent
+                    };
+
+                    try
+                    {
+                        _mailer.SendEmail(from, to, model);
+                    }
+                    catch { }
+                }
+            }
+            catch { }
         }
     }
 }

@@ -67,7 +67,7 @@
     <EmbeddedResource Include="Public\SignUpWelcome\SignUpWelcomeEmail.html" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Public\OfflineMessage\OfflineMessageEmail.html" />
+    <EmbeddedResource Include="Public\OfflineMessage\OfflineMessageEmail.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

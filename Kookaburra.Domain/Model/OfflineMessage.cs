@@ -10,6 +10,8 @@ namespace Kookaburra.Domain.Model
 
         public string Message { get; set; }
 
+        public string Page { get; set; }
+
         public DateTime DateSent { get; set; }      
 
         public bool IsRead { get; set; }
