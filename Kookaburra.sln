@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra", "Kookaburra\Kookaburra.csproj", "{9EED0EF9-6DBE-4AC5-94D0-76038EFF37C7}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kookaburra.Website", "Kookaburra.Website\Kookaburra.Website.csproj", "{88025E79-B505-475E-9F67-F88038882071}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Email", "Kookaburra.Email\Kookaburra.Email.csproj", "{F8477F6C-7B20-4A32-8C4E-A838FC29FDEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Services", "Kookaburra.Services\Kookaburra.Services.csproj", "{8D37ADA7-DD56-44DF-80CF-5225776FFD7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,12 @@ Global
 		{F8477F6C-7B20-4A32-8C4E-A838FC29FDEA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F8477F6C-7B20-4A32-8C4E-A838FC29FDEA}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{F8477F6C-7B20-4A32-8C4E-A838FC29FDEA}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{8D37ADA7-DD56-44DF-80CF-5225776FFD7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D37ADA7-DD56-44DF-80CF-5225776FFD7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D37ADA7-DD56-44DF-80CF-5225776FFD7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D37ADA7-DD56-44DF-80CF-5225776FFD7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D37ADA7-DD56-44DF-80CF-5225776FFD7A}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{8D37ADA7-DD56-44DF-80CF-5225776FFD7A}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

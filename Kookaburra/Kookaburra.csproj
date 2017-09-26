@@ -2021,6 +2021,10 @@
       <Project>{da1f181d-5da2-447f-b542-4d2d0bdd4518}</Project>
       <Name>Kookaburra.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kookaburra.Services\Kookaburra.Services.csproj">
+      <Project>{8D37ADA7-DD56-44DF-80CF-5225776FFD7A}</Project>
+      <Name>Kookaburra.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Error\" />

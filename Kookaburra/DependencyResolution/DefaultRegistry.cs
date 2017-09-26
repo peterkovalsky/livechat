@@ -45,6 +45,7 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Query.Transcript;
     using Kookaburra.Domain.ResumeVisitorChat;
     using Kookaburra.Email;
+    using Kookaburra.Services;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
@@ -100,7 +101,9 @@ namespace Kookaburra.DependencyResolution
             For<IMailer>().Add<Mailer>();
             For<IEmailSender>().Add<DefaultEmailSender>().Ctor<string>("host").Is(AppSettings.EmailHost)
                                                                     .Ctor<string>("username").Is(AppSettings.EmailUsername)
-                                                                    .Ctor<string>("password").Is(AppSettings.EmailPassword);           
+                                                                    .Ctor<string>("password").Is(AppSettings.EmailPassword);
+            For<IEmailService>().Add<EmailService>();
+            
             For<BackgroundJobs>().Add<BackgroundJobs>();            
         }       
     }

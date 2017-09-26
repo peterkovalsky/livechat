@@ -140,14 +140,16 @@ namespace Kookaburra.Services
             return null;
         }
 
-        public void SendOfflineMessage(OfflineViewModel offlineMessage)
+        public async Task SendOfflineMessage(OfflineViewModel offlineMessage)
         {
-            var command = new LeaveMessageCommand(offlineMessage.AccountKey, offlineMessage.Name, offlineMessage.Email, offlineMessage.Message)
+            var command = new LeaveMessageCommand(offlineMessage.AccountKey, offlineMessage.Name, offlineMessage.Email, offlineMessage.Message, AppSettings.UrlPortal)
             {
                 VisitorIP = WebHelper.GetIPAddress()
-            };           
+            };
 
-            BackgroundJob.Enqueue(() => _leaveMessageCommandHandler.ExecuteAsync(command));
+            await _leaveMessageCommandHandler.ExecuteAsync(command);
+
+            BackgroundJob.Enqueue<IEmailService>(emailService => emailService.SendOfflineNotificationEmail(command.Id));            
         }
 
         /// <summary>

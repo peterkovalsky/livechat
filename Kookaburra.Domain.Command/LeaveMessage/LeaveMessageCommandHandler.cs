@@ -1,7 +1,5 @@
 ﻿using Kookaburra.Domain.Integration;
 using Kookaburra.Domain.Model;
-using Kookaburra.Email;
-using Kookaburra.Email.Public.OfflineMessage;
 using Kookaburra.Repository;
 using System;
 using System.Data.Entity;
@@ -14,15 +12,13 @@ namespace Kookaburra.Domain.Command.LeaveMessage
     {
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;
-        private readonly IGeoLocator _geoLocator;
-        private readonly IMailer _mailer;
+        private readonly IGeoLocator _geoLocator;  
 
-        public LeaveMessageCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator, IMailer mailer)
+        public LeaveMessageCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator)
         {
             _context = context;
             _chatSession = chatSession;
-            _geoLocator = geoLocator;
-            _mailer = mailer;
+            _geoLocator = geoLocator;    
         }
 
         public async Task ExecuteAsync(LeaveMessageCommand command)
@@ -70,41 +66,7 @@ namespace Kookaburra.Domain.Command.LeaveMessage
             _context.OfflineMessages.Add(offlineMessage);
             await _context.SaveChangesAsync();
 
-            SendEmailNotification(offlineMessage, command.AccountKey);
-        }
-
-        /// <summary>
-        /// Send email notification to all operators about new offline message
-        /// </summary>
-        private void SendEmailNotification(OfflineMessage offlineMessage, string accountKey)
-        {
-            try
-            {
-                var operators = _context.Operators.Where(o => o.Account.Identifier == accountKey).ToList();
-                var from = new AddressInfo("Kookaburra Chat", "info@kookaburra.chat");
-
-                foreach (var op in operators)
-                {
-                    var to = new AddressInfo(op.Email);
-
-                    var model = new OfflineMessageEmail
-                    {
-                        VisitorName = offlineMessage.Visitor.Name,
-                        VisitorEmail = offlineMessage.Visitor.Email,
-                        Page = offlineMessage.Page,
-                        QuestionLink = $"htt",
-                        Question = offlineMessage.Message,
-                        SentDate = offlineMessage.DateSent
-                    };
-
-                    try
-                    {
-                        _mailer.SendEmail(from, to, model);
-                    }
-                    catch { }
-                }
-            }
-            catch { }
-        }
+            command.Id = offlineMessage.Id;
+        }      
     }
 }

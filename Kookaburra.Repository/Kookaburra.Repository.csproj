@@ -102,6 +102,10 @@
     <Compile Include="Migrations\201708151005027_AccountKey.Designer.cs">
       <DependentUpon>201708151005027_AccountKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709260358332_offlinemessage.cs" />
+    <Compile Include="Migrations\201709260358332_offlinemessage.Designer.cs">
+      <DependentUpon>201709260358332_offlinemessage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OperatorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -145,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708151005027_AccountKey.resx">
       <DependentUpon>201708151005027_AccountKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709260358332_offlinemessage.resx">
+      <DependentUpon>201709260358332_offlinemessage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

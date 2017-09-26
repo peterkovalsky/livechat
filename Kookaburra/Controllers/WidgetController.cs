@@ -165,7 +165,7 @@ namespace Kookaburra.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message)
+            var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message, AppSettings.UrlPortal)
             {
                 VisitorIP = WebHelper.GetIPAddress()
             };
