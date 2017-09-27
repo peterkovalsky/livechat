@@ -87,16 +87,18 @@ namespace Kookaburra.Services
         }
 
         public async Task<StartChatViewModel> StartChat(IntroductionViewModel visitor)
-        {
+        {            
+            var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
+            var visitorId = visitorCookie.GetOrCreateVisitorId(visitor.AccountKey);
+
             var query = new AvailableOperatorQuery(visitor.AccountKey);
             var availableOperator = await _availableOperatorQueryHandler.ExecuteAsync(query);
 
+            ResumeVisitorChatQueryResult resumedConversation = null;
+
             // if operator is available - establish connection
             if (availableOperator != null)
-            {
-                var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-                var visitorId = visitorCookie.GetOrCreateVisitorId(visitor.AccountKey);
-
+            {              
                 var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, visitorId, visitor.AccountKey)
                 {
                     Page = visitor.PageUrl,
@@ -107,7 +109,7 @@ namespace Kookaburra.Services
 
 
                 var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
-                var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
+                resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
 
                 if (resumedConversation != null)
                 {
@@ -125,26 +127,29 @@ namespace Kookaburra.Services
 
                     // Notify all operator instances about this visitor
                     Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorId);
-                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);
-
-                    return new StartChatViewModel
-                    {
-                        CookieName = visitorCookie.GetCookieName(visitor.AccountKey),
-                        SessionId = visitorId,
-                        OperatorName = availableOperator.OperatorName,
-                        Messages = Mapper.Map<List<MessageViewModel>>(resumedConversation.Conversation)
-                    };
+                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);                 
                 }
             }
 
-            return null;
+            return new StartChatViewModel
+            {
+                CookieName = visitorCookie.GetCookieName(visitor.AccountKey),
+                SessionId = visitorId,
+                OperatorName = availableOperator?.OperatorName,
+                Messages = resumedConversation != null ? Mapper.Map<List<MessageViewModel>>(resumedConversation.Conversation) : null
+            };
         }
 
         public async Task SendOfflineMessage(OfflineViewModel offlineMessage)
         {
+            var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
+            var visitorId = visitorCookie.GetOrCreateVisitorId(offlineMessage.AccountKey);
+
             var command = new LeaveMessageCommand(offlineMessage.AccountKey, offlineMessage.Name, offlineMessage.Email, offlineMessage.Message, AppSettings.UrlPortal)
             {
-                VisitorIP = WebHelper.GetIPAddress()
+                VisitorIP = WebHelper.GetIPAddress(),
+                Page = offlineMessage.Page,
+                VisitorId = visitorId
             };
 
             await _leaveMessageCommandHandler.ExecuteAsync(command);

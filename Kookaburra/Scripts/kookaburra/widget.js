@@ -79,7 +79,7 @@ function WidgetViewModel(accountKey) {
     self.isStopChat = ko.observable(false);
     self.isMessageBoxFocus = ko.observable(true);
 
-    self.view = ko.observable('');    
+    self.view = ko.observable('');
 
     var chatHubProxy = $.connection.visitorHub;
 
@@ -100,9 +100,9 @@ function WidgetViewModel(accountKey) {
                     var conversationViewModel = initResult.resumedChat;
 
                     self.visitor().name(conversationViewModel.visitorName);
-                    self.operatorName(conversationViewModel.operatorName);                  
+                    self.operatorName(conversationViewModel.operatorName);
                     self.messages(conversationViewModel.conversation);
-                    
+
 
                     self.view('Chat')
 
@@ -111,7 +111,7 @@ function WidgetViewModel(accountKey) {
                 }
                 else if (initResult.step == 'Introduction') {
                     // introduction                    
-                    self.view('Intro');             
+                    self.view('Intro');
 
                     if (initResult.visitorName) {
                         self.visitor().name(initResult.visitorName);
@@ -150,16 +150,19 @@ function WidgetViewModel(accountKey) {
                 if (result != null) {
                     $.cookie(result.cookieName, result.sessionId, { path: '/' });
 
-                    if (result.messages) {
-                        self.messages(result.messages);
-                    }
+                    if (result.operatorName) {
+                        // load up previous messages
+                        if (result.messages) {
+                            self.messages(result.messages);
+                        }
 
-                    self.operatorName(result.operatorName);                   
-                    self.view('Chat');
-                    self.isMessageBoxFocus(true);
-                }
-                else {
-                    self.view('GoneOffline')
+                        self.operatorName(result.operatorName);
+                        self.view('Chat');
+                        self.isMessageBoxFocus(true);
+                    }
+                    else {
+                        self.view('GoneOffline')
+                    }
                 }
             });
         }
@@ -177,7 +180,9 @@ function WidgetViewModel(accountKey) {
         self.offline().message.hasError(self.offline().message() ? false : true);
 
         if (!self.offline().name.hasError() && !self.offline().email.hasError() && !self.offline().message.hasError()) {
-            $.connection.visitorHub.server.sendOfflineMessage(self.offline());
+            var offlineMsgView = ko.toJS(self.offline());
+
+            $.connection.visitorHub.server.sendOfflineMessage(offlineMsgView);
             self.view('ThankYou');
         }
     };

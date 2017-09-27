@@ -19,6 +19,10 @@ namespace Kookaburra.Models.Widget
         public string Message { get; set; }
 
         [Required]
+        [JsonProperty("page")]
+        public string Page { get; set; }
+
+        [Required]
         [JsonProperty("accountKey")]
         public string AccountKey { get; set; }
     }

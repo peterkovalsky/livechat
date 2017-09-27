@@ -19,10 +19,14 @@
 
         public string Email { get; }
 
+        public string Page { get; set; }
+
         public string Message { get; }
 
         public string VisitorIP { get; set; }
 
         public string PortalHost { get; }
+
+        public string VisitorId { get; set; }
     }
 }

@@ -12,13 +12,13 @@ namespace Kookaburra.Domain.Command.LeaveMessage
     {
         private readonly KookaburraContext _context;
         private readonly ChatSession _chatSession;
-        private readonly IGeoLocator _geoLocator;  
+        private readonly IGeoLocator _geoLocator;
 
         public LeaveMessageCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator)
         {
             _context = context;
             _chatSession = chatSession;
-            _geoLocator = geoLocator;    
+            _geoLocator = geoLocator;
         }
 
         public async Task ExecuteAsync(LeaveMessageCommand command)
@@ -30,18 +30,31 @@ namespace Kookaburra.Domain.Command.LeaveMessage
                 throw new ArgumentException(string.Format("Account {0} doesn't exists", command.AccountKey));
             }
 
-            var offlineMessage = new OfflineMessage
+            var visitor = await _context.Visitors.SingleOrDefaultAsync(v => v.SessionId == command.VisitorId);
+            if (visitor == null)
             {
-                Message = command.Message,
-                DateSent = DateTime.UtcNow,
-                IsRead = false,
-                Visitor = new Visitor
+                visitor = new Visitor
                 {
                     Name = command.Name,
                     Email = command.Email,
                     IpAddress = command.VisitorIP,
                     AccountId = account.Id
-                }
+                };
+            }
+            else // update visitor info
+            {
+                visitor.Name = command.Name;
+                visitor.Email = command.Email;
+                visitor.IpAddress = command.VisitorIP;
+            }
+
+            var offlineMessage = new OfflineMessage
+            {
+                Message = command.Message,
+                Page = command.Page,
+                DateSent = DateTime.UtcNow,
+                IsRead = false,
+                Visitor = visitor
             };
 
             try
@@ -66,7 +79,8 @@ namespace Kookaburra.Domain.Command.LeaveMessage
             _context.OfflineMessages.Add(offlineMessage);
             await _context.SaveChangesAsync();
 
+            // return offline message ID
             command.Id = offlineMessage.Id;
-        }      
+        }
     }
 }
