@@ -23,8 +23,7 @@ namespace Kookaburra.Controllers
         private ApplicationUserManager _userManager;
 
         private readonly IOperatorRepository _operatorRepository;
-        private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;
-        private readonly IQueryHandler<ProfileQuery> _signUpCommandHandler;
+        private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;       
 
         public AccountController(ICommandHandler<SignUpCommand> signUpCommandHandler,
             IOperatorRepository operatorRepository)

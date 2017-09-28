@@ -61,6 +61,7 @@ namespace Kookaburra.DependencyResolution
                     scan.Assembly("Kookaburra.Repository");
                     scan.Assembly("Kookaburra.Domain.Command");
                     scan.Assembly("Kookaburra.Domain.Query");
+                    scan.Assembly("Kookaburra.Services");
                     scan.WithDefaultConventions();
 					scan.With(new ControllerConvention());
                 });

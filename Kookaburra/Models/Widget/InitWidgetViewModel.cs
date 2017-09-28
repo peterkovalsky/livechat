@@ -20,6 +20,12 @@ namespace Kookaburra.Models.Widget
         public string VisitorEmail { get; set; }
 
         [JsonProperty("resumedChat")]
-        public ConversationViewModel ResumedChat { get; set; }       
+        public ConversationViewModel ResumedChat { get; set; }
+
+        [JsonProperty("cookieName")]
+        public string CookieName { get; set; }
+
+        [JsonProperty("newVisitorId")]
+        public string NewVisitorId { get; set; }
     }
 }

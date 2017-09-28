@@ -15,6 +15,7 @@ using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.Widget;
+using Kookaburra.Services.Visitors;
 using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace Kookaburra.Services
         private readonly IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> _resumeVisitorChatQueryHandler;
         private readonly IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> _returningVisitorQueryHandler;
 
+        private readonly IVisitorService _visitorService;
 
         public VisitorHub(
             ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
@@ -43,7 +45,8 @@ namespace Kookaburra.Services
             IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
             IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> availableOperatorQueryHandler,
             IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> resumeVisitorChatQueryHandler,
-            IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> returningVisitorQueryHandler)
+            IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> returningVisitorQueryHandler,
+            IVisitorService visitorService)
         {
             _stopConversationCommandHandler = stopConversationCommandHandler;
             _startVisitorChatCommandHandler = startVisitorChatCommandHandler;
@@ -54,6 +57,8 @@ namespace Kookaburra.Services
             _availableOperatorQueryHandler = availableOperatorQueryHandler;
             _resumeVisitorChatQueryHandler = resumeVisitorChatQueryHandler;
             _returningVisitorQueryHandler = returningVisitorQueryHandler;
+
+            _visitorService = visitorService;
         }
 
 
@@ -65,25 +70,50 @@ namespace Kookaburra.Services
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
             var visitorId = visitorCookie.GetVisitorId(accountKey);
 
-            var queryReturning = new ReturningVisitorQuery(accountKey, visitorId);
-            var returningVisitor = await _returningVisitorQueryHandler.ExecuteAsync(queryReturning);
-
-            if (operatorResult != null) // Is there any available operator
+            // returning visitor
+            if (!string.IsNullOrWhiteSpace(visitorId))
             {
-                var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
-                var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
-                if (resumedConversation != null) // check if session is still alive
+                var queryReturning = new ReturningVisitorQuery(accountKey, visitorId);
+                var returningVisitor = await _returningVisitorQueryHandler.ExecuteAsync(queryReturning);
+
+                if (operatorResult != null) // Is there any available operator
                 {
-                    // resume chat session
-                    return Resume(resumedConversation);
+                    var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
+                    var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
+                    if (resumedConversation != null) // check if session is still alive
+                    {
+                        // resume chat session
+                        return Resume(resumedConversation);
+                    }
+
+                    // new session                 
+                    return Introduction(returningVisitor);
                 }
 
-                // new session                 
-                return Introduction(returningVisitor);
+                // no operators available
+                return Offline(returningVisitor);
             }
+            else // new visitor
+            {
+                visitorId = visitorCookie.GenerateVisitorId();
 
-            // no operators available
-            return Offline(returningVisitor);
+                await _visitorService.AddNewVisitorAsync(accountKey, visitorId, WebHelper.GetIPAddress());
+
+                if (operatorResult != null)
+                {
+                    return new InitWidgetViewModel(WidgetStepType.Introduction)
+                    {
+                        CookieName = visitorCookie.GetCookieName(accountKey),
+                        NewVisitorId = visitorId
+                    };
+                }
+
+                return new InitWidgetViewModel(WidgetStepType.Offline)
+                {
+                    CookieName = visitorCookie.GetCookieName(accountKey),
+                    NewVisitorId = visitorId
+                };
+            }
         }
 
         public async Task<StartChatViewModel> StartChat(IntroductionViewModel visitor)

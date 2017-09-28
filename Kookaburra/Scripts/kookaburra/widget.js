@@ -95,8 +95,14 @@ function WidgetViewModel(accountKey) {
 
             $.connection.visitorHub.server.initWidget(accountKey).done(function (initResult) {
 
+                // set tracking cookie for the visitor
+                if (initResult.newVisitorId) {
+                    $.cookie(initResult.cookieName, initResult.newVisitorId, { path: '/' });
+                }
+
+                // resume started chat
                 if (initResult.step == 'Resume') {
-                    // resume started chat
+                    
                     var conversationViewModel = initResult.resumedChat;
 
                     self.visitor().name(conversationViewModel.visitorName);
@@ -109,8 +115,8 @@ function WidgetViewModel(accountKey) {
                     self.scrollDown();
                     self.isMessageBoxFocus(true);
                 }
-                else if (initResult.step == 'Introduction') {
-                    // introduction                    
+                else if (initResult.step == 'Introduction') { // new chat
+                                      
                     self.view('Intro');
 
                     if (initResult.visitorName) {
@@ -122,8 +128,8 @@ function WidgetViewModel(accountKey) {
 
                     self.visitor().focusName(true);
                 }
-                else {
-                    // operator gone offline                    
+                else {  // operator gone offline  
+                                     
                     self.view('Offline');
 
                     if (initResult.visitorName) {
