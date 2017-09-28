@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.SignUp;
+using Kookaburra.Domain.Query.Profile;
 using Kookaburra.Domain.Repository;
 using Kookaburra.Models;
 using Kookaburra.Services;
@@ -22,8 +23,8 @@ namespace Kookaburra.Controllers
         private ApplicationUserManager _userManager;
 
         private readonly IOperatorRepository _operatorRepository;
-        private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;      
-
+        private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;
+        private readonly IQueryHandler<ProfileQuery> _signUpCommandHandler;
 
         public AccountController(ICommandHandler<SignUpCommand> signUpCommandHandler,
             IOperatorRepository operatorRepository)
@@ -56,6 +57,12 @@ namespace Kookaburra.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("profile")]
+        public ActionResult UserProfile()
+        {
+            return View();
+        }
 
         //
         // GET: /Account/Login

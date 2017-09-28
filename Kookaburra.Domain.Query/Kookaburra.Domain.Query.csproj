@@ -58,6 +58,9 @@
     <Compile Include="ChatHistorySearch\ChatHistorySearchQueryHandler.cs" />
     <Compile Include="AvailableOperator\AvailableOperatorQueryHandler.cs" />
     <Compile Include="ChatHistory\ChatHistoryQueryHandler.cs" />
+    <Compile Include="Profile\ProfileQuery.cs" />
+    <Compile Include="Profile\ProfileQueryHandler.cs" />
+    <Compile Include="Profile\ProfileQueryResult.cs" />
     <Compile Include="ResumeVisitorChat\ResumeVisitorChatQueryHandler.cs" />
     <Compile Include="CurrentChats\CurrentChatsQueryHandler.cs" />
     <Compile Include="CurrentSession\CurrentSessionQueryHandler.cs" />

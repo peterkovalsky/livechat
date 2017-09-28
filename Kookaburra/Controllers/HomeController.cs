@@ -70,6 +70,6 @@ namespace Kookaburra.Controllers
             };
 
             return View(model);
-        }     
+        }
     }
 }
