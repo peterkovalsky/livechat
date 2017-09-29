@@ -1,14 +1,12 @@
 ﻿using Hangfire;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.SignUp;
-using Kookaburra.Domain.Query.Profile;
 using Kookaburra.Domain.Repository;
 using Kookaburra.Models;
-using Kookaburra.Services;
+using Kookaburra.Services.Accounts;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -23,13 +21,18 @@ namespace Kookaburra.Controllers
         private ApplicationUserManager _userManager;
 
         private readonly IOperatorRepository _operatorRepository;
-        private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;       
+        private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;
 
+        private readonly IAccountService _accountService;
+        
         public AccountController(ICommandHandler<SignUpCommand> signUpCommandHandler,
-            IOperatorRepository operatorRepository)
+            IOperatorRepository operatorRepository,
+            IAccountService accountService)
         {
             _signUpCommandHandler = signUpCommandHandler;
-            _operatorRepository = operatorRepository;          
+            _operatorRepository = operatorRepository;
+
+            _accountService = accountService;
         }
 
         public ApplicationSignInManager SignInManager
@@ -58,9 +61,34 @@ namespace Kookaburra.Controllers
 
         [HttpGet]
         [Route("profile")]
-        public ActionResult UserProfile()
+        public async Task<ActionResult> UserProfile()
         {
-            return View();
+            var profile = await _accountService.GetProfileAsync(User.Identity.GetUserId());
+
+            var model = new ProfileViewModel
+            {
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                Email = profile.Email
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("profile")]
+        public async Task<ActionResult> UserProfile(ProfileViewModel model)
+        {
+            var profile = await _accountService.UpdateProfileAsync(User.Identity.GetUserId(), model.FirstName, model.LastName, model.Email);
+
+            var profileViewModel = new ProfileViewModel
+            {
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                Email = profile.Email
+            };
+
+            return View(profileViewModel);
         }
 
         //

@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounts\AccountService.cs" />
+    <Compile Include="Accounts\IAccountService.cs" />
     <Compile Include="EmailService.cs" />
     <Compile Include="IEmailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
