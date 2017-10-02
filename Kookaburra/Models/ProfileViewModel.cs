@@ -1,20 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Kookaburra.Models
+﻿namespace Kookaburra.Models
 {
     public class ProfileViewModel
     {
-        [Required]
-        [MaxLength(100)]
-        public string FirstName { get; set; }
+        public ProfileViewModel()
+        {
+            UserDetails = new UserDetailsViewModel();
+            ResetPassword = new ResetPasswordViewModel();
+        }
+        public UserDetailsViewModel UserDetails { get; set; }
 
-        [Required]
-        [MaxLength(100)]
-        public string LastName { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        [EmailAddress]
-        public string Email { get; set; }
+        public ResetPasswordViewModel ResetPassword { get; set; } 
     }
 }

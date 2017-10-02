@@ -99,6 +99,7 @@ namespace Kookaburra.Services
 
                 await _visitorService.AddNewVisitorAsync(accountKey, visitorId, WebHelper.GetIPAddress());
 
+                // introduction screen
                 if (operatorResult != null)
                 {
                     return new InitWidgetViewModel(WidgetStepType.Introduction)
@@ -108,6 +109,7 @@ namespace Kookaburra.Services
                     };
                 }
 
+                // offline message
                 return new InitWidgetViewModel(WidgetStepType.Offline)
                 {
                     CookieName = visitorCookie.GetCookieName(accountKey),

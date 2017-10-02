@@ -65,30 +65,58 @@ namespace Kookaburra.Controllers
         {
             var profile = await _accountService.GetProfileAsync(User.Identity.GetUserId());
 
-            var model = new ProfileViewModel
+            var model = new UserDetailsViewModel
             {
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
                 Email = profile.Email
             };
 
-            return View(model);
+            return View(new ProfileViewModel
+            {
+                UserDetails = model
+            });
         }
 
         [HttpPost]
         [Route("profile")]
-        public async Task<ActionResult> UserProfile(ProfileViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UserProfile(UserDetailsViewModel model)
         {
-            var profile = await _accountService.UpdateProfileAsync(User.Identity.GetUserId(), model.FirstName, model.LastName, model.Email);
-
-            var profileViewModel = new ProfileViewModel
+            if (!ModelState.IsValid)
             {
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                Email = profile.Email
-            };
+                return View(model);
+            }
 
-            return View(profileViewModel);
+            // update asp.net Identity user
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            user.Email = model.Email;
+            user.UserName = model.Email;
+            var updateResult = await UserManager.UpdateAsync(user);
+
+            // update Operator
+            await _accountService.UpdateProfileAsync(User.Identity.GetUserId(), model.FirstName, model.LastName, model.Email);
+           
+            return View(new ProfileViewModel
+            {
+                UserDetails = model
+            });
+        }  
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("UserProfile");
+            }
+
+            var token = await UserManager.GeneratePasswordResetTokenAsync(User.Identity.GetUserId());
+            var result = await UserManager.ResetPasswordAsync(User.Identity.GetUserId(), token, model.Password);
+        
+            return RedirectToAction("UserProfile");
         }
 
         //

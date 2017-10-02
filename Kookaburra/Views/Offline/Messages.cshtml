@@ -72,7 +72,13 @@
                             <tbody data-bind="foreach: messages">
                                 <tr id="mid_8" data-toggle="slidePanel" class="unread" data-bind="css: {unread: !isRead()}, click: $root.openMessage">
                                     <td class="cell-80">
-                                        <img src="/images/user-1.png" class="img-circle" alt="user-pic">
+                                        <!-- ko if: isRead() -->
+                                        <img src="/images/visitor-default.png" class="img-circle" alt="user-pic">
+                                        <!-- /ko -->
+
+                                        <!-- ko if: !isRead() -->
+                                        <img src="/images/visitor-default-white.png" class="img-circle" alt="user-pic">  
+                                        <!-- /ko -->
                                     </td>
                                     <td>
                                         <div class="content">

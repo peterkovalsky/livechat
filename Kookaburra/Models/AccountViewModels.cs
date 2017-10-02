@@ -88,12 +88,7 @@ namespace Kookaburra.Models
     }
 
     public class ResetPasswordViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
+    {  
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
@@ -103,9 +98,7 @@ namespace Kookaburra.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-
-        public string Code { get; set; }
+        public string ConfirmPassword { get; set; }       
     }
 
     public class ForgotPasswordViewModel
@@ -113,6 +106,24 @@ namespace Kookaburra.Models
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
+        public string Email { get; set; }
+    }
+
+    public class UserDetailsViewModel
+    {
+        [Required]
+        [StringLength(100)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        [EmailAddress]
         public string Email { get; set; }
     }
 }

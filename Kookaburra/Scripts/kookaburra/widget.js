@@ -97,7 +97,7 @@ function WidgetViewModel(accountKey) {
 
                 // set tracking cookie for the visitor
                 if (initResult.newVisitorId) {
-                    $.cookie(initResult.cookieName, initResult.newVisitorId, { path: '/' });
+                    $.cookie(initResult.cookieName, initResult.newVisitorId, { expires: 365, path: '/' });
                 }
 
                 // resume started chat

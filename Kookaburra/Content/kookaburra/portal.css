@@ -11,7 +11,11 @@
     display: none;
 }
 
+textarea.input-validation-error.focus,
+textarea.input-validation-error:focus,
 textarea.input-validation-error,
+input.input-validation-error.focus,
+input.input-validation-error:focus,
 input.input-validation-error {
     border: 1px solid #b94a48;
 }
@@ -56,7 +60,7 @@ input[type="checkbox"].input-validation-error {
     border-left: 0;
 }
 
-.page {
+.operator-chats.page {
     min-height: 100%;
     height: 100%;
 }
