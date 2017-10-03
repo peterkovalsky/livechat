@@ -60,16 +60,11 @@ input[type="checkbox"].input-validation-error {
     border-left: 0;
 }
 
-.operator-chats.page {
-    min-height: 100%;
-    height: 100%;
+.page {
+    min-height: 100%;    
 }
 
-.operator-chats.page .page-main,
-.operator-chats.page .page-main .page-content,
-.operator-chats.page .page-main .page-content .chat-list {
-    height: 100%;
-}
+
 
 .alert.dark.alert-info {
     padding-left: 54px;

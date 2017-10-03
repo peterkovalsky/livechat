@@ -3,8 +3,18 @@
 <div class="profile page">
     <div class="page-main">
         <div class="page-content">
+       
+            @if (Model.Alert != null)
+            {
+                <div class="row">
+                    <div class="col-xl-8">
+                        @Html.Partial("_Alert", Model.Alert)
+                    </div>
+                </div>                
+            }
+
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-xl-8">
                     <div class="panel panel-bordered">
                         <div class="panel-heading">
                             <h3 class="panel-title">My Details</h3>

@@ -260,6 +260,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AlertViewModel.cs" />
     <Compile Include="Models\Chat\OperatorConversationViewModel.cs" />
     <Compile Include="Models\Chat\CurrentConversationsViewModel.cs" />
     <Compile Include="Models\Chat\DashboardViewModel.cs" />
@@ -1986,7 +1987,7 @@
     <Content Include="Views\Account\UserProfile.cshtml" />
     <Content Include="Views\Account\_UserDetails.cshtml" />
     <Content Include="Views\Account\_ResetPassword.cshtml" />
-    <Content Include="Views\Shared\_ErrorMessage.cshtml" />
+    <Content Include="Views\Shared\_Alert.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

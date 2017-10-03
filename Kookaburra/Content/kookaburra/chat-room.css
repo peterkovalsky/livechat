@@ -1,5 +1,15 @@
 ﻿/* ----------- Chat window ---------------- */
 
+.operator-chats.page {
+    height: 100%;
+}
+
+    .operator-chats.page .page-main,
+    .operator-chats.page .page-main .page-content,
+    .operator-chats.page .page-main .page-content .chat-list {
+        height: 100%;
+    }
+
 .page-aside-inner {
   height: 100%;
 }

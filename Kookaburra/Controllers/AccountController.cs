@@ -7,6 +7,7 @@ using Kookaburra.Services.Accounts;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -24,7 +25,7 @@ namespace Kookaburra.Controllers
         private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;
 
         private readonly IAccountService _accountService;
-        
+
         public AccountController(ICommandHandler<SignUpCommand> signUpCommandHandler,
             IOperatorRepository operatorRepository,
             IAccountService accountService)
@@ -41,9 +42,9 @@ namespace Kookaburra.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -65,17 +66,26 @@ namespace Kookaburra.Controllers
         {
             var profile = await _accountService.GetProfileAsync(User.Identity.GetUserId());
 
-            var model = new UserDetailsViewModel
+            var model = new ProfileViewModel
             {
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                Email = profile.Email
-            };
+                UserDetails = new UserDetailsViewModel
+                {
+                    FirstName = profile.FirstName,
+                    LastName = profile.LastName,
+                    Email = profile.Email
+                }
+            };            
 
-            return View(new ProfileViewModel
+            if (TempData["ProfileUpdated"] != null)
             {
-                UserDetails = model
-            });
+                model.Alert = new AlertViewModel
+                {
+                    IsSuccess = true,
+                    SuccessMessage = TempData["ProfileUpdated"].ToString()
+                };
+            }
+
+            return View(model);
         }
 
         [HttpPost]
@@ -88,20 +98,35 @@ namespace Kookaburra.Controllers
                 return View(model);
             }
 
+            var viewModel = new ProfileViewModel
+            {
+                UserDetails = model,
+            };
+
             // update asp.net Identity user
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             user.Email = model.Email;
             user.UserName = model.Email;
-            var updateResult = await UserManager.UpdateAsync(user);
 
-            // update Operator
-            await _accountService.UpdateProfileAsync(User.Identity.GetUserId(), model.FirstName, model.LastName, model.Email);
-           
-            return View(new ProfileViewModel
+            var updateResult = await UserManager.UpdateAsync(user);
+            if (updateResult.Succeeded)
             {
-                UserDetails = model
-            });
-        }  
+                // update Operator
+                await _accountService.UpdateProfileAsync(User.Identity.GetUserId(), model.FirstName, model.LastName, model.Email);
+
+                TempData["ProfileUpdated"] = "Your details were updated successfully.";
+                return RedirectToAction("UserProfile");
+            }
+            else
+            {
+                viewModel.Alert = new AlertViewModel
+                {
+                    IsSuccess = false,
+                    Errors = updateResult.Errors.Where(e => !(e.Contains("Name") && e.Contains("is already taken."))).ToList()
+                };
+                return View(viewModel);
+            }            
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -115,8 +140,30 @@ namespace Kookaburra.Controllers
 
             var token = await UserManager.GeneratePasswordResetTokenAsync(User.Identity.GetUserId());
             var result = await UserManager.ResetPasswordAsync(User.Identity.GetUserId(), token, model.Password);
-        
-            return RedirectToAction("UserProfile");
+            if (result.Succeeded)
+            {
+                TempData["ProfileUpdated"] = "Your password was updated successfully.";
+                return RedirectToAction("UserProfile");
+            }
+            else
+            {
+                var profile = await _accountService.GetProfileAsync(User.Identity.GetUserId());
+
+                return View("UserProfile", new ProfileViewModel
+                {
+                    UserDetails = new UserDetailsViewModel
+                    {
+                        FirstName = profile.FirstName,
+                        LastName = profile.LastName,
+                        Email = profile.Email
+                    },
+                    Alert = new AlertViewModel
+                    {
+                        IsSuccess = false,
+                        Errors = result.Errors.ToList()
+                    }
+                });
+            }           
         }
 
         //
@@ -177,19 +224,19 @@ namespace Kookaburra.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
-            {                
+            {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
-                {                                     
+                {
                     var command = new SignUpCommand
                     {
                         Company = model.Company,
                         OperatorIdentity = user.Id,
                         ClientName = model.ClientName,
-                        Email = model.Email                   
-                    };                 
+                        Email = model.Email
+                    };
 
                     BackgroundJob.Enqueue(() => _signUpCommandHandler.ExecuteAsync(command));
 
@@ -202,7 +249,7 @@ namespace Kookaburra.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
-        }   
+        }
 
         //
         // GET: /Account/ForgotPassword
@@ -249,7 +296,7 @@ namespace Kookaburra.Controllers
         {
             return View();
         }
-       
+
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -260,7 +307,7 @@ namespace Kookaburra.Controllers
 
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return Redirect("/");
-        }      
+        }
 
         protected override void Dispose(bool disposing)
         {
