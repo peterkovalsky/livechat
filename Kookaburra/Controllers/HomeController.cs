@@ -1,8 +1,10 @@
 ﻿using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Repository;
 using Kookaburra.Models.Home;
+using Kookaburra.Services.OfflineMessages;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -17,6 +19,8 @@ namespace Kookaburra.Controllers
 
         private readonly IOperatorRepository _operatorRepository;
 
+        private readonly IOfflineMessageService _offlineMessageService;
+
         public ApplicationUserManager UserManager
         {
             get
@@ -30,18 +34,25 @@ namespace Kookaburra.Controllers
         }
 
 
-        public HomeController(IAccountRepository accountRepository, IOperatorRepository operatorRepository)
+        public HomeController(IAccountRepository accountRepository, IOperatorRepository operatorRepository, IOfflineMessageService offlineMessageService)
         {
             _accountRepository = accountRepository;
             _operatorRepository = operatorRepository;
+            _offlineMessageService = offlineMessageService;
         }
+
 
         [HttpGet]
         [Route("")]
         [Route("dashboard")]
-        public ActionResult Dashboard()
+        public async Task<ActionResult> Dashboard()
         {
-            return View();
+            var viewModel = new DashboardViewModel
+            {
+                NewOfflineMessages = await _offlineMessageService.TotalNewOfflineMessagesAsync(User.Identity.GetUserId())
+            };
+
+            return View(viewModel);
         }
 
         public ActionResult About()
