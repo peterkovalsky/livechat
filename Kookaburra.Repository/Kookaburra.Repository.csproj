@@ -59,9 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountRepository.cs" />
     <Compile Include="KookaburraContext.cs" />
-    <Compile Include="MessageRepository.cs" />
     <Compile Include="Migrations\201610160105106_InitialCreate.cs" />
     <Compile Include="Migrations\201610160105106_InitialCreate.Designer.cs">
       <DependentUpon>201610160105106_InitialCreate.cs</DependentUpon>
@@ -107,7 +105,6 @@
       <DependentUpon>201709260358332_offlinemessage.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="OperatorRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,5 +8,11 @@ namespace Kookaburra.Services.Accounts
         Task<Operator> GetProfileAsync(string operatorKey);
 
         Task UpdateProfileAsync(string operatorKey, string firstName, string lastName, string email);
+
+        Task<Operator> GetAsync(string identity);
+
+        Task RecordOperatorActivityAsync(string operatorIdentity);
+
+        Task ResetOperatorActivityAsync(string operatorIdentity);
     }
 }

@@ -1,13 +1,11 @@
 ﻿using Hangfire;
 using Kookaburra.Domain.Command;
 using Kookaburra.Domain.Command.SignUp;
-using Kookaburra.Domain.Repository;
 using Kookaburra.Models;
 using Kookaburra.Services.Accounts;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -20,21 +18,16 @@ namespace Kookaburra.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
-        private readonly IOperatorRepository _operatorRepository;
+        
         private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;
-
         private readonly IAccountService _accountService;
 
-        public AccountController(ICommandHandler<SignUpCommand> signUpCommandHandler,
-            IOperatorRepository operatorRepository,
-            IAccountService accountService)
+        public AccountController(ICommandHandler<SignUpCommand> signUpCommandHandler, IAccountService accountService)
         {
             _signUpCommandHandler = signUpCommandHandler;
-            _operatorRepository = operatorRepository;
-
             _accountService = accountService;
         }
+
 
         public ApplicationSignInManager SignInManager
         {
@@ -193,7 +186,7 @@ namespace Kookaburra.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    _operatorRepository.RecordOperatorActivity(User.Identity.GetUserId());
+                    await _accountService.RecordOperatorActivityAsync(User.Identity.GetUserId());
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -301,11 +294,12 @@ namespace Kookaburra.Controllers
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
+        public async Task<ActionResult> LogOff()
         {
-            _operatorRepository.ResetOperatorActivity(User.Identity.GetUserId());
+            await _accountService.ResetOperatorActivityAsync(User.Identity.GetUserId());
 
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
             return Redirect("/");
         }
 

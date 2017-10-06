@@ -2,6 +2,7 @@
 using Kookaburra.Repository;
 using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kookaburra.Services.Accounts
@@ -33,6 +34,33 @@ namespace Kookaburra.Services.Accounts
             op.Email = email;
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Operator> GetAsync(string identity)
+        {
+            return await _context.Operators.Include(i => i.Account).Where(o => o.Identity == identity).SingleOrDefaultAsync();
+        }
+
+        public async Task RecordOperatorActivityAsync(string operatorIdentity)
+        {
+            var oper = await _context.Operators.SingleOrDefaultAsync(o => o.Identity == operatorIdentity);
+            if (oper != null)
+            {
+                oper.LastActivity = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task ResetOperatorActivityAsync(string operatorIdentity)
+        {
+            var oper = await _context.Operators.SingleOrDefaultAsync(o => o.Identity == operatorIdentity);
+            if (oper != null)
+            {
+                oper.LastActivity = null;
+
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

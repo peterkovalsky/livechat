@@ -1,7 +1,8 @@
-﻿using Kookaburra.Domain.Repository;
+﻿using Kookaburra.Services.Accounts;
 using Kookaburra.ViewModels.Chat;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -9,11 +10,7 @@ namespace Kookaburra.Controllers
 {
     [Authorize]
     public class ChatController : Controller
-    {
-        private ApplicationUserManager _userManager;
-
-        private readonly IOperatorRepository _operatorRepositor;
-
+    {                
         public ApplicationUserManager UserManager
         {
             get
@@ -25,25 +22,28 @@ namespace Kookaburra.Controllers
                 _userManager = value;
             }
         }
+        private ApplicationUserManager _userManager;
+
+        private readonly IAccountService _accountService;
 
 
-        public ChatController(IOperatorRepository operatorRepositor)
+        public ChatController(IAccountService accountService)
         {
-            _operatorRepositor = operatorRepositor;
+            _accountService = accountService;
         }
 
-        public ActionResult OperatorOnline()
+        public async Task<ActionResult> OperatorOnline()
         {
-            var currentOperator = _operatorRepositor.Get(User.Identity.GetUserId());
+            var currentOperator = await _accountService.GetAsync(User.Identity.GetUserId());
 
             return PartialView("_OperatorOnline");
         }
 
         [HttpGet]
         [Route("chats")]
-        public ActionResult ChatRoom()
+        public async Task<ActionResult> ChatRoom()
         {
-            var currentOperator = _operatorRepositor.Get(User.Identity.GetUserId());
+            var currentOperator = await _accountService.GetAsync(User.Identity.GetUserId());
 
             var model = new RoomViewModel
             {

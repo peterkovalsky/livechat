@@ -1,13 +1,13 @@
-﻿using Kookaburra.Domain.Repository;
-using Kookaburra.Repository;
+﻿using Kookaburra.Repository;
+using Kookaburra.Services.Accounts;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Microsoft.AspNet.Identity;
-using System.Web.Helpers;
 
 namespace Kookaburra
 {
@@ -32,9 +32,9 @@ namespace Kookaburra
                 && RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current)) != null)
             {
                 // Create the user activity repository
-                IOperatorRepository operatorRepository = new OperatorRepository(new KookaburraContext("name=DefaultConnection"));     
-                
-                operatorRepository.RecordOperatorActivity(HttpContext.Current.User.Identity.GetUserId());
+                IAccountService accountService = new AccountService(new KookaburraContext("name=DefaultConnection"));
+
+                accountService.RecordOperatorActivityAsync(HttpContext.Current.User.Identity.GetUserId());
             }
         }
     }

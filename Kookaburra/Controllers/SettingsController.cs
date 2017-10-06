@@ -1,22 +1,17 @@
 ﻿using Kookaburra.Domain.Common;
-using Kookaburra.Domain.Repository;
 using Kookaburra.Models.Settings;
-using System.Web;
-using System.Web.Mvc;
+using Kookaburra.Services.Accounts;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Kookaburra.Controllers
 {
     [Authorize]
     public class SettingsController : Controller
     {
-        private ApplicationUserManager _userManager;
-
-        private readonly IAccountRepository _accountRepository;
-
-        private readonly IOperatorRepository _operatorRepository;
-
         public ApplicationUserManager UserManager
         {
             get
@@ -28,18 +23,22 @@ namespace Kookaburra.Controllers
                 _userManager = value;
             }
         }
+        private ApplicationUserManager _userManager;
 
-        public SettingsController(IAccountRepository accountRepository, IOperatorRepository operatorRepository)
+        private readonly IAccountService _accountService;
+
+      
+        public SettingsController(IAccountService accountService)
         {
-            _accountRepository = accountRepository;
-            _operatorRepository = operatorRepository;
+            _accountService = accountService;
         }
+
 
         [HttpGet]
         [Route("settings/code")]
-        public ActionResult Code()
+        public async Task<ActionResult> Code()
         {
-            var currentOperator = _operatorRepository.Get(User.Identity.GetUserId());
+            var currentOperator = await _accountService.GetAsync(User.Identity.GetUserId());
             string serverHost = Request.Url.Host + ":" + Request.Url.Port;
 
             var model = new CodeViewModel

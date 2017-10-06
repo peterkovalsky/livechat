@@ -72,10 +72,6 @@
     <Compile Include="Model\Setting.cs" />
     <Compile Include="Model\Visitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\IAccountRepository.cs" />
-    <Compile Include="Repository\IMessageRepository.cs" />
-    <Compile Include="Repository\IOperatorRepository.cs" />
-    <Compile Include="Repository\IVisitorRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

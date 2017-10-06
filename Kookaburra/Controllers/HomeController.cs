@@ -1,6 +1,6 @@
 ﻿using Kookaburra.Domain.Common;
-using Kookaburra.Domain.Repository;
 using Kookaburra.Models.Home;
+using Kookaburra.Services.Accounts;
 using Kookaburra.Services.OfflineMessages;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -12,15 +12,7 @@ namespace Kookaburra.Controllers
 {
     [Authorize]
     public class HomeController : Controller
-    {
-        private ApplicationUserManager _userManager;
-
-        private readonly IAccountRepository _accountRepository;
-
-        private readonly IOperatorRepository _operatorRepository;
-
-        private readonly IOfflineMessageService _offlineMessageService;
-
+    {              
         public ApplicationUserManager UserManager
         {
             get
@@ -32,12 +24,15 @@ namespace Kookaburra.Controllers
                 _userManager = value;
             }
         }
+        private ApplicationUserManager _userManager;
+
+        private readonly IAccountService _accountService;
+        private readonly IOfflineMessageService _offlineMessageService;
 
 
-        public HomeController(IAccountRepository accountRepository, IOperatorRepository operatorRepository, IOfflineMessageService offlineMessageService)
+        public HomeController(IAccountService accountService, IOfflineMessageService offlineMessageService)
         {
-            _accountRepository = accountRepository;
-            _operatorRepository = operatorRepository;
+            _accountService = accountService;
             _offlineMessageService = offlineMessageService;
         }
 
@@ -70,9 +65,9 @@ namespace Kookaburra.Controllers
         }
 
         [Route("preview")]
-        public ActionResult Preview()
+        public async Task<ActionResult> Preview()
         {
-            var currentOperator = _operatorRepository.Get(User.Identity.GetUserId());
+            var currentOperator = await _accountService.GetAsync(User.Identity.GetUserId());
             string serverHost = Request.Url.Host + ":" + Request.Url.Port;
 
             var model = new PreviewViewModel
