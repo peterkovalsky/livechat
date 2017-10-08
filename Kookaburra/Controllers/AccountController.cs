@@ -57,7 +57,7 @@ namespace Kookaburra.Controllers
         [Route("profile")]
         public async Task<ActionResult> UserProfile()
         {
-            var profile = await _accountService.GetProfileAsync(User.Identity.GetUserId());
+            var profile = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
 
             var model = new ProfileViewModel
             {
@@ -140,7 +140,7 @@ namespace Kookaburra.Controllers
             }
             else
             {
-                var profile = await _accountService.GetProfileAsync(User.Identity.GetUserId());
+                var profile = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
 
                 return View("UserProfile", new ProfileViewModel
                 {

@@ -1,9 +1,12 @@
-﻿using Kookaburra.Domain.Common;
+﻿using AutoMapper;
+using Kookaburra.Domain.Common;
 using Kookaburra.Models.Home;
 using Kookaburra.Services.Accounts;
+using Kookaburra.Services.Chats;
 using Kookaburra.Services.OfflineMessages;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -28,26 +31,22 @@ namespace Kookaburra.Controllers
 
         private readonly IAccountService _accountService;
         private readonly IOfflineMessageService _offlineMessageService;
+        private readonly IChatService _chatService;
 
-
-        public HomeController(IAccountService accountService, IOfflineMessageService offlineMessageService)
+        public HomeController(IAccountService accountService, IOfflineMessageService offlineMessageService, IChatService chatService)
         {
             _accountService = accountService;
             _offlineMessageService = offlineMessageService;
+            _chatService = chatService;
         }
 
 
         [HttpGet]
         [Route("")]
         [Route("dashboard")]
-        public async Task<ActionResult> Dashboard()
+        public ActionResult Dashboard()
         {
-            var viewModel = new DashboardViewModel
-            {
-                NewOfflineMessages = await _offlineMessageService.TotalNewOfflineMessagesAsync(User.Identity.GetUserId())
-            };
-
-            return View(viewModel);
+            return View();
         }
 
         public ActionResult About()
@@ -67,7 +66,7 @@ namespace Kookaburra.Controllers
         [Route("preview")]
         public async Task<ActionResult> Preview()
         {
-            var currentOperator = await _accountService.GetAsync(User.Identity.GetUserId());
+            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
             string serverHost = Request.Url.Host + ":" + Request.Url.Port;
 
             var model = new PreviewViewModel

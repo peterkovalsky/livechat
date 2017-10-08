@@ -182,7 +182,7 @@
 
     $(document).ready(function () {
 
-        var chatRoomViewModel = new ChatRoomViewModel('@Model.OperatorName');
+        var chatRoomViewModel = new ChatRoomViewModel('@Model.OperatorName', @Model.ChatId);
         ko.applyBindings(chatRoomViewModel, document.getElementById("layout-chatroom"));
 
         chatRoomViewModel.init();

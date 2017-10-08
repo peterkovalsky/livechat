@@ -1,6 +1,5 @@
-﻿@model Kookaburra.Models.Home.DashboardViewModel
-
-<div class="page dashboard">
+﻿
+<div id="dashboard" class="page dashboard">
     <div class="page-main">
         <div class="page-content">
 
@@ -12,9 +11,9 @@
                             <button type="button" class="btn btn-floating btn-sm btn-danger">
                                 <i class="icon wb-chat"></i>
                             </button>
-                            <span class="m-l-15 font-weight-400">CHAT QUEUE</span>
+                            <span class="m-l-15 font-weight-400">CHATS</span>
                             <div class="content-text text-xs-center m-b-0">
-                                <span class="font-size-40 font-weight-100">399</span>
+                                <span class="font-size-40 font-weight-100" data-bind="text: totalCurrentChats"></span>
                             </div>
                         </div>
                     </div>
@@ -26,9 +25,9 @@
                             <button type="button" class="btn btn-floating btn-sm btn-warning">
                                 <i class="icon wb-envelope"></i>
                             </button>
-                            <span class="m-l-15 font-weight-400">NEW OFFLINE QUESTIONS</span>
+                            <span class="m-l-15 font-weight-400">NEW OFFLINE MESSAGES</span>
                             <div class="content-text text-xs-center m-b-0">                            
-                                <span class="font-size-40 font-weight-100">@Model.NewOfflineMessages</span>                                
+                                <span class="font-size-40 font-weight-100" data-bind="text: newOfflineMessages"></span>                                
                             </div>
                         </div>
                     </div>
@@ -36,6 +35,45 @@
                 
             </div>
 
+          
+            <div class="row" data-bind="visible: currentChats().length > 0">
+                <div class="col-sm-6">
+                    <div class="panel panel-bordered">
+                        <div class="panel-heading">
+                            CURRENT CHATS
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Country</th>
+                                        <th>Visitor</th>
+                                        <th>Time On Site</th>
+                                        <th>Currently On Page</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach: currentChats">                                  
+                                    <tr>
+                                        <td data-bind="visible: coutryCode != null">                                          
+                                            <span data-bind="attr: {class: 'flag-icon flag-icon-' + countryCode.toLowerCase()}"></span>                                           
+                                        </td>
+                                        <td data-bind="text: visitorName"></td>
+                                        <td data-bind="text: startedChatTime"></td>
+                                        <td>
+                                            <a data-bind="attr: {'href': page}" target="_blank">Page</a>
+                                        </td>
+                                        <td>
+                                            <a data-bind="attr: {'href': '/chats/' + chatId}" class="btn btn-squared btn-outline btn-default btn-sm">Reply</a>
+                                        </td>
+                                    </tr>                                      
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
         </div>
     </div>
 </div>
@@ -65,3 +103,27 @@
     })(document, "script");
 </script>
 <!--End of Zendesk Chat Script-->
+
+
+@section css
+{
+    @Styles.Render("~/bundles/css/chatroom")
+}
+
+@section js
+{
+    @Scripts.Render("~/bundles/js/chatroom")
+}
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var dashboardViewModel = new DashboardViewModel();
+        ko.applyBindings(dashboardViewModel, document.getElementById("dashboard"));
+
+        dashboardViewModel.init();   
+    });
+
+</script>

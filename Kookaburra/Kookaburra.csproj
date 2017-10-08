@@ -1835,6 +1835,7 @@
     <Content Include="Scripts\knockout-3.4.2.js" />
     <Content Include="Scripts\kookaburra\chat-room.js" />
     <Content Include="Scripts\kookaburra\chat-history.js" />
+    <Content Include="Scripts\kookaburra\dashboard.js" />
     <Content Include="Scripts\kookaburra\operator-global.js" />
     <Content Include="Scripts\handlebars.min.js" />
     <Content Include="Scripts\joinable.js" />

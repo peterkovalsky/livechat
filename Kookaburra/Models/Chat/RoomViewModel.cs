@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Kookaburra.ViewModels.Chat
+﻿namespace Kookaburra.ViewModels.Chat
 {
     public class RoomViewModel
     {
@@ -12,5 +7,7 @@ namespace Kookaburra.ViewModels.Chat
         public string OperatorName { get; set; }
 
         public int OperatorId { get; set; }
+
+        public long? ChatId { get; set; }
     }
 }

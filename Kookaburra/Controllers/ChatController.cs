@@ -34,22 +34,23 @@ namespace Kookaburra.Controllers
 
         public async Task<ActionResult> OperatorOnline()
         {
-            var currentOperator = await _accountService.GetAsync(User.Identity.GetUserId());
+            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
 
             return PartialView("_OperatorOnline");
         }
 
         [HttpGet]
-        [Route("chats")]
-        public async Task<ActionResult> ChatRoom()
+        [Route("chats/{id?}")]
+        public async Task<ActionResult> ChatRoom(long? id)
         {
-            var currentOperator = await _accountService.GetAsync(User.Identity.GetUserId());
+            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
 
             var model = new RoomViewModel
             {
                 CompanyId = currentOperator.Account.Identifier,
                 OperatorName = currentOperator.FirstName,
-                OperatorId = currentOperator.Id
+                OperatorId = currentOperator.Id,
+                ChatId = id
             };
 
             return View(model);

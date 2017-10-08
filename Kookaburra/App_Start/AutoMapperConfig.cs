@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kookaburra.Common;
+using Kookaburra.Domain.Model;
 using Kookaburra.Domain.Query.ChatHistory;
 using Kookaburra.Domain.Query.CurrentChats;
 using Kookaburra.Domain.Query.OfflineMessages;
@@ -9,8 +10,10 @@ using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.History;
+using Kookaburra.Models.Home;
 using Kookaburra.Models.Offline;
 using Kookaburra.Models.Widget;
+using System;
 
 namespace Kookaburra.App_Start
 {
@@ -52,6 +55,14 @@ namespace Kookaburra.App_Start
 
                 cfg.CreateMap<TranscriptQueryResult, TranscriptViewModel>();
                 cfg.CreateMap<VisitorResult, VisitorViewModel>();
+
+                cfg.CreateMap<Conversation, LiveChatViewModel>()
+                    .ForMember(dest => dest.ChatId, opt => opt.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.CountryCode, opt => opt.MapFrom(src => src.Visitor.CountryCode))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Visitor.Country))
+                    .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.Visitor.Name))
+                    .ForMember(dest => dest.TimeStarted, opt => opt.MapFrom(src => src.TimeStarted ))
+                    .ForMember(dest => dest.Page, opt => opt.MapFrom(src => src.Page));
             });
         }
     }

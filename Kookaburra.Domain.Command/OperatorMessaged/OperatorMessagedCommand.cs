@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kookaburra.Domain.Common;
+using System;
 
 namespace Kookaburra.Domain.Command.OperatorMessaged
 {
@@ -8,7 +9,8 @@ namespace Kookaburra.Domain.Command.OperatorMessaged
         {
             VisitorSessionId = visitorSessionId;            
             Message = message;
-            DateSent = dateSent;         
+            DateSent = dateSent;
+            SentBy = UserType.Operator;
         }   
 
         public string VisitorSessionId { get; }        
@@ -18,5 +20,7 @@ namespace Kookaburra.Domain.Command.OperatorMessaged
         public DateTime DateSent { get; }
 
         public string AccountKey { get; }
+
+        public UserType SentBy { get; set; }
     }
 }

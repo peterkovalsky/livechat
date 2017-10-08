@@ -28,7 +28,7 @@ namespace Kookaburra.Domain.Command.OperatorMessaged
             var message = new Message
             {
                 ConversationId = visitorSession.ConversationId,
-                SentBy = UserType.Operator.ToString(),
+                SentBy = command.SentBy.ToString(),
                 Text = command.Message,
                 DateSent = command.DateSent
             };

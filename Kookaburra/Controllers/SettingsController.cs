@@ -38,7 +38,7 @@ namespace Kookaburra.Controllers
         [Route("settings/code")]
         public async Task<ActionResult> Code()
         {
-            var currentOperator = await _accountService.GetAsync(User.Identity.GetUserId());
+            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
             string serverHost = Request.Url.Host + ":" + Request.Url.Port;
 
             var model = new CodeViewModel

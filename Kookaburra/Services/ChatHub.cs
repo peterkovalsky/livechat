@@ -13,9 +13,13 @@ using Kookaburra.Domain.Query.CurrentSession;
 using Kookaburra.Domain.Query.ResumeOperator;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
+using Kookaburra.Models.Home;
+using Kookaburra.Services.Chats;
+using Kookaburra.Services.OfflineMessages;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kookaburra.Services
@@ -32,6 +36,9 @@ namespace Kookaburra.Services
         private readonly IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>> _resumeOperatorQueryHandler;
         private readonly IQueryHandler<AccountQuery, Task<AccountQueryResult>> _accountQueryHandler;
 
+        private readonly IChatService _chatService;
+        private readonly IOfflineMessageService _offlineMessageService;
+
         public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";      
        
 
@@ -42,7 +49,9 @@ namespace Kookaburra.Services
             IQueryHandler<CurrentChatsQuery, Task<CurrentChatsQueryResult>> currentChatsQueryHandler,
             IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
             IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>> resumeOperatorQueryHandler,
-            IQueryHandler<AccountQuery, Task<AccountQueryResult>> accountQueryHandler)
+            IQueryHandler<AccountQuery, Task<AccountQueryResult>> accountQueryHandler,
+            IChatService chatService,
+            IOfflineMessageService offlineMessageService)
         {
             _connectOperatorCommandHandler = connectOperatorCommandHandler;
             _operatorMessagedCommandHandler = operatorMessagedCommandHandler;
@@ -52,7 +61,10 @@ namespace Kookaburra.Services
             _currentChatsQueryHandler = currentChatsQueryHandler;
             _currentSessionQueryHandler = currentSessionQueryHandler;
             _resumeOperatorQueryHandler = resumeOperatorQueryHandler;
-            _accountQueryHandler = accountQueryHandler;              
+            _accountQueryHandler = accountQueryHandler;
+
+            _chatService = chatService;
+            _offlineMessageService = offlineMessageService;
         }
 
         
@@ -128,7 +140,21 @@ namespace Kookaburra.Services
             await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorSessionId));
 
             DisconnectVisitor(currentSession, UserType.Operator);          
-        }           
+        }
+
+        [Authorize]
+        public async Task<DashboardViewModel> LoadDashboard()
+        {
+            var currentChats = await _chatService.GetLiveChatsAsync(Context.User.Identity.GetUserId());
+            var newMessages = await _offlineMessageService.TotalNewOfflineMessagesAsync(Context.User.Identity.GetUserId());
+
+            return new DashboardViewModel
+            {
+                NewOfflineMessages = newMessages,
+                TotalCurrentChats = currentChats.Count,
+                CurrentChats = currentChats.Select(c => Mapper.Map<LiveChatViewModel>(c)).ToList()
+            };
+        }
 
         public override Task OnConnected()
         {

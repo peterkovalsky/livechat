@@ -16,51 +16,55 @@ namespace Kookaburra.Services.Accounts
             _context = context;
         }
 
-        public async Task<Operator> GetProfileAsync(string operatorKey)
+        public async Task<Account> GetAccountAsync(string operatorIdentity)
         {
-            return await _context.Operators.SingleOrDefaultAsync(o => o.Identity == operatorKey);
+            return await _context.Accounts.Where(a => a.Operators.Any(o => o.Identity == operatorIdentity)).SingleOrDefaultAsync();
         }
 
-        public async Task UpdateProfileAsync(string operatorKey, string firstName, string lastName, string email)
+        public async Task<Operator> GetOperatorAsync(string operatorIdentity)
         {
-            var op = await GetProfileAsync(operatorKey);
-            if (op == null)
+            return await _context.Operators.Include(i => i.Account).SingleOrDefaultAsync(o => o.Identity == operatorIdentity);
+        }
+
+        public async Task UpdateProfileAsync(string operatorIdentity, string firstName, string lastName, string email)
+        {
+            var operatr = await GetOperatorAsync(operatorIdentity);
+            if (operatr == null)
             {
-                throw new ArgumentException($"Operator with id {operatorKey} doesn't exist");
+                throw new ArgumentException($"Operator with id {operatorIdentity} doesn't exist");
             }
 
-            op.FirstName = firstName;
-            op.LastName = lastName;
-            op.Email = email;
+            operatr.FirstName = firstName;
+            operatr.LastName = lastName;
+            operatr.Email = email;
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Operator> GetAsync(string identity)
-        {
-            return await _context.Operators.Include(i => i.Account).Where(o => o.Identity == identity).SingleOrDefaultAsync();
-        }
-
         public async Task RecordOperatorActivityAsync(string operatorIdentity)
         {
-            var oper = await _context.Operators.SingleOrDefaultAsync(o => o.Identity == operatorIdentity);
-            if (oper != null)
+            var operatr = await GetOperatorAsync(operatorIdentity);
+            if (operatr == null)
             {
-                oper.LastActivity = DateTime.UtcNow;
-
-                await _context.SaveChangesAsync();
+                throw new ArgumentException($"Operator with id {operatorIdentity} doesn't exist");
             }
+
+            operatr.LastActivity = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task ResetOperatorActivityAsync(string operatorIdentity)
         {
-            var oper = await _context.Operators.SingleOrDefaultAsync(o => o.Identity == operatorIdentity);
-            if (oper != null)
+            var operatr = await GetOperatorAsync(operatorIdentity);
+            if (operatr == null)
             {
-                oper.LastActivity = null;
-
-                await _context.SaveChangesAsync();
+                throw new ArgumentException($"Operator with id {operatorIdentity} doesn't exist");
             }
+
+            operatr.LastActivity = null;
+
+            await _context.SaveChangesAsync();
         }
     }
 }

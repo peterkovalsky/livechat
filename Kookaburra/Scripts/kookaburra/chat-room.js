@@ -1,4 +1,4 @@
-﻿function ChatRoomViewModel(operatorName) {
+﻿function ChatRoomViewModel(operatorName, chatId) {
   
     var self = this;
 

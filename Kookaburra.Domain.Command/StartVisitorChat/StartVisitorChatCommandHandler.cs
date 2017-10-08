@@ -1,4 +1,5 @@
 ﻿using Kookaburra.Domain.Command.OperatorMessaged;
+using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Integration;
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
@@ -30,7 +31,7 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
             // record new/returning visitor
             var returningVisitor = await CheckForVisitorAsync(command.VisitorName, command.VisitorEmail, command.SessionId);
 
-            var account = await  _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == command.AccountKey);
+            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == command.AccountKey);
             if (account == null)
             {
                 throw new ArgumentException($"Account {command.AccountKey} doesn't exist.");
@@ -38,11 +39,11 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
 
             // new visitor
             if (returningVisitor == null)
-            {                         
+            {
                 returningVisitor = new Visitor
                 {
                     Name = command.VisitorName,
-                    Email = command.VisitorEmail,             
+                    Email = command.VisitorEmail,
                     SessionId = command.SessionId,
                     IpAddress = command.VisitorIP,
                     Account = account
@@ -65,7 +66,7 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
                 catch (Exception ex)
                 {
                     // log geo location exception
-                }            
+                }
 
                 _context.Visitors.Add(returningVisitor);
             }
@@ -105,21 +106,20 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
                 TimeStarted = DateTime.UtcNow,
                 Page = command.Page
             };
-            _context.Conversations.Add(conversation);      
+            _context.Conversations.Add(conversation);
 
             await _context.SaveChangesAsync();
 
-           
+
             // add visitor to session
             _chatSession.AddVisitor(conversation.Id, command.OperatorId, null, returningVisitor.Id, returningVisitor.Name, returningVisitor.SessionId);
 
-            // add greeting if needed           
-            await _operatorMessagedHandler.ExecuteAsync(new OperatorMessagedCommand
-                (
-                    command.SessionId,
-                    DefaultSettings.CHAT_GREETING,
-                    DateTime.UtcNow
-                ));
+            // add greeting if needed  
+            var greetingCommand = new OperatorMessagedCommand(command.SessionId, DefaultSettings.CHAT_GREETING, DateTime.UtcNow)
+            {
+                SentBy = UserType.System
+            };
+            await _operatorMessagedHandler.ExecuteAsync(greetingCommand);
         }
 
         private async Task<Visitor> CheckForVisitorAsync(string name, string email, string sessionId)
