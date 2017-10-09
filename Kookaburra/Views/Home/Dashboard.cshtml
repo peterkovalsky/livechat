@@ -38,33 +38,30 @@
           
             <div class="row" data-bind="visible: currentChats().length > 0">
                 <div class="col-sm-6">
-                    <div class="panel panel-bordered">
-                        <div class="panel-heading">
-                            CURRENT CHATS
-                        </div>
+                    <div class="panel panel-bordered">                     
                         <div class="panel-body">
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Country</th>
                                         <th>Visitor</th>
-                                        <th>Time On Site</th>
-                                        <th>Currently On Page</th>
+                                        <th>Started</th>
+                                        <th>Page</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody data-bind="foreach: currentChats">                                  
                                     <tr>
-                                        <td data-bind="visible: coutryCode != null">                                          
-                                            <span data-bind="attr: {class: 'flag-icon flag-icon-' + countryCode.toLowerCase()}"></span>                                           
+                                        <td data-bind="if: countryCode() != null">                                          
+                                            <span data-bind="attr: {class: 'flag-icon flag-icon-' + countryCode().toLowerCase()}"></span>                                           
                                         </td>
                                         <td data-bind="text: visitorName"></td>
                                         <td data-bind="text: startedChatTime"></td>
                                         <td>
-                                            <a data-bind="attr: {'href': page}" target="_blank">Page</a>
+                                            <a data-bind="attr: {'href': page}" target="_blank">Visited Page</a>
                                         </td>
                                         <td>
-                                            <a data-bind="attr: {'href': '/chats/' + chatId}" class="btn btn-squared btn-outline btn-default btn-sm">Reply</a>
+                                            <a data-bind="attr: {'href': '/chats/' + chatId()}" class="btn btn-squared btn-outline btn-default btn-sm">Reply</a>
                                         </td>
                                     </tr>                                      
                                 </tbody>

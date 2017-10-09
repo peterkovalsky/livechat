@@ -61,7 +61,7 @@ namespace Kookaburra.App_Start
                     .ForMember(dest => dest.CountryCode, opt => opt.MapFrom(src => src.Visitor.CountryCode))
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Visitor.Country))
                     .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.Visitor.Name))
-                    .ForMember(dest => dest.TimeStarted, opt => opt.MapFrom(src => src.TimeStarted ))
+                    .ForMember(dest => dest.TimeStarted, opt => opt.MapFrom(src => src.TimeStarted.JsDateTime()))
                     .ForMember(dest => dest.Page, opt => opt.MapFrom(src => src.Page));
             });
         }

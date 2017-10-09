@@ -31,7 +31,7 @@ namespace Kookaburra.Models.Home
         public string VisitorName { get; set; }
 
         [JsonProperty("timeStarted")]
-        public DateTime TimeStarted { get; set; }
+        public double TimeStarted { get; set; }
 
         [JsonProperty("page")]
         public string Page { get; set; }
