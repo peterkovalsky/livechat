@@ -46,7 +46,13 @@ namespace Kookaburra
                 .Include("~/Scripts/jquery.scrollbar.js")
                 .Include("~/Scripts/kookaburra/chat-room.js")                
             );
-            
+
+            bundles.Add(new ScriptBundle("~/bundles/js/dashboard")
+             .Include("~/Scripts/site.js")
+             .Include("~/Scripts/moment-with-locales.min.js")         
+             .Include("~/Scripts/kookaburra/dashboard.js")
+         );
+
             bundles.Add(new ScriptBundle("~/bundles/js/offlinemessage")
                  .Include("~/Scripts/moment-with-locales.min.js")           
                  .Include("~/Scripts/kookaburra/offline-messages.js")

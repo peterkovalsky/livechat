@@ -5,7 +5,7 @@
     self.newOfflineMessages = ko.observable(0);
     self.currentChats = ko.observableArray([]);
 
-    function init() {
+    self.init = function() {
         self.registerCallbackFunctions();
 
         $(window).on('signalr.start', function (e) {
@@ -29,6 +29,12 @@
             }
         });
     };
+
+    // Register SignalR callbacks
+    // -----------------------------
+    self.registerCallbackFunctions = function () {
+
+    }
 }
 
 function LiveChat(data) {
