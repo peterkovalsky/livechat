@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System;
 using System.Web;
 
 namespace Kookaburra.Common
@@ -20,6 +20,17 @@ namespace Kookaburra.Common
             }
 
             return context.Request.ServerVariables["REMOTE_ADDR"];
-        }     
+        }
+
+        public static string Host
+        {
+            get
+            {
+                HttpContext context = HttpContext.Current;
+
+                return context.Request.Url.Scheme + Uri.SchemeDelimiter + context.Request.Url.Host + 
+                    (context.Request.Url.Host == "localhost" ? ":" + context.Request.Url.Port.ToString() : "");
+            }
+        }
     }
 }

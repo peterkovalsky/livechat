@@ -44,7 +44,7 @@ widgetIframe.id = 'container-iframe';
 widgetIframe.addEventListener("load", iframeLoad);
 widgetIframe.setAttribute('scrolling', 0);
 widgetIframe.setAttribute('frameborder', 0);
-widgetIframe.setAttribute('src', '@(Model.ChatServerHost)/widget/light/@(Model.AccountKey)');
+widgetIframe.setAttribute('src', '@(Model.ChatServerHost)/widget/default/@(Model.AccountKey)');
 widgetIframe.style.cssText = 'display:none; background-color: transparent;vertical-align: text-bottom; overflow: hidden; position: relative; width: 100%; height:100%; margin: 0px; z-index: 999999;';
 
 widgetContainer.appendChild(widgetButton);

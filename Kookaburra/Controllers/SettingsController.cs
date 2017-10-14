@@ -1,4 +1,5 @@
-﻿using Kookaburra.Domain.Common;
+﻿using Kookaburra.Common;
+using Kookaburra.Domain.Common;
 using Kookaburra.Models.Settings;
 using Kookaburra.Services.Accounts;
 using Microsoft.AspNet.Identity;
@@ -38,12 +39,11 @@ namespace Kookaburra.Controllers
         [Route("settings/code")]
         public async Task<ActionResult> Code()
         {
-            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
-            string serverHost = Request.Url.Host + ":" + Request.Url.Port;
+            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());            
 
             var model = new CodeViewModel
             {
-                CodeSnippet = new Code().GenerateCode(serverHost + "/widget/container", currentOperator.Account.Identifier)
+                CodeSnippet = new Code().GenerateCode(WebHelper.Host, currentOperator.Account.Identifier)
             };
             
             return View(model);

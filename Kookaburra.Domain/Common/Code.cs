@@ -14,7 +14,7 @@ namespace Kookaburra.Domain.Common
             code.AppendLine("       var oc = document.createElement('script');");
             code.AppendLine("       oc.type = 'text/javascript';");
             code.AppendLine("       oc.async = true;");
-            code.AppendLine($"       oc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '{host}/{accountId}';");
+            code.AppendLine($"       oc.src = '{host}/widget/{accountId}';");
             code.AppendLine("       var s = document.getElementsByTagName('script')[0];");
             code.AppendLine("       s.parentNode.insertBefore(oc, s);");
             code.AppendLine("   }());");

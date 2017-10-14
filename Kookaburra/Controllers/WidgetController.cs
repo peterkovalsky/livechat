@@ -1,54 +1,19 @@
 ﻿using Kookaburra.Common;
-using Kookaburra.Domain.AvailableOperator;
-using Kookaburra.Domain.Command;
-using Kookaburra.Domain.Command.LeaveMessage;
-using Kookaburra.Domain.Command.StartVisitorChat;
-using Kookaburra.Domain.Query;
-using Kookaburra.Domain.Query.CurrentSession;
 using Kookaburra.Models.Widget;
-using Kookaburra.ViewModels.Widget;
-using Microsoft.AspNet.Identity;
-using SimpleHoneypot.ActionFilters;
-using System;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Kookaburra.Controllers
 {
     public class WidgetController : Controller
     {
-        private readonly ICommandHandler<StartVisitorChatCommand> _startVisitorChatCommandHandler;
-        private readonly ICommandHandler<LeaveMessageCommand> _leaveMessageCommandHandler;
-
-        private readonly IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> _availableOperatorQueryHandler;
-        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
-        
-        public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";
-
-        public WidgetController(
-            ICommandHandler<StartVisitorChatCommand> startVisitorChatCommandHandler,
-            ICommandHandler<LeaveMessageCommand> leaveMessageCommandHandler,
-            IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> availableOperatorQueryHandler,
-            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler
-            )
-        {
-            _startVisitorChatCommandHandler = startVisitorChatCommandHandler;
-            _leaveMessageCommandHandler = leaveMessageCommandHandler;
-
-            _availableOperatorQueryHandler = availableOperatorQueryHandler;
-            _currentSessionQueryHandler = currentSessionQueryHandler;
-        }
-
-
         [HttpGet]
-        [Route("widget/container/{key}")]
+        [Route("widget/{key}")]
         public ActionResult ContainerJS(string key)
         {
             var model = new ContainerViewModel
             {
                 AccountKey = key,
-                ChatServerHost = Request.Url.Scheme + Uri.SchemeDelimiter + Request.Url.Host + ":" + Request.Url.Port
+                ChatServerHost = WebHelper.Host
             };
 
             HttpContext.Response.ContentType = "application/javascript";
@@ -57,130 +22,12 @@ namespace Kookaburra.Controllers
         }
 
         [HttpGet]
-        [Route("widget/light/{key}")]
+        [Route("widget/default/{key}")]
         public ActionResult Widget(string key)
         {
             ViewBag.AccountKey = key;
 
             return View();
-        }
-
-        [HttpGet]
-        [Route("widget/{key}")]
-        public async Task<ActionResult> WidgetOld(string key)
-        {
-            var operatorResult = await _availableOperatorQueryHandler.ExecuteAsync(new AvailableOperatorQuery(key));
-            var sessionId = Request.Cookies[COOKIE_SESSION_ID];
-
-            if (operatorResult != null) // There is someone online
-            {
-                if (sessionId != null && !string.IsNullOrWhiteSpace(sessionId.Value))
-                {
-                    var query = new CurrentSessionQuery() { VisitorSessionId = sessionId.Value };
-                    var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
-
-                    if (currentSession != null)
-                    {
-                        // Online - resume chat
-                        return View(nameof(WidgetController.Online), new OnlineBoxViewModel { AccountKey = key });
-                    }
-
-                    // Introduction                 
-                    return View(nameof(WidgetController.Introduction), new IntroductionViewModel { AccountKey = key });
-                }
-
-                // Introduction                 
-                return View(nameof(WidgetController.Introduction), new IntroductionViewModel { AccountKey = key });
-            }
-
-            // Offline - no operator available
-            return View(nameof(WidgetController.Offline), new OfflineViewModel { AccountKey = key });
-        }
-
-        [HttpPost]
-        [Honeypot]
-        [Route("widget/introduction")]
-        [ValidateAntiForgeryToken]      
-        public async Task<ActionResult> Introduction(IntroductionViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
-       
-            var availableOperator = await _availableOperatorQueryHandler.ExecuteAsync(new AvailableOperatorQuery(model.AccountKey));
-            
-            // if operator is available - establish connection
-            if (availableOperator != null)
-            {
-                var sessionId = Guid.NewGuid().ToString();
-
-                var command = new StartVisitorChatCommand(availableOperator.OperatorId, model.Name, sessionId, User.Identity.GetUserId())
-                {
-                    Page = model.PageUrl,
-                    VisitorIP = WebHelper.GetIPAddress(),
-                    VisitorEmail = model.Email
-                };
-                await _startVisitorChatCommandHandler.ExecuteAsync(command);
-
-                // add sessionId cookie
-                Response.Cookies.Set(new HttpCookie(COOKIE_SESSION_ID, sessionId));
-            }
-
-            return RedirectToAction("Online", new { key = model.AccountKey });
-        }
-
-        [HttpGet]
-        [Route("widget/online/{key}")]
-        public ActionResult Online(string key)
-        {
-            var model = new OnlineBoxViewModel { AccountKey = key };
-
-            return View(model);
-        }
-
-        [HttpGet]
-        [Route("widget/stop")]
-        public ActionResult Stop(string key)
-        {
-            var model = new ThankYouViewModel { ThankYouText = "Thank you for chatting with us!" };
-
-            // remove sessionId cookie
-            Response.Cookies.Set(new HttpCookie(COOKIE_SESSION_ID, null));
-
-            return View(nameof(WidgetController.ThankYou), model);
-        }
-
-        [HttpGet]
-        [Route("widget/offline/{key}")]
-        public ActionResult Offline(string key)
-        {
-            var model = new OfflineViewModel { AccountKey = key };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [Honeypot]
-        [ValidateAntiForgeryToken]
-        [Route("widget/offline")]
-        public async Task<ActionResult> Offline(OfflineViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
-
-            var command = new LeaveMessageCommand(model.AccountKey, model.Name, model.Email, model.Message, AppSettings.UrlPortal)
-            {
-                VisitorIP = WebHelper.GetIPAddress()
-            };
-            await _leaveMessageCommandHandler.ExecuteAsync(command);
-
-            return RedirectToAction(nameof(WidgetController.ThankYou));
-        }
-
-        [HttpGet]
-        [Route("widget/thankyou")]
-        public ActionResult ThankYou()
-        {
-            var model = new ThankYouViewModel { ThankYouText = "Thank you! Your message has been sent. We will get back to you as soon as we can." };
-
-            return View(model);
         }
     }
 }

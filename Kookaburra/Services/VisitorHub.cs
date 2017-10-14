@@ -154,7 +154,8 @@ namespace Kookaburra.Services
                         City = resumedConversation.VisitorInfo.City,
                         Region = resumedConversation.VisitorInfo.Region,
                         CurrentUrl = visitor.PageUrl,
-                        StartTime = DateTime.UtcNow.JsDateTime()
+                        StartTime = DateTime.UtcNow.JsDateTime(),
+                        Messages = Mapper.Map<List<MessageViewModel>>(resumedConversation.Conversation)
                     };
 
                     // Notify all operator instances about this visitor

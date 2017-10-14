@@ -27,22 +27,22 @@ namespace Kookaburra.Repository.Migrations
             //    );
             //
 
-            if (!context.Accounts.Any(a => a.Identifier == "086FBDC2-14F3-4F68-B3C6-9EA42D257061"))
-            {
-                var testAccount = new Account { Name = "John Dou", Identifier = "086FBDC2-14F3-4F68-B3C6-9EA42D257061" };
-                context.Accounts.AddOrUpdate(a => a.Identifier, testAccount);
+            //if (!context.Accounts.Any(a => a.Identifier == "086FBDC2-14F3-4F68-B3C6-9EA42D257061"))
+            //{
+            //    var testAccount = new Account { Name = "John Dou", Identifier = "086FBDC2-14F3-4F68-B3C6-9EA42D257061" };
+            //    context.Accounts.AddOrUpdate(a => a.Identifier, testAccount);
 
-                context.Operators.AddOrUpdate(o => o.Identity,
-                    new Operator
-                    {
-                        Identity = "7a55ab0f-c4e7-47e6-92f0-50af290352e3",
-                        FirstName = "John",
-                        LastName = "Dou",
-                        Email = "peter.kovalskyy@gmail.com",
-                        Type = OperatorType.INDIVIDUAL.ToString(),
-                        Account = testAccount
-                    });
-            }
+            //    context.Operators.AddOrUpdate(o => o.Identity,
+            //        new Operator
+            //        {
+            //            Identity = "7a55ab0f-c4e7-47e6-92f0-50af290352e3",
+            //            FirstName = "John",
+            //            LastName = "Dou",
+            //            Email = "peter.kovalskyy@gmail.com",
+            //            Type = OperatorType.INDIVIDUAL.ToString(),
+            //            Account = testAccount
+            //        });
+            //}
         }
     }
 }

@@ -8,12 +8,14 @@ namespace Kookaburra.Repository
         public KookaburraContext() : base("DefaultConnection")
         {
             this.Configuration.LazyLoadingEnabled = false;
+            this.Database.CommandTimeout = 180;
         }
 
         public KookaburraContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
             //Database.SetInitializer<KookaburraContext>(null);
             this.Configuration.LazyLoadingEnabled = false;
+            this.Database.CommandTimeout = 180;
         }
 
         public DbSet<Account> Accounts { get; set; }

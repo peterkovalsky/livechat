@@ -117,7 +117,7 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
             // add greeting if needed  
             var greetingCommand = new OperatorMessagedCommand(command.SessionId, DefaultSettings.CHAT_GREETING, DateTime.UtcNow)
             {
-                SentBy = UserType.System
+                SentBy = UserType.Operator
             };
             await _operatorMessagedHandler.ExecuteAsync(greetingCommand);
         }

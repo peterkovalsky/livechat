@@ -1,12 +1,9 @@
-﻿using AutoMapper;
+﻿using Kookaburra.Common;
 using Kookaburra.Domain.Common;
 using Kookaburra.Models.Home;
 using Kookaburra.Services.Accounts;
-using Kookaburra.Services.Chats;
-using Kookaburra.Services.OfflineMessages;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -28,16 +25,11 @@ namespace Kookaburra.Controllers
             }
         }
         private ApplicationUserManager _userManager;
+        private readonly IAccountService _accountService;            
 
-        private readonly IAccountService _accountService;
-        private readonly IOfflineMessageService _offlineMessageService;
-        private readonly IChatService _chatService;
-
-        public HomeController(IAccountService accountService, IOfflineMessageService offlineMessageService, IChatService chatService)
+        public HomeController(IAccountService accountService)
         {
-            _accountService = accountService;
-            _offlineMessageService = offlineMessageService;
-            _chatService = chatService;
+            _accountService = accountService;             
         }
 
 
@@ -47,31 +39,16 @@ namespace Kookaburra.Controllers
         public ActionResult Dashboard()
         {
             return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+        }   
 
         [Route("preview")]
         public async Task<ActionResult> Preview()
         {
-            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
-            string serverHost = Request.Url.Host + ":" + Request.Url.Port;
+            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());            
 
             var model = new PreviewViewModel
             {
-                Code = new Code().GenerateCode(serverHost + "/widget/container", currentOperator.Account.Identifier)
+                Code = new Code().GenerateCode(WebHelper.Host, currentOperator.Account.Identifier)
             };
 
             return View(model);
