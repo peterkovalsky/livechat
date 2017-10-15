@@ -35,21 +35,33 @@ namespace Kookaburra.Services.Visitors
                 Account = account
             };
 
-            var location = await _geoLocator.GetLocationAsync(ip);
-
-            if (location != null)
+            try
             {
-                visitor.Country = location.Country;
-                visitor.CountryCode = location.CountryCode;
-                visitor.Region = location.Region;
-                visitor.City = location.City;
-                visitor.Latitude = location.Latitude;
-                visitor.Longitude = location.Longitude;
-            }
+                var location = await _geoLocator.GetLocationAsync(ip);
 
+                if (location != null)
+                {
+                    visitor.Country = location.Country;
+                    visitor.CountryCode = location.CountryCode;
+                    visitor.Region = location.Region;
+                    visitor.City = location.City;
+                    visitor.Latitude = location.Latitude;
+                    visitor.Longitude = location.Longitude;
+                }
+            }
+            catch (Exception ex)
+            {
+                // log error
+            }
+           
             _context.Visitors.Add(visitor);
 
             await _context.SaveChangesAsync();
+        }
+
+        public void UpdateVisitorGeoLocation(long visiotrId)
+        {
+
         }
     }
 }

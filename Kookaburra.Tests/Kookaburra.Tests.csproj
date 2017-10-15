@@ -72,6 +72,7 @@
     <Compile Include="QueriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommandTests.cs" />
+    <Compile Include="WebTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kookaburra.Domain.Command\Kookaburra.Domain.Command.csproj">
@@ -97,6 +98,10 @@
     <ProjectReference Include="..\Kookaburra.Repository\Kookaburra.Repository.csproj">
       <Project>{da1f181d-5da2-447f-b542-4d2d0bdd4518}</Project>
       <Name>Kookaburra.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kookaburra\Kookaburra.csproj">
+      <Project>{9eed0ef9-6dbe-4ac5-94d0-76038eff37c7}</Project>
+      <Name>Kookaburra</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

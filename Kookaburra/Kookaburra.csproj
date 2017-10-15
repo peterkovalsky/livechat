@@ -1828,6 +1828,7 @@
     <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\jquery.scrollbar.js" />
     <Content Include="Scripts\jquery.scrollbar.min.js" />
     <Content Include="Scripts\jquery.signalR-2.2.2.js" />
@@ -1936,6 +1937,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />

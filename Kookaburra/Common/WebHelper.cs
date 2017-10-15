@@ -15,11 +15,21 @@ namespace Kookaburra.Common
                 string[] addresses = ipAddress.Split(',');
                 if (addresses.Length != 0)
                 {
-                    return addresses[0];
+                    ipAddress = addresses[0];
                 }
             }
+            else
+            {
+                ipAddress = context.Request.ServerVariables["REMOTE_ADDR"];
+            }
 
-            return context.Request.ServerVariables["REMOTE_ADDR"];
+            // contains port so we need to remove it
+            if (!string.IsNullOrWhiteSpace(ipAddress) && ipAddress.Contains(":"))
+            {
+                ipAddress = ipAddress.Substring(0, ipAddress.IndexOf(":"));
+            }
+            
+            return ipAddress;
         }
 
         public static string Host

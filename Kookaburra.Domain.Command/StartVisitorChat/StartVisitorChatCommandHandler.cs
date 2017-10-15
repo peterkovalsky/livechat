@@ -93,7 +93,7 @@ namespace Kookaburra.Domain.Command.StartVisitorChat
                 }
                 catch (Exception ex)
                 {
-                    // log geo location exception
+                    // log geo location exception                    
                 }
             }
 
