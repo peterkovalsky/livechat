@@ -9,7 +9,7 @@ namespace Kookaburra.Domain.Model
         public int Id { get; set; }
 
         [StringLength(50)]
-        public string Identity { get; set; }
+        public string Identifier { get; set; }
 
         [StringLength(100)]
         public string FirstName { get; set; }

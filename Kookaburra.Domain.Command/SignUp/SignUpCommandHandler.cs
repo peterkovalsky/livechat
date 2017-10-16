@@ -28,7 +28,7 @@ namespace Kookaburra.Domain.Command.SignUp
             {
                 FirstName = command.ClientName,
                 Email = command.Email,
-                Identity = command.OperatorIdentity,
+                Identifier = command.OperatorIdentity,
                 Type = OperatorType.OWNER.ToString()
             };
 

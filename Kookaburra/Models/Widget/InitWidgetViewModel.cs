@@ -26,6 +26,6 @@ namespace Kookaburra.Models.Widget
         public string CookieName { get; set; }
 
         [JsonProperty("newVisitorId")]
-        public string NewVisitorId { get; set; }
+        public string NewVisitorKey { get; set; }
     }
 }

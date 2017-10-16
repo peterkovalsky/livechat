@@ -16,7 +16,7 @@ namespace Kookaburra.Domain.Query.Account
 
         public async Task<AccountQueryResult> ExecuteAsync(AccountQuery query)
         {
-            var account = await _context.Accounts.Where(a => a.Operators.Any(o => o.Identity == query.OperatorIdentity)).SingleOrDefaultAsync();
+            var account = await _context.Accounts.Where(a => a.Operators.Any(o => o.Identifier == query.OperatorIdentity)).SingleOrDefaultAsync();
 
             return new AccountQueryResult
             {

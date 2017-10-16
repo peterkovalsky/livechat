@@ -5,7 +5,7 @@ namespace Kookaburra.Domain.Model
 {
     public class Visitor
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [StringLength(200)]
         public string Name { get; set; }
@@ -22,16 +22,18 @@ namespace Kookaburra.Domain.Model
         [StringLength(10)]
         public string CountryCode { get; set; }
 
+        [StringLength(1000)]
         public string Region { get; set; }
 
+        [StringLength(1000)]
         public string City { get; set; }
 
         public decimal Latitude { get; set; }
     
         public decimal Longitude { get; set; }
 
-        [StringLength(1000)]
-        public string SessionId { get; set; }      
+        [StringLength(100)]
+        public string Identifier { get; set; }      
 
         public virtual IEnumerable<Conversation> Conversations { get; set; }
 

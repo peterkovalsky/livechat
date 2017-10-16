@@ -1,5 +1,4 @@
-﻿using Kookaburra.Domain.Integration;
-using Kookaburra.Domain.Model;
+﻿using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
 using System;
 using System.Data.Entity;
@@ -11,14 +10,12 @@ namespace Kookaburra.Domain.Command.LeaveMessage
     public class LeaveMessageCommandHandler : ICommandHandler<LeaveMessageCommand>
     {
         private readonly KookaburraContext _context;
-        private readonly ChatSession _chatSession;
-        private readonly IGeoLocator _geoLocator;
+        private readonly ChatSession _chatSession;      
 
-        public LeaveMessageCommandHandler(KookaburraContext context, ChatSession chatSession, IGeoLocator geoLocator)
+        public LeaveMessageCommandHandler(KookaburraContext context, ChatSession chatSession)
         {
             _context = context;
-            _chatSession = chatSession;
-            _geoLocator = geoLocator;
+            _chatSession = chatSession;          
         }
 
         public async Task ExecuteAsync(LeaveMessageCommand command)
@@ -30,7 +27,7 @@ namespace Kookaburra.Domain.Command.LeaveMessage
                 throw new ArgumentException(string.Format("Account {0} doesn't exists", command.AccountKey));
             }
 
-            var visitor = await _context.Visitors.SingleOrDefaultAsync(v => v.SessionId == command.VisitorId);
+            var visitor = await _context.Visitors.SingleOrDefaultAsync(v => v.Identifier == command.VisitorKey);
             if (visitor == null)
             {
                 visitor = new Visitor
@@ -57,30 +54,12 @@ namespace Kookaburra.Domain.Command.LeaveMessage
                 Visitor = visitor
             };
 
-            try
-            {
-                var location = await _geoLocator.GetLocationAsync(command.VisitorIP);
-
-                if (location != null)
-                {
-                    offlineMessage.Visitor.Country = location.Country;
-                    offlineMessage.Visitor.CountryCode = location.CountryCode;
-                    offlineMessage.Visitor.Region = location.Region;
-                    offlineMessage.Visitor.City = location.City;
-                    offlineMessage.Visitor.Latitude = location.Latitude;
-                    offlineMessage.Visitor.Longitude = location.Longitude;
-                }
-            }
-            catch (Exception ex)
-            {
-                // log geo location exception   
-            }
-
             _context.OfflineMessages.Add(offlineMessage);
             await _context.SaveChangesAsync();
 
-            // return offline message ID
+            // return offline message ID and visitor ID
             command.Id = offlineMessage.Id;
+            command.VisitorId = visitor.Id;
         }
     }
 }

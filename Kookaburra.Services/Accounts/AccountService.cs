@@ -16,22 +16,22 @@ namespace Kookaburra.Services.Accounts
             _context = context;
         }
 
-        public async Task<Account> GetAccountAsync(string operatorIdentity)
+        public async Task<Account> GetAccountAsync(string operatorKey)
         {
-            return await _context.Accounts.Where(a => a.Operators.Any(o => o.Identity == operatorIdentity)).SingleOrDefaultAsync();
+            return await _context.Accounts.Where(a => a.Operators.Any(o => o.Identifier == operatorKey)).SingleOrDefaultAsync();
         }
 
-        public async Task<Operator> GetOperatorAsync(string operatorIdentity)
+        public async Task<Operator> GetOperatorAsync(string operatorKey)
         {
-            return await _context.Operators.Include(i => i.Account).SingleOrDefaultAsync(o => o.Identity == operatorIdentity);
+            return await _context.Operators.Include(i => i.Account).SingleOrDefaultAsync(o => o.Identifier == operatorKey);
         }
 
-        public async Task UpdateProfileAsync(string operatorIdentity, string firstName, string lastName, string email)
+        public async Task UpdateProfileAsync(string operatorKey, string firstName, string lastName, string email)
         {
-            var operatr = await GetOperatorAsync(operatorIdentity);
+            var operatr = await GetOperatorAsync(operatorKey);
             if (operatr == null)
             {
-                throw new ArgumentException($"Operator with id {operatorIdentity} doesn't exist");
+                throw new ArgumentException($"Operator with id {operatorKey} doesn't exist");
             }
 
             operatr.FirstName = firstName;
@@ -41,12 +41,12 @@ namespace Kookaburra.Services.Accounts
             await _context.SaveChangesAsync();
         }
 
-        public async Task RecordOperatorActivityAsync(string operatorIdentity)
+        public async Task RecordOperatorActivityAsync(string operatorKey)
         {
-            var operatr = await GetOperatorAsync(operatorIdentity);
+            var operatr = await GetOperatorAsync(operatorKey);
             if (operatr == null)
             {
-                throw new ArgumentException($"Operator with id {operatorIdentity} doesn't exist");
+                throw new ArgumentException($"Operator with id {operatorKey} doesn't exist");
             }
 
             operatr.LastActivity = DateTime.UtcNow;
@@ -54,12 +54,12 @@ namespace Kookaburra.Services.Accounts
             await _context.SaveChangesAsync();
         }
 
-        public async Task ResetOperatorActivityAsync(string operatorIdentity)
+        public async Task ResetOperatorActivityAsync(string operatorKey)
         {
-            var operatr = await GetOperatorAsync(operatorIdentity);
+            var operatr = await GetOperatorAsync(operatorKey);
             if (operatr == null)
             {
-                throw new ArgumentException($"Operator with id {operatorIdentity} doesn't exist");
+                throw new ArgumentException($"Operator with id {operatorKey} doesn't exist");
             }
 
             operatr.LastActivity = null;

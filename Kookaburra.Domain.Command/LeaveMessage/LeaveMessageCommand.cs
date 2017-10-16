@@ -27,6 +27,8 @@
 
         public string PortalHost { get; }
 
-        public string VisitorId { get; set; }
+        public string VisitorKey { get; set; }
+
+        public long VisitorId { get; set; }
     }
 }

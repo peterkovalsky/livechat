@@ -24,7 +24,7 @@ namespace Kookaburra.Domain.Query.ReturningVisitor
                 return null;
             }
 
-            var visitor = await _context.Visitors.Where(v => v.SessionId == query.VisitorId && v.Account.Identifier == query.AccountKey).SingleOrDefaultAsync();
+            var visitor = await _context.Visitors.Where(v => v.Identifier == query.VisitorId && v.Account.Identifier == query.AccountKey).SingleOrDefaultAsync();
             if (visitor != null)
             {
                 return new ReturningVisitorQueryResult

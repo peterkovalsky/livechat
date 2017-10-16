@@ -21,10 +21,10 @@ namespace Kookaburra.Domain.Command.ConnectOperator
         {
             var operatorEntity = await _context.Operators
                 .Include(i => i.Account)
-                .Where(o => o.Identity == command.OperatorIdentity && o.Account.Identifier == command.AccountKey)
+                .Where(o => o.Identifier == command.OperatorIdentity && o.Account.Identifier == command.AccountKey)
                 .SingleOrDefaultAsync();
 
-            _chatSession.AddOrUpdateOperator(operatorEntity.Id, operatorEntity.Identity, operatorEntity.FirstName, operatorEntity.Account.Identifier, command.OperatorConnectionId);
+            _chatSession.AddOrUpdateOperator(operatorEntity.Id, operatorEntity.Identifier, operatorEntity.FirstName, operatorEntity.Account.Identifier, command.OperatorConnectionId);
         }
     }
 }

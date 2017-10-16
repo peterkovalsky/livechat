@@ -19,36 +19,36 @@ namespace Kookaburra.Common
             return string.Format(COOKIE_TEMPLATE, accountKey);
         }
 
-        public string GetVisitorId(string accountKey)
+        public string GetVisitorKey(string accountKey)
         {            
             var cookieName = GetCookieName(accountKey);
 
-            var visitorId = _httpContext.Request.Cookies[cookieName];
+            var visitorKey = _httpContext.Request.Cookies[cookieName];
 
-            if (visitorId == null || string.IsNullOrWhiteSpace(visitorId.Value))
+            if (visitorKey == null || string.IsNullOrWhiteSpace(visitorKey.Value))
             {
                 return null;
             }
 
-            return visitorId.Value;
+            return visitorKey.Value;
         }  
 
-        public string GenerateVisitorId()
+        public string GenerateVisitorKey()
         {
             return Guid.NewGuid().ToString();
         }
 
-        public string GetOrCreateVisitorId(string accountKey)
+        public string GetOrCreateVisitorKey(string accountKey)
         {
-            var visitorId = GetVisitorId(accountKey);
+            var visitorKey = GetVisitorKey(accountKey);
 
-            if (!string.IsNullOrWhiteSpace(visitorId))
+            if (!string.IsNullOrWhiteSpace(visitorKey))
             {
-                return visitorId;
+                return visitorKey;
             }
             else
             {
-                return GenerateVisitorId();
+                return GenerateVisitorKey();
             }
         }
     }

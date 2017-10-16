@@ -5,6 +5,8 @@ namespace Kookaburra.Services.Visitors
 {
     public interface IVisitorService
     {
-        Task AddNewVisitorAsync(string accountKey, string visitorId, string ip);
+        Task<Visitor> AddNewVisitorAsync(string accountKey, string visitorKey, string ip);
+
+        Task UpdateVisitorGeolocationAsync(long id);
     }
 }

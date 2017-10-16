@@ -68,17 +68,17 @@ namespace Kookaburra.Services
             var operatorResult = await _availableOperatorQueryHandler.ExecuteAsync(query);
 
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-            var visitorId = visitorCookie.GetVisitorId(accountKey);
+            var visitorKey = visitorCookie.GetVisitorKey(accountKey);
 
             // returning visitor
-            if (!string.IsNullOrWhiteSpace(visitorId))
+            if (!string.IsNullOrWhiteSpace(visitorKey))
             {
-                var queryReturning = new ReturningVisitorQuery(accountKey, visitorId);
+                var queryReturning = new ReturningVisitorQuery(accountKey, visitorKey);
                 var returningVisitor = await _returningVisitorQueryHandler.ExecuteAsync(queryReturning);
 
                 if (operatorResult != null) // Is there any available operator
                 {
-                    var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
+                    var queryResume = new ResumeVisitorChatQuery(visitorKey, Context.ConnectionId);
                     var resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
                     if (resumedConversation != null) // check if session is still alive
                     {
@@ -95,9 +95,12 @@ namespace Kookaburra.Services
             }
             else // new visitor
             {
-                visitorId = visitorCookie.GenerateVisitorId();
+                visitorKey = visitorCookie.GenerateVisitorKey();
 
-                await _visitorService.AddNewVisitorAsync(accountKey, visitorId, WebHelper.GetIPAddress());
+                var visitor = await _visitorService.AddNewVisitorAsync(accountKey, visitorKey, WebHelper.GetIPAddress());
+
+                // update geo details in the background
+                BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(visitor.Id));
 
                 // introduction screen
                 if (operatorResult != null)
@@ -105,7 +108,7 @@ namespace Kookaburra.Services
                     return new InitWidgetViewModel(WidgetStepType.Introduction)
                     {
                         CookieName = visitorCookie.GetCookieName(accountKey),
-                        NewVisitorId = visitorId
+                        NewVisitorKey = visitorKey
                     };
                 }
 
@@ -113,7 +116,7 @@ namespace Kookaburra.Services
                 return new InitWidgetViewModel(WidgetStepType.Offline)
                 {
                     CookieName = visitorCookie.GetCookieName(accountKey),
-                    NewVisitorId = visitorId
+                    NewVisitorKey = visitorKey
                 };
             }
         }
@@ -121,7 +124,7 @@ namespace Kookaburra.Services
         public async Task<StartChatViewModel> StartChat(IntroductionViewModel visitor)
         {            
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-            var visitorId = visitorCookie.GetOrCreateVisitorId(visitor.AccountKey);
+            var visitorId = visitorCookie.GetOrCreateVisitorKey(visitor.AccountKey);
 
             var query = new AvailableOperatorQuery(visitor.AccountKey);
             var availableOperator = await _availableOperatorQueryHandler.ExecuteAsync(query);
@@ -138,6 +141,9 @@ namespace Kookaburra.Services
                     VisitorEmail = visitor.Email
                 };
                 await _startVisitorChatCommandHandler.ExecuteAsync(command);
+
+                // update geo details in the background
+                BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(command.VisitorId));
 
 
                 var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
@@ -176,18 +182,21 @@ namespace Kookaburra.Services
         public async Task SendOfflineMessage(OfflineViewModel offlineMessage)
         {
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-            var visitorId = visitorCookie.GetOrCreateVisitorId(offlineMessage.AccountKey);
+            var visitorKey = visitorCookie.GetOrCreateVisitorKey(offlineMessage.AccountKey);
 
             var command = new LeaveMessageCommand(offlineMessage.AccountKey, offlineMessage.Name, offlineMessage.Email, offlineMessage.Message, AppSettings.UrlPortal)
             {
                 VisitorIP = WebHelper.GetIPAddress(),
                 Page = offlineMessage.Page,
-                VisitorId = visitorId
+                VisitorKey = visitorKey
             };
-
             await _leaveMessageCommandHandler.ExecuteAsync(command);
 
-            BackgroundJob.Enqueue<IEmailService>(emailService => emailService.SendOfflineNotificationEmail(command.Id));            
+            // send email notification to operators in the background
+            BackgroundJob.Enqueue<IEmailService>(emailService => emailService.SendOfflineNotificationEmail(command.Id));
+
+            // update geo details in the background
+            BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(command.VisitorId));
         }
 
         /// <summary>
@@ -225,15 +234,15 @@ namespace Kookaburra.Services
         public async Task FinishChattingWithOperator(string accountKey)
         {
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-            var visitorId = visitorCookie.GetVisitorId(accountKey);
+            var visitorKey = visitorCookie.GetVisitorKey(accountKey);
 
             var query = new CurrentSessionQuery
             {
-                VisitorSessionId = visitorId
+                VisitorSessionId = visitorKey
             };
             var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
 
-            await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorId));
+            await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorKey));
 
             DisconnectVisitor(currentSession, UserType.Visitor);
         }

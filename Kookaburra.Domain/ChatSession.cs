@@ -32,7 +32,7 @@ namespace Kookaburra.Domain
             }
         }
 
-        public void AddVisitor(long conversationId, int operatorId, string visitorConnectionId, int visitorId, string visitorName, string visitorSessionId)
+        public void AddVisitor(long conversationId, int operatorId, string visitorConnectionId, long visitorId, string visitorName, string visitorSessionId)
         {
             var operatorSession = GetOperatorById(operatorId);
             if (operatorSession == null)
@@ -146,7 +146,7 @@ namespace Kookaburra.Domain
 
     public class VisitorSession
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public long ConversationId { get; set; }
 

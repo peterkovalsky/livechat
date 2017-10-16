@@ -104,6 +104,10 @@
     <Compile Include="Migrations\201709260358332_offlinemessage.Designer.cs">
       <DependentUpon>201709260358332_offlinemessage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710160637099_ConvertoToLong.cs" />
+    <Compile Include="Migrations\201710160637099_ConvertoToLong.Designer.cs">
+      <DependentUpon>201710160637099_ConvertoToLong.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -149,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709260358332_offlinemessage.resx">
       <DependentUpon>201709260358332_offlinemessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710160637099_ConvertoToLong.resx">
+      <DependentUpon>201710160637099_ConvertoToLong.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

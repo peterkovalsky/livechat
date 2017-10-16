@@ -53,13 +53,13 @@ namespace Kookaburra.Domain.Query.ResumeOperator
                 var liveConversations = operatorSession.Visitors.Select(v => v.ConversationId).ToList();
 
                 var conversations = await _context.Conversations
-                                            .Where(c => c.Operator.Identity == query.OperatorIdentity
+                                            .Where(c => c.Operator.Identifier == query.OperatorIdentity
                                                     && liveConversations.Contains(c.Id))
                                             .Select(c => new ConversationResult
                                             {
                                                 VisitorInfo = new VisitorInfoResult
                                                 {
-                                                    SessionId = c.Visitor.SessionId,
+                                                    SessionId = c.Visitor.Identifier,
                                                     Name = c.Visitor.Name,
                                                     Email = c.Visitor.Email,
                                                     CurrentUrl = c.Page,

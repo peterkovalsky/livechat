@@ -24,7 +24,7 @@ namespace Kookaburra.Domain.Query.TimmedOutConversations
                 .Where(c => c.TimeFinished == null && c.Messages.Any() && c.Messages.OrderByDescending(m => m.DateSent).FirstOrDefault().DateSent < cutOffTime)
                 .Select(c => new ConversationResult
                 {
-                    VisitorSessionId = c.Visitor.SessionId,
+                    VisitorSessionId = c.Visitor.Identifier,
                     ConversationId = c.Id
                 })
                 .ToListAsync();

@@ -5,14 +5,14 @@ namespace Kookaburra.Services.Accounts
 {
     public interface IAccountService
     {
-        Task<Account> GetAccountAsync(string operatorIdentity);
+        Task<Account> GetAccountAsync(string operatorKey);
 
-        Task<Operator> GetOperatorAsync(string operatorIdentity);       
+        Task<Operator> GetOperatorAsync(string operatorKey);       
 
-        Task UpdateProfileAsync(string operatorIdentity, string firstName, string lastName, string email);        
+        Task UpdateProfileAsync(string operatorKey, string firstName, string lastName, string email);        
 
-        Task RecordOperatorActivityAsync(string operatorIdentity);
+        Task RecordOperatorActivityAsync(string operatorKey);
 
-        Task ResetOperatorActivityAsync(string operatorIdentity);
+        Task ResetOperatorActivityAsync(string operatorKey);
     }
 }

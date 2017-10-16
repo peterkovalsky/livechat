@@ -15,7 +15,7 @@ namespace Kookaburra.Domain.Query.Profile
 
         public async Task<ProfileQueryResult> ExecuteAsync(ProfileQuery query)
         {
-            var op = await _context.Operators.SingleOrDefaultAsync(o => o.Identity == query.OperatorKey);
+            var op = await _context.Operators.SingleOrDefaultAsync(o => o.Identifier == query.OperatorKey);
 
             return new ProfileQueryResult
             {

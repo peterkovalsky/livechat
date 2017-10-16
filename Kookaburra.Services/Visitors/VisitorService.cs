@@ -20,9 +20,9 @@ namespace Kookaburra.Services.Visitors
         }
 
 
-        public async Task AddNewVisitorAsync(string accountKey, string visitorId, string ip)
+        public async Task<Visitor> AddNewVisitorAsync(string accountKey, string visitorKey, string ip)
         {
-            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == accountKey);
+            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == visitorKey);
             if (account == null)
             {
                 throw new ArgumentException($"Account {accountKey} doesn't exist.");
@@ -30,15 +30,29 @@ namespace Kookaburra.Services.Visitors
 
             var visitor = new Visitor
             {
-                SessionId = visitorId,
+                Identifier = visitorKey,
                 IpAddress = ip,
                 Account = account
-            };
+            };       
 
-            try
+            _context.Visitors.Add(visitor);
+
+            await _context.SaveChangesAsync();
+
+            return visitor;
+        }
+
+        public async Task UpdateVisitorGeolocationAsync(long id)
+        {
+            var visitor = await _context.Visitors.SingleOrDefaultAsync(v => v.Id == id);
+            if (visitor == null)
             {
-                var location = await _geoLocator.GetLocationAsync(ip);
+                throw new ArgumentException($"Visitor {id} doesn't exist.");
+            }
 
+            if (!string.IsNullOrWhiteSpace(visitor.IpAddress))
+            {
+                var location = await _geoLocator.GetLocationAsync(visitor.IpAddress);
                 if (location != null)
                 {
                     visitor.Country = location.Country;
@@ -47,21 +61,10 @@ namespace Kookaburra.Services.Visitors
                     visitor.City = location.City;
                     visitor.Latitude = location.Latitude;
                     visitor.Longitude = location.Longitude;
+
+                    await _context.SaveChangesAsync();
                 }
             }
-            catch (Exception ex)
-            {
-                // log error
-            }
-           
-            _context.Visitors.Add(visitor);
-
-            await _context.SaveChangesAsync();
-        }
-
-        public void UpdateVisitorGeoLocation(long visiotrId)
-        {
-
         }
     }
 }
