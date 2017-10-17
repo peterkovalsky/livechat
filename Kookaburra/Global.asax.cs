@@ -1,7 +1,9 @@
 ﻿using Kookaburra.Repository;
 using Kookaburra.Services.Accounts;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Configuration;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Http;
@@ -22,6 +24,8 @@ namespace Kookaburra
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
+
+            TelemetryConfiguration.Active.InstrumentationKey =  ConfigurationManager.AppSettings["Azure.InstrumentationKey"];
         }
 
         protected void Application_AuthorizeRequest(Object sender, EventArgs e)
