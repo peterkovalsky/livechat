@@ -153,8 +153,7 @@ function WidgetViewModel(accountKey) {
 
             $.connection.visitorHub.server.startChat(visitorView).done(function (result) {
 
-                if (result != null) {
-                    $.cookie(result.cookieName, result.sessionId, { path: '/' });
+                if (result != null) {                  
 
                     if (result.operatorName) {
                         // load up previous messages
