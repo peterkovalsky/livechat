@@ -75,9 +75,8 @@
                                         <!-- ko if: isRead() -->
                                         <img src="/images/visitor-default.png" class="img-circle" alt="user-pic">
                                         <!-- /ko -->
-
                                         <!-- ko if: !isRead() -->
-                                        <img src="/images/visitor-default-white.png" class="img-circle" alt="user-pic">  
+                                        <img src="/images/visitor-default-white.png" class="img-circle" alt="user-pic">
                                         <!-- /ko -->
                                     </td>
                                     <td>
@@ -89,7 +88,6 @@
                                     <td class="cell-30 responsive-hide"></td>
                                     <td class="cell-200">
                                         <div class="time" data-bind="text: time"></div>
-                                        <div class="identity" data-bind="text: country"></div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -116,18 +114,22 @@
                 </div>
                 <div class="mail-header">
                     <div class="mail-header-main">
-                        <div class="pull-xs-left m-r-20" data-bind="if: countryCode != null">
-                            <span data-bind="attr: {class: 'flag-icon flag-icon-' + countryCode.toLowerCase()}"></span>
-                        </div>
+                        <div class="pull-xs-left">
 
-                        <div class="pull-xs-left" >
-                            <h1 class="name" data-bind="text: name"></h1>
+                            <div>
+                                <span data-bind="attr: {class: 'pull-xs-left flag-icon flag-icon-' + countryCode.toLowerCase()}"></span>
+                                <h1 class="name" data-bind="text: name"></h1>
+                            </div>
+                            <div class="clearfix"></div>
                             <p data-bind="if: country != null && city != null">
-                                <span data-bind="text: country"></span>, <span data-bind="text: city"></span>
+                                <span data-bind="text: country"></span>, <span data-bind="text: region"></span>, <span data-bind="text: city"></span>
                             </p>
                             <p>
                                 <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email }"></a>
-                            </p>                           
+                            </p>
+                            <p>
+                                <a href="#" data-bind="text: url, attr: { href: url }" target="_blank"></a>
+                            </p>
                         </div>
                     </div>
                     <div class="mail-header-right">

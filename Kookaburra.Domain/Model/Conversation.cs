@@ -9,7 +9,7 @@ namespace Kookaburra.Domain.Model
         [Key]
         public long Id { get; set; }
 
-        public int VisitorId { get; set; }
+        public long VisitorId { get; set; }
 
         public virtual Visitor Visitor { get; set; }
 

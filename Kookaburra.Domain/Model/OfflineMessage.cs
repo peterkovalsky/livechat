@@ -16,7 +16,7 @@ namespace Kookaburra.Domain.Model
 
         public bool IsRead { get; set; }
 
-        public int VisitorId { get; set; }
+        public long VisitorId { get; set; }
 
         public virtual Visitor Visitor { get; set; }
     }

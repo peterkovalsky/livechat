@@ -4,10 +4,12 @@
     self.id = data.id;
     self.message = data.message;
     self.time = moment(data.time).format('lll'); // Mar 27, 2017 4:29 PM
+    self.url = data.url;
     self.name = data.name;
     self.email = data.email;
     self.country = data.country;
     self.countryCode = data.countryCode;
+    self.region = data.region;
     self.city = data.city;
     self.isRead = ko.observable(data.isRead);
     self.isCurrent = ko.observable(false);

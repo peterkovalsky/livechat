@@ -22,7 +22,7 @@ namespace Kookaburra.Services.Visitors
 
         public async Task<Visitor> AddNewVisitorAsync(string accountKey, string visitorKey, string ip)
         {
-            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == visitorKey);
+            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == accountKey);
             if (account == null)
             {
                 throw new ArgumentException($"Account {accountKey} doesn't exist.");

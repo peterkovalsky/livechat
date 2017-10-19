@@ -60,9 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectOperator\ConnectOperatorCommandHandler.cs" />
-    <Compile Include="DeleteMessage\DeleteMessageCommandHandler.cs" />
     <Compile Include="LeaveMessage\LeaveMessageCommandHandler.cs" />
-    <Compile Include="MarkMessageAsRead\MarkMessageAsReadCommandHandler.cs" />
     <Compile Include="OperatorMessaged\OperatorMessagedCommandHandler.cs" />
     <Compile Include="SignUp\SignUpCommand.cs" />
     <Compile Include="SignUp\SignUpCommandHandler.cs" />
@@ -71,9 +69,7 @@
     <Compile Include="VisitorMessaged\VisitorMessagedCommandHandler.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="ConnectOperator\ConnectOperatorCommand.cs" />
-    <Compile Include="DeleteMessage\DeleteMessageCommand.cs" />
     <Compile Include="LeaveMessage\LeaveMessageCommand.cs" />
-    <Compile Include="MarkMessageAsRead\MarkMessageAsReadCommand.cs" />
     <Compile Include="OperatorMessaged\OperatorMessagedCommand.cs" />
     <Compile Include="StartVisitorChat\StartVisitorChatCommand.cs" />
     <Compile Include="StopConversation\StopConversationCommand.cs" />

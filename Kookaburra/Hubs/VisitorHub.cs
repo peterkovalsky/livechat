@@ -15,6 +15,7 @@ using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.Widget;
+using Kookaburra.Services.OfflineMessages;
 using Kookaburra.Services.Visitors;
 using Microsoft.AspNet.SignalR;
 using System;
@@ -36,6 +37,7 @@ namespace Kookaburra.Services
         private readonly IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> _returningVisitorQueryHandler;
 
         private readonly IVisitorService _visitorService;
+        private readonly IOfflineMessageService _offlineMessageService;
 
         public VisitorHub(
             ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
@@ -46,7 +48,8 @@ namespace Kookaburra.Services
             IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> availableOperatorQueryHandler,
             IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> resumeVisitorChatQueryHandler,
             IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> returningVisitorQueryHandler,
-            IVisitorService visitorService)
+            IVisitorService visitorService,
+            IOfflineMessageService offlineMessageService)
         {
             _stopConversationCommandHandler = stopConversationCommandHandler;
             _startVisitorChatCommandHandler = startVisitorChatCommandHandler;
@@ -59,6 +62,7 @@ namespace Kookaburra.Services
             _returningVisitorQueryHandler = returningVisitorQueryHandler;
 
             _visitorService = visitorService;
+            _offlineMessageService = offlineMessageService;
         }
 
 
@@ -187,7 +191,7 @@ namespace Kookaburra.Services
             var command = new LeaveMessageCommand(offlineMessage.AccountKey, offlineMessage.Name, offlineMessage.Email, offlineMessage.Message, AppSettings.UrlPortal)
             {
                 VisitorIP = WebHelper.GetIPAddress(),
-                Page = offlineMessage.Page,
+                Page = offlineMessage.PageUrl,
                 VisitorKey = visitorKey
             };
             await _leaveMessageCommandHandler.ExecuteAsync(command);

@@ -64,12 +64,10 @@
     <Compile Include="ResumeVisitorChat\ResumeVisitorChatQueryHandler.cs" />
     <Compile Include="CurrentChats\CurrentChatsQueryHandler.cs" />
     <Compile Include="CurrentSession\CurrentSessionQueryHandler.cs" />
-    <Compile Include="OfflineMessages\OfflineMessagesQueryHandler.cs" />
     <Compile Include="ResumeOperator\ResumeOperatorQueryHandler.cs" />
     <Compile Include="ReturningVisitor\ReturningVisitorQuery.cs" />
     <Compile Include="ReturningVisitor\ReturningVisitorQueryHandler.cs" />
     <Compile Include="ReturningVisitor\ReturningVisitorQueryResult.cs" />
-    <Compile Include="SearchOfflineMessages\SearchOfflineMessagesQueryHandler.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQuery.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQueryHandler.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQueryResult.cs" />
@@ -80,9 +78,7 @@
     <Compile Include="ResumeVisitorChat\ResumeVisitorChatQuery.cs" />
     <Compile Include="CurrentChats\CurrentChatsQuery.cs" />
     <Compile Include="CurrentSession\CurrentSessionQuery.cs" />
-    <Compile Include="OfflineMessages\OfflineMessagesQuery.cs" />
     <Compile Include="ResumeOperator\ResumeOperatorQuery.cs" />
-    <Compile Include="SearchOfflineMessages\SearchOfflineMessagesQuery.cs" />
     <Compile Include="Transcript\TranscriptQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AvailableOperator\AvailableOperatorQueryResult.cs" />
@@ -92,8 +88,6 @@
     <Compile Include="CurrentChats\CurrentChatsQueryResult.cs" />
     <Compile Include="CurrentSession\CurrentSessionQueryResult.cs" />
     <Compile Include="ResumeVisitorChat\MessageResult.cs" />
-    <Compile Include="OfflineMessages\OfflineMessageResult.cs" />
-    <Compile Include="OfflineMessages\OfflineMessagesQueryResult.cs" />
     <Compile Include="ResumeOperator\ResumeOperatorQueryResult.cs" />
     <Compile Include="Transcript\TranscriptQueryResult.cs" />
     <Compile Include="ResumeVisitorChat\VisitorInfoResult.cs" />

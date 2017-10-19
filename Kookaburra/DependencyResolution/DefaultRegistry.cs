@@ -23,10 +23,8 @@ namespace Kookaburra.DependencyResolution
     using Domain.Query;
     using Integration.freegeoip;
     using Kookaburra.Domain.AvailableOperator;
-    using Kookaburra.Domain.Command.ConnectOperator;
-    using Kookaburra.Domain.Command.DeleteMessage;
-    using Kookaburra.Domain.Command.LeaveMessage;
-    using Kookaburra.Domain.Command.MarkMessageAsRead;
+    using Kookaburra.Domain.Command.ConnectOperator;   
+    using Kookaburra.Domain.Command.LeaveMessage;    
     using Kookaburra.Domain.Command.OperatorMessaged;
     using Kookaburra.Domain.Command.SignUp;
     using Kookaburra.Domain.Command.StartVisitorChat;
@@ -37,10 +35,8 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Query.ChatHistorySearch;
     using Kookaburra.Domain.Query.CurrentChats;
     using Kookaburra.Domain.Query.CurrentSession;
-    using Kookaburra.Domain.Query.OfflineMessages;
     using Kookaburra.Domain.Query.ResumeOperator;
     using Kookaburra.Domain.Query.ReturningVisitor;
-    using Kookaburra.Domain.Query.SearchOfflineMessages;
     using Kookaburra.Domain.Query.TimmedOutConversations;
     using Kookaburra.Domain.Query.Transcript;
     using Kookaburra.Domain.ResumeVisitorChat;
@@ -62,6 +58,7 @@ namespace Kookaburra.DependencyResolution
                     scan.Assembly("Kookaburra.Domain.Command");
                     scan.Assembly("Kookaburra.Domain.Query");
                     scan.Assembly("Kookaburra.Services");
+                    scan.Assembly("Kookaburra.Email");
                     scan.WithDefaultConventions();
 					scan.With(new ControllerConvention());
                 });
@@ -76,9 +73,7 @@ namespace Kookaburra.DependencyResolution
             For<ICommandHandler<LeaveMessageCommand>>().Add<LeaveMessageCommandHandler>();
             For<ICommandHandler<OperatorMessagedCommand>>().Add<OperatorMessagedCommandHandler>();
             For<ICommandHandler<StopConversationCommand>>().Add<StopConversationCommandHandler>();
-            For<ICommandHandler<VisitorMessagedCommand>>().Add<VisitorMessagedCommandHandler>();
-            For<ICommandHandler<MarkMessageAsReadCommand>>().Add<MarkMessageAsReadCommandHandler>();
-            For<ICommandHandler<DeleteMessageCommand>>().Add<DeleteMessageCommandHandler>();
+            For<ICommandHandler<VisitorMessagedCommand>>().Add<VisitorMessagedCommandHandler>();                    
             For<ICommandHandler<SignUpCommand>>().Add<SignUpCommandHandler>();
            
 
@@ -87,9 +82,7 @@ namespace Kookaburra.DependencyResolution
             For<IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>>>().Add<ResumeVisitorChatQueryHandler>();
             For<IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>>>().Add<CurrentSessionQueryHandler>();
             For<IQueryHandler<CurrentChatsQuery, Task<CurrentChatsQueryResult>>>().Add<CurrentChatsQueryHandler>();
-            For<IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>>>().Add<ResumeOperatorQueryHandler>();
-            For<IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>>>().Add<OfflineMessagesQueryHandler>();
-            For<IQueryHandler<SearchOfflineMessagesQuery, Task<OfflineMessagesQueryResult>>>().Add<SearchOfflineMessagesQueryHandler>();
+            For<IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>>>().Add<ResumeOperatorQueryHandler>();                    
             For<IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>>>().Add<TranscriptQueryHandler>();
             For<IQueryHandler<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistorySearchQueryHandler>();            
             For<IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistoryQueryHandler>();
@@ -99,13 +92,10 @@ namespace Kookaburra.DependencyResolution
             
             ForSingletonOf<ChatSession>();
             ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();
-            For<IMailer>().Add<Mailer>();
+         
             For<IEmailSender>().Add<DefaultEmailSender>().Ctor<string>("host").Is(AppSettings.EmailHost)
                                                                     .Ctor<string>("username").Is(AppSettings.EmailUsername)
-                                                                    .Ctor<string>("password").Is(AppSettings.EmailPassword);
-            For<IEmailService>().Add<EmailService>();
-            
-            For<BackgroundJobs>().Add<BackgroundJobs>();            
+                                                                    .Ctor<string>("password").Is(AppSettings.EmailPassword);            
         }       
     }
 }

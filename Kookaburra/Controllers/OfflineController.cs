@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Kookaburra.Domain.Common;
-using Kookaburra.Domain.Query;
-using Kookaburra.Domain.Query.OfflineMessages;
 using Kookaburra.Models.Offline;
+using Kookaburra.Services.OfflineMessages;
 using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -11,29 +11,27 @@ namespace Kookaburra.Controllers
 {
     public class OfflineController : Controller
     {
-        private readonly IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>> _offlineMessagesQuery;
+        private readonly IOfflineMessageService _offlineMessageService;
 
         private readonly int PageSize = 10;
 
-        public OfflineController(IQueryHandler<OfflineMessagesQuery, Task<OfflineMessagesQueryResult>> offlineMessagesQuery)
+        public OfflineController(IOfflineMessageService offlineMessageService)
         {
-            _offlineMessagesQuery = offlineMessagesQuery;
+            _offlineMessageService = offlineMessageService;
         }
 
 
         [HttpGet, Route("messages")]
         public async Task<ActionResult> Messages()
-        {
-            var query = new OfflineMessagesQuery(TimeFilterType.All, User.Identity.GetUserId())
+        {                
+            var result = await _offlineMessageService.GetOfflineMessagesAsync(TimeFilterType.All, User.Identity.GetUserId());
+          
+            return View(new OfflineMessagesViewModel
             {
-                Pagination = new Pagination(PageSize, 1)
-            };
-            var result = await _offlineMessagesQuery.ExecuteAsync(query);
-
-            var viewModel = Mapper.Map<OfflineMessagesViewModel>(result);
-            viewModel.PageSize = PageSize;
-
-            return View(viewModel);
+                OfflineMessages = Mapper.Map<List<LeftMessageViewModel>>(result),
+                PageSize = PageSize,
+                TotalMessages = result.Count
+            });
         }       
     }
 }

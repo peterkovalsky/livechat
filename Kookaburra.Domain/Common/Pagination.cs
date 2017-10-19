@@ -13,5 +13,7 @@
         public int Page { get; private set; }
 
         public int Skip { get { return Size * (Page - 1); } }
+
+        public int Total { get; set; }
     }
 }

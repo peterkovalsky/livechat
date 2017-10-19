@@ -39,6 +39,9 @@ function Offline(accountKey) {
     self.name = ko.observable("").extend({ required: "Please enter your name" });
     self.email = ko.observable("").extend({ required: "Please enter your email" });
     self.message = ko.observable("").extend({ required: "Please enter your message" });
+    self.url = (window.location != window.parent.location)
+        ? document.referrer
+        : document.location.href;
 
     self.accountKey = accountKey;
     self.focusName = ko.observable(true);

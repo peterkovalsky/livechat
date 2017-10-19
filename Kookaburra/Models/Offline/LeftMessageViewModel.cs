@@ -14,6 +14,9 @@ namespace Kookaburra.Models.Offline
         [JsonProperty("time")]
         public double Time { get; set; }
 
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
         [JsonProperty("name")]
         public string VisitorName { get; set; }
 
@@ -25,6 +28,9 @@ namespace Kookaburra.Models.Offline
 
         [JsonProperty("countryCode")]
         public string CountryCode { get; set; }
+
+        [JsonProperty("region")]
+        public string Region { get; set; }
 
         [JsonProperty("city")]
         public string City { get; set; }
