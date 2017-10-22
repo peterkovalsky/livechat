@@ -3,11 +3,11 @@ using Hangfire;
 using Kookaburra.Common;
 using Kookaburra.Domain.AvailableOperator;
 using Kookaburra.Domain.Command;
-using Kookaburra.Domain.Command.LeaveMessage;
 using Kookaburra.Domain.Command.StartVisitorChat;
 using Kookaburra.Domain.Command.StopConversation;
 using Kookaburra.Domain.Command.VisitorMessaged;
 using Kookaburra.Domain.Common;
+using Kookaburra.Domain.Model;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.CurrentSession;
 using Kookaburra.Domain.Query.ReturningVisitor;
@@ -28,8 +28,7 @@ namespace Kookaburra.Services
     {
         private readonly ICommandHandler<StopConversationCommand> _stopConversationCommandHandler;
         private readonly ICommandHandler<StartVisitorChatCommand> _startVisitorChatCommandHandler;
-        private readonly ICommandHandler<VisitorMessagedCommand> _visitorMessagedCommandHandler;
-        private readonly ICommandHandler<LeaveMessageCommand> _leaveMessageCommandHandler;
+        private readonly ICommandHandler<VisitorMessagedCommand> _visitorMessagedCommandHandler;        
 
         private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
         private readonly IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> _availableOperatorQueryHandler;
@@ -42,8 +41,7 @@ namespace Kookaburra.Services
         public VisitorHub(
             ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
             ICommandHandler<StartVisitorChatCommand> startVisitorChatCommandHandler,
-            ICommandHandler<VisitorMessagedCommand> visitorMessagedCommandHandler,
-            ICommandHandler<LeaveMessageCommand> leaveMessageCommandHandler,
+            ICommandHandler<VisitorMessagedCommand> visitorMessagedCommandHandler,            
             IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
             IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> availableOperatorQueryHandler,
             IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> resumeVisitorChatQueryHandler,
@@ -53,8 +51,7 @@ namespace Kookaburra.Services
         {
             _stopConversationCommandHandler = stopConversationCommandHandler;
             _startVisitorChatCommandHandler = startVisitorChatCommandHandler;
-            _visitorMessagedCommandHandler = visitorMessagedCommandHandler;
-            _leaveMessageCommandHandler = leaveMessageCommandHandler;
+            _visitorMessagedCommandHandler = visitorMessagedCommandHandler;            
 
             _currentSessionQueryHandler = currentSessionQueryHandler;
             _availableOperatorQueryHandler = availableOperatorQueryHandler;
@@ -104,7 +101,7 @@ namespace Kookaburra.Services
                 var visitor = await _visitorService.AddNewVisitorAsync(accountKey, visitorKey, WebHelper.GetIPAddress());
 
                 // update geo details in the background
-                BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(visitor.Id));
+                BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(visitorKey));
 
                 // introduction screen
                 if (operatorResult != null)
@@ -128,7 +125,7 @@ namespace Kookaburra.Services
         public async Task<StartChatViewModel> StartChat(IntroductionViewModel visitor)
         {            
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-            var visitorId = visitorCookie.GetOrCreateVisitorKey(visitor.AccountKey);
+            var visitorKey = visitorCookie.GetOrCreateVisitorKey(visitor.AccountKey);
 
             var query = new AvailableOperatorQuery(visitor.AccountKey);
             var availableOperator = await _availableOperatorQueryHandler.ExecuteAsync(query);
@@ -138,7 +135,7 @@ namespace Kookaburra.Services
             // if operator is available - establish connection
             if (availableOperator != null)
             {              
-                var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, visitorId, visitor.AccountKey)
+                var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, visitorKey, visitor.AccountKey)
                 {
                     Page = visitor.PageUrl,
                     VisitorIP = WebHelper.GetIPAddress(),
@@ -147,17 +144,17 @@ namespace Kookaburra.Services
                 await _startVisitorChatCommandHandler.ExecuteAsync(command);
 
                 // update geo details in the background
-                BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(command.VisitorId));
+                BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(visitorKey));
 
 
-                var queryResume = new ResumeVisitorChatQuery(visitorId, Context.ConnectionId);
+                var queryResume = new ResumeVisitorChatQuery(visitorKey, Context.ConnectionId);
                 resumedConversation = await _resumeVisitorChatQueryHandler.ExecuteAsync(queryResume);
 
                 if (resumedConversation != null)
                 {
                     var visitorInfo = new OperatorConversationViewModel
                     {
-                        SessionId = visitorId,
+                        SessionId = visitorKey,
                         VisitorName = visitor.Name,
                         Email = visitor.Email,
                         Country = resumedConversation.VisitorInfo.Country,
@@ -169,7 +166,7 @@ namespace Kookaburra.Services
                     };
 
                     // Notify all operator instances about this visitor
-                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorId);
+                    Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnectedGlobal(visitorKey);
                     Clients.Clients(resumedConversation.OperatorInfo.ConnectionIds).visitorConnected(visitorInfo);                 
                 }
             }
@@ -177,30 +174,30 @@ namespace Kookaburra.Services
             return new StartChatViewModel
             {
                 CookieName = visitorCookie.GetCookieName(visitor.AccountKey),
-                SessionId = visitorId,
+                SessionId = visitorKey,
                 OperatorName = availableOperator?.OperatorName,
                 Messages = resumedConversation != null ? Mapper.Map<List<MessageViewModel>>(resumedConversation.Conversation) : null
             };
         }
 
-        public async Task SendOfflineMessage(OfflineViewModel offlineMessage)
+        public async Task SendOfflineMessage(OfflineViewModel messageViewModel)
         {
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-            var visitorKey = visitorCookie.GetOrCreateVisitorKey(offlineMessage.AccountKey);
+            var visitorKey = visitorCookie.GetOrCreateVisitorKey(messageViewModel.AccountKey);         
 
-            var command = new LeaveMessageCommand(offlineMessage.AccountKey, offlineMessage.Name, offlineMessage.Email, offlineMessage.Message, AppSettings.UrlPortal)
-            {
-                VisitorIP = WebHelper.GetIPAddress(),
-                Page = offlineMessage.PageUrl,
-                VisitorKey = visitorKey
-            };
-            await _leaveMessageCommandHandler.ExecuteAsync(command);
+            var offlineMessage = Mapper.Map<OfflineMessage>(messageViewModel);
+            var visitor = Mapper.Map<Visitor>(messageViewModel);
+
+            visitor.IpAddress = WebHelper.GetIPAddress();
+            visitor.Identifier = visitorKey;
+
+            var messageId = await _offlineMessageService.LeaveMessage(offlineMessage, visitor, messageViewModel.AccountKey);
 
             // send email notification to operators in the background
-            BackgroundJob.Enqueue<IEmailService>(emailService => emailService.SendOfflineNotificationEmail(command.Id));
+            BackgroundJob.Enqueue<IEmailService>(emailService => emailService.SendOfflineNotificationEmail(messageId));
 
             // update geo details in the background
-            BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(command.VisitorId));
+            BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(visitorKey));
         }
 
         /// <summary>

@@ -5,7 +5,7 @@
 <head>
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Simple Transactional Email</title>
+    <title>[@Model.Website] Offline Message from @Model.VisitorName</title>
     <style type="text/css">
         /* -------------------------------------
             INLINED WITH https://putsmail.com/inliner
@@ -117,61 +117,46 @@
                                             <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Hi there,</p>
                                             
                                             <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">
-                                                You received a question from @Model.VisitorName
+                                                You received an offline meesage from @(Model.VisitorName).
                                             </p>
-                                            <table>
+                                            <table  border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;margin-bottom:15px;">
                                                 <tr>
-                                                    <td>
+                                                    <td style="font-family:sans-serif;font-size:14px;vertical-align:top;width:100px;">
                                                         Email:
                                                     </td>
-                                                    <td>
+                                                    <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">
                                                         @Model.VisitorEmail
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
-                                                        Page:
+                                                    <td style="font-family:sans-serif;font-size:14px;vertical-align:top;width:100px;">
+                                                        Visited Page:
                                                     </td>
-                                                    <td>
-                                                        @Model.Page
+                                                    <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">
+                                                        <a href="@Model.Page">@Model.Page</a>                                                        
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
+                                                    <td style="font-family:sans-serif;font-size:14px;vertical-align:top;width:100px;">
                                                         Sent On:
                                                     </td>
-                                                    <td>
-                                                        @Model.SentDate
+                                                    <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">
+                                                        @Model.DateSent
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
-                                                        Question:
+                                                    <td style="font-family:sans-serif;font-size:14px;vertical-align:top;width:100px;">
+                                                        Message:
                                                     </td>
-                                                    <td>
-                                                        @Model.Question
+                                                    <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">
+                                                        @Model.Message
                                                     </td>
                                                 </tr>
                                             </table>
-                                            <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;box-sizing:border-box;width:100%;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td align="left" style="font-family:sans-serif;font-size:14px;vertical-align:top;padding-bottom:15px;">
-                                                            <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;width:auto;">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style="font-family:sans-serif;font-size:14px;vertical-align:top;border-radius:5px;text-align:center;background-color:#ff6f6f;"> 
-                                                                            <a href="@(Model.QuestionLink)" target="_blank" style="text-decoration:underline;background-color:#ff6f6f;border:solid 1px #ff6f6f;border-radius:5px;box-sizing:border-box;color:#3498db;cursor:pointer;display:inline-block;font-size:14px;margin:0;padding:12px 25px;text-decoration:none;text-transform:capitalize;background-color:#ff6f6f;border-color:#ff6f6f;color:#ffffff;">View Question In Portal</a> 
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">This is a really simple email template. Its sole purpose is to get the recipient to click the button with no distractions.</p>
-                                            <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Good luck! Hope it works.</p>
+                                            <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;">
+                                                Simply reply to this email to contact the visitor.
+                                            </p>
+                                            <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Have a great day!</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -180,7 +165,7 @@
                         <!-- END MAIN CONTENT AREA -->
                     </table>
                     <!-- START FOOTER -->
-                    <div class="footer" style="clear:both;padding-top:10px;text-align:center;width:100%;">
+                    <div class="footer" style="clear:both;padding-top:20px;text-align:center;width:100%;">
                         <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
                             <tr>
                                 <td class="content-block" style="font-family:sans-serif;font-size:14px;vertical-align:top;color:#777777;font-size:12px;text-align:center;">

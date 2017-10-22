@@ -16,24 +16,38 @@ namespace Kookaburra.Services.Accounts
             _context = context;
         }
 
-        public async Task<Account> GetAccountAsync(string operatorKey)
+
+        public async Task<Account> GetAccountAsync(string accountKey)
+        {
+            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == accountKey);
+            if (account == null)
+            {
+                throw new ArgumentException(string.Format("Account '{0}' doesn't exists", accountKey));
+            }
+
+            return account;
+        }
+
+        public async Task<Account> GetAccountForOperatorAsync(string operatorKey)
         {
             return await _context.Accounts.Where(a => a.Operators.Any(o => o.Identifier == operatorKey)).SingleOrDefaultAsync();
-        }
+        }    
 
         public async Task<Operator> GetOperatorAsync(string operatorKey)
         {
-            return await _context.Operators.Include(i => i.Account).SingleOrDefaultAsync(o => o.Identifier == operatorKey);
+            var operatr = await _context.Operators.Include(i => i.Account).SingleOrDefaultAsync(o => o.Identifier == operatorKey);
+            if (operatr == null)
+            {
+                throw new ArgumentException($"Operator '{operatorKey}' doesn't exist");
+            }
+
+            return operatr;
         }
 
         public async Task UpdateProfileAsync(string operatorKey, string firstName, string lastName, string email)
         {
             var operatr = await GetOperatorAsync(operatorKey);
-            if (operatr == null)
-            {
-                throw new ArgumentException($"Operator with id {operatorKey} doesn't exist");
-            }
-
+           
             operatr.FirstName = firstName;
             operatr.LastName = lastName;
             operatr.Email = email;

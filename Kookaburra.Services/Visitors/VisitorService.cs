@@ -20,6 +20,17 @@ namespace Kookaburra.Services.Visitors
         }
 
 
+        public async Task<Visitor> GetVisitorAsync(string visitorKey)
+        {
+            var visitor = await _context.Visitors.SingleOrDefaultAsync(v => v.Identifier == visitorKey);
+            if (visitor == null)
+            {
+                throw new ArgumentException($"Visitor {visitorKey} doesn't exist.");
+            }
+
+            return visitor;
+        }
+
         public async Task<Visitor> AddNewVisitorAsync(string accountKey, string visitorKey, string ip)
         {
             var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == accountKey);
@@ -42,13 +53,9 @@ namespace Kookaburra.Services.Visitors
             return visitor;
         }
 
-        public async Task UpdateVisitorGeolocationAsync(long id)
+        public async Task UpdateVisitorGeolocationAsync(string visitorKey)
         {
-            var visitor = await _context.Visitors.SingleOrDefaultAsync(v => v.Id == id);
-            if (visitor == null)
-            {
-                throw new ArgumentException($"Visitor {id} doesn't exist.");
-            }
+            var visitor = await GetVisitorAsync(visitorKey);
 
             if (!string.IsNullOrWhiteSpace(visitor.IpAddress))
             {

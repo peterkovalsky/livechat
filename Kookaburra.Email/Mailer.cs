@@ -14,7 +14,7 @@ namespace Kookaburra.Email
             _emailSender = emailSender;
         }
 
-        public void SendEmail<T>(AddressInfo from, AddressInfo to, T model) where T : IEmailModel
+        public void SendEmail<T>(AddressInfo from, AddressInfo to, T model, string bcc = null) where T : IEmailModel
         {            
             var body = AssembleMessageBody(model);
             var subject = GetSubject(body);
@@ -23,9 +23,29 @@ namespace Kookaburra.Email
             {
                 From = from,
                 To = to,
+                Bcc = bcc,
                 Subject = subject,
                 Body = body,
-                IsHtml = true
+                IsHtml = true,                
+            };
+
+            _emailSender.Send(message);
+        }
+
+        public void SendEmail<T>(AddressInfo from, AddressInfo to, string replyTo, T model, string bcc = null) where T : IEmailModel
+        {
+            var body = AssembleMessageBody(model);
+            var subject = GetSubject(body);
+
+            var message = new EmailMessage
+            {
+                From = from,
+                To = to,
+                Bcc = bcc,
+                ReplyTo = replyTo,
+                Subject = subject,
+                Body = body,
+                IsHtml = true,
             };
 
             _emailSender.Send(message);

@@ -33,9 +33,22 @@ namespace Kookaburra.Email
                 Subject = message.Subject,
                 BodyEncoding = UTF8Encoding.UTF8,
                 IsBodyHtml = message.IsHtml,
-                DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
+                DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure,                
             };
 
+            // BCC
+            if (message.Bcc != null)
+            {              
+                mailMessage.Bcc.Add(message.Bcc);
+            }
+
+            // Reply To
+            if (message.ReplyTo != null)
+            {
+                mailMessage.ReplyToList.Add(message.ReplyTo);
+            }
+
+            // Attachment(s)
             if (message.Attachments != null)
             {
                 foreach (var attachment in message.Attachments)

@@ -57,6 +57,7 @@
     <Compile Include="Common\OperatorType.cs" />
     <Compile Include="Common\Pagination.cs" />
     <Compile Include="Common\TimeFilterType.cs" />
+    <Compile Include="Common\UrlHelper.cs" />
     <Compile Include="Common\UserType.cs" />
     <Compile Include="DefaultSettings.cs" />
     <Compile Include="Duration.cs" />

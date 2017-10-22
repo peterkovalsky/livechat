@@ -2,6 +2,6 @@
 {
     public interface IEmailService
     {
-        void SendOfflineNotificationEmail(long offlineMessageId);
+        void SendOfflineNotificationEmail(long messageId);
     }
 }

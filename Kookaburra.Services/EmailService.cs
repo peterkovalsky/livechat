@@ -2,7 +2,6 @@
 using Kookaburra.Email.Public.OfflineMessage;
 using Kookaburra.Repository;
 using System;
-using System.Data.Entity;
 using System.Linq;
 
 namespace Kookaburra.Services
@@ -12,40 +11,46 @@ namespace Kookaburra.Services
         private readonly KookaburraContext _context;
         private readonly IMailer _mailer;
         private readonly AddressInfo _from;
-
+        private readonly string _bcc;        
+            
         public EmailService(KookaburraContext context, IMailer mailer)
         {
             _context = context;
             _mailer = mailer;
 
             _from = new AddressInfo("Kookaburra Chat", "info@kookaburra.chat");
+            _bcc = "it@kookaburra.chat";            
         }
 
-        public void SendOfflineNotificationEmail(long offlineMessageId)
+        public void SendOfflineNotificationEmail(long messageId)
         {
-            var offlineMessage = _context.OfflineMessages.Include(i => i.Visitor).SingleOrDefault(om => om.Id == offlineMessageId);
-            if (offlineMessage == null)
+            var messageEmailModel = _context.OfflineMessages
+                .Where(o => o.Id == messageId)
+                .Select(o => new OfflineMessageEmail
+                {
+                    AccountId = o.Visitor.AccountId,
+                    Website = o.Visitor.Account.Name,
+                    VisitorName = o.Visitor.Name,
+                    VisitorEmail = o.Visitor.Email,
+                    Page = o.Page,                    
+                    Message = o.Message,
+                    DateSent = o.DateSent
+                })
+                .SingleOrDefault();
+
+            if (messageEmailModel == null)
             {
-                throw new ArgumentException($"Offline message with id {offlineMessageId} doesn't exist");
-            }
+                throw new ArgumentException($"Offline message with id {messageId} doesn't exist");
+            }          
 
-            var operators = _context.Operators.Where(o => o.Account.Id == offlineMessage.Visitor.AccountId).ToList();
+            var operators = _context.Operators.Where(o => o.Account.Id == messageEmailModel.AccountId).ToList();
 
+            // send to every operator attached to an account
             foreach (var op in operators)
             {
-                var to = new AddressInfo(op.Email);
+                var to = new AddressInfo(op.Email);               
 
-                var model = new OfflineMessageEmail
-                {
-                    VisitorName = offlineMessage.Visitor.Name,
-                    VisitorEmail = offlineMessage.Visitor.Email,
-                    Page = offlineMessage.Page,
-                    Question = offlineMessage.Message,
-                    SentDate = offlineMessage.DateSent
-                };
-
-
-                _mailer.SendEmail(_from, to, model);
+                _mailer.SendEmail(_from, to, messageEmailModel.VisitorEmail, messageEmailModel, _bcc);
             }
         }
     }

@@ -67,6 +67,10 @@ namespace Kookaburra.App_Start
                     .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.Visitor.Name))
                     .ForMember(dest => dest.TimeStarted, opt => opt.MapFrom(src => src.TimeStarted.JsDateTime()))
                     .ForMember(dest => dest.Page, opt => opt.MapFrom(src => src.Page));
+
+                cfg.CreateMap<OfflineViewModel, OfflineMessage>();
+                cfg.CreateMap<OfflineViewModel, Visitor>();
+
             });
         }
     }

@@ -23,8 +23,7 @@ namespace Kookaburra.DependencyResolution
     using Domain.Query;
     using Integration.freegeoip;
     using Kookaburra.Domain.AvailableOperator;
-    using Kookaburra.Domain.Command.ConnectOperator;   
-    using Kookaburra.Domain.Command.LeaveMessage;    
+    using Kookaburra.Domain.Command.ConnectOperator;       
     using Kookaburra.Domain.Command.OperatorMessaged;
     using Kookaburra.Domain.Command.SignUp;
     using Kookaburra.Domain.Command.StartVisitorChat;
@@ -69,8 +68,7 @@ namespace Kookaburra.DependencyResolution
 
             // Commands
             For<ICommandHandler<StartVisitorChatCommand>>().Add<StartVisitorChatCommandHandler>();
-            For<ICommandHandler<ConnectOperatorCommand>>().Add<ConnectOperatorCommandHandler>();
-            For<ICommandHandler<LeaveMessageCommand>>().Add<LeaveMessageCommandHandler>();
+            For<ICommandHandler<ConnectOperatorCommand>>().Add<ConnectOperatorCommandHandler>();            
             For<ICommandHandler<OperatorMessagedCommand>>().Add<OperatorMessagedCommandHandler>();
             For<ICommandHandler<StopConversationCommand>>().Add<StopConversationCommandHandler>();
             For<ICommandHandler<VisitorMessagedCommand>>().Add<VisitorMessagedCommandHandler>();                    

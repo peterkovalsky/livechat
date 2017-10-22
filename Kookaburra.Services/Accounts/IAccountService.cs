@@ -5,7 +5,9 @@ namespace Kookaburra.Services.Accounts
 {
     public interface IAccountService
     {
-        Task<Account> GetAccountAsync(string operatorKey);
+        Task<Account> GetAccountAsync(string accountKey);
+
+        Task<Account> GetAccountForOperatorAsync(string operatorKey);
 
         Task<Operator> GetOperatorAsync(string operatorKey);       
 

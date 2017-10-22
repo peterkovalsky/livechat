@@ -7,6 +7,8 @@ namespace Kookaburra.Services.OfflineMessages
 {
     public interface IOfflineMessageService
     {
+        Task<long> LeaveMessage(OfflineMessage message, Visitor visitor, string accountKey);
+
         Task<int> TotalNewOfflineMessagesAsync(string operatorKey);
 
         Task<List<OfflineMessage>> GetOfflineMessagesAsync(TimeFilterType timeFilter, string operatorKey, Pagination pagination = null);
