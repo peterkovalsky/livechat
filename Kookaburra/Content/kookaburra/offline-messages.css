@@ -101,7 +101,12 @@
 
 .offline-messages .slidePanel-header {
     background-color: #57c7d4;
-    height: 170px;
+    height: 210px;
+    padding: 30px 60px 30px 30px;
+}
+
+.offline-messages .slidePanel-header h1 {
+    line-height: 50px;
 }
 
 .offline-messages .slidePanel-header::after {
@@ -127,6 +132,7 @@
 .slidePanel .flag-icon {
     height: 50px;
     width: 50px;
+    margin-right: 15px;
 }
 
 .slidePanel .actions-bottom {
@@ -157,6 +163,8 @@
 
 .slidePanel .mail-header-right {
     float: right;
+    margin-top: 6px;
+    margin-right: 20px;
 }
 
 .slidePanel .mail-header .avatar {

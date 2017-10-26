@@ -63,21 +63,6 @@
     margin-right: 0;
 }
 
-.operator-chats .bg-icon {
-    text-align: center;
-}
-
-.operator-chats .bg-icon i {
-    font-size: 300px;
-    display: block;  
-    zoom: 1;
-    -webkit-opacity: .1;
-    -moz-opacity: .1;
-    opacity: .1;
-    -ms-filter: alpha(Opacity=10);
-    filter: alpha(opacity=10);
-}
-
 .operator-chats .chat-box-panel,
 .operator-chats .chat-box-row,
 .operator-chats .chat-box-col {

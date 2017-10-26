@@ -61,7 +61,7 @@ input[type="checkbox"].input-validation-error {
 }
 
 .page {
-    min-height: 100%;    
+    min-height: 100%;
 }
 
 
@@ -130,4 +130,19 @@ input[type="checkbox"].input-validation-error {
 
 .panel-bordered {
     border: 1px solid #e4eaec;
+}
+
+.empty-space.bg-icon {
+    text-align: center;
+}
+
+.empty-space.bg-icon i {
+    font-size: 300px;
+    display: block;
+    zoom: 1;
+    -webkit-opacity: .1;
+    -moz-opacity: .1;
+    opacity: .1;
+    -ms-filter: alpha(Opacity=10);
+    filter: alpha(opacity=10);
 }

@@ -15,6 +15,12 @@
                     You don't have any offline messages.
                 </p>
             </div>
+
+            <div class="col-sm-12">
+                <div class="empty-space bg-icon">
+                    <i class="md-email"></i>
+                </div>
+            </div>
         </div>
 
         <!-- Some offline messages -->
@@ -115,19 +121,23 @@
                 <div class="mail-header">
                     <div class="mail-header-main">
                         <div class="pull-xs-left">
-
-                            <div>
+                            <div class="m-b-10">
+                                <!-- ko if: countryCode != null -->
                                 <span data-bind="attr: {class: 'pull-xs-left flag-icon flag-icon-' + countryCode.toLowerCase()}"></span>
+                                <!-- /ko -->
                                 <h1 class="name" data-bind="text: name"></h1>
                             </div>
-                            <div class="clearfix"></div>
+                            
                             <p data-bind="if: country != null && city != null">
+                                <i class="icon wb-map m-r-10" aria-hidden="true"></i>
                                 <span data-bind="text: country"></span>, <span data-bind="text: region"></span>, <span data-bind="text: city"></span>
                             </p>
                             <p>
+                                <i class="icon wb-envelope m-r-10" aria-hidden="true"></i>
                                 <a href="#" data-bind="text: email, attr: { href: 'mailto:' + email }"></a>
                             </p>
                             <p>
+                                <i class="icon wb-desktop m-r-10" aria-hidden="true"></i>
                                 <a href="#" data-bind="text: url, attr: { href: url }" target="_blank"></a>
                             </p>
                         </div>
