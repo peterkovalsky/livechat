@@ -7,18 +7,11 @@
     <div class="page-main">
 
         <!-- No Messages -->
-        <div class="page-header" style="display: none;" data-bind="visible: !searching() && !filtering() && totalMessages() == 0 ">
-            <div role="alert" class="alert dark alert-info alert-icon alert-dismissible">
-                <i class="icon md-alert-circle-o" aria-hidden="true"></i>
-                <h4>Messages</h4>
-                <p>
-                    You don't have any offline messages.
-                </p>
-            </div>
-
+        <div class="page-header" style="display: none;" data-bind="visible: !searching() && !filtering() && totalMessages() == 0 ">      
             <div class="col-sm-12">
                 <div class="empty-space bg-icon">
                     <i class="md-email"></i>
+                    <p>You don't have any offline messages.</p>
                 </div>
             </div>
         </div>
