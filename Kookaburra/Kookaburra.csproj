@@ -1993,14 +1993,10 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\History\Chats.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
-    <Content Include="Views\Widget\Offline.cshtml" />
-    <Content Include="Views\Widget\Online.cshtml" />
     <Content Include="Views\Home\Preview.cshtml" />
     <Content Include="Views\Chat\ChatRoom.cshtml" />
-    <Content Include="Views\Widget\Introduction.cshtml" />
     <Content Include="Views\Widget\ContainerJS.cshtml" />
     <Content Include="Views\Shared\_LayoutWidget.cshtml" />
-    <Content Include="Views\Widget\ThankYou.cshtml" />
     <Content Include="Views\Shared\_OperatorGlobal.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

@@ -122,7 +122,7 @@ input[type="checkbox"].input-validation-error {
 
 /* Widget */
 .widget {
-    width: 328px;    
+    width: 327px;    
     line-height: 1.4;
     color: #434343;
     border-left: 1px solid #e1e1e1;
@@ -131,6 +131,7 @@ input[type="checkbox"].input-validation-error {
     padding: 0;  
     background-color: white;
     height: 363px;
+    position: relative;
 }
 
 
@@ -175,7 +176,6 @@ input[type="checkbox"].input-validation-error {
     right: 1px;
     bottom: 0;
     left: 1px;
-    height: 35px;
 }
 
 .widget .footer label {

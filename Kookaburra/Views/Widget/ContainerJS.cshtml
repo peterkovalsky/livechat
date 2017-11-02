@@ -28,12 +28,12 @@ function toggleChat() {
 
 var widgetContainer = document.createElement("div");
 widgetContainer.id = 'onlinechatwrapper';
-widgetContainer.style.cssText = "display:none; position: fixed; bottom: 0px; right: 20px; margin: 0px; padding: 0px; overflow: hidden; z-index: 99999999; width: 330px; height: 37px; background-color: transparent;";
+widgetContainer.style.cssText = "display:none; position: fixed; bottom: 0px; right: 20px; margin: 0px; padding: 0px; border: 0; overflow: hidden; z-index: 99999999; width: 329px; height: 37px; background-color: transparent;";
 
 var widgetButton = document.createElement("div");
 widgetButton.id = 'chat-box-header';
 widgetButton.addEventListener("click", toggleChat);
-widgetButton.style.cssText = 'cursor: pointer; background: #2c3e50 url(\"@(Model.ChatServerHost)/images/logo-small.png\") no-repeat right center; border-right: 10px solid transparent; color: white; padding: 10px 10px 9px; font-size: 14px;';
+widgetButton.style.cssText = 'margin: 0px; border: 0; cursor: pointer; background: #2c3e50 url(\"@(Model.ChatServerHost)/images/logo-small.png\") no-repeat right center; border-right: 10px solid transparent; color: white; padding: 10px 10px 9px; font-size: 14px;';
 
 var buttonText = document.createTextNode("Hi there");
 widgetButton.appendChild(buttonText);
@@ -45,7 +45,7 @@ widgetIframe.addEventListener("load", iframeLoad);
 widgetIframe.setAttribute('scrolling', 0);
 widgetIframe.setAttribute('frameborder', 0);
 widgetIframe.setAttribute('src', '@(Model.ChatServerHost)/widget/default/@(Model.AccountKey)');
-widgetIframe.style.cssText = 'display:none; background-color: transparent;vertical-align: text-bottom; overflow: hidden; position: relative; width: 100%; height:100%; margin: 0px; z-index: 999999;';
+widgetIframe.style.cssText = 'display:none; background-color: transparent;vertical-align: text-bottom; overflow: hidden; position: relative; width: 100%; height:100%; margin: 0px; padding: 0px; border: 0;';
 
 widgetContainer.appendChild(widgetButton);
 widgetContainer.appendChild(widgetIframe);
