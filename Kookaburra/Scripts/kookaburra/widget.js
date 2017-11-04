@@ -177,6 +177,8 @@ function WidgetViewModel(accountKey) {
     };
 
     self.gotoOfflineForm = function () {
+        self.offline().message('');
+        self.offline().message.hasError(false);
         self.offline().focusName(true);
         self.view('Offline')
     };

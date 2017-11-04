@@ -40,7 +40,10 @@ input[type=text]:focus {
     outline: 0;
 }
 
-
+p {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
 
 .btn {
     display: inline-block;
@@ -180,12 +183,12 @@ input[type="checkbox"].input-validation-error {
 
 .widget .footer label {
     color: #999;
-    font-size: 9px;
+    font-size: 10px;
     float: right;
 }
 
 .widget .footer a {    
-    font-size: 9px;
+    font-size: 10px;
     color: darkgray;
     text-decoration: none;  
 }
@@ -397,7 +400,7 @@ input[type="checkbox"].input-validation-error {
 .widget .thank-you .bg-icon {
     position: absolute;
     right: 20px;
-    top: 70px;
+    top: 90px;
 }
 
 .widget .thank-you .bg-icon i {

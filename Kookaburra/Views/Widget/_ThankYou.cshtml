@@ -1,7 +1,12 @@
 ﻿<div style="display: none;" data-bind="visible: view() == 'ThankYou'">
     <div class="thank-you">
         <div class="header">
-            Thank you! Your message has been sent. We will get back to you as soon as we can.
+            <p>
+                Thank you! Your message has been sent. We will get back to you as soon as we can.
+            </p>
+            <p>
+                To send another message <a href="#" data-bind="click: gotoOfflineForm">click here</a>.
+            </p>
         </div>
 
         <div class="bg-icon">
@@ -10,7 +15,7 @@
     </div>
 
     <div class="footer">
-        <label><a href="https://www.kookaburra.chat/" target="_blank">Powered by kookaburra.chat</a></label>
+        <label>Powered by <a href="https://www.kookaburra.chat/" target="_blank">kookaburra.chat</a></label>
         <div style="clear:both;"></div>
     </div>
 </div>
