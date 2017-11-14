@@ -9,5 +9,7 @@ namespace Kookaburra.Services.Chats
         Task<List<Conversation>> GetVisitorQueueAsync(string operatorKey);
 
         Task<List<Conversation>> GetLiveChatsAsync(string operatorKey);
+
+        Task DisconnectOperatorAsync(string connectionId);
     }
 }

@@ -67,5 +67,16 @@ namespace Kookaburra.Services.Chats
                                             .Where(c => c.Operator.Identifier == operatorKey && liveConversations.Contains(c.Id))
                                             .ToListAsync();    
         }
+
+        public async Task DisconnectOperatorAsync(string connectionId)
+        {
+            var operatorSession = _chatSession.GetOperatorByOperatorConnId(connectionId);
+            var conversationIds = operatorSession.Visitors.Select(v => v.ConversationId).ToList();
+
+            if (_chatSession.DisconnectOperator(connectionId))
+            {
+                var conversations = await _context.Conversations.Where(c => conversationIds.Contains(c.Id)).ToListAsync();
+            }
+        }
     }
 }

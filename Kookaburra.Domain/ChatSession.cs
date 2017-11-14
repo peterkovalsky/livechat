@@ -32,6 +32,23 @@ namespace Kookaburra.Domain
             }
         }
 
+        public bool DisconnectOperator(string connectionId)
+        {
+            var operatorObj = GetOperatorByOperatorConnId(connectionId);
+            if (operatorObj != null)
+            {
+                operatorObj.ConnectionIds.Remove(connectionId);
+
+                if (operatorObj.ConnectionIds.Count == 0)
+                {
+                    Sessions.Remove(operatorObj);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void AddVisitor(long conversationId, int operatorId, string visitorConnectionId, long visitorId, string visitorName, string visitorSessionId)
         {
             var operatorSession = GetOperatorById(operatorId);
