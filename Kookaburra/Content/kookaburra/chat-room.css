@@ -152,6 +152,10 @@
     border: 0;
 }
 
+.operator-chats .empty-space p {
+    margin-top: -100px;
+}
+
 @media (max-width: 1199px) {
     #layout-chatroom .page-aside .list-group-item {
     padding: 14px 16px;

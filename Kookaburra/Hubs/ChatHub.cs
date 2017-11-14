@@ -169,7 +169,7 @@ namespace Kookaburra.Services
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            _chatService.DisconnectOperatorAsync(Context.ConnectionId);
+            //_chatService.DisconnectOperatorAsync(Context.ConnectionId);
 
             return base.OnDisconnected(stopCalled);
         }
