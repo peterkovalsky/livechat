@@ -54,6 +54,7 @@ function Message(data) {
     self.text = ko.observable(data.text);
     self.sentBy = ko.observable(data.sentBy);
     self.time = ko.observable(moment(data.time).format('LT'));
+    self.name = (self.sentBy() == 'visitor' ? 'You' : self.author());  
 }
 
 function Visitor(accountKey) {
@@ -110,8 +111,13 @@ function WidgetViewModel(accountKey) {
 
                     self.visitor().name(conversationViewModel.visitorName);
                     self.operatorName(conversationViewModel.operatorName);
-                    self.messages(conversationViewModel.conversation);
-
+                  
+                    // load up previous messages
+                    if (conversationViewModel.conversation) {
+                        $.each(conversationViewModel.conversation, function (index, item) {
+                            self.messages.push(new Message(item));
+                        });
+                    }
 
                     self.view('Chat')
 
@@ -161,7 +167,9 @@ function WidgetViewModel(accountKey) {
                     if (result.operatorName) {
                         // load up previous messages
                         if (result.messages) {
-                            self.messages(result.messages);
+                            $.each(result.messages, function (index, item) {                                
+                                self.messages.push(new Message(item));
+                            });                            
                         }
 
                         self.operatorName(result.operatorName);
@@ -203,6 +211,10 @@ function WidgetViewModel(accountKey) {
         $.connection.visitorHub.server.finishChattingWithOperator(accountKey);
         self.view('ThankYouEndChat');
     }
+
+    self.minimiseChat = function () {
+
+    };
 
     // Sends message to operator on Enter Press
     // ----------------------------------------  

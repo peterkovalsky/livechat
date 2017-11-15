@@ -332,6 +332,7 @@
     <Content Include="Content\kookaburra\widget.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="images\close.png" />
     <Content Include="images\customer-service.png" />
     <Content Include="images\customer-service1.png" />
     <Content Include="images\login.jpg" />
@@ -339,6 +340,7 @@
     <Content Include="images\logo-bird.png" />
     <Content Include="images\logo-small.png" />
     <Content Include="images\logo.png" />
+    <Content Include="images\minimise.png" />
     <Content Include="images\operator-default.png" />
     <Content Include="images\operator.png" />
     <Content Include="images\operator2.png" />

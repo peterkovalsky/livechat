@@ -206,21 +206,20 @@ input[type="checkbox"].input-validation-error {
     display: inline;
 }
 
+.widget .online .header .minimise-chat {
+    display: inline;
+    float: left; 
+    margin-top: 3px;
+    margin-left: 3px;
+}
+
 .widget .online .header .close-chat {
     display: inline;
-    float: right;
-    visibility: hidden;
+    float: right; 
+    margin-top: 3px;
+    margin-right: 3px;
 }
 
-.widget .online .header .close-chat a {    
-    color: #979898;
-    font-size: 18px;
-    text-decoration: none;  
-}
-
-.widget .online .header:hover .close-chat {
-    visibility: visible;
-}
 
 /* ONLINE */
 .widget .online {

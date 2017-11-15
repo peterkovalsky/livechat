@@ -1,20 +1,25 @@
 ﻿<div style="display: none;" data-bind="visible: view() == 'Chat'">
     <div class="online">
         <div class="header">
+            <a class="minimise-chat" href="#" data-bind="click: minimiseChat">
+                <img src="~/images/minimise.png" />
+            </a>
             <div class="operator-pic"></div>
             <div class="operator-name" data-bind="text: operatorName"></div>
-            <div class="close-chat"><a href="#" data-bind="click: closeChat">×</a></div>
+            <a class="close-chat" href="#" data-bind="click: closeChat">
+                <img src="~/images/close.png" />
+            </a>
         </div>
         <div class="chat-window">
             <ul id="messages" data-bind="foreach: messages">
                 <li>
-                    <div class="author" data-bind="text: author, css: sentBy"></div>
-                    <div class="message" data-bind="text: text, css: sentBy"></div>        
+                    <div class="author" data-bind="text: name, css: sentBy"></div>
+                    <div class="message" data-bind="text: text, css: sentBy"></div>
                 </li>
             </ul>
         </div>
         <div id="message" class="message-wrapper">
             <textarea data-bind="textInput: newMessage, hasFocus: isMessageBoxFocus, enterkey: sendMessage" rows="1" placeholder="Type in your message here and press Enter to send"></textarea>
         </div>
-    </div> 
+    </div>
 </div>
