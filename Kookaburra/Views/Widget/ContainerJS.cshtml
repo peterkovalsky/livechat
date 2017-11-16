@@ -26,6 +26,12 @@ function toggleChat() {
     }
 }
 
+window.addEventListener('message', function (event) {
+    if (event.data == 'toggleChat') {
+        toggleChat();
+    }
+}); 
+
 var widgetContainer = document.createElement("div");
 widgetContainer.id = 'onlinechatwrapper';
 widgetContainer.style.cssText = "display:none; position: fixed; bottom: 0px; right: 20px; margin: 0px; padding: 0px; border: 0; overflow: hidden; z-index: 99999999; width: 329px; height: 37px; background-color: transparent;";

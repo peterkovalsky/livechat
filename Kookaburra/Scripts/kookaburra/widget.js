@@ -45,6 +45,7 @@ function Offline(accountKey) {
 
     self.accountKey = accountKey;
     self.focusName = ko.observable(true);
+    self.disableStart = ko.observable(false);
 }
 
 function Message(data) {
@@ -68,6 +69,7 @@ function Visitor(accountKey) {
 
     self.accountKey = accountKey;
     self.focusName = ko.observable(true);
+    self.disableStart = ko.observable(false);
 }
 
 function WidgetViewModel(accountKey) {
@@ -155,11 +157,13 @@ function WidgetViewModel(accountKey) {
     };
 
     self.startChat = function () {
+        self.visitor().disableStart(true);
+
         self.visitor().name.hasError(self.visitor().name() ? false : true);
 
         if (!self.visitor().name.hasError()) {
             var visitorView = ko.toJS(self.visitor());
-
+            
             $.connection.visitorHub.server.startChat(visitorView).done(function (result) {
 
                 if (result != null) {                  
@@ -182,6 +186,8 @@ function WidgetViewModel(accountKey) {
                 }
             });
         }
+
+        self.visitor().disableStart(false);
     };
 
     self.gotoOfflineForm = function () {
@@ -192,6 +198,8 @@ function WidgetViewModel(accountKey) {
     };
 
     self.sendOfflineMessage = function () {
+        self.offline().disableStart(true);
+
         // trigger validation
         self.offline().name.hasError(self.offline().name() ? false : true);
         self.offline().email.hasError(self.offline().email() ? false : true);
@@ -203,6 +211,8 @@ function WidgetViewModel(accountKey) {
             $.connection.visitorHub.server.sendOfflineMessage(offlineMsgView);
             self.view('ThankYou');
         }
+
+        self.offline().disableStart(false);
     };
 
     // Visitor wants to stop conversation
@@ -213,7 +223,9 @@ function WidgetViewModel(accountKey) {
     }
 
     self.minimiseChat = function () {
-
+        if (parent) {
+            parent.postMessage('toggleChat', '*');
+        }
     };
 
     // Sends message to operator on Enter Press

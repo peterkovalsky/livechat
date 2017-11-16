@@ -13,7 +13,7 @@
             <textarea placeholder="Message" autocomplete="off" data-bind="textInput: offline().message, css: { 'input-validation-error': offline().message.hasError }"></textarea>
         </div>
         <div class="submit">
-            <input class="btn start" type="button" value="SEND" data-bind="click: sendOfflineMessage" />
+            <input class="btn start" type="button" value="SEND" data-bind="click: sendOfflineMessage, disable: offline().disableStart" />
         </div>
     </div>
 

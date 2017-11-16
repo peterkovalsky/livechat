@@ -11,7 +11,7 @@
             <input type="text" placeholder="Email (optional)" autocomplete="off" data-bind="textInput: visitor().email, enterkey: startChat" />
         </div>
         <div>
-            <input class="btn start" type="button" value="START CHAT" data-bind="click: startChat" />
+            <input class="btn start" type="button" value="START CHAT" data-bind="click: startChat, disable: visitor().disableStart" />
         </div>
     </div>
 
