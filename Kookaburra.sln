@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra", "Kookaburra\Kookaburra.csproj", "{9EED0EF9-6DBE-4AC5-94D0-76038EFF37C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Domain", "Kookaburra.Domain\Kookaburra.Domain.csproj", "{1F955EF9-25D2-4A38-BE51-C81AEBFDB41C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Repository", "Kookaburra.Repository\Kookaburra.Repository.csproj", "{DA1F181D-5DA2-447F-B542-4D2D0BDD4518}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Domain.Command", "Kookaburra.Domain.Command\Kookaburra.Domain.Command.csproj", "{6CD9A1DD-7FCD-40D4-8319-39779424CDD5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kookaburra.Domain.Query", "Kookaburra.Domain.Query\Kookaburra.Domain.Query.csproj", "{BBE61298-BBA7-4902-81E0-F5460A54D7E0}"
 EndProject
@@ -48,12 +46,6 @@ Global
 		{DA1F181D-5DA2-447F-B542-4D2D0BDD4518}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DA1F181D-5DA2-447F-B542-4D2D0BDD4518}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{DA1F181D-5DA2-447F-B542-4D2D0BDD4518}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{6CD9A1DD-7FCD-40D4-8319-39779424CDD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD9A1DD-7FCD-40D4-8319-39779424CDD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CD9A1DD-7FCD-40D4-8319-39779424CDD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CD9A1DD-7FCD-40D4-8319-39779424CDD5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CD9A1DD-7FCD-40D4-8319-39779424CDD5}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{6CD9A1DD-7FCD-40D4-8319-39779424CDD5}.Staging|Any CPU.Build.0 = Staging|Any CPU
 		{BBE61298-BBA7-4902-81E0-F5460A54D7E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BBE61298-BBA7-4902-81E0-F5460A54D7E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBE61298-BBA7-4902-81E0-F5460A54D7E0}.Release|Any CPU.ActiveCfg = Release|Any CPU

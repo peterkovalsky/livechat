@@ -1,13 +1,12 @@
 ﻿using Hangfire;
 using Kookaburra.Common;
-using Kookaburra.Domain.Command;
-using Kookaburra.Domain.Command.StopConversation;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
 using Kookaburra.Domain.Query.CurrentSession;
 using Kookaburra.Domain.Query.TimmedOutConversations;
 using Kookaburra.Models;
 using Kookaburra.Services;
+using Kookaburra.Services.Chats;
 using Microsoft.AspNet.SignalR;
 using System;
 using System.Threading.Tasks;
@@ -15,18 +14,19 @@ using System.Threading.Tasks;
 namespace Kookaburra
 {
     public class BackgroundJobs
-    {
-        private readonly ICommandHandler<StopConversationCommand> _stopConversationCommandHandler;
+    {        
         private readonly IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> _timmedOutConversationsQueryHandler;
         private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
 
-        public BackgroundJobs(IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> timmedOutConversationsQueryHandler,
-            ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
-            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler)
+        private readonly IChatService _chatService;
+
+        public BackgroundJobs(IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> timmedOutConversationsQueryHandler,     
+            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
+            IChatService chatService)
         {
-            _timmedOutConversationsQueryHandler = timmedOutConversationsQueryHandler;
-            _stopConversationCommandHandler = stopConversationCommandHandler;
+            _timmedOutConversationsQueryHandler = timmedOutConversationsQueryHandler;            
             _currentSessionQueryHandler = currentSessionQueryHandler;
+            _chatService = chatService;
         }
 
         [AutomaticRetry(Attempts = 0)]
@@ -41,12 +41,8 @@ namespace Kookaburra
                     VisitorSessionId = conversation.VisitorSessionId
                 };
                 var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
-
-                var stopCommand = new StopConversationCommand(conversation.VisitorSessionId)
-                {
-                    ConversationId = conversation.ConversationId
-                };
-                await _stopConversationCommandHandler.ExecuteAsync(stopCommand);
+                
+                await _chatService.StopChatAsync(conversation.VisitorSessionId, conversation.ConversationId);
 
                 DisconnectVisitor(currentSession, UserType.System);              
             }

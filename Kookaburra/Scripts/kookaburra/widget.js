@@ -183,11 +183,15 @@ function WidgetViewModel(accountKey) {
                     else {
                         self.view('GoneOffline')
                     }
+
+                    self.visitor().disableStart(false);
                 }
             });
         }
-
-        self.visitor().disableStart(false);
+        else
+        {
+            self.visitor().disableStart(false);
+        }
     };
 
     self.gotoOfflineForm = function () {

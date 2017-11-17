@@ -2,10 +2,6 @@
 using Hangfire;
 using Kookaburra.Common;
 using Kookaburra.Domain.AvailableOperator;
-using Kookaburra.Domain.Command;
-using Kookaburra.Domain.Command.StartVisitorChat;
-using Kookaburra.Domain.Command.StopConversation;
-using Kookaburra.Domain.Command.VisitorMessaged;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Model;
 using Kookaburra.Domain.Query;
@@ -15,6 +11,7 @@ using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.Widget;
+using Kookaburra.Services.Chats;
 using Kookaburra.Services.OfflineMessages;
 using Kookaburra.Services.Visitors;
 using Microsoft.AspNet.SignalR;
@@ -26,38 +23,30 @@ namespace Kookaburra.Services
 {
     public class VisitorHub : Hub
     {
-        private readonly ICommandHandler<StopConversationCommand> _stopConversationCommandHandler;
-        private readonly ICommandHandler<StartVisitorChatCommand> _startVisitorChatCommandHandler;
-        private readonly ICommandHandler<VisitorMessagedCommand> _visitorMessagedCommandHandler;        
-
         private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
         private readonly IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> _availableOperatorQueryHandler;
         private readonly IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> _resumeVisitorChatQueryHandler;
         private readonly IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> _returningVisitorQueryHandler;
 
+        private readonly IChatService _chatService;
         private readonly IVisitorService _visitorService;
         private readonly IOfflineMessageService _offlineMessageService;
 
         public VisitorHub(
-            ICommandHandler<StopConversationCommand> stopConversationCommandHandler,
-            ICommandHandler<StartVisitorChatCommand> startVisitorChatCommandHandler,
-            ICommandHandler<VisitorMessagedCommand> visitorMessagedCommandHandler,            
             IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
             IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> availableOperatorQueryHandler,
             IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>> resumeVisitorChatQueryHandler,
             IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> returningVisitorQueryHandler,
+            IChatService chatService,
             IVisitorService visitorService,
             IOfflineMessageService offlineMessageService)
-        {
-            _stopConversationCommandHandler = stopConversationCommandHandler;
-            _startVisitorChatCommandHandler = startVisitorChatCommandHandler;
-            _visitorMessagedCommandHandler = visitorMessagedCommandHandler;            
-
+        {            
             _currentSessionQueryHandler = currentSessionQueryHandler;
             _availableOperatorQueryHandler = availableOperatorQueryHandler;
             _resumeVisitorChatQueryHandler = resumeVisitorChatQueryHandler;
             _returningVisitorQueryHandler = returningVisitorQueryHandler;
 
+            _chatService = chatService;
             _visitorService = visitorService;
             _offlineMessageService = offlineMessageService;
         }
@@ -134,14 +123,17 @@ namespace Kookaburra.Services
 
             // if operator is available - establish connection
             if (availableOperator != null)
-            {              
-                var command = new StartVisitorChatCommand(availableOperator.OperatorId, visitor.Name, visitorKey, visitor.AccountKey)
+            {
+                await _chatService.VisitorStartChatAsync(new VisitorStartChatRequest
                 {
-                    Page = visitor.PageUrl,
+                    OperatorId = availableOperator.OperatorId,
+                    VisitorKey = visitorKey,
+                    VisitorName = visitor.Name,
+                    VisitorEmail = visitor.Email,
                     VisitorIP = WebHelper.GetIPAddress(),
-                    VisitorEmail = visitor.Email
-                };
-                await _startVisitorChatCommandHandler.ExecuteAsync(command);
+                    Page = visitor.PageUrl,
+                    AccountKey = visitor.AccountKey               
+                });
 
                 // update geo details in the background
                 BackgroundJob.Enqueue<IVisitorService>(visitorService => visitorService.UpdateVisitorGeolocationAsync(visitorKey));
@@ -224,9 +216,9 @@ namespace Kookaburra.Services
             // Notify all visitor instances (mutiple tabs)
             Clients.Clients(currentSession.VisitorConnectionIds).sendMessageToVisitor(messageView);
             // Notify all operator instances (mutiple tabs)   
-            Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, currentSession.VisitorSessionId);
+            Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, currentSession.VisitorSessionId);            
 
-            await _visitorMessagedCommandHandler.ExecuteAsync(new VisitorMessagedCommand(Context.ConnectionId, message, dateSent));
+            await _chatService.VisitorMessagedAsync(Context.ConnectionId, message, dateSent);
         }
 
         /// <summary>
@@ -241,9 +233,9 @@ namespace Kookaburra.Services
             {
                 VisitorSessionId = visitorKey
             };
-            var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
+            var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);            
 
-            await _stopConversationCommandHandler.ExecuteAsync(new StopConversationCommand(visitorKey));
+            await _chatService.StopChatAsync(visitorKey);
 
             DisconnectVisitor(currentSession, UserType.Visitor);
         }

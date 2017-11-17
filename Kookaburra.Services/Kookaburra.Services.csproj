@@ -50,8 +50,13 @@
   <ItemGroup>
     <Compile Include="Accounts\AccountService.cs" />
     <Compile Include="Accounts\IAccountService.cs" />
+    <Compile Include="Accounts\SignUpRequest.cs" />
     <Compile Include="Chats\ChatService.cs" />
+    <Compile Include="Chats\ConversationResult.cs" />
     <Compile Include="Chats\IChatService.cs" />
+    <Compile Include="Chats\MessageResult.cs" />
+    <Compile Include="Chats\VisitorInfoResult.cs" />
+    <Compile Include="Chats\VisitorStartChatRequest.cs" />
     <Compile Include="EmailService.cs" />
     <Compile Include="IEmailService.cs" />
     <Compile Include="OfflineMessages\IOfflineMessageService.cs" />

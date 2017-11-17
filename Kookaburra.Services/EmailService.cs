@@ -1,25 +1,45 @@
 ﻿using Kookaburra.Email;
 using Kookaburra.Email.Public.OfflineMessage;
+using Kookaburra.Email.Public.SignUpWelcome;
 using Kookaburra.Repository;
+using Kookaburra.Services.Accounts;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kookaburra.Services
 {
     public class EmailService : IEmailService
     {
         private readonly KookaburraContext _context;
+        private readonly IAccountService _accountService;
         private readonly IMailer _mailer;
         private readonly AddressInfo _from;
         private readonly string _bcc;        
             
-        public EmailService(KookaburraContext context, IMailer mailer)
+        public EmailService(KookaburraContext context, IMailer mailer, IAccountService accountService)
         {
             _context = context;
             _mailer = mailer;
+            _accountService = accountService;
 
             _from = new AddressInfo("Kookaburra Chat", "info@kookaburra.chat");
             _bcc = "it@kookaburra.chat";            
+        }
+
+        public async Task SendSignUpWelcomeEmailAsync(string operatorIdentity)
+        {
+            var operatorObj = await _accountService.GetOperatorAsync(operatorIdentity);
+
+            var from = new AddressInfo("Kookaburra Chat", "info@kookaburra.chat");
+            var to = new AddressInfo(operatorObj.Email);
+
+            var model = new SignUpWelcomeEmail
+            {
+                FirstName = operatorObj.FirstName
+            };
+
+            _mailer.SendEmail(from, to, model);
         }
 
         public void SendOfflineNotificationEmail(long messageId)

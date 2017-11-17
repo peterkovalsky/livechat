@@ -2036,10 +2036,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kookaburra.Domain.Command\Kookaburra.Domain.Command.csproj">
-      <Project>{6CD9A1DD-7FCD-40D4-8319-39779424CDD5}</Project>
-      <Name>Kookaburra.Domain.Command</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Kookaburra.Domain.Query\Kookaburra.Domain.Query.csproj">
       <Project>{bbe61298-bba7-4902-81e0-f5460a54d7e0}</Project>
       <Name>Kookaburra.Domain.Query</Name>

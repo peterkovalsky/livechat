@@ -75,10 +75,6 @@
     <Compile Include="WebTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kookaburra.Domain.Command\Kookaburra.Domain.Command.csproj">
-      <Project>{6cd9a1dd-7fcd-40d4-8319-39779424cdd5}</Project>
-      <Name>Kookaburra.Domain.Command</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Kookaburra.Domain.Query\Kookaburra.Domain.Query.csproj">
       <Project>{bbe61298-bba7-4902-81e0-f5460a54d7e0}</Project>
       <Name>Kookaburra.Domain.Query</Name>

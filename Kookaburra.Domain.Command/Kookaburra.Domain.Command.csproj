@@ -59,19 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectOperator\ConnectOperatorCommandHandler.cs" />
-    <Compile Include="OperatorMessaged\OperatorMessagedCommandHandler.cs" />
     <Compile Include="SignUp\SignUpCommand.cs" />
     <Compile Include="SignUp\SignUpCommandHandler.cs" />
-    <Compile Include="StartVisitorChat\StartVisitorChatCommandHandler.cs" />
-    <Compile Include="StopConversation\StopConversationCommandHandler.cs" />
-    <Compile Include="VisitorMessaged\VisitorMessagedCommandHandler.cs" />
     <Compile Include="ICommand.cs" />
-    <Compile Include="ConnectOperator\ConnectOperatorCommand.cs" />
-    <Compile Include="OperatorMessaged\OperatorMessagedCommand.cs" />
-    <Compile Include="StartVisitorChat\StartVisitorChatCommand.cs" />
-    <Compile Include="StopConversation\StopConversationCommand.cs" />
-    <Compile Include="VisitorMessaged\VisitorMessagedCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

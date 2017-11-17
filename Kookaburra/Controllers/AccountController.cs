@@ -1,7 +1,6 @@
 ﻿using Hangfire;
-using Kookaburra.Domain.Command;
-using Kookaburra.Domain.Command.SignUp;
 using Kookaburra.Models;
+using Kookaburra.Services;
 using Kookaburra.Services.Accounts;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -19,12 +18,11 @@ namespace Kookaburra.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         
-        private readonly ICommandHandler<SignUpCommand> _signUpCommandHandler;
         private readonly IAccountService _accountService;
+        private readonly IEmailService _emailService;
 
-        public AccountController(ICommandHandler<SignUpCommand> signUpCommandHandler, IAccountService accountService)
-        {
-            _signUpCommandHandler = signUpCommandHandler;
+        public AccountController(IAccountService accountService)
+        {           
             _accountService = accountService;
         }
 
@@ -221,16 +219,16 @@ namespace Kookaburra.Controllers
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
-                {
-                    var command = new SignUpCommand
+                {              
+                    await _accountService.SignUpAsync(new SignUpRequest
                     {
-                        Company = model.Company,
-                        OperatorIdentity = user.Id,
                         ClientName = model.ClientName,
-                        Email = model.Email
-                    };
+                        Email = model.Email,
+                        Company = model.Company,
+                        OperatorIdentity = user.Id
+                    });
 
-                    BackgroundJob.Enqueue(() => _signUpCommandHandler.ExecuteAsync(command));
+                    BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmailAsync(user.Id));
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 

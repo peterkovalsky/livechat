@@ -18,17 +18,10 @@
 namespace Kookaburra.DependencyResolution
 {
     using Domain;
-    using Domain.Command;
     using Domain.Integration;
     using Domain.Query;
     using Integration.freegeoip;
-    using Kookaburra.Domain.AvailableOperator;
-    using Kookaburra.Domain.Command.ConnectOperator;       
-    using Kookaburra.Domain.Command.OperatorMessaged;
-    using Kookaburra.Domain.Command.SignUp;
-    using Kookaburra.Domain.Command.StartVisitorChat;
-    using Kookaburra.Domain.Command.StopConversation;
-    using Kookaburra.Domain.Command.VisitorMessaged;
+    using Kookaburra.Domain.AvailableOperator;          
     using Kookaburra.Domain.Query.Account;
     using Kookaburra.Domain.Query.ChatHistory;
     using Kookaburra.Domain.Query.ChatHistorySearch;
@@ -40,7 +33,6 @@ namespace Kookaburra.DependencyResolution
     using Kookaburra.Domain.Query.Transcript;
     using Kookaburra.Domain.ResumeVisitorChat;
     using Kookaburra.Email;
-    using Kookaburra.Services;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
@@ -64,15 +56,7 @@ namespace Kookaburra.DependencyResolution
    
             For<KookaburraContext>().Use<KookaburraContext>().Ctor<string>().Is("name=DefaultConnection");
             //ForConcreteType<AccountController>().Configure.SelectConstructor(() => new AccountController(null));
-            For<IDependencyResolver>().Add<StructureMapSignalRDependencyResolver>();
-
-            // Commands
-            For<ICommandHandler<StartVisitorChatCommand>>().Add<StartVisitorChatCommandHandler>();
-            For<ICommandHandler<ConnectOperatorCommand>>().Add<ConnectOperatorCommandHandler>();            
-            For<ICommandHandler<OperatorMessagedCommand>>().Add<OperatorMessagedCommandHandler>();
-            For<ICommandHandler<StopConversationCommand>>().Add<StopConversationCommandHandler>();
-            For<ICommandHandler<VisitorMessagedCommand>>().Add<VisitorMessagedCommandHandler>();                    
-            For<ICommandHandler<SignUpCommand>>().Add<SignUpCommandHandler>();
+            For<IDependencyResolver>().Add<StructureMapSignalRDependencyResolver>();       
            
 
             // Queries
