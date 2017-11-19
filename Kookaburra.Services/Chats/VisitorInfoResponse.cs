@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Kookaburra.Domain.ResumeVisitorChat
+namespace Kookaburra.Services.Chats
 {
-    public class VisitorInfoResult
+    public class VisitorInfoResponse
     {
         public string SessionId { get; set; }
 

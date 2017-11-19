@@ -21,17 +21,13 @@ namespace Kookaburra.DependencyResolution
     using Domain.Integration;
     using Domain.Query;
     using Integration.freegeoip;
-    using Kookaburra.Domain.AvailableOperator;          
-    using Kookaburra.Domain.Query.Account;
+    using Kookaburra.Domain.AvailableOperator;
     using Kookaburra.Domain.Query.ChatHistory;
-    using Kookaburra.Domain.Query.ChatHistorySearch;
-    using Kookaburra.Domain.Query.CurrentChats;
+    using Kookaburra.Domain.Query.ChatHistorySearch;   
     using Kookaburra.Domain.Query.CurrentSession;
-    using Kookaburra.Domain.Query.ResumeOperator;
     using Kookaburra.Domain.Query.ReturningVisitor;
     using Kookaburra.Domain.Query.TimmedOutConversations;
-    using Kookaburra.Domain.Query.Transcript;
-    using Kookaburra.Domain.ResumeVisitorChat;
+    using Kookaburra.Domain.Query.Transcript; 
     using Kookaburra.Email;
     using Microsoft.AspNet.SignalR;
     using Repository;
@@ -60,17 +56,13 @@ namespace Kookaburra.DependencyResolution
            
 
             // Queries
-            For<IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>>().Add<AvailableOperatorQueryHandler>();       
-            For<IQueryHandler<ResumeVisitorChatQuery, Task<ResumeVisitorChatQueryResult>>>().Add<ResumeVisitorChatQueryHandler>();
-            For<IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>>>().Add<CurrentSessionQueryHandler>();
-            For<IQueryHandler<CurrentChatsQuery, Task<CurrentChatsQueryResult>>>().Add<CurrentChatsQueryHandler>();
-            For<IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>>>().Add<ResumeOperatorQueryHandler>();                    
+            For<IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>>>().Add<AvailableOperatorQueryHandler>();               
+            For<IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>>>().Add<CurrentSessionQueryHandler>();                    
             For<IQueryHandler<TranscriptQuery, Task<TranscriptQueryResult>>>().Add<TranscriptQueryHandler>();
             For<IQueryHandler<ChatHistorySearchQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistorySearchQueryHandler>();            
             For<IQueryHandler<ChatHistoryQuery, Task<ChatHistoryQueryResult>>>().Add<ChatHistoryQueryHandler>();
             For<IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>>>().Add<TimmedOutConversationsQueryHandler>();
-            For<IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>>>().Add<ReturningVisitorQueryHandler>();
-            For<IQueryHandler<AccountQuery, Task<AccountQueryResult>>>().Add<AccountQueryHandler>();
+            For<IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>>>().Add<ReturningVisitorQueryHandler>();        
             
             ForSingletonOf<ChatSession>();
             ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();

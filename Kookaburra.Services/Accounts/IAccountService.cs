@@ -9,14 +9,14 @@ namespace Kookaburra.Services.Accounts
 
         Task<Account> GetAccountAsync(string accountKey);
 
-        Task<Account> GetAccountForOperatorAsync(string operatorKey);
+        Task<Account> GetAccountForOperatorAsync(string operatorIdentity);
 
-        Task<Operator> GetOperatorAsync(string operatorKey);       
+        Task<Operator> GetOperatorAsync(string operatorIdentity);       
 
-        Task UpdateProfileAsync(string operatorKey, string firstName, string lastName, string email);        
+        Task UpdateProfileAsync(string operatorIdentity, string firstName, string lastName, string email);        
 
-        Task RecordOperatorActivityAsync(string operatorKey);
+        Task RecordOperatorActivityAsync(string operatorIdentity);
 
-        Task ResetOperatorActivityAsync(string operatorKey);
+        Task ResetOperatorActivityAsync(string operatorIdentity);
     }
 }

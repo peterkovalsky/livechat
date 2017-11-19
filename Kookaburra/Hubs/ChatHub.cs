@@ -2,10 +2,7 @@
 using Kookaburra.Common;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
-using Kookaburra.Domain.Query.Account;
-using Kookaburra.Domain.Query.CurrentChats;
 using Kookaburra.Domain.Query.CurrentSession;
-using Kookaburra.Domain.Query.ResumeOperator;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.Home;
@@ -14,50 +11,43 @@ using Kookaburra.Services.OfflineMessages;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kookaburra.Services
 {
     public class ChatHub : Hub
-    {
-        private readonly IQueryHandler<CurrentChatsQuery, Task<CurrentChatsQueryResult>> _currentChatsQueryHandler;
-        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
-        private readonly IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>> _resumeOperatorQueryHandler;
-        private readonly IQueryHandler<AccountQuery, Task<AccountQueryResult>> _accountQueryHandler;
+    {        
+        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;                
 
         private readonly IChatService _chatService;
         private readonly IOfflineMessageService _offlineMessageService;
+        private readonly IOperatorChatService _operatorChatService;
 
         public const string COOKIE_SESSION_ID = "kookaburra.visitor.sessionid";      
        
 
-        public ChatHub(                                     
-            IQueryHandler<CurrentChatsQuery, Task<CurrentChatsQueryResult>> currentChatsQueryHandler,
-            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
-            IQueryHandler<ResumeOperatorQuery, Task<ResumeOperatorQueryResult>> resumeOperatorQueryHandler,
-            IQueryHandler<AccountQuery, Task<AccountQueryResult>> accountQueryHandler,
+        public ChatHub(                                                
+            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,                       
             IChatService chatService,
-            IOfflineMessageService offlineMessageService)
-        {
-            _currentChatsQueryHandler = currentChatsQueryHandler;
-            _currentSessionQueryHandler = currentSessionQueryHandler;
-            _resumeOperatorQueryHandler = resumeOperatorQueryHandler;
-            _accountQueryHandler = accountQueryHandler;
+            IOfflineMessageService offlineMessageService,
+            IOperatorChatService operatorChatService)
+        {          
+            _currentSessionQueryHandler = currentSessionQueryHandler;                      
 
             _chatService = chatService;
             _offlineMessageService = offlineMessageService;
+            _operatorChatService = operatorChatService;
         }
 
         
         [Authorize]
         public async Task<OperatorCurrentChatsViewModel> ConnectOperator()
-        {
-            var accountResult = await _accountQueryHandler.ExecuteAsync(new AccountQuery(Context.User.Identity.GetUserId()));
-
-            await _chatService.ConnectOperatorAsync(accountResult.AccountKey, Context.User.Identity.GetUserId(), Context.ConnectionId);            
-
-            var queryResult = await _currentChatsQueryHandler.ExecuteAsync(new CurrentChatsQuery(Context.User.Identity.GetUserId(), accountResult.AccountKey));
+        {           
+            await _operatorChatService.ConnectOperatorAsync(Context.User.Identity.GetUserId(), Context.ConnectionId);            
+            
+            var queryResult = await _operatorChatService.GetCurrentChatsAsync(Context.User.Identity.GetUserId());
 
             return Mapper.Map<OperatorCurrentChatsViewModel>(queryResult);
         }
@@ -89,7 +79,7 @@ namespace Kookaburra.Services
             // Notify all visitor instances (mutiple tabs)
             Clients.Clients(currentSession.VisitorConnectionIds.AllBut(Context.ConnectionId)).sendMessageToVisitor(messageView);
 
-            await _chatService.OperatorMessagedAsync(visitorSessionId, message, dateSent);            
+            await _operatorChatService.OperatorMessagedAsync(visitorSessionId, message, dateSent);            
 
             return new
             {
@@ -101,10 +91,12 @@ namespace Kookaburra.Services
         [Authorize]
         public async Task<CurrentConversationsViewModel> ResumeOperatorChat()
         {
-            var query = new ResumeOperatorQuery(Context.User.Identity.GetUserId());
-            var queryResult = await _resumeOperatorQueryHandler.ExecuteAsync(query);
+            var chats = await _operatorChatService.ResumeOperatorAsync(Context.User.Identity.GetUserId());         
 
-            return Mapper.Map<CurrentConversationsViewModel>(queryResult);
+            return new CurrentConversationsViewModel
+            {
+                Conversations = Mapper.Map<List<OperatorConversationViewModel>>(chats)
+            };
         }
 
         /// <summary>
@@ -127,7 +119,7 @@ namespace Kookaburra.Services
         [Authorize]
         public async Task<DashboardViewModel> LoadDashboard()
         {
-            var currentChats = await _chatService.GetLiveChatsAsync(Context.User.Identity.GetUserId());
+            var currentChats = await _operatorChatService.GetLiveChatsAsync(Context.User.Identity.GetUserId());
             var newMessages = await _offlineMessageService.TotalNewOfflineMessagesAsync(Context.User.Identity.GetUserId());
 
             return new DashboardViewModel

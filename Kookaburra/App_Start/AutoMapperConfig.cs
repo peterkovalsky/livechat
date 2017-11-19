@@ -2,17 +2,14 @@
 using Kookaburra.Common;
 using Kookaburra.Domain.Model;
 using Kookaburra.Domain.Query.ChatHistory;
-using Kookaburra.Domain.Query.CurrentChats;
-using Kookaburra.Domain.Query.ResumeOperator;
 using Kookaburra.Domain.Query.Transcript;
-using Kookaburra.Domain.ResumeVisitorChat;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.History;
 using Kookaburra.Models.Home;
 using Kookaburra.Models.Offline;
 using Kookaburra.Models.Widget;
-
+using Kookaburra.Services.Chats;
 
 namespace Kookaburra.App_Start
 {
@@ -21,16 +18,16 @@ namespace Kookaburra.App_Start
         public static void Initialize()
         {
             Mapper.Initialize(cfg => {              
-                cfg.CreateMap<MessageResult, MessageViewModel>();
+                cfg.CreateMap<MessageResponse, MessageViewModel>();
 
-                cfg.CreateMap<ResumeVisitorChatQueryResult, ConversationViewModel>()
+                cfg.CreateMap<ResumeVisitorChatResponse, ConversationViewModel>()
                     .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.VisitorInfo.Name))
                     .ForMember(dest => dest.OperatorName, opt => opt.MapFrom(src => src.OperatorInfo.Name));
 
-                cfg.CreateMap<CurrentChatsQueryResult, OperatorCurrentChatsViewModel>();
-                cfg.CreateMap<ChatInfoResult, ChatInfo>();      
+                cfg.CreateMap<CurrentChatsResponse, OperatorCurrentChatsViewModel>();
+                cfg.CreateMap<ChatInfoResponse, ChatInfo>();      
 
-                cfg.CreateMap<ConversationResult, OperatorConversationViewModel>()
+                cfg.CreateMap<ConversationResponse, OperatorConversationViewModel>()
                     .ForMember(dest => dest.SessionId, opt => opt.MapFrom(src => src.VisitorInfo.SessionId))
                     .ForMember(dest => dest.VisitorName, opt => opt.MapFrom(src => src.VisitorInfo.Name))
                     .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.VisitorInfo.Email))
@@ -50,9 +47,7 @@ namespace Kookaburra.App_Start
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Visitor.Country))
                     .ForMember(dest => dest.CountryCode, opt => opt.MapFrom(src => src.Visitor.CountryCode))
                     .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.Visitor.Region))
-                    .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Visitor.City));                         
-
-                cfg.CreateMap<ResumeOperatorQueryResult, CurrentConversationsViewModel>();
+                    .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Visitor.City));
 
                 cfg.CreateMap<ChatHistoryQueryResult, ChatHistoryViewModel>();
                 cfg.CreateMap<ConversationItemQueryResult, ConversationItemViewModel>();

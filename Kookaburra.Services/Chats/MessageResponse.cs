@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Kookaburra.Domain.ResumeVisitorChat
+namespace Kookaburra.Services.Chats
 {
-    public class MessageResult
+    public class MessageResponse
     {
         public string Author { get; set; }
 

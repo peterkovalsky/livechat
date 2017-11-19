@@ -12,7 +12,7 @@ namespace Kookaburra.Domain.Query.Transcript
 
         public VisitorResult Visitor { get; set; }
 
-        public List<MessageResult> Messages { get; set; }
+        public List<MessageResponse> Messages { get; set; }
     }
 
     public class VisitorResult
