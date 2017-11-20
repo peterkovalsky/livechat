@@ -1,34 +1,34 @@
-﻿using Kookaburra.Domain.ResumeVisitorChat;
+﻿using Kookaburra.Domain;
 using System;
 using System.Collections.Generic;
 
-namespace Kookaburra.Domain.Query.Transcript
+namespace Kookaburra.Services.Chats
 {
-    public class TranscriptQueryResult
+    public class TranscriptResponse
     {
         public DateTime TimeStarted { get; set; }
 
-        public Duration Duration { get; set; }       
+        public Duration Duration { get; set; }
 
-        public VisitorResult Visitor { get; set; }
+        public VisitorResponse Visitor { get; set; }
 
         public List<MessageResponse> Messages { get; set; }
     }
 
-    public class VisitorResult
+    public class VisitorResponse
     {
         public string Name { get; set; }
-     
+
         public string Email { get; set; }
-      
+
         public string Country { get; set; }
 
         public string CountryCode { get; set; }
 
         public string City { get; set; }
-       
+
         public decimal Latitude { get; set; }
-      
+
         public decimal Longitude { get; set; }
     }
 }

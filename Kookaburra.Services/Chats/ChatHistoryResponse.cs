@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Kookaburra.Domain.Query.ChatHistory
+namespace Kookaburra.Services.Chats
 {
-    public class ChatHistoryQueryResult
+    public class ChatHistoryResponse
     {
-        public List<ConversationItemQueryResult> Conversations { get; set; }
+        public List<ConversationItemResponse> Conversations { get; set; }
 
         public int TotalConversations { get; set; }
     }
 
-    public class ConversationItemQueryResult
+    public class ConversationItemResponse
     {
         public long Id { get; set; }
 
@@ -20,7 +20,7 @@ namespace Kookaburra.Domain.Query.ChatHistory
 
         public string Text { get; set; }
 
-        public DateTime  StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         public int TotalMessages { get; set; }
     }

@@ -2,7 +2,6 @@
 using Kookaburra.Common;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Query;
-using Kookaburra.Domain.Query.CurrentSession;
 using Kookaburra.Domain.Query.TimmedOutConversations;
 using Kookaburra.Models;
 using Kookaburra.Services;
@@ -15,18 +14,15 @@ namespace Kookaburra
 {
     public class BackgroundJobs
     {        
-        private readonly IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> _timmedOutConversationsQueryHandler;
-        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
+        private readonly IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> _timmedOutConversationsQueryHandler;        
 
-        private readonly IChatService _chatService;
+        private readonly IVisitorChatService _visitorChatService;
 
-        public BackgroundJobs(IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> timmedOutConversationsQueryHandler,     
-            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
-            IChatService chatService)
+        public BackgroundJobs(IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> timmedOutConversationsQueryHandler,               
+            IVisitorChatService visitorChatService)
         {
-            _timmedOutConversationsQueryHandler = timmedOutConversationsQueryHandler;            
-            _currentSessionQueryHandler = currentSessionQueryHandler;
-            _chatService = chatService;
+            _timmedOutConversationsQueryHandler = timmedOutConversationsQueryHandler;                  
+            _visitorChatService = visitorChatService;
         }
 
         [AutomaticRetry(Attempts = 0)]
@@ -35,20 +31,16 @@ namespace Kookaburra
             var result = await _timmedOutConversationsQueryHandler.ExecuteAsync(new TimmedOutConversationsQuery(30));            
 
             foreach (var conversation in result.Conversations)
-            {            
-                var query = new CurrentSessionQuery()
-                {
-                    VisitorSessionId = conversation.VisitorSessionId
-                };
-                var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
+            {
+                var currentSession = _visitorChatService.GetCurrentSessionByIdentity(conversation.VisitorSessionId);
                 
-                await _chatService.StopChatAsync(conversation.VisitorSessionId, conversation.ConversationId);
+                await _visitorChatService.StopChatAsync(conversation.VisitorSessionId, conversation.ConversationId);
 
                 DisconnectVisitor(currentSession, UserType.System);              
             }
         }
 
-        private void DisconnectVisitor(CurrentSessionQueryResult currentSession, UserType disconnectedBy)
+        private void DisconnectVisitor(CurrentSessionResponse currentSession, UserType disconnectedBy)
         {
             if (currentSession != null)
             {
@@ -56,13 +48,13 @@ namespace Kookaburra
 
                 var diconnectView = new DisconnectViewModel
                 {
-                    VisitorSessionId = currentSession.VisitorSessionId,
+                    VisitorSessionId = currentSession.VisitorIdentity,
                     TimeStamp = DateTime.UtcNow.JsDateTime(),
                     DisconnectedBy = disconnectedBy.ToString()
                 };
 
                 // Notify all operator instances
-                hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(currentSession.VisitorSessionId);
+                hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(currentSession.VisitorIdentity);
                 hubContext.Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnected(diconnectView);
                 // Notify all visitor instances
                 hubContext.Clients.Clients(currentSession.VisitorConnectionIds).visitorDisconnected(diconnectView);

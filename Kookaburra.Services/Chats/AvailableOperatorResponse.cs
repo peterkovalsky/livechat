@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Kookaburra.Domain.AvailableOperator
+namespace Kookaburra.Services.Chats
 {
-    public class AvailableOperatorQueryResult
+    public class AvailableOperatorResponse
     {
         public int OperatorId { get; set; }
 

@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Kookaburra.Common;
 using Kookaburra.Domain.Model;
-using Kookaburra.Domain.Query.ChatHistory;
-using Kookaburra.Domain.Query.Transcript;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.History;
@@ -49,11 +47,11 @@ namespace Kookaburra.App_Start
                     .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.Visitor.Region))
                     .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Visitor.City));
 
-                cfg.CreateMap<ChatHistoryQueryResult, ChatHistoryViewModel>();
-                cfg.CreateMap<ConversationItemQueryResult, ConversationItemViewModel>();
+                cfg.CreateMap<ChatHistoryResponse, ChatHistoryViewModel>();
+                cfg.CreateMap<ConversationItemResponse, ConversationItemViewModel>();
 
-                cfg.CreateMap<TranscriptQueryResult, TranscriptViewModel>();
-                cfg.CreateMap<VisitorResult, VisitorViewModel>();
+                cfg.CreateMap<TranscriptResponse, TranscriptViewModel>();
+                cfg.CreateMap<VisitorResponse, VisitorViewModel>();
 
                 cfg.CreateMap<Conversation, LiveChatViewModel>()
                     .ForMember(dest => dest.ChatId, opt => opt.MapFrom(src => src.Id))

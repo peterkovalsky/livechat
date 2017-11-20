@@ -12,5 +12,11 @@ namespace Kookaburra.Services.Chats
         Task<long> VisitorStartChatAsync(VisitorStartChatRequest request);
 
         Task StopChatAsync(string visitorIndentity, long conversationId = default(long));
+
+        CurrentSessionResponse GetCurrentSessionByIdentity(string visitorIdentity);
+
+        CurrentSessionResponse GetCurrentSessionByConnection(string visitorConnectionId);
+
+        AvailableOperatorResponse GetAvailableOperator(string accountKey);
     }
 }

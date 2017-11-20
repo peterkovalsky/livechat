@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 
-namespace Kookaburra.Domain.Query.CurrentSession
+namespace Kookaburra.Services.Chats
 {
-    public class CurrentSessionQueryResult
+    public class CurrentSessionResponse
     {
         public string VisitorName { get; set; }
 
         public List<string> VisitorConnectionIds { get; set; }
 
-        public string VisitorSessionId { get; set; }
+        public string VisitorIdentity { get; set; }
 
         public string OperatorName { get; set; }
 
-        public List<string> OperatorConnectionIds { get; set; }      
+        public List<string> OperatorConnectionIds { get; set; }
     }
 }

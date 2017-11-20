@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Hangfire;
 using Kookaburra.Common;
-using Kookaburra.Domain.AvailableOperator;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Model;
 using Kookaburra.Domain.Query;
-using Kookaburra.Domain.Query.CurrentSession;
 using Kookaburra.Domain.Query.ReturningVisitor;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
@@ -22,39 +20,30 @@ namespace Kookaburra.Services
 {
     public class VisitorHub : Hub
     {
-        private readonly IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> _currentSessionQueryHandler;
-        private readonly IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> _availableOperatorQueryHandler;      
         private readonly IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> _returningVisitorQueryHandler;
-
-        //private readonly IChatService _chatService;
+      
         private readonly IVisitorChatService _visitorChatService;
         private readonly IVisitorService _visitorService;
         private readonly IOfflineMessageService _offlineMessageService;
 
-        public VisitorHub(
-            IQueryHandler<CurrentSessionQuery, Task<CurrentSessionQueryResult>> currentSessionQueryHandler,
-            IQueryHandler<AvailableOperatorQuery, Task<AvailableOperatorQueryResult>> availableOperatorQueryHandler,        
+        public VisitorHub(     
             IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> returningVisitorQueryHandler,
             IVisitorChatService visitorChatService,
-            //IChatService chatService,
+           
             IVisitorService visitorService,
             IOfflineMessageService offlineMessageService)
-        {            
-            _currentSessionQueryHandler = currentSessionQueryHandler;
-            _availableOperatorQueryHandler = availableOperatorQueryHandler;          
+        {
             _returningVisitorQueryHandler = returningVisitorQueryHandler;
 
-            _visitorChatService = visitorChatService;
-            //_chatService = chatService;
+            _visitorChatService = visitorChatService;         
             _visitorService = visitorService;
             _offlineMessageService = offlineMessageService;
         }
 
 
         public async Task<InitWidgetViewModel> InitWidget(string accountKey)
-        {
-            var query = new AvailableOperatorQuery(accountKey);
-            var operatorResult = await _availableOperatorQueryHandler.ExecuteAsync(query);
+        {            
+            var operatorResult = _visitorChatService.GetAvailableOperator(accountKey);
 
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
             var visitorIdentity = visitorCookie.GetVisitorKey(accountKey);
@@ -114,9 +103,7 @@ namespace Kookaburra.Services
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
             var visitorIdentity = visitorCookie.GetOrCreateVisitorKey(visitor.AccountKey);
 
-            var query = new AvailableOperatorQuery(visitor.AccountKey);
-            var availableOperator = await _availableOperatorQueryHandler.ExecuteAsync(query);
-
+            var availableOperator = _visitorChatService.GetAvailableOperator(visitor.AccountKey);
             ResumeVisitorChatResponse resumedConversation = null;
 
             // if operator is available - establish connection
@@ -192,13 +179,8 @@ namespace Kookaburra.Services
         /// </summary>
         public async Task SendToOperator(string message)
         {
-            var dateSent = DateTime.UtcNow;
-
-            var query = new CurrentSessionQuery
-            {
-                VisitorConnectionId = Context.ConnectionId
-            };
-            var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);
+            var dateSent = DateTime.UtcNow;       
+            var currentSession = _visitorChatService.GetCurrentSessionByConnection(Context.ConnectionId);
 
             var messageView = new MessageViewModel
             {
@@ -211,7 +193,7 @@ namespace Kookaburra.Services
             // Notify all visitor instances (mutiple tabs)
             Clients.Clients(currentSession.VisitorConnectionIds).sendMessageToVisitor(messageView);
             // Notify all operator instances (mutiple tabs)   
-            Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, currentSession.VisitorSessionId);            
+            Clients.Clients(currentSession.OperatorConnectionIds).sendMessageToOperator(messageView, currentSession.VisitorIdentity);            
 
             await _visitorChatService.VisitorMessagedAsync(Context.ConnectionId, message, dateSent);
         }
@@ -222,15 +204,11 @@ namespace Kookaburra.Services
         public async Task FinishChattingWithOperator(string accountKey)
         {
             var visitorCookie = new VisitorCookie(Context.Request.GetHttpContext());
-            var visitorKey = visitorCookie.GetVisitorKey(accountKey);
+            var visitorIdentity = visitorCookie.GetVisitorKey(accountKey);
+       
+            var currentSession = _visitorChatService.GetCurrentSessionByIdentity(visitorIdentity);
 
-            var query = new CurrentSessionQuery
-            {
-                VisitorSessionId = visitorKey
-            };
-            var currentSession = await _currentSessionQueryHandler.ExecuteAsync(query);            
-
-            await _visitorChatService.StopChatAsync(visitorKey);
+            await _visitorChatService.StopChatAsync(visitorIdentity);
 
             DisconnectVisitor(currentSession, UserType.Visitor);
         }
@@ -281,19 +259,19 @@ namespace Kookaburra.Services
             return viewModel;
         }
 
-        private void DisconnectVisitor(CurrentSessionQueryResult currentSession, UserType disconnectedBy)
+        private void DisconnectVisitor(CurrentSessionResponse currentSession, UserType disconnectedBy)
         {
             if (currentSession != null)
             {
                 var diconnectView = new DisconnectViewModel
                 {
-                    VisitorSessionId = currentSession.VisitorSessionId,
+                    VisitorSessionId = currentSession.VisitorIdentity,
                     TimeStamp = DateTime.UtcNow.JsDateTime(),
                     DisconnectedBy = disconnectedBy.ToString()
                 };
 
                 // Notify all operator instances
-                Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(currentSession.VisitorSessionId);
+                Clients.Clients(currentSession.OperatorConnectionIds).visitorDisconnectedGlobal(currentSession.VisitorIdentity);
                 Clients.Clients(currentSession.OperatorConnectionIds.AllBut(Context.ConnectionId)).visitorDisconnected(diconnectView);
                 // Notify all visitor instances
                 Clients.Clients(currentSession.VisitorConnectionIds.AllBut(Context.ConnectionId)).visitorDisconnected(diconnectView);

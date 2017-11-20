@@ -2,12 +2,9 @@
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Model;
 using Kookaburra.Repository;
-using Kookaburra.Services.Accounts;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Kookaburra.Services.Chats
@@ -15,7 +12,7 @@ namespace Kookaburra.Services.Chats
     public class VisitorChatService : IVisitorChatService
     {
         private readonly KookaburraContext _context;
-       
+
         private readonly ChatSession _chatSession;
 
         private readonly IOperatorChatService _operatorChatService;
@@ -23,7 +20,7 @@ namespace Kookaburra.Services.Chats
 
         public VisitorChatService(KookaburraContext context, ChatSession chatSession, IOperatorChatService operatorChatService)
         {
-            _context = context;          
+            _context = context;
             _chatSession = chatSession;
             _operatorChatService = operatorChatService;
         }
@@ -101,7 +98,7 @@ namespace Kookaburra.Services.Chats
         public async Task<long> VisitorStartChatAsync(VisitorStartChatRequest request)
         {
             // record new/returning visitor         
-            var returningVisitor = await _context.Visitors.SingleOrDefaultAsync(v => v.Identifier == request.VisitorKey);                                      
+            var returningVisitor = await _context.Visitors.SingleOrDefaultAsync(v => v.Identifier == request.VisitorKey);
 
             var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == request.AccountKey);
             if (account == null)
@@ -177,6 +174,73 @@ namespace Kookaburra.Services.Chats
             await _context.SaveChangesAsync();
 
             _chatSession.RemoveVisitor(visitorIndentity);
+        }
+
+        public CurrentSessionResponse GetCurrentSessionByIdentity(string visitorIdentity)
+        {
+            if (!string.IsNullOrWhiteSpace(visitorIdentity))
+            {
+                var operatorSession = _chatSession.GetOperatorByVisitorSessionId(visitorIdentity);
+                var visitorSession = _chatSession.GetVisitorByVisitorSessionId(visitorIdentity);
+
+                if (operatorSession == null || visitorSession == null)
+                {
+                    return null;
+                }
+
+                return new CurrentSessionResponse
+                {
+                    VisitorName = visitorSession.Name,
+                    VisitorConnectionIds = visitorSession.ConnectionIds,
+                    VisitorIdentity = visitorSession.SessionId,
+                    OperatorName = operatorSession.Name,
+                    OperatorConnectionIds = operatorSession.ConnectionIds
+                };
+            }
+
+            return null;
+        }
+
+        public CurrentSessionResponse GetCurrentSessionByConnection(string visitorConnectionId)
+        {
+            if (!string.IsNullOrWhiteSpace(visitorConnectionId))
+            {
+                var operatorSession = _chatSession.GetOperatorByVisitorConnId(visitorConnectionId);
+                var visitorSession = _chatSession.GetVisitorByVisitorConnId(visitorConnectionId);
+
+                if (operatorSession == null || visitorSession == null)
+                {
+                    return null;
+                }
+
+                return new CurrentSessionResponse
+                {
+                    VisitorName = visitorSession.Name,
+                    VisitorConnectionIds = visitorSession.ConnectionIds,
+                    VisitorIdentity = visitorSession.SessionId,
+                    OperatorName = operatorSession.Name,
+                    OperatorConnectionIds = operatorSession.ConnectionIds
+                };
+            }
+
+            return null;
+        }
+
+        public AvailableOperatorResponse GetAvailableOperator(string accountKey)
+        {
+            var operatorSession = _chatSession.GetFirstAvailableOperator(accountKey);
+
+            if (operatorSession != null)
+            {
+                return new AvailableOperatorResponse
+                {
+                    OperatorId = operatorSession.Id,
+                    OperatorName = operatorSession.Name,
+                    OperatorConnectionIds = operatorSession.ConnectionIds
+                };
+            }
+
+            return null;
         }
     }
 }
