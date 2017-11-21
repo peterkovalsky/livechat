@@ -100,7 +100,7 @@ namespace Kookaburra.Services.Chats
             // record new/returning visitor         
             var returningVisitor = await _context.Visitors.SingleOrDefaultAsync(v => v.Identifier == request.VisitorKey);
 
-            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == request.AccountKey);
+            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Key == request.AccountKey);
             if (account == null)
             {
                 throw new ArgumentException($"Account {request.AccountKey} doesn't exist.");
@@ -250,7 +250,7 @@ namespace Kookaburra.Services.Chats
                 return null;
             }
 
-            var visitor = await _context.Visitors.Where(v => v.Identifier == visitorIdentity && v.Account.Identifier == accountKey).SingleOrDefaultAsync();
+            var visitor = await _context.Visitors.Where(v => v.Identifier == visitorIdentity && v.Account.Key == accountKey).SingleOrDefaultAsync();
             if (visitor != null)
             {
                 return new ReturningVisitorResponse

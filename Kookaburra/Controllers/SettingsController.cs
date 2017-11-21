@@ -43,7 +43,7 @@ namespace Kookaburra.Controllers
 
             var model = new CodeViewModel
             {
-                CodeSnippet = new Code().GenerateCode(WebHelper.Host, currentOperator.Account.Identifier)
+                CodeSnippet = new Code().GenerateCode(WebHelper.Host, currentOperator.Account.Key)
             };
             
             return View(model);

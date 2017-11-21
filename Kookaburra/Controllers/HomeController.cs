@@ -48,7 +48,7 @@ namespace Kookaburra.Controllers
 
             var model = new PreviewViewModel
             {
-                Code = new Code().GenerateCode(WebHelper.Host, currentOperator.Account.Identifier)
+                Code = new Code().GenerateCode(WebHelper.Host, currentOperator.Account.Key)
             };
 
             return View(model);

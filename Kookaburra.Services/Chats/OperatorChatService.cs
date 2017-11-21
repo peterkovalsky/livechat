@@ -32,7 +32,7 @@ namespace Kookaburra.Services.Chats
                .Where(o => o.Identifier == operatorIdentity)
                .SingleOrDefaultAsync();
 
-            _chatSession.AddOrUpdateOperator(operatorEntity.Id, operatorEntity.Identifier, operatorEntity.FirstName, operatorEntity.Account.Identifier, operatorConnectionId);
+            _chatSession.AddOrUpdateOperator(operatorEntity.Id, operatorEntity.Identifier, operatorEntity.FirstName, operatorEntity.Account.Key, operatorConnectionId);
         }
 
         public async Task<List<ConversationResponse>> ResumeOperatorAsync(string operatorIdentity)
@@ -86,7 +86,7 @@ namespace Kookaburra.Services.Chats
                 CurrentChats = operatorSession.Visitors.Select(v => new ChatInfoResponse { VisitorSessionId = v.SessionId }).ToList(),
                 UnreadMessages = await _context.OfflineMessages
                                          .Where(om =>
-                                                om.Visitor.Account.Identifier == account.Identifier
+                                                om.Visitor.Account.Key == account.Key
                                             && !om.IsRead)
                                          .CountAsync()
             };

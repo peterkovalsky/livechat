@@ -28,7 +28,7 @@ namespace Kookaburra.Services.Chats
             var account = await _accountService.GetAccountForOperatorAsync(operatorIdentity);
 
             var result = await _context.Conversations
-            .Where(c => c.Id == conversationId && c.Operator.Account.Identifier == account.Identifier && c.TimeFinished != null)
+            .Where(c => c.Id == conversationId && c.Operator.Account.Key == account.Key && c.TimeFinished != null)
             .Select(c =>
             new
             {
@@ -70,7 +70,7 @@ namespace Kookaburra.Services.Chats
             var account = await _accountService.GetAccountForOperatorAsync(operatorIdentity);
 
             var conversations = _context.Conversations.Where(c =>
-                               c.Operator.Account.Identifier == account.Identifier
+                               c.Operator.Account.Key == account.Key
                                && c.Messages.Any(m => m.SentBy == UserType.Visitor.ToString())
                                && c.TimeFinished != null);
 
@@ -136,7 +136,7 @@ namespace Kookaburra.Services.Chats
             var account = await _accountService.GetAccountForOperatorAsync(operatorIdentity);
 
             var conversations = _context.Conversations.Where(c =>
-                               c.Operator.Account.Identifier == account.Identifier
+                               c.Operator.Account.Key == account.Key
                                && c.Messages.Any(m => m.SentBy == UserType.Visitor.ToString())
                                && c.TimeFinished != null);
 

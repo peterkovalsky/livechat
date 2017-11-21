@@ -23,7 +23,7 @@ namespace Kookaburra.Services.Accounts
         {
             _context.Accounts.Add(new Account
                 {
-                    Identifier = Guid.NewGuid().ToString(),
+                    Key = Guid.NewGuid().ToString(),
                     Website = request.Website,
                     SignUpDate = DateTime.UtcNow,
                     IsTrial = true,
@@ -43,7 +43,7 @@ namespace Kookaburra.Services.Accounts
 
         public async Task<Account> GetAccountAsync(string accountKey)
         {
-            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Identifier == accountKey);
+            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Key == accountKey);
             if (account == null)
             {
                 throw new ArgumentException(string.Format("Account '{0}' doesn't exists", accountKey));

@@ -18,7 +18,7 @@ namespace Kookaburra.Domain.Model
         public DateTime TrialExpiryDate { get; set; }
 
         [StringLength(50)]
-        public string Identifier { get; set; }
+        public string Key { get; set; }
 
         public virtual ICollection<Operator> Operators { get; set; }
 

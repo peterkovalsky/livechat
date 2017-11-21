@@ -55,7 +55,7 @@ namespace Kookaburra.Services.OfflineMessages
             var account = await _accountService.GetAccountForOperatorAsync(operatorKey);
 
             return await _context.OfflineMessages.Where(om =>
-                                                        om.Visitor.Account.Identifier == account.Identifier
+                                                        om.Visitor.Account.Key == account.Key
                                                     && !om.IsRead)
                                                  .CountAsync();
         }
@@ -64,7 +64,7 @@ namespace Kookaburra.Services.OfflineMessages
         {
             var account = await _accountService.GetAccountForOperatorAsync(operatorKey);            
 
-            var offlineMessages = _context.OfflineMessages.Include(i => i.Visitor).Where(om => om.Visitor.Account.Identifier == account.Identifier);
+            var offlineMessages = _context.OfflineMessages.Include(i => i.Visitor).Where(om => om.Visitor.Account.Key == account.Key);
 
             if (timeFilter == TimeFilterType.Today)
             {
@@ -117,7 +117,7 @@ namespace Kookaburra.Services.OfflineMessages
             var offlineMessages = _context.OfflineMessages
                                           .Include(i => i.Visitor)
                                           .Where(om =>
-                                                om.Visitor.Account.Identifier == account.Identifier &&
+                                                om.Visitor.Account.Key == account.Key &&
                                                 (om.Message.Contains(query) ||
                                                 om.Visitor.Name.Contains(query) ||
                                                 om.Visitor.Email.Contains(query)));
@@ -138,7 +138,7 @@ namespace Kookaburra.Services.OfflineMessages
 
             var message = await _context.OfflineMessages.Where(om =>
                                                              om.Id == messageId
-                                                          && om.Visitor.Account.Identifier == account.Identifier)
+                                                          && om.Visitor.Account.Key == account.Key)
                                                       .SingleOrDefaultAsync();
 
             if (message != null)
@@ -154,7 +154,7 @@ namespace Kookaburra.Services.OfflineMessages
 
             var message = await _context.OfflineMessages.Where(om =>
                                                            om.Id == messageId
-                                                        && om.Visitor.Account.Identifier == account.Identifier)
+                                                        && om.Visitor.Account.Key == account.Key)
                                                        .SingleOrDefaultAsync();
 
             if (message != null)

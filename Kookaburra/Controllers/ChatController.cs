@@ -47,7 +47,7 @@ namespace Kookaburra.Controllers
 
             var model = new RoomViewModel
             {
-                CompanyId = currentOperator.Account.Identifier,
+                CompanyId = currentOperator.Account.Key,
                 OperatorName = currentOperator.FirstName,
                 OperatorId = currentOperator.Id,
                 ChatId = id
