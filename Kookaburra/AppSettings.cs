@@ -43,5 +43,17 @@ namespace Kookaburra
                 return ConfigurationManager.AppSettings["Url.Website"];
             }
         }
+
+        public static int TrialPeriodDays
+        {
+            get
+            {
+                int trialPeriod = 0;
+                var trialPeiodSetting = ConfigurationManager.AppSettings["Kookaburra.TrialPeriodDays"];
+                int.TryParse(trialPeiodSetting, out trialPeriod);
+
+                return trialPeriod;
+            }
+        }
     }
 }

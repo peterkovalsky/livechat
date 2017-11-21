@@ -224,8 +224,9 @@ namespace Kookaburra.Controllers
                     {
                         ClientName = model.ClientName,
                         Email = model.Email,
-                        Company = model.Company,
-                        OperatorIdentity = user.Id
+                        Website = model.Company,
+                        OperatorIdentity = user.Id,
+                        TrialPeriodDays = AppSettings.TrialPeriodDays
                     });
 
                     BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmailAsync(user.Id));

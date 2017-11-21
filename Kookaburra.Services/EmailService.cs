@@ -49,7 +49,7 @@ namespace Kookaburra.Services
                 .Select(o => new OfflineMessageEmail
                 {
                     AccountId = o.Visitor.AccountId,
-                    Website = o.Visitor.Account.Name,
+                    Website = o.Visitor.Account.Website,
                     VisitorName = o.Visitor.Name,
                     VisitorEmail = o.Visitor.Email,
                     Page = o.Page,                    

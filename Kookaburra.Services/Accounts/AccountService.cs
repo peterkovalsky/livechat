@@ -24,7 +24,10 @@ namespace Kookaburra.Services.Accounts
             _context.Accounts.Add(new Account
                 {
                     Identifier = Guid.NewGuid().ToString(),
-                    Name = request.Company,
+                    Website = request.Website,
+                    SignUpDate = DateTime.UtcNow,
+                    IsTrial = true,
+                    TrialExpiryDate = DateTime.UtcNow.AddDays(request.TrialPeriodDays),
                     Operators = new List<Operator> { new Operator
                     {
                         FirstName = request.ClientName,
