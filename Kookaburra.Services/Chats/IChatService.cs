@@ -1,4 +1,5 @@
 ﻿using Kookaburra.Domain.Common;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Kookaburra.Services.Chats
@@ -10,5 +11,7 @@ namespace Kookaburra.Services.Chats
         Task<ChatHistoryResponse> GetChatHistoryAsync(TimeFilterType timeFilter, string operatorIdentity, Pagination pagination = null);
 
         Task<ChatHistoryResponse> SearchChatHistoryAsync(string query, string operatorIdentity, Pagination pagination = null);
+
+        Task<List<TimmedOutConversationResponse>> TimmedOutConversationsAsync(int timeoutInMinutes);
     }
 }

@@ -18,5 +18,7 @@ namespace Kookaburra.Services.Chats
         CurrentSessionResponse GetCurrentSessionByConnection(string visitorConnectionId);
 
         AvailableOperatorResponse GetAvailableOperator(string accountKey);
+
+        Task<ReturningVisitorResponse> GetReturningVisitorAsync(string accountKey, string visitorIdentity);
     }
 }

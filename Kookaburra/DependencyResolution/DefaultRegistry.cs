@@ -19,15 +19,11 @@ namespace Kookaburra.DependencyResolution
 {
     using Domain;
     using Domain.Integration;
-    using Domain.Query;
     using Integration.freegeoip;
-    using Kookaburra.Domain.Query.ReturningVisitor;
-    using Kookaburra.Domain.Query.TimmedOutConversations;
     using Kookaburra.Email;
     using Microsoft.AspNet.SignalR;
     using Repository;
     using StructureMap;
-    using System.Threading.Tasks;
 
     public class DefaultRegistry : Registry {       
 
@@ -36,9 +32,7 @@ namespace Kookaburra.DependencyResolution
                 scan => {
                     scan.TheCallingAssembly();
                     scan.Assembly("Kookaburra.Domain");
-                    scan.Assembly("Kookaburra.Repository");
-                    scan.Assembly("Kookaburra.Domain.Command");
-                    scan.Assembly("Kookaburra.Domain.Query");
+                    scan.Assembly("Kookaburra.Repository");                 
                     scan.Assembly("Kookaburra.Services");
                     scan.Assembly("Kookaburra.Email");
                     scan.WithDefaultConventions();
@@ -46,12 +40,7 @@ namespace Kookaburra.DependencyResolution
                 });
    
             For<KookaburraContext>().Use<KookaburraContext>().Ctor<string>().Is("name=DefaultConnection");  
-            For<IDependencyResolver>().Add<StructureMapSignalRDependencyResolver>();       
-           
-
-            // Queries                    
-            For<IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>>>().Add<TimmedOutConversationsQueryHandler>();
-            For<IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>>>().Add<ReturningVisitorQueryHandler>();        
+            For<IDependencyResolver>().Add<StructureMapSignalRDependencyResolver>();
             
             ForSingletonOf<ChatSession>();
             ForSingletonOf<IGeoLocator>().Add<FreegeoipLocator>();

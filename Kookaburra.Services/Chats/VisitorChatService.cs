@@ -242,5 +242,25 @@ namespace Kookaburra.Services.Chats
 
             return null;
         }
+
+        public async Task<ReturningVisitorResponse> GetReturningVisitorAsync(string accountKey, string visitorIdentity)
+        {
+            if (string.IsNullOrWhiteSpace(visitorIdentity) || string.IsNullOrWhiteSpace(accountKey))
+            {
+                return null;
+            }
+
+            var visitor = await _context.Visitors.Where(v => v.Identifier == visitorIdentity && v.Account.Identifier == accountKey).SingleOrDefaultAsync();
+            if (visitor != null)
+            {
+                return new ReturningVisitorResponse
+                {
+                    VisitorName = visitor.Name,
+                    VisitorEmail = visitor.Email
+                };
+            }
+
+            return null;
+        }
     }
 }

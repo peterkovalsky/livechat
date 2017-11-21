@@ -64,6 +64,8 @@
     <Compile Include="Chats\OperatorChatService.cs" />
     <Compile Include="Chats\OperatorInfoResponse.cs" />
     <Compile Include="Chats\ResumeVisitorChatResponse.cs" />
+    <Compile Include="Chats\ReturningVisitorResponse.cs" />
+    <Compile Include="Chats\TimmedOutConversationResponse.cs" />
     <Compile Include="Chats\TranscriptResponse.cs" />
     <Compile Include="Chats\VisitorChatService.cs" />
     <Compile Include="Chats\VisitorInfoResponse.cs" />

@@ -3,6 +3,7 @@ using Kookaburra.Domain.Common;
 using Kookaburra.Repository;
 using Kookaburra.Services.Accounts;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -164,6 +165,23 @@ namespace Kookaburra.Services.Chats
                     TotalMessages = c.Messages.Count()
                 }).ToListAsync()
             };
+        }
+
+        public async Task<List<TimmedOutConversationResponse>> TimmedOutConversationsAsync(int timeoutInMinutes)
+        {
+            var cutOffTime = DateTime.UtcNow.AddMinutes(-timeoutInMinutes);
+
+            var conversations = await _context.Conversations
+                .Include(i => i.Visitor)
+                .Where(c => c.TimeFinished == null && c.Messages.Any() && c.Messages.OrderByDescending(m => m.DateSent).FirstOrDefault().DateSent < cutOffTime)
+                .Select(c => new TimmedOutConversationResponse
+                {
+                    VisitorIdentity = c.Visitor.Identifier,
+                    ConversationId = c.Id
+                })
+                .ToListAsync();
+
+            return conversations;
         }
     }
 }

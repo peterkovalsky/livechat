@@ -3,8 +3,6 @@ using Hangfire;
 using Kookaburra.Common;
 using Kookaburra.Domain.Common;
 using Kookaburra.Domain.Model;
-using Kookaburra.Domain.Query;
-using Kookaburra.Domain.Query.ReturningVisitor;
 using Kookaburra.Models;
 using Kookaburra.Models.Chat;
 using Kookaburra.Models.Widget;
@@ -19,22 +17,13 @@ using System.Threading.Tasks;
 namespace Kookaburra.Services
 {
     public class VisitorHub : Hub
-    {
-        private readonly IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> _returningVisitorQueryHandler;
-      
+    {            
         private readonly IVisitorChatService _visitorChatService;
         private readonly IVisitorService _visitorService;
         private readonly IOfflineMessageService _offlineMessageService;
 
-        public VisitorHub(     
-            IQueryHandler<ReturningVisitorQuery, Task<ReturningVisitorQueryResult>> returningVisitorQueryHandler,
-            IVisitorChatService visitorChatService,
-           
-            IVisitorService visitorService,
-            IOfflineMessageService offlineMessageService)
-        {
-            _returningVisitorQueryHandler = returningVisitorQueryHandler;
-
+        public VisitorHub(IVisitorChatService visitorChatService, IVisitorService visitorService, IOfflineMessageService offlineMessageService)
+        {            
             _visitorChatService = visitorChatService;         
             _visitorService = visitorService;
             _offlineMessageService = offlineMessageService;
@@ -50,9 +39,8 @@ namespace Kookaburra.Services
 
             // returning visitor
             if (!string.IsNullOrWhiteSpace(visitorIdentity))
-            {
-                var queryReturning = new ReturningVisitorQuery(accountKey, visitorIdentity);
-                var returningVisitor = await _returningVisitorQueryHandler.ExecuteAsync(queryReturning);
+            {                
+                var returningVisitor = await _visitorChatService.GetReturningVisitorAsync(accountKey, visitorIdentity);
 
                 if (operatorResult != null) // Is there any available operator
                 {                
@@ -218,7 +206,7 @@ namespace Kookaburra.Services
         /// <summary>
         /// Introduction of a new visitor
         /// </summary>        
-        private InitWidgetViewModel Introduction(ReturningVisitorQueryResult returningVisitor)
+        private InitWidgetViewModel Introduction(ReturningVisitorResponse returningVisitor)
         {
             var viewModel = new InitWidgetViewModel(WidgetStepType.Introduction);
             if (returningVisitor != null)
@@ -246,7 +234,7 @@ namespace Kookaburra.Services
         /// <summary>
         /// Operator(s) offline - leave a message
         /// </summary>        
-        private InitWidgetViewModel Offline(ReturningVisitorQueryResult returningVisitor)
+        private InitWidgetViewModel Offline(ReturningVisitorResponse returningVisitor)
         {
             var viewModel = new InitWidgetViewModel(WidgetStepType.Offline);
 

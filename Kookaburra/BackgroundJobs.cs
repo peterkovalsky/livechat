@@ -1,8 +1,6 @@
 ﻿using Hangfire;
 using Kookaburra.Common;
 using Kookaburra.Domain.Common;
-using Kookaburra.Domain.Query;
-using Kookaburra.Domain.Query.TimmedOutConversations;
 using Kookaburra.Models;
 using Kookaburra.Services;
 using Kookaburra.Services.Chats;
@@ -13,28 +11,27 @@ using System.Threading.Tasks;
 namespace Kookaburra
 {
     public class BackgroundJobs
-    {        
-        private readonly IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> _timmedOutConversationsQueryHandler;        
-
+    {
         private readonly IVisitorChatService _visitorChatService;
+        private readonly IChatService _chatService;
 
-        public BackgroundJobs(IQueryHandler<TimmedOutConversationsQuery, Task<TimmedOutConversationsQueryResult>> timmedOutConversationsQueryHandler,               
-            IVisitorChatService visitorChatService)
-        {
-            _timmedOutConversationsQueryHandler = timmedOutConversationsQueryHandler;                  
+        public BackgroundJobs(IVisitorChatService visitorChatService, IChatService chatService)
+        {            
             _visitorChatService = visitorChatService;
+            _chatService = chatService;
         }
+
 
         [AutomaticRetry(Attempts = 0)]
         public async Task TimeoutInactiveConversations()
         {
-            var result = await _timmedOutConversationsQueryHandler.ExecuteAsync(new TimmedOutConversationsQuery(30));            
+            var conversations = await _chatService.TimmedOutConversationsAsync(30);
 
-            foreach (var conversation in result.Conversations)
+            foreach (var conversation in conversations)
             {
-                var currentSession = _visitorChatService.GetCurrentSessionByIdentity(conversation.VisitorSessionId);
+                var currentSession = _visitorChatService.GetCurrentSessionByIdentity(conversation.VisitorIdentity);
                 
-                await _visitorChatService.StopChatAsync(conversation.VisitorSessionId, conversation.ConversationId);
+                await _visitorChatService.StopChatAsync(conversation.VisitorIdentity, conversation.ConversationId);
 
                 DisconnectVisitor(currentSession, UserType.System);              
             }

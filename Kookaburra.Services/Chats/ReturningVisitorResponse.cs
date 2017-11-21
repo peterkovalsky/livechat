@@ -1,6 +1,6 @@
-﻿namespace Kookaburra.Domain.Query.ReturningVisitor
+﻿namespace Kookaburra.Services.Chats
 {
-    public class ReturningVisitorQueryResult
+    public class ReturningVisitorResponse
     {
         public string VisitorName { get; set; }
 

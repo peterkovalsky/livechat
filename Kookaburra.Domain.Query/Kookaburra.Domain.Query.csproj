@@ -51,12 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Profile\ProfileQuery.cs" />
-    <Compile Include="Profile\ProfileQueryHandler.cs" />
-    <Compile Include="Profile\ProfileQueryResult.cs" />
-    <Compile Include="ReturningVisitor\ReturningVisitorQuery.cs" />
-    <Compile Include="ReturningVisitor\ReturningVisitorQueryHandler.cs" />
-    <Compile Include="ReturningVisitor\ReturningVisitorQueryResult.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQuery.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQueryHandler.cs" />
     <Compile Include="TimmedOutConversations\TimmedOutConversationsQueryResult.cs" />
