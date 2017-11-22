@@ -16,10 +16,9 @@ namespace Kookaburra.Controllers
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
-        
+        private ApplicationUserManager _userManager;        
         private readonly IAccountService _accountService;
-        private readonly IEmailService _emailService;
+       
 
         public AccountController(IAccountService accountService)
         {           
@@ -224,12 +223,12 @@ namespace Kookaburra.Controllers
                     {
                         ClientName = model.ClientName,
                         Email = model.Email,
-                        Website = model.Company,
+                        Website = model.Website,
                         OperatorIdentity = user.Id,
                         TrialPeriodDays = AppSettings.TrialPeriodDays
                     });
 
-                    BackgroundJob.Enqueue(() => _emailService.SendSignUpWelcomeEmailAsync(user.Id));
+                    BackgroundJob.Enqueue<IEmailService>(email => email.SendSignUpWelcomeEmailAsync(user.Id));
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 

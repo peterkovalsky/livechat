@@ -30,8 +30,7 @@ namespace Kookaburra.Services
         public async Task SendSignUpWelcomeEmailAsync(string operatorIdentity)
         {
             var operatorObj = await _accountService.GetOperatorAsync(operatorIdentity);
-
-            var from = new AddressInfo("Kookaburra Chat", "info@kookaburra.chat");
+           
             var to = new AddressInfo(operatorObj.Email);
 
             var model = new SignUpWelcomeEmail
@@ -39,7 +38,7 @@ namespace Kookaburra.Services
                 FirstName = operatorObj.FirstName
             };
 
-            _mailer.SendEmail(from, to, model);
+            _mailer.SendEmail(_from, to, model);
         }
 
         public void SendOfflineNotificationEmail(long messageId)

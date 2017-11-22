@@ -15,8 +15,8 @@ namespace Kookaburra.Email
             _smtpClient = new SmtpClient
             {
                 Host = host,
-                Port = 8889,
-                EnableSsl = false,
+                Port = 587,
+                EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(username, password)

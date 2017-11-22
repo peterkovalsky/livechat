@@ -68,7 +68,7 @@ namespace Kookaburra.Models
         public string ClientName { get; set; }
 
         [Required]
-        public string Company { get; set; }
+        public string Website { get; set; }
 
         [Required]
         [EmailAddress]
