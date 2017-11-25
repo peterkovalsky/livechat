@@ -1,4 +1,5 @@
-﻿using Kookaburra.Services.Accounts;
+﻿using Kookaburra.Models.Account;
+using Kookaburra.Services.Accounts;
 using Kookaburra.ViewModels.Chat;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -43,14 +44,20 @@ namespace Kookaburra.Controllers
         [Route("chats/{id?}")]
         public async Task<ActionResult> ChatRoom(long? id)
         {
-            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
-
+            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());            
+           
             var model = new RoomViewModel
             {
                 CompanyId = currentOperator.Account.Key,
                 OperatorName = currentOperator.FirstName,
                 OperatorId = currentOperator.Id,
-                ChatId = id
+                ChatId = id,
+                AccountStatus = await _accountService.CheckAccountAsync(User.Identity.GetUserId()),
+                TrialExpiredViewModel = new TrialExpiredViewModel
+                {
+                    Name = currentOperator.FirstName,
+                    TrialPeriodDays = currentOperator.Account.TrialPeriodDays
+                }
             };
 
             return View(model);

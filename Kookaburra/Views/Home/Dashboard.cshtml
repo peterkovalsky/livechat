@@ -1,7 +1,14 @@
-﻿
+﻿@model Kookaburra.Models.Home.DashboardViewModel
+@using Kookaburra.Services.Accounts;
+
 <div id="dashboard" class="page dashboard">
     <div class="page-main">
         <div class="page-content">
+
+            @if (Model.AccountStatus == AccountStatusType.TrialExpired)
+            {
+                @Html.Partial("_TrialExpired", Model.TrialExpiredViewModel)
+            }
 
             <div class="row">
 

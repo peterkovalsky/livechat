@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounts\AccountService.cs" />
+    <Compile Include="Accounts\AccountStatusType.cs" />
     <Compile Include="Accounts\IAccountService.cs" />
     <Compile Include="Accounts\SignUpRequest.cs" />
     <Compile Include="Chats\AvailableOperatorResponse.cs" />

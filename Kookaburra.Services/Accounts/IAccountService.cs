@@ -7,6 +7,8 @@ namespace Kookaburra.Services.Accounts
     {
         Task SignUpAsync(SignUpRequest request);
 
+        Task<AccountStatusType> CheckAccountAsync(string accountKey);
+
         Task<Account> GetAccountAsync(string accountKey);
 
         Task<Account> GetAccountForOperatorAsync(string operatorIdentity);

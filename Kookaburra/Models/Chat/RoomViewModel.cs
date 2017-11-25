@@ -1,4 +1,7 @@
-﻿namespace Kookaburra.ViewModels.Chat
+﻿using Kookaburra.Models.Account;
+using Kookaburra.Services.Accounts;
+
+namespace Kookaburra.ViewModels.Chat
 {
     public class RoomViewModel
     {
@@ -9,5 +12,9 @@
         public int OperatorId { get; set; }
 
         public long? ChatId { get; set; }
+
+        public AccountStatusType AccountStatus { get; set; }
+
+        public TrialExpiredViewModel TrialExpiredViewModel { get; set; }
     }
 }

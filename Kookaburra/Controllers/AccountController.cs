@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using Kookaburra.Models;
+using Kookaburra.Models.Account;
 using Kookaburra.Services;
 using Kookaburra.Services.Accounts;
 using Microsoft.AspNet.Identity;
@@ -48,7 +49,7 @@ namespace Kookaburra.Controllers
             {
                 _userManager = value;
             }
-        }
+        }   
 
         [HttpGet]
         [Route("profile")]

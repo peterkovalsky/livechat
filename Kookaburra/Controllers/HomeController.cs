@@ -1,5 +1,6 @@
 ﻿using Kookaburra.Common;
 using Kookaburra.Domain.Common;
+using Kookaburra.Models.Account;
 using Kookaburra.Models.Home;
 using Kookaburra.Services.Accounts;
 using Microsoft.AspNet.Identity;
@@ -36,9 +37,21 @@ namespace Kookaburra.Controllers
         [HttpGet]
         [Route("")]
         [Route("dashboard")]
-        public ActionResult Dashboard()
+        public async Task<ActionResult> Dashboard()
         {
-            return View();
+            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
+
+            var model = new DashboardViewModel
+            {            
+                AccountStatus = await _accountService.CheckAccountAsync(User.Identity.GetUserId()),
+                TrialExpiredViewModel = new TrialExpiredViewModel
+                {
+                    Name = currentOperator.FirstName,
+                    TrialPeriodDays = currentOperator.Account.TrialPeriodDays
+                }
+            };
+
+            return View(model);
         }   
 
         [Route("preview")]

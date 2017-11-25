@@ -288,6 +288,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Account\TrialExpiredViewModel.cs" />
     <Compile Include="Models\AlertViewModel.cs" />
     <Compile Include="Models\Chat\OperatorConversationViewModel.cs" />
     <Compile Include="Models\Chat\CurrentConversationsViewModel.cs" />
@@ -2035,6 +2036,7 @@
     <Content Include="Views\Account\_UserDetails.cshtml" />
     <Content Include="Views\Account\_ResetPassword.cshtml" />
     <Content Include="Views\Shared\_Alert.cshtml" />
+    <Content Include="Views\Shared\_TrialExpired.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

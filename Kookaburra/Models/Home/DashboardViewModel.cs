@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using Kookaburra.Models.Account;
+using Kookaburra.Services.Accounts;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Kookaburra.Models.Home
@@ -14,6 +15,10 @@ namespace Kookaburra.Models.Home
 
         [JsonProperty("currentChats")]
         public List<LiveChatViewModel> CurrentChats { get; set; } = new List<LiveChatViewModel>();
+
+        public AccountStatusType AccountStatus { get; set; }
+
+        public TrialExpiredViewModel TrialExpiredViewModel { get; set; }
     }
 
     public class LiveChatViewModel

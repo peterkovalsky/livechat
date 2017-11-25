@@ -114,6 +114,10 @@
     <Compile Include="Migrations\201711211122466_accountupdates.Designer.cs">
       <DependentUpon>201711211122466_accountupdates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711250320110_accounttrialexpirydays.cs" />
+    <Compile Include="Migrations\201711250320110_accounttrialexpirydays.Designer.cs">
+      <DependentUpon>201711250320110_accounttrialexpirydays.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -165,6 +169,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711211122466_accountupdates.resx">
       <DependentUpon>201711211122466_accountupdates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711250320110_accounttrialexpirydays.resx">
+      <DependentUpon>201711250320110_accounttrialexpirydays.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

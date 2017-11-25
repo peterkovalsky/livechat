@@ -1,4 +1,5 @@
 ﻿@model Kookaburra.ViewModels.Chat.RoomViewModel
+@using Kookaburra.Services.Accounts;
 
 @{
     ViewBag.PageLayout = "page-aside-static page-aside-right";
@@ -6,171 +7,182 @@
 
 <div id="layout-chatroom" class="page operator-chats">
 
-    <!-- Switch chats -->
-    <div class="page-aside" style="display: none;" data-bind="visible: conversations().length > 0">
-        <div class="page-aside-switch">
-            <i class="icon wb-chevron-left" aria-hidden="true"></i>
-            <i class="icon wb-chevron-right" aria-hidden="true"></i>
-        </div>
-        <div class="page-aside-inner scrollbar-macosx">
-
-            <section class="page-aside-section current-chats" style="display: none;" data-bind="visible: conversations().length > 0">
-                <h5 class="page-aside-title">Current Chats</h5>
-                <ul class="list-group" data-bind="foreach: conversations">
-                    <li class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
-                        <div class="media">
-                            <div class="media-left">
-                                <div class="avatar" data-bind="css: {'avatar-away': isClosed(), 'avatar-online': !isClosed() }">
-                                    <img class="img-fluid" src="~/images/visitor-default-white.png"><i></i>
-                                </div>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading" data-bind="text: visitorName"></h4>
-                                <span class="media-time" data-bind="text: lastMessageTime"></span>
-                            </div>
-                            <div class="media-right">
-                                <span class="tag tag-pill tag-danger" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-
-        </div>
-    </div>
-
-    <div class="page-main" data-bind="css: {'no-margin': conversations().length == 0 }">
-
-        <div class="page-content">
-
-            <!-- Chatting Box -->
-            <div class="row chat-box-row" style="display: none;" data-bind="visible: conversations().length > 0">
-                <div class="col-md-12 col-lg-9 chat-box-col" data-bind="with: currentChat">
-
-                    <div class="panel panel-bordered chat-box-panel" data-bind="css: {disabled: isClosed()}">
-                        <div class="panel-heading">
-                            <h3 class="panel-title text-sm-center">
-                                <i class="icon wb-chat-text" aria-hidden="true"></i>
-                                Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
-                            </h3>
-                            <div class="panel-actions panel-actions-keep hidden-lg-up">
-                                <div class="dropdown">
-                                    <a class="panel-action" id="examplePanelDropdown" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="icon wb-more-vertical" aria-hidden="true"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-bullet dropdown-menu-right" aria-labelledby="examplePanelDropdown" role="menu">
-                                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-bind="click: $parent.disconnect">
-                                            <i class="icon wb-flag" aria-hidden="true"></i> End Chat
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="messages" class="panel-body">
-                            <div id="conversation" class="chats scrollbar-macosx" data-bind="foreach: groupedMessages">
-                                <!-- ko if: sentBy() == 'operator' || sentBy() == 'visitor' -->
-                                <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator' }">
-                                    <div class="chat-avatar">
-
-                                        <!-- ko if: sentBy() == 'operator' -->
-                                        <div class="avatar avatar-online" data-bind="attr: {'data-original-title': author() }"
-                                             data-toggle="tooltip" data-placement="left" data-trigger="hover">
-                                            <img src="/images/operator-default.png">
-                                        </div>
-                                        <!-- /ko -->
-
-                                        <!-- ko if: sentBy() == 'visitor' -->
-                                        <div class="avatar avatar-online" data-bind="attr: {'data-original-title': author() }"
-                                             data-toggle="tooltip" data-placement="right" data-trigger="hover">
-                                            <img src="/images/visitor-default.png">
-                                        </div>
-                                        <!-- /ko -->
-
-                                    </div>
-                                    <div class="chat-body" data-bind="foreach: messages">
-                                        <div class="chat-content" data-bind="css: {sending: sending() }">
-                                            <p data-bind="text: text"></p>
-                                            <time class="chat-time" data-bind="text: time"></time>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /ko -->
-                                <!-- ko if: sentBy() == 'system' -->
-                                <div class="chat system">
-                                    <div class="chat-body" data-bind="foreach: messages">
-                                        <div class="chat-content">
-                                            <p data-bind="text: text"></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /ko -->
-                            </div>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="input-group">
-                                <textarea id="message-input" data-bind="textInput: $parent.newText, hasFocus: $parent.enterMessageFocus, disable: isClosed()" class="form-control textarea-scrollbar scrollbar-macosx" placeholder="Enter your message..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Current Visitor Info Card -->
-                <div class="col-lg-3 chat-list hidden-md-down" data-bind="with: currentChat">
-                    <div class="row">
-                        <div class="col-sm-12">
-
-                            <div class="card panel-bordered">
-                                <div class="card-block text-xs-center">
-                                    <h4 class="card-title" data-bind="text: visitorNameFormatted"></h4>
-                                    <p>Started <span data-bind="text: startTimeFormatted"></span></p>
-                                </div>
-                                <ul class="list-group list-group-dividered p-x-20 m-b-0">
-
-                                    <li class="list-group-item p-x-0" data-bind="visible: email()">
-                                        <i class="icon md-email" aria-hidden="true"></i>
-                                        <a data-bind="attr: {href: 'mailto:' + email()}, text: email"></a>
-                                    </li>
-                                    <li class="list-group-item p-x-0">
-                                        <i class="icon md-mouse" aria-hidden="true"></i>
-                                        <a data-bind="attr: {href: currentUrl()}" target="_blank">Visiting Page</a>
-                                    </li>
-                                    <li class="list-group-item p-x-0" data-bind="visible: city() && region() && country()">
-                                        <i class="icon md-pin" aria-hidden="true"></i>
-                                        <span data-bind="text: city() + ', ' + region() + ', ' + country()"></span>
-                                    </li>
-                                    <li class="list-group-item p-x-0" data-bind="visible: city() && region() && country()">
-                                        <iframe width="100%"
-                                                height="100%"
-                                                frameborder="0" style="border:0"
-                                                data-bind="attr: {src: 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBJKfcdLS3ElMk-gfaFJ67CUKDYfoaSeMY&q=' + city() + ',' + region() + ',' + country()}"
-                                                allowfullscreen></iframe>
-                                    </li>
-                                </ul>
-                                <div class="card-block">
-                                    <button type="button" class="btn btn-block btn-danger" data-bind="click: $parent.disconnect, visible: !isClosed()">End Chat</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+    @if (Model.AccountStatus == AccountStatusType.TrialExpired)
+    {
+        <div class="page-main">
+            <div class="page-content">
+                @Html.Partial("_TrialExpired", Model.TrialExpiredViewModel)
             </div>
+        </div>       
+    }
+    else
+    {
+        <!-- Switch chats -->
+        <div class="page-aside" style="display: none;" data-bind="visible: conversations().length > 0">
+            <div class="page-aside-switch">
+                <i class="icon wb-chevron-left" aria-hidden="true"></i>
+                <i class="icon wb-chevron-right" aria-hidden="true"></i>
+            </div>
+            <div class="page-aside-inner scrollbar-macosx">
 
-            <!-- No chats message -->
-            <!-- ko if: conversations().length == 0 -->
-            <div class="row" style="display: none;" data-bind="visible: conversations().length == 0">                
-                <div class="col-sm-12">
-                    <div class="empty-space bg-icon">
-                        <i class="md-comments"></i>
-                        <p>There are currently no active chats</p>
+                <section class="page-aside-section current-chats" style="display: none;" data-bind="visible: conversations().length > 0">
+                    <h5 class="page-aside-title">Current Chats</h5>
+                    <ul class="list-group" data-bind="foreach: conversations">
+                        <li class="list-group-item" data-bind="css: {active: isCurrent}, click: $parent.switchChat">
+                            <div class="media">
+                                <div class="media-left">
+                                    <div class="avatar" data-bind="css: {'avatar-away': isClosed(), 'avatar-online': !isClosed() }">
+                                        <img class="img-fluid" src="~/images/visitor-default-white.png"><i></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading" data-bind="text: visitorName"></h4>
+                                    <span class="media-time" data-bind="text: lastMessageTime"></span>
+                                </div>
+                                <div class="media-right">
+                                    <span class="tag tag-pill tag-danger" data-bind="visible: unreadMessages() > 0, text: unreadMessages"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+        </div>
+
+        <div class="page-main" data-bind="css: {'no-margin': conversations().length == 0 }">
+
+            <div class="page-content">
+
+                <!-- Chatting Box -->
+                <div class="row chat-box-row" style="display: none;" data-bind="visible: conversations().length > 0">
+                    <div class="col-md-12 col-lg-9 chat-box-col" data-bind="with: currentChat">
+
+                        <div class="panel panel-bordered chat-box-panel" data-bind="css: {disabled: isClosed()}">
+                            <div class="panel-heading">
+                                <h3 class="panel-title text-sm-center">
+                                    <i class="icon wb-chat-text" aria-hidden="true"></i>
+                                    Chat with <span class="text-capitalize" data-bind="text: visitorNameFormatted"></span>
+                                </h3>
+                                <div class="panel-actions panel-actions-keep hidden-lg-up">
+                                    <div class="dropdown">
+                                        <a class="panel-action" id="examplePanelDropdown" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="icon wb-more-vertical" aria-hidden="true"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-bullet dropdown-menu-right" aria-labelledby="examplePanelDropdown" role="menu">
+                                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-bind="click: $parent.disconnect">
+                                                <i class="icon wb-flag" aria-hidden="true"></i> End Chat
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="messages" class="panel-body">
+                                <div id="conversation" class="chats scrollbar-macosx" data-bind="foreach: groupedMessages">
+                                    <!-- ko if: sentBy() == 'operator' || sentBy() == 'visitor' -->
+                                    <div class="chat" data-bind="css: {'chat-left': sentBy() == 'operator' }">
+                                        <div class="chat-avatar">
+
+                                            <!-- ko if: sentBy() == 'operator' -->
+                                            <div class="avatar avatar-online" data-bind="attr: {'data-original-title': author() }"
+                                                 data-toggle="tooltip" data-placement="left" data-trigger="hover">
+                                                <img src="/images/operator-default.png">
+                                            </div>
+                                            <!-- /ko -->
+                                            <!-- ko if: sentBy() == 'visitor' -->
+                                            <div class="avatar avatar-online" data-bind="attr: {'data-original-title': author() }"
+                                                 data-toggle="tooltip" data-placement="right" data-trigger="hover">
+                                                <img src="/images/visitor-default.png">
+                                            </div>
+                                            <!-- /ko -->
+
+                                        </div>
+                                        <div class="chat-body" data-bind="foreach: messages">
+                                            <div class="chat-content" data-bind="css: {sending: sending() }">
+                                                <p data-bind="text: text"></p>
+                                                <time class="chat-time" data-bind="text: time"></time>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: sentBy() == 'system' -->
+                                    <div class="chat system">
+                                        <div class="chat-body" data-bind="foreach: messages">
+                                            <div class="chat-content">
+                                                <p data-bind="text: text"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="input-group">
+                                    <textarea id="message-input" data-bind="textInput: $parent.newText, hasFocus: $parent.enterMessageFocus, disable: isClosed()" class="form-control textarea-scrollbar scrollbar-macosx" placeholder="Enter your message..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Current Visitor Info Card -->
+                    <div class="col-lg-3 chat-list hidden-md-down" data-bind="with: currentChat">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                <div class="card panel-bordered">
+                                    <div class="card-block text-xs-center">
+                                        <h4 class="card-title" data-bind="text: visitorNameFormatted"></h4>
+                                        <p>Started <span data-bind="text: startTimeFormatted"></span></p>
+                                    </div>
+                                    <ul class="list-group list-group-dividered p-x-20 m-b-0">
+
+                                        <li class="list-group-item p-x-0" data-bind="visible: email()">
+                                            <i class="icon md-email" aria-hidden="true"></i>
+                                            <a data-bind="attr: {href: 'mailto:' + email()}, text: email"></a>
+                                        </li>
+                                        <li class="list-group-item p-x-0">
+                                            <i class="icon md-mouse" aria-hidden="true"></i>
+                                            <a data-bind="attr: {href: currentUrl()}" target="_blank">Visiting Page</a>
+                                        </li>
+                                        <li class="list-group-item p-x-0" data-bind="visible: city() && region() && country()">
+                                            <i class="icon md-pin" aria-hidden="true"></i>
+                                            <span data-bind="text: city() + ', ' + region() + ', ' + country()"></span>
+                                        </li>
+                                        <li class="list-group-item p-x-0" data-bind="visible: city() && region() && country()">
+                                            <iframe width="100%"
+                                                    height="100%"
+                                                    frameborder="0" style="border:0"
+                                                    data-bind="attr: {src: 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBJKfcdLS3ElMk-gfaFJ67CUKDYfoaSeMY&q=' + city() + ',' + region() + ',' + country()}"
+                                                    allowfullscreen></iframe>
+                                        </li>
+                                    </ul>
+                                    <div class="card-block">
+                                        <button type="button" class="btn btn-block btn-danger" data-bind="click: $parent.disconnect, visible: !isClosed()">End Chat</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- No chats message -->
+                <!-- ko if: conversations().length == 0 -->
+                <div class="row" style="display: none;" data-bind="visible: conversations().length == 0">
+                    <div class="col-sm-12">
+                        <div class="empty-space bg-icon">
+                            <i class="md-comments"></i>
+                            <p>There are currently no active chats</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
             </div>
-            <!-- /ko -->
         </div>
-    </div>
+    }
 </div>
 
-
-<script type="text/javascript">
+@if (Model.AccountStatus == AccountStatusType.Paid || Model.AccountStatus == AccountStatusType.Trial)
+{
+    <script type="text/javascript">
 
     $(document).ready(function () {
 
@@ -185,19 +197,21 @@
         });
     });
 
-</script>
+    </script>
 
-@section css
-{
-    @Styles.Render("~/bundles/css/chatroom")
-}
+    @section css
+    {
+        @Styles.Render("~/bundles/css/chatroom")
+    }
 
-@section js
-{
-    @Scripts.Render("~/bundles/js/chatroom")
-}
+    @section js
+    {
+        @Scripts.Render("~/bundles/js/chatroom")
+    }
 
-@section bottom_scripts{
-    <script src="~/remark/global/vendor/alertify/alertify.js"></script>
-    <script src="~/remark/global/js/Plugin/alertify.js"></script>
+    @section bottom_scripts{
+        <script src="~/remark/global/vendor/alertify/alertify.js"></script>
+        <script src="~/remark/global/js/Plugin/alertify.js"></script>
+    }
+
 }

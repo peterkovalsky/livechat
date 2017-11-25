@@ -27,12 +27,17 @@ namespace Kookaburra.Services.Chats
 
         public async Task ConnectOperatorAsync(string operatorIdentity, string operatorConnectionId)
         {
-            var operatorEntity = await _context.Operators
-               .Include(i => i.Account)
-               .Where(o => o.Identifier == operatorIdentity)
-               .SingleOrDefaultAsync();
+            var accountStatus = await _accountService.CheckAccountAsync(operatorIdentity);
 
-            _chatSession.AddOrUpdateOperator(operatorEntity.Id, operatorEntity.Identifier, operatorEntity.FirstName, operatorEntity.Account.Key, operatorConnectionId);
+            if (accountStatus == AccountStatusType.Paid || accountStatus == AccountStatusType.Trial)
+            {
+                var operatorEntity = await _context.Operators
+                   .Include(i => i.Account)
+                   .Where(o => o.Identifier == operatorIdentity)
+                   .SingleOrDefaultAsync();
+
+                _chatSession.AddOrUpdateOperator(operatorEntity.Id, operatorEntity.Identifier, operatorEntity.FirstName, operatorEntity.Account.Key, operatorConnectionId);
+            }
         }
 
         public async Task<List<ConversationResponse>> ResumeOperatorAsync(string operatorIdentity)
@@ -78,12 +83,18 @@ namespace Kookaburra.Services.Chats
 
         public async Task<CurrentChatsResponse> GetCurrentChatsAsync(string operatorIdentity)
         {
+            var currentChats = new List<ChatInfoResponse>();
+
             var operatorSession = _chatSession.GetOperatorByIdentity(operatorIdentity);
             var account = await _accountService.GetAccountForOperatorAsync(operatorIdentity);
 
+            if (operatorSession != null)
+            {
+                currentChats = operatorSession.Visitors.Select(v => new ChatInfoResponse { VisitorSessionId = v.SessionId }).ToList();
+            }
             return new CurrentChatsResponse
             {
-                CurrentChats = operatorSession.Visitors.Select(v => new ChatInfoResponse { VisitorSessionId = v.SessionId }).ToList(),
+                CurrentChats = currentChats,
                 UnreadMessages = await _context.OfflineMessages
                                          .Where(om =>
                                                 om.Visitor.Account.Key == account.Key

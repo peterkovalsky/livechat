@@ -15,7 +15,7 @@ namespace Kookaburra.Domain.Model
 
         public DateTime SignUpDate { get; set; }
 
-        public DateTime TrialExpiryDate { get; set; }
+        public int TrialPeriodDays { get; set; }        
 
         [StringLength(50)]
         public string Key { get; set; }

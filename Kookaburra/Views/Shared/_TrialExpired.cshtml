@@ -1,0 +1,15 @@
+﻿@model Kookaburra.Models.Account.TrialExpiredViewModel
+
+<div class="alert dark alert-danger alert-icon" role="alert">  
+    <i class="icon wb-bell" aria-hidden="true"></i>
+    <h4>Your trial has expired</h4>
+    <p>
+        Dear @(Model.Name), your @(Model.TrialPeriodDays) days trial has expired. Please upgrade to a paid plan in order to continue to use Kookaburra Chat.
+    </p>
+    <p>
+        In the mean time your live chat widget will work in offline mode only.
+    </p>
+    <p class="m-t-15">
+        <a class="btn btn-success btn-inverse btn-outline" href="#">Upgrade To Paid Plan</a>     
+    </p>
+</div>

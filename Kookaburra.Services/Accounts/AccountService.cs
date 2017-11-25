@@ -27,7 +27,7 @@ namespace Kookaburra.Services.Accounts
                     Website = request.Website,
                     SignUpDate = DateTime.UtcNow,
                     IsTrial = true,
-                    TrialExpiryDate = DateTime.UtcNow.AddDays(request.TrialPeriodDays),
+                    TrialPeriodDays = request.TrialPeriodDays,
                     Operators = new List<Operator> { new Operator
                     {
                         FirstName = request.ClientName,
@@ -39,6 +39,29 @@ namespace Kookaburra.Services.Accounts
             });
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<AccountStatusType> CheckAccountAsync(string operatorIdentity)
+        {
+            var account = await GetAccountForOperatorAsync(operatorIdentity);
+            var trialExpiryDate = account.SignUpDate.AddDays(account.TrialPeriodDays);
+
+            // trial
+            if (account.IsTrial)
+            {
+                if (trialExpiryDate >= DateTime.UtcNow)
+                {
+                    return AccountStatusType.Trial;
+                }
+                else
+                {
+                    return AccountStatusType.TrialExpired;
+                }
+            }
+            else // paid
+            {
+                return AccountStatusType.Paid;
+            }          
         }
 
         public async Task<Account> GetAccountAsync(string accountKey)
