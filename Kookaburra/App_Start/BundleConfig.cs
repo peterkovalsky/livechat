@@ -48,9 +48,10 @@ namespace Kookaburra
             );
 
             bundles.Add(new ScriptBundle("~/bundles/js/dashboard")
-             .Include("~/Scripts/site.js")
-             .Include("~/Scripts/moment-with-locales.min.js")         
-             .Include("~/Scripts/kookaburra/dashboard.js")
+                .Include("~/Scripts/moment-with-locales.min.js")
+                .Include("~/Scripts/chart.min.js")            
+                .Include("~/Scripts/site.js")
+                .Include("~/Scripts/kookaburra/dashboard.js")
          );
 
             bundles.Add(new ScriptBundle("~/bundles/js/offlinemessage")

@@ -19,6 +19,8 @@ namespace Kookaburra.Models.Home
         public AccountStatusType AccountStatus { get; set; }
 
         public TrialExpiredViewModel TrialExpiredViewModel { get; set; }
+
+        public ChatsPerDayWidgetViewModel ChatsPerDayWidget { get; set; }
     }
 
     public class LiveChatViewModel

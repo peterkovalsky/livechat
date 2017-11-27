@@ -78,6 +78,11 @@
                 </div>
             </div>
            
+            <div class="row">
+                <div class="col-sm-12">
+                    <canvas id="chats-per-day" width="400" height="400"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -122,7 +127,16 @@
         var dashboardViewModel = new DashboardViewModel();
         ko.applyBindings(dashboardViewModel, document.getElementById("dashboard"));
 
-        dashboardViewModel.init();   
+        dashboardViewModel.init();
+
+        // chart widget
+        var ctx = document.getElementById("chats-per-day");
+
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: options
+        });
     });
 
 </script>

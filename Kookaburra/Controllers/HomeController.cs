@@ -3,6 +3,7 @@ using Kookaburra.Domain.Common;
 using Kookaburra.Models.Account;
 using Kookaburra.Models.Home;
 using Kookaburra.Services.Accounts;
+using Kookaburra.Services.Chats;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
@@ -25,12 +26,15 @@ namespace Kookaburra.Controllers
                 _userManager = value;
             }
         }
-        private ApplicationUserManager _userManager;
-        private readonly IAccountService _accountService;            
 
-        public HomeController(IAccountService accountService)
+        private ApplicationUserManager _userManager;
+        private readonly IAccountService _accountService;
+        private readonly IChatService _chatService;
+
+        public HomeController(IAccountService accountService, IChatService chatService)
         {
-            _accountService = accountService;             
+            _accountService = accountService;
+            _chatService = chatService;
         }
 
 
@@ -40,6 +44,7 @@ namespace Kookaburra.Controllers
         public async Task<ActionResult> Dashboard()
         {
             var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
+            var chatsPerDay = await _chatService.GetChatsPerDay(User.Identity.GetUserId(), 30);
 
             var model = new DashboardViewModel
             {            

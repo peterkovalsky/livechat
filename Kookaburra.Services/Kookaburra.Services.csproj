@@ -55,6 +55,7 @@
     <Compile Include="Chats\AvailableOperatorResponse.cs" />
     <Compile Include="Chats\ChatHistoryResponse.cs" />
     <Compile Include="Chats\ChatService.cs" />
+    <Compile Include="Chats\ChatsPerDayResponse.cs" />
     <Compile Include="Chats\ConversationResponse.cs" />
     <Compile Include="Chats\CurrentChatsResponse.cs" />
     <Compile Include="Chats\CurrentSessionResponse.cs" />

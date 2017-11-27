@@ -14,14 +14,32 @@ namespace Kookaburra.Services.Chats
     {
         private readonly KookaburraContext _context;
         private readonly IAccountService _accountService;
-       
+
 
         public ChatService(KookaburraContext context, IAccountService accountService)
         {
             _context = context;
-            _accountService = accountService;           
+            _accountService = accountService;
         }
-        
+
+
+        public async Task<List<ChatsPerDayResponse>> GetChatsPerDay(string operatorIdentity, int lastNumberOfDays)
+        {
+            var account = await _accountService.GetAccountForOperatorAsync(operatorIdentity);
+            var dateStart = DateTime.UtcNow.AddDays(-lastNumberOfDays);
+
+            return await (from chat in _context.Conversations
+                          where chat.TimeStarted >= dateStart &&
+                                chat.Operator.Account.Key == account.Key
+                          let dt = DbFunctions.TruncateTime(chat.TimeStarted)
+                          group chat by dt into g
+                          select new ChatsPerDayResponse
+                          {
+                              Day = g.Key.Value,
+                              TotalChats = g.Count()
+                          })
+                          .ToListAsync();
+        }
 
         public async Task<TranscriptResponse> GetTranscriptAsync(long conversationId, string operatorIdentity)
         {

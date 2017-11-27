@@ -6,6 +6,8 @@ namespace Kookaburra.Services.Chats
 {
     public interface IChatService
     {
+        Task<List<ChatsPerDayResponse>> GetChatsPerDay(string operatorIdentity, int lastNumberOfDays);
+
         Task<TranscriptResponse> GetTranscriptAsync(long conversationId, string operatorIdentity);
 
         Task<ChatHistoryResponse> GetChatHistoryAsync(TimeFilterType timeFilter, string operatorIdentity, Pagination pagination = null);
