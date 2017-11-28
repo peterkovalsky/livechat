@@ -1,5 +1,7 @@
 ﻿@model Kookaburra.Models.Home.DashboardViewModel
+
 @using Kookaburra.Services.Accounts;
+@using Newtonsoft.Json;
 
 <div id="dashboard" class="page dashboard">
     <div class="page-main">
@@ -132,10 +134,11 @@
         // chart widget
         var ctx = document.getElementById("chats-per-day");
 
+        var chatsPerDayData = @(JsonConvert.SerializeObject(Model.ChatsPerDayWidget));
         var myLineChart = new Chart(ctx, {
             type: 'line',
-            data: data,
-            options: options
+            data: chatsPerDayData,
+            options: []
         });
     });
 

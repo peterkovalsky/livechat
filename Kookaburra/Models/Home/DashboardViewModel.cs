@@ -20,7 +20,7 @@ namespace Kookaburra.Models.Home
 
         public TrialExpiredViewModel TrialExpiredViewModel { get; set; }
 
-        public ChatsPerDayWidgetViewModel ChatsPerDayWidget { get; set; }
+        public List<ChatsPerDayViewModel> ChatsPerDayWidget { get; set; }
     }
 
     public class LiveChatViewModel

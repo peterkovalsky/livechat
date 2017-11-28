@@ -1,4 +1,5 @@
-﻿using Kookaburra.Common;
+﻿using AutoMapper;
+using Kookaburra.Common;
 using Kookaburra.Domain.Common;
 using Kookaburra.Models.Account;
 using Kookaburra.Models.Home;
@@ -6,6 +7,7 @@ using Kookaburra.Services.Accounts;
 using Kookaburra.Services.Chats;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -52,8 +54,9 @@ namespace Kookaburra.Controllers
                 TrialExpiredViewModel = new TrialExpiredViewModel
                 {
                     Name = currentOperator.FirstName,
-                    TrialPeriodDays = currentOperator.Account.TrialPeriodDays
-                }
+                    TrialPeriodDays = currentOperator.Account.TrialPeriodDays,                    
+                },
+                ChatsPerDayWidget = Mapper.Map<List<ChatsPerDayViewModel>>(chatsPerDay)
             };
 
             return View(model);

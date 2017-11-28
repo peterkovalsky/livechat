@@ -2,7 +2,7 @@
 
 namespace Kookaburra.Models.Home
 {
-    public class ChatsPerDayWidgetViewModel
+    public class ChatsPerDayViewModel
     {
         public DateTime Day { get; set; }
 
