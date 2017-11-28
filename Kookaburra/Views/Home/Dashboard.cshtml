@@ -35,19 +35,19 @@
                                 <i class="icon wb-envelope"></i>
                             </button>
                             <span class="m-l-15 font-weight-400">NEW OFFLINE MESSAGES</span>
-                            <div class="content-text text-xs-center m-b-0">                            
-                                <span class="font-size-40 font-weight-100" data-bind="text: newOfflineMessages"></span>                                
+                            <div class="content-text text-xs-center m-b-0">
+                                <span class="font-size-40 font-weight-100" data-bind="text: newOfflineMessages"></span>
                             </div>
                         </div>
                     </div>
-                </div>  
-                
+                </div>
+
             </div>
 
-          
+
             <div class="row" data-bind="visible: currentChats().length > 0">
                 <div class="col-sm-6">
-                    <div class="panel panel-bordered">                     
+                    <div class="panel panel-bordered">
                         <div class="panel-body">
                             <table class="table">
                                 <thead>
@@ -59,10 +59,10 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody data-bind="foreach: currentChats">                                  
+                                <tbody data-bind="foreach: currentChats">
                                     <tr>
-                                        <td data-bind="if: countryCode() != null">                                          
-                                            <span data-bind="attr: {class: 'flag-icon flag-icon-' + countryCode().toLowerCase()}"></span>                                           
+                                        <td data-bind="if: countryCode() != null">
+                                            <span data-bind="attr: {class: 'flag-icon flag-icon-' + countryCode().toLowerCase()}"></span>
                                         </td>
                                         <td data-bind="text: visitorName"></td>
                                         <td data-bind="text: startedChatTime"></td>
@@ -72,19 +72,24 @@
                                         <td>
                                             <a data-bind="attr: {'href': '/chats/' + chatId()}" class="btn btn-squared btn-outline btn-default btn-sm">Reply</a>
                                         </td>
-                                    </tr>                                      
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-           
+
             <div class="row">
                 <div class="col-sm-12">
-                    <canvas id="chats-per-day" width="400" height="400"></canvas>
+                    <div class="panel panel-bordered">
+                        <div class="panel-body">
+                            <canvas id="chats-per-day" width="400" height="100"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -134,11 +139,62 @@
         // chart widget
         var ctx = document.getElementById("chats-per-day");
 
-        var chatsPerDayData = @(JsonConvert.SerializeObject(Model.ChatsPerDayWidget));
+        window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)'
+        };
+
+        var chatsPerDayData = JSON.parse('@(Html.Raw(JsonConvert.SerializeObject(Model.ChatsPerDayWidget)))');
+
+        var dailyChats = [];
+        var daysLabels = [];
+
+        if (chatsPerDayData != null) {
+            for (var item of chatsPerDayData) {
+                dailyChats.push(item.chats);
+            }
+
+            for (var item of chatsPerDayData) {
+                var utcTime = parseInt(item.day, 10) || 0;
+                var date = moment(utcTime);               
+
+                daysLabels.push(date.format('lll'));
+            }
+        }
+
         var myLineChart = new Chart(ctx, {
-            type: 'line',
-            data: chatsPerDayData,
-            options: []
+            type: 'line',           
+            data: {
+                labels: daysLabels,
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: window.chartColors.red,
+                    borderColor: window.chartColors.red,
+                    fill: false,
+                    data: dailyChats,
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Chart.js Line Chart - Logarithmic'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                    }],
+                    yAxes: [{
+                        display: true,
+                        type: 'logarithmic',
+                    }]
+                }
+            }
         });
     });
 

@@ -8,6 +8,7 @@ using Kookaburra.Services.Chats;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -16,7 +17,7 @@ namespace Kookaburra.Controllers
 {
     [Authorize]
     public class HomeController : Controller
-    {              
+    {
         public ApplicationUserManager UserManager
         {
             get
@@ -49,23 +50,27 @@ namespace Kookaburra.Controllers
             var chatsPerDay = await _chatService.GetChatsPerDay(User.Identity.GetUserId(), 30);
 
             var model = new DashboardViewModel
-            {            
+            {
                 AccountStatus = await _accountService.CheckAccountAsync(User.Identity.GetUserId()),
                 TrialExpiredViewModel = new TrialExpiredViewModel
                 {
                     Name = currentOperator.FirstName,
-                    TrialPeriodDays = currentOperator.Account.TrialPeriodDays,                    
+                    TrialPeriodDays = currentOperator.Account.TrialPeriodDays,
                 },
-                ChatsPerDayWidget = Mapper.Map<List<ChatsPerDayViewModel>>(chatsPerDay)
+                ChatsPerDayWidget = chatsPerDay.Select(c => new ChatsPerDayViewModel
+                {
+                    Day = c.Day.JsDateTime(),
+                    TotalChats = c.TotalChats
+                }).ToList()
             };
 
             return View(model);
-        }   
+        }
 
         [Route("preview")]
         public async Task<ActionResult> Preview()
         {
-            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());            
+            var currentOperator = await _accountService.GetOperatorAsync(User.Identity.GetUserId());
 
             var model = new PreviewViewModel
             {
