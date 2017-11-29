@@ -2,7 +2,7 @@
 
 namespace Kookaburra.Models.Home
 {
-    public class ChatsPerDayViewModel
+    public class DailyChatsViewModel
     {
         [JsonProperty("day")]
         public double Day { get; set; }

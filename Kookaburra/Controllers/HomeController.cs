@@ -51,13 +51,14 @@ namespace Kookaburra.Controllers
 
             var model = new DashboardViewModel
             {
-                AccountStatus = await _accountService.CheckAccountAsync(User.Identity.GetUserId()),
+                AccountStatus = currentOperator.Account.AccountStatus,
+                TrialDaysLeft = currentOperator.Account.TrialDaysLeft,
                 TrialExpiredViewModel = new TrialExpiredViewModel
                 {
                     Name = currentOperator.FirstName,
                     TrialPeriodDays = currentOperator.Account.TrialPeriodDays,
                 },
-                ChatsPerDayWidget = chatsPerDay.Select(c => new ChatsPerDayViewModel
+                DailyChats = chatsPerDay.Select(c => new DailyChatsViewModel
                 {
                     Day = c.Day.JsDateTime(),
                     TotalChats = c.TotalChats

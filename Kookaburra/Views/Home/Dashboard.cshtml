@@ -1,6 +1,6 @@
 ﻿@model Kookaburra.Models.Home.DashboardViewModel
 
-@using Kookaburra.Services.Accounts;
+@using Kookaburra.Domain.Common;
 @using Newtonsoft.Json;
 
 <div id="dashboard" class="page dashboard">
@@ -14,13 +14,13 @@
 
             <div class="row">
 
-                <div class="col-xl-3 col-md-6 col-xs-12 info-panel">
+                <div class="col-xl-4 col-md-6 col-xs-12 info-panel">
                     <div class="card card-shadow">
                         <div class="card-block bg-white p-20">
-                            <button type="button" class="btn btn-floating btn-sm btn-danger">
+                            <button type="button" class="btn btn-floating btn-sm btn-success">
                                 <i class="icon wb-chat"></i>
                             </button>
-                            <span class="m-l-15 font-weight-400">CHATS</span>
+                            <span class="m-l-15 font-weight-400">LIVE CHATS</span>
                             <div class="content-text text-xs-center m-b-0">
                                 <span class="font-size-40 font-weight-100" data-bind="text: totalCurrentChats"></span>
                             </div>
@@ -28,13 +28,13 @@
                     </div>
                 </div>
 
-                <div class="col-xl-3 col-md-6 col-xs-12 info-panel">
+                <div class="col-xl-4 col-md-6 col-xs-12 info-panel">
                     <div class="card card-shadow">
                         <div class="card-block bg-white p-20">
-                            <button type="button" class="btn btn-floating btn-sm btn-warning">
+                            <button type="button" class="btn btn-floating btn-sm btn-danger">
                                 <i class="icon wb-envelope"></i>
                             </button>
-                            <span class="m-l-15 font-weight-400">NEW OFFLINE MESSAGES</span>
+                            <span class="m-l-15 font-weight-400">UNREAD MESSAGES</span>
                             <div class="content-text text-xs-center m-b-0">
                                 <span class="font-size-40 font-weight-100" data-bind="text: newOfflineMessages"></span>
                             </div>
@@ -42,6 +42,22 @@
                     </div>
                 </div>
 
+                @if (Model.AccountStatus == AccountStatusType.Trial)
+                {
+                <div class="col-xl-4 col-md-6 col-xs-12 info-panel">
+                    <div class="card card-shadow">
+                        <div class="card-block bg-white p-20">
+                            <button type="button" class="btn btn-floating btn-sm btn-warning">
+                                <i class="icon wb-calendar"></i>
+                            </button>
+                            <span class="m-l-15 font-weight-400">TRIAL DAYS LEFT</span>
+                            <div class="content-text text-xs-center m-b-0">
+                                <span class="font-size-40 font-weight-100">@Model.TrialDaysLeft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
             </div>
 
 
@@ -84,7 +100,7 @@
                 <div class="col-sm-12">
                     <div class="panel panel-bordered">
                         <div class="panel-body">
-                            <canvas id="chats-per-day" width="400" height="100"></canvas>
+                            <canvas id="chats-per-day" width="400" height="70"></canvas>
                         </div>
                     </div>
                 </div>
@@ -106,7 +122,7 @@
     <script>(function () { var w = window; var ic = w.Intercom; if (typeof ic === "function") { ic('reattach_activator'); ic('update', intercomSettings); } else { var d = document; var i = function () { i.c(arguments) }; i.q = []; i.c = function (args) { i.q.push(args) }; w.Intercom = i; function l() { var s = d.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://widget.intercom.io/widget/a79mpbxp'; var x = d.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); } if (w.attachEvent) { w.attachEvent('onload', l); } else { w.addEventListener('load', l, false); } } })()</script>*@
 
 
-<!--Start of Zendesk Chat Script-->
+<!--Start of Zendesk Chat Script
 <script type="text/javascript">
     window.$zopim || (function (d, s) {
         var z = $zopim = function (c) { z._.push(c) }, $ = z.s =
@@ -149,7 +165,7 @@
             grey: 'rgb(201, 203, 207)'
         };
 
-        var chatsPerDayData = JSON.parse('@(Html.Raw(JsonConvert.SerializeObject(Model.ChatsPerDayWidget)))');
+        var chatsPerDayData = JSON.parse('@(Html.Raw(JsonConvert.SerializeObject(Model.DailyChats)))');
 
         var dailyChats = [];
         var daysLabels = [];
@@ -163,7 +179,7 @@
                 var utcTime = parseInt(item.day, 10) || 0;
                 var date = moment(utcTime);               
 
-                daysLabels.push(date.format('lll'));
+                daysLabels.push(date.format('D MMM'));
             }
         }
 
@@ -171,27 +187,28 @@
             type: 'line',           
             data: {
                 labels: daysLabels,
-                datasets: [{
-                    label: "My First dataset",
+                datasets: [{                   
                     backgroundColor: window.chartColors.red,
-                    borderColor: window.chartColors.red,
-                    fill: false,
+                    borderColor: window.chartColors.red,                    
+                    backgroundColor: "rgba(255,99,132,0.2)",
                     data: dailyChats,
                 }]
             },
             options: {
+                legend: {
+                    display: false
+                },
                 responsive: true,
                 title: {
                     display: true,
-                    text: 'Chart.js Line Chart - Logarithmic'
+                    text: 'Daily chats for the last @(Model.DailyChats.Count()) days'
                 },
                 scales: {
                     xAxes: [{
                         display: true,
                     }],
                     yAxes: [{
-                        display: true,
-                        type: 'logarithmic',
+                        display: true                        
                     }]
                 }
             }

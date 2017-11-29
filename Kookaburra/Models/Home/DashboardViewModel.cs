@@ -1,5 +1,5 @@
-﻿using Kookaburra.Models.Account;
-using Kookaburra.Services.Accounts;
+﻿using Kookaburra.Domain.Common;
+using Kookaburra.Models.Account;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -20,7 +20,9 @@ namespace Kookaburra.Models.Home
 
         public TrialExpiredViewModel TrialExpiredViewModel { get; set; }
 
-        public List<ChatsPerDayViewModel> ChatsPerDayWidget { get; set; }
+        public List<DailyChatsViewModel> DailyChats { get; set; }
+
+        public int TrialDaysLeft { get; set; }
     }
 
     public class LiveChatViewModel

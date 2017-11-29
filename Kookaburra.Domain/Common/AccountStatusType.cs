@@ -1,4 +1,4 @@
-﻿namespace Kookaburra.Services.Accounts
+﻿namespace Kookaburra.Domain.Common
 {
     public enum AccountStatusType
     {

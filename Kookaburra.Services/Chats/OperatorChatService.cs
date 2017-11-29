@@ -27,9 +27,9 @@ namespace Kookaburra.Services.Chats
 
         public async Task ConnectOperatorAsync(string operatorIdentity, string operatorConnectionId)
         {
-            var accountStatus = await _accountService.CheckAccountAsync(operatorIdentity);
+            var account = await _accountService.GetAccountForOperatorAsync(operatorIdentity);
 
-            if (accountStatus == AccountStatusType.Paid || accountStatus == AccountStatusType.Trial)
+            if (account.AccountStatus == AccountStatusType.Paid || account.AccountStatus == AccountStatusType.Trial)
             {
                 var operatorEntity = await _context.Operators
                    .Include(i => i.Account)

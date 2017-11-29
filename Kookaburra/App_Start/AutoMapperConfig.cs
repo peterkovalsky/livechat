@@ -64,7 +64,7 @@ namespace Kookaburra.App_Start
                 cfg.CreateMap<OfflineViewModel, OfflineMessage>();
                 cfg.CreateMap<OfflineViewModel, Visitor>();
 
-                cfg.CreateMap<ChatsPerDayResponse, ChatsPerDayViewModel>();                
+                cfg.CreateMap<ChatsPerDayResponse, DailyChatsViewModel>();                
             });
         }
     }

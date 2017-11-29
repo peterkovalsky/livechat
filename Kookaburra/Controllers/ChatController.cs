@@ -52,7 +52,7 @@ namespace Kookaburra.Controllers
                 OperatorName = currentOperator.FirstName,
                 OperatorId = currentOperator.Id,
                 ChatId = id,
-                AccountStatus = await _accountService.CheckAccountAsync(User.Identity.GetUserId()),
+                AccountStatus = currentOperator.Account.AccountStatus,
                 TrialExpiredViewModel = new TrialExpiredViewModel
                 {
                     Name = currentOperator.FirstName,

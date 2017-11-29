@@ -301,7 +301,7 @@
     <Compile Include="Models\History\HistoryViewModel.cs" />
     <Compile Include="Models\History\TranscriptViewModel.cs" />
     <Compile Include="Models\History\ConversationItemViewModel.cs" />
-    <Compile Include="Models\Home\ChatsPerDayWidgetViewModel.cs" />
+    <Compile Include="Models\Home\DailyChatsViewModel.cs" />
     <Compile Include="Models\Home\DashboardViewModel.cs" />
     <Compile Include="Models\Home\PreviewViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />

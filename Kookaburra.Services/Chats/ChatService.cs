@@ -25,10 +25,12 @@ namespace Kookaburra.Services.Chats
 
         public async Task<List<ChatsPerDayResponse>> GetChatsPerDay(string operatorIdentity, int lastNumberOfDays)
         {
+            var chatsInPeriod = new List<ChatsPerDayResponse>();
+
             var account = await _accountService.GetAccountForOperatorAsync(operatorIdentity);
             var dateStart = DateTime.UtcNow.AddDays(-lastNumberOfDays);
 
-            return await (from chat in _context.Conversations
+            var chatsPerDay = await (from chat in _context.Conversations
                           where chat.TimeStarted >= dateStart &&
                                 chat.Operator.Account.Key == account.Key
                           let dt = DbFunctions.TruncateTime(chat.TimeStarted)
@@ -39,6 +41,22 @@ namespace Kookaburra.Services.Chats
                               TotalChats = g.Count()
                           })
                           .ToListAsync();
+
+            for(int i=0; i<lastNumberOfDays; i++)
+            {
+                var now = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+                var day = now.AddDays(-i);
+                var chats = chatsPerDay.FirstOrDefault(c => c.Day == day);
+
+                if (chats == null)
+                {
+                    chats = new ChatsPerDayResponse { Day = day, TotalChats = 0 };
+                }
+
+                chatsInPeriod.Add(chats);
+            }
+
+            return chatsInPeriod.OrderBy(c => c.Day).ToList();
         }
 
         public async Task<TranscriptResponse> GetTranscriptAsync(long conversationId, string operatorIdentity)

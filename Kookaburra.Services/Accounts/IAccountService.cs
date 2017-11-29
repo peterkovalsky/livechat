@@ -5,9 +5,7 @@ namespace Kookaburra.Services.Accounts
 {
     public interface IAccountService
     {
-        Task SignUpAsync(SignUpRequest request);
-
-        Task<AccountStatusType> CheckAccountAsync(string accountKey);
+        Task SignUpAsync(SignUpRequest request);        
 
         Task<Account> GetAccountAsync(string accountKey);
 

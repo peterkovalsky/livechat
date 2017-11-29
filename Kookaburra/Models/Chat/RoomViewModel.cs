@@ -1,5 +1,5 @@
-﻿using Kookaburra.Models.Account;
-using Kookaburra.Services.Accounts;
+﻿using Kookaburra.Domain.Common;
+using Kookaburra.Models.Account;
 
 namespace Kookaburra.ViewModels.Chat
 {
