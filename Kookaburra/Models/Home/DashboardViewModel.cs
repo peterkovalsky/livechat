@@ -23,6 +23,8 @@ namespace Kookaburra.Models.Home
         public List<DailyChatsViewModel> DailyChats { get; set; }
 
         public int TrialDaysLeft { get; set; }
+
+        public int TotalChats { get; set; }
     }
 
     public class LiveChatViewModel

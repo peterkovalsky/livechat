@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                @if (Model.AccountStatus == AccountStatusType.Trial)
+                @if (Model.AccountStatus == AccountStatusType.Trial || Model.AccountStatus == AccountStatusType.TrialExpired)
                 {
                 <div class="col-xl-4 col-md-6 col-xs-12 info-panel">
                     <div class="card card-shadow">
@@ -50,13 +50,29 @@
                             <button type="button" class="btn btn-floating btn-sm btn-warning">
                                 <i class="icon wb-calendar"></i>
                             </button>
-                            <span class="m-l-15 font-weight-400">TRIAL DAYS LEFT</span>
+                            <span class="m-l-15 font-weight-400">DAYS OF TRIAL</span>
                             <div class="content-text text-xs-center m-b-0">
                                 <span class="font-size-40 font-weight-100">@Model.TrialDaysLeft</span>
                             </div>
                         </div>
                     </div>
                 </div>
+                }
+                else
+                {
+                    <div class="col-xl-4 col-md-6 col-xs-12 info-panel">
+                        <div class="card card-shadow">
+                            <div class="card-block bg-white p-20">
+                                <button type="button" class="btn btn-floating btn-sm btn-info">
+                                    <i class="icon wb-stats-bars"></i>
+                                </button>
+                                <span class="m-l-15 font-weight-400">TOTAL CHATS FOR LAST @(Model.DailyChats.Count()) DAYS</span>
+                                <div class="content-text text-xs-center m-b-0">
+                                    <span class="font-size-40 font-weight-100">@Model.TotalChats</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
 
@@ -100,7 +116,7 @@
                 <div class="col-sm-12">
                     <div class="panel panel-bordered">
                         <div class="panel-body">
-                            <canvas id="chats-per-day" width="400" height="70"></canvas>
+                            <canvas id="chats-per-day" width="400" height="90"></canvas>
                         </div>
                     </div>
                 </div>

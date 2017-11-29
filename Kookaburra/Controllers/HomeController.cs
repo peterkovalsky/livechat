@@ -53,6 +53,7 @@ namespace Kookaburra.Controllers
             {
                 AccountStatus = currentOperator.Account.AccountStatus,
                 TrialDaysLeft = currentOperator.Account.TrialDaysLeft,
+                TotalChats = chatsPerDay.Select(c => c.TotalChats).Sum(),
                 TrialExpiredViewModel = new TrialExpiredViewModel
                 {
                     Name = currentOperator.FirstName,
