@@ -233,7 +233,7 @@ namespace Kookaburra.Controllers
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return Redirect("/dashboard");
+                    return Redirect("/installation");
                 }
                 AddErrors(result);
             }
