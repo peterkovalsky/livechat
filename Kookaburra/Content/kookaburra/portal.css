@@ -151,3 +151,57 @@ input[type="checkbox"].input-validation-error {
     font-size: 18px;
     margin-top: -110px;
 }
+
+.navbar-brand-logo {   
+    height: 50px;
+    margin-top: -14px;
+}
+
+.site-navbar {
+    background-color: #37A9B7;
+}
+
+.btn-chats {
+  color: #fff;
+  background-color: #86759F;
+  border-color: #86759F;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.btn-chats:hover {
+  color: #fff;
+  background-color: #369b6f;
+  border-color: #34936a;
+}
+
+.btn-chats:focus, .btn-chats.focus {
+  color: #fff;
+  background-color: #369b6f;
+  border-color: #34936a;
+}
+
+.btn-chats:active, .btn-chats.active, .open > .btn-chats.dropdown-toggle {
+  color: #fff;
+  background-color: #369b6f;
+  border-color: #34936a;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+.btn-chats:active:hover, .btn-chats:active:focus, .btn-chats:active.focus, .btn-chats.active:hover, .btn-chats.active:focus, .btn-chats.active.focus, .open > .btn-chats.dropdown-toggle:hover, .open > .btn-chats.dropdown-toggle:focus, .open > .btn-chats.dropdown-toggle.focus {
+  color: #fff;
+  background-color: #2d805c;
+  border-color: #226246;
+}
+
+.btn-chats.disabled:focus, .btn-chats.disabled.focus, .btn-chats:disabled:focus, .btn-chats:disabled.focus {
+  background-color: #86759F;
+  border-color: #86759F;
+}
+
+.btn-chats.disabled:hover, .btn-chats:disabled:hover {
+  background-color: #86759F;
+  border-color: #86759F;
+}

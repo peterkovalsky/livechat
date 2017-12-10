@@ -103,3 +103,7 @@ input[type="checkbox"].input-validation-error {
 .brand-img {
     height: 75px;
 }
+
+.page-sign-up:before {
+    background-image: url(/images/sign-up.jpg);
+}
