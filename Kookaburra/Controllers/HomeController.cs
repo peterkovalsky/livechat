@@ -81,5 +81,19 @@ namespace Kookaburra.Controllers
 
             return View(model);
         }
+
+        [Route("payment")]
+        public async Task<ActionResult> Payment()
+        {
+            var account = await _accountService.GetAccountForOperatorAsync(User.Identity.GetUserId());
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.IsPaid = account.AccountStatus == AccountStatusType.Paid;
+
+            return View();
+        }
     }
 }

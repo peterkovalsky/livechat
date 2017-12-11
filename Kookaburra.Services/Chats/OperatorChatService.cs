@@ -99,7 +99,8 @@ namespace Kookaburra.Services.Chats
                                          .Where(om =>
                                                 om.Visitor.Account.Key == account.Key
                                             && !om.IsRead)
-                                         .CountAsync()
+                                         .CountAsync(),
+                IsPaid = account.AccountStatus == AccountStatusType.Paid
             };
         }
 

@@ -3,6 +3,7 @@
     var self = this; 
     self.activeChats = ko.observableArray([]);
     self.unreadMessages = ko.observable(0);
+    self.isPaid = ko.observable(true);
 
     self.init = function () {
         self.registerCallbackFunctions();
@@ -23,6 +24,7 @@
                 }
 
                 self.unreadMessages(result.unreadMessages);
+                self.isPaid(result.isPaid);
             });
         });
 

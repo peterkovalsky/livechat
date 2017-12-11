@@ -7,6 +7,8 @@ namespace Kookaburra.Services.Chats
         public List<ChatInfoResponse> CurrentChats { get; set; }
 
         public int UnreadMessages { get; set; }
+
+        public bool IsPaid { get; set; }
     }
 
     public class ChatInfoResponse

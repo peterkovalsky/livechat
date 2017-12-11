@@ -10,6 +10,9 @@ namespace Kookaburra.Models.Chat
 
         [JsonProperty("unreadMessages")]
         public int UnreadMessages { get; set; }
+
+        [JsonProperty("isPaid")]
+        public bool IsPaid { get; set; }
     }
 
     public class ChatInfo

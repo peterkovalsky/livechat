@@ -41,6 +41,14 @@
                             <span class="site-menu-title">Preview</span>
                         </a>
                     </li>
+                    <!-- ko if: !isPaid() -->
+                    <li class="site-menu-item">
+                        <a class="animsition-link" href="/payment">
+                            <i class="site-menu-icon wb-chat-text" aria-hidden="true"></i>
+                            <span class="site-menu-title">Upgrade To Paid</span>
+                        </a>
+                    </li>
+                    <!-- /ko -->
                     <li class="site-menu-item has-sub">
                         <a class="animsition-link" href="/installation">
                             <i class="site-menu-icon wb-settings" aria-hidden="true"></i>
