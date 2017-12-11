@@ -52,7 +52,7 @@
                             </button>
                             <span class="m-l-15 font-weight-400">TRIAL PERIOD</span>
                             <div class="content-text text-xs-center m-b-0">
-                                <span class="font-size-40 font-weight-100">@Model.TrialDaysLeft</span>
+                                <span class="font-size-40 font-weight-100">@Model.TrialDaysLeft days</span>
                             </div>
                         </div>
                     </div>
@@ -76,42 +76,6 @@
                 }
             </div>
 
-
-            @*<div class="row" data-bind="visible: currentChats().length > 0">
-                <div class="col-sm-6">
-                    <div class="panel panel-bordered">
-                        <div class="panel-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Country</th>
-                                        <th>Visitor</th>
-                                        <th>Started</th>
-                                        <th>Page</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody data-bind="foreach: currentChats">
-                                    <tr>
-                                        <td data-bind="if: countryCode() != null">
-                                            <span data-bind="attr: {class: 'flag-icon flag-icon-' + countryCode().toLowerCase()}"></span>
-                                        </td>
-                                        <td data-bind="text: visitorName"></td>
-                                        <td data-bind="text: startedChatTime"></td>
-                                        <td>
-                                            <a data-bind="attr: {'href': page}" target="_blank">Visited Page</a>
-                                        </td>
-                                        <td>
-                                            <a data-bind="attr: {'href': '/chats/' + chatId()}" class="btn btn-squared btn-outline btn-default btn-sm">Reply</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-
             <div class="row">
                 <div class="col-sm-12">
                     <div class="panel panel-bordered">
@@ -125,32 +89,6 @@
         </div>
     </div>
 </div>
-
-
-@*<script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({ c: 'cccc4c27-504d-46fb-b1ec-f75045fc5bda', f: true }); done = true; } }; })();</script>*@
-
-
-@*<script>
-        window.intercomSettings = {
-            app_id: "a79mpbxp"
-        };
-    </script>
-    <script>(function () { var w = window; var ic = w.Intercom; if (typeof ic === "function") { ic('reattach_activator'); ic('update', intercomSettings); } else { var d = document; var i = function () { i.c(arguments) }; i.q = []; i.c = function (args) { i.q.push(args) }; w.Intercom = i; function l() { var s = d.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://widget.intercom.io/widget/a79mpbxp'; var x = d.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); } if (w.attachEvent) { w.attachEvent('onload', l); } else { w.addEventListener('load', l, false); } } })()</script>*@
-
-
-<!--Start of Zendesk Chat Script
-<script type="text/javascript">
-    window.$zopim || (function (d, s) {
-        var z = $zopim = function (c) { z._.push(c) }, $ = z.s =
-            d.createElement(s), e = d.getElementsByTagName(s)[0]; z.set = function (o) {
-                z.set.
-                    _.push(o)
-            }; z._ = []; z.set._ = []; $.async = !0; $.setAttribute("charset", "utf-8");
-        $.src = "https://v2.zopim.com/?59v8uwGim2DoAnn0UWJayCwa28eoTrXE"; z.t = +new Date; $.
-            type = "text/javascript"; e.parentNode.insertBefore($, e)
-    })(document, "script");
-</script>
-<!--End of Zendesk Chat Script-->
 
 
 @section js
@@ -224,7 +162,11 @@
                         display: true,
                     }],
                     yAxes: [{
-                        display: true                        
+                        display: true,
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
                     }]
                 }
             }

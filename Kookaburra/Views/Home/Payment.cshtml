@@ -1,9 +1,5 @@
 ﻿
-<div class="page">
-    <div class="page-header">
-        <h1 class="page-title">Payment</h1>
-    </div>
-
+<div class="page"> 
     <div class="page-content">
 
         @if (!ViewBag.IsPaid)
@@ -12,7 +8,7 @@
             <div class="col-md-6 offset-md-3">
                 <div class="panel">
                     <div class="panel-body container-fluid">
-                        <div class="pricing-list text-xs-left">
+                        <div class="pricing-list">
                             <div class="pricing-header bg-red-600">
                                 <div class="pricing-title">Essentials</div>
                                 <div class="pricing-price">
@@ -55,7 +51,7 @@
                                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                                     <input type="hidden" name="cmd" value="_s-xclick">
                                     <input type="hidden" name="hosted_button_id" value="JVKKNPH6JTRLG">
-                                    <input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                                    <input type="image" src="http://localhost:64410/images/subscribe.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
                                     <img alt="" border="0" src="https://www.paypalobjects.com/en_AU/i/scr/pixel.gif" width="1" height="1">
                                 </form>
 
