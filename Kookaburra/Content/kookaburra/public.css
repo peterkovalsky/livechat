@@ -7,8 +7,10 @@
     display: none;
 }
 
+textarea.input-validation-error:focus,
 textarea.input-validation-error,
-input.input-validation-error {
+input.input-validation-error,
+input.input-validation-error:focus {
     border: 1px solid #b94a48;
 }
 
@@ -20,15 +22,15 @@ input[type="checkbox"].input-validation-error {
     color: #b94a48;
 }
 
-    .validation-summary-errors ul {
-        padding-left: 0;
-        margin-top: 10px;
-    }
+.validation-summary-errors ul {
+    padding-left: 0;
+    margin-top: 10px;
+}
 
-        .validation-summary-errors ul li {
-            list-style: none;
-            text-align: center;
-        }
+.validation-summary-errors ul li {
+    list-style: none;
+    text-align: center;
+}
 
 .validation-summary-valid {
     display: none;
@@ -38,44 +40,40 @@ input[type="checkbox"].input-validation-error {
     height: 3.0rem;
 }
 
-.page-login:before { 
-    background-image: url("/images/login.jpg");
-}
-
-.page-login .panel {
+.panel {
     width: 400px;
     margin-bottom: 45px;
     background: #fff;
     border-radius: .286rem;
 }
 
-.page-login .panel .panel-body {
+.panel .panel-body {
     padding: 50px 40px 40px;
 }
 
-.page-login .panel .brand-text {
+.panel .brand-text {
     margin-top: 8px;
 }
 
-.page-login form {
+form {
     margin: 45px 0 30px;
 }
 
-.page-login form a {
+form a {
     margin-left: 20px;
 }
 
-.page-login form .form-material.floating + .page-login form .form-material.floating {
+form .form-material.floating + form .form-material.floating {
     margin-top: 30px;
 }
 
-.page-login form .form-material label {
+form .form-material label {
     color: #a3afb7;
     font-weight: 300;
 }
 
 @media (max-width: 479px) {
-    .page-login .page-content {
+    .page-content {
         padding: 30px 20px;
     }
 
@@ -84,16 +82,16 @@ input[type="checkbox"].input-validation-error {
         padding: 10px;
     }
 
-    .page-login .panel .panel-body {
+    .panel .panel-body {
         padding: 35px 25px 35px;
     }
 }
 
-.page-login.page-dark.layout-full {
+.page-dark.layout-full {
     color: #37474f;
 }
 
-.page-login.page-dark.layout-full .brand-text {
+.page-dark.layout-full .brand-text {
     font-size: 28px;
     color: #37474f;    
     font-family: 'Didact Gothic', sans-serif;
@@ -104,6 +102,21 @@ input[type="checkbox"].input-validation-error {
     height: 75px;
 }
 
+/* Login */
+.page-login:before {
+    background-image: url("/images/login.jpg");
+}
+
+/* Sign In */
 .page-sign-up:before {
     background-image: url(/images/sign-up.jpg);
+}
+
+/* Forgot Password */
+.page-forgot-password {
+  background-color: #f3f7f9;
+}
+
+.page-forgot-password p {
+  color: #a3afb7;
 }

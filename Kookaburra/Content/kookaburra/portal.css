@@ -157,9 +157,9 @@ input[type="checkbox"].input-validation-error {
     margin-top: -14px;
 }
 
-.site-navbar {
+/*.site-navbar {
     background-color: #37A9B7;
-}
+}*/
 
 .btn-chats {
   color: #fff;
@@ -204,4 +204,10 @@ input[type="checkbox"].input-validation-error {
 .btn-chats.disabled:hover, .btn-chats:disabled:hover {
   background-color: #86759F;
   border-color: #86759F;
+}
+
+.site-menu .tag {
+    padding: 3px 6px;
+    font-size: 75%;
+    font-weight: 500;
 }

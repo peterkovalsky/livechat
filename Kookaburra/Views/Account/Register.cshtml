@@ -1,7 +1,7 @@
 ﻿@model Kookaburra.Models.RegisterViewModel
 @{
     Layout = "~/Views/Shared/_LayoutPublic.cshtml";
-    ViewBag.BodyClass = "page-login page-sign-up";
+    ViewBag.BodyClass = "page-login page-sign-up page-dark site-menubar-unfold";
     ViewBag.Title = "Sign Up With Kookaburra Chat!";
 }
 
@@ -9,7 +9,7 @@
     <div class="panel">
         <div class="panel-body">
             <div class="brand">
-                <img class="brand-img" src="/images/logo-1.png" alt="...">
+                <img class="brand-img" src="/images/logo-main.png" alt="kookaburra">
                 <h2 class="brand-text">Kookaburra</h2>
             </div>
             @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "login", @class = "login-form", role = "form", autocomplete = "off" }))
