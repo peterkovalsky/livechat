@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Kookaburra.Email.Public.ForgotPassword
 {
-    class ForgotPassword
+    public class ForgotPassword : IEmailModel
     {
+        public string Email { get; set; }
+
+        public string ResetLink { get; set; }
     }
 }

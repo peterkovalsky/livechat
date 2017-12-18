@@ -27,6 +27,11 @@ namespace Kookaburra.Services
             _bcc = "it@kookaburra.chat";            
         }
 
+        public async Task SendForgorPasswordEmailAsync()
+        {
+
+        }
+
         public async Task SendSignUpWelcomeEmailAsync(string operatorIdentity)
         {
             var operatorObj = await _accountService.GetOperatorAsync(operatorIdentity);
