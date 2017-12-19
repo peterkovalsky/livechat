@@ -1,4 +1,5 @@
 ﻿using Kookaburra.Email;
+using Kookaburra.Email.Public.ForgotPassword;
 using Kookaburra.Email.Public.OfflineMessage;
 using Kookaburra.Email.Public.SignUpWelcome;
 using Kookaburra.Repository;
@@ -27,9 +28,15 @@ namespace Kookaburra.Services
             _bcc = "it@kookaburra.chat";            
         }
 
-        public async Task SendForgorPasswordEmailAsync()
+        public async Task SendForgorPasswordEmailAsync(string email, string token, string host)
         {
+            var model = new ForgotPassword
+            {
+                Email = email,
+                ResetLink = $"{host}/"
+            };
 
+            _mailer.SendEmail(_from, to, model);
         }
 
         public async Task SendSignUpWelcomeEmailAsync(string operatorIdentity)
