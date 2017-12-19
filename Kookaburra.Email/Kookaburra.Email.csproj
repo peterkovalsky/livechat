@@ -54,7 +54,7 @@
     <Compile Include="IMailer.cs" />
     <Compile Include="Mailer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Public\ForgotPassword\ForgotPassword.cs" />
+    <Compile Include="Public\ForgotPassword\ForgotPasswordEmail.cs" />
     <Compile Include="Public\OfflineMessage\OfflineMessageEmail.cs" />
     <Compile Include="Public\SignUpWelcome\SignUpWelcomeEmail.cs" />
   </ItemGroup>
@@ -71,7 +71,7 @@
     <EmbeddedResource Include="Public\OfflineMessage\OfflineMessageEmail.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Public\ForgotPassword\ForgotPassword.html" />
+    <EmbeddedResource Include="Public\ForgotPassword\ForgotPasswordEmail.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

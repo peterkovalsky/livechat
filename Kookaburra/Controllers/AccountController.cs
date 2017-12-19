@@ -17,12 +17,12 @@ namespace Kookaburra.Controllers
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;        
+        private ApplicationUserManager _userManager;
         private readonly IAccountService _accountService;
-       
+
 
         public AccountController(IAccountService accountService)
-        {           
+        {
             _accountService = accountService;
         }
 
@@ -49,7 +49,7 @@ namespace Kookaburra.Controllers
             {
                 _userManager = value;
             }
-        }   
+        }
 
         [HttpGet]
         [Route("profile")]
@@ -65,7 +65,7 @@ namespace Kookaburra.Controllers
                     LastName = profile.LastName,
                     Email = profile.Email
                 }
-            };            
+            };
 
             if (TempData["ProfileUpdated"] != null)
             {
@@ -116,15 +116,16 @@ namespace Kookaburra.Controllers
                     Errors = updateResult.Errors.Where(e => !(e.Contains("Name") && e.Contains("is already taken."))).ToList()
                 };
                 return View(viewModel);
-            }            
+            }
         }
 
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        [HttpGet, Route("reset-password/{code}/{email}")]
+        public ActionResult ResetPassword(string code, string email)
         {
-            return code == null ? View("Error") : View();
+            return code == null ? View("Error") : View(new ResetPasswordViewModel { Code = code, Email = email });
         }
 
         //
@@ -188,7 +189,7 @@ namespace Kookaburra.Controllers
                         Errors = result.Errors.ToList()
                     }
                 });
-            }           
+            }
         }
 
         //
@@ -217,7 +218,7 @@ namespace Kookaburra.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
-                case SignInStatus.Success:                   
+                case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -253,7 +254,7 @@ namespace Kookaburra.Controllers
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
-                {              
+                {
                     await _accountService.SignUpAsync(new SignUpRequest
                     {
                         ClientName = model.ClientName,
@@ -296,18 +297,17 @@ namespace Kookaburra.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+
+                BackgroundJob.Enqueue<IEmailService>(email => email.SendForgorPasswordEmail(user.Email, code, AppSettings.UrlPortal));
+
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form

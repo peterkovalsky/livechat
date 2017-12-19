@@ -28,12 +28,14 @@ namespace Kookaburra.Services
             _bcc = "it@kookaburra.chat";            
         }
 
-        public async Task SendForgorPasswordEmailAsync(string email, string token, string host)
+        public void SendForgorPasswordEmail(string email, string token, string host)
         {
-            var model = new ForgotPassword
+            var to = new AddressInfo(email);
+
+            var model = new ForgotPasswordEmail
             {
                 Email = email,
-                ResetLink = $"{host}/"
+                ResetLink = $"{host}/reset-password/{token}/{email}"
             };
 
             _mailer.SendEmail(_from, to, model);
