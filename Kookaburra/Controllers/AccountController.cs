@@ -125,7 +125,9 @@ namespace Kookaburra.Controllers
         [HttpGet, Route("reset-password")]
         public ActionResult ResetPassword(string code, string email)
         {
-            return code == null ? View("Error") : View(new ResetPasswordViewModel { Code = code, Email = email });
+            return code == null 
+                ? View("Error") 
+                : View(new ResetPasswordViewModel { Code = HttpUtility.UrlDecode(code), Email = email });
         }
 
         //
@@ -190,6 +192,14 @@ namespace Kookaburra.Controllers
                     }
                 });
             }
+        }
+
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
 
         //
@@ -304,8 +314,9 @@ namespace Kookaburra.Controllers
                 }
 
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var encodedToken = HttpUtility.UrlEncode(code);
 
-                BackgroundJob.Enqueue<IEmailService>(email => email.SendForgorPasswordEmail(user.Email, code, AppSettings.UrlPortal));
+                BackgroundJob.Enqueue<IEmailService>(email => email.SendForgorPasswordEmail(user.Email, encodedToken, AppSettings.UrlPortal));
 
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
