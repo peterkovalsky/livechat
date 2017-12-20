@@ -1,4 +1,0 @@
-﻿# robots.txt for http://staging.portal.kookaburra.chat and http://portal.kookaburra.chat
-
-User-agent: *
-Disallow: /

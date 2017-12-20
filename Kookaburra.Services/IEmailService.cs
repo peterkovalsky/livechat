@@ -4,7 +4,7 @@ namespace Kookaburra.Services
 {
     public interface IEmailService
     {
-        void SendForgorPasswordEmail(string email, string token, string host);
+        void SendForgorPasswordEmail(string email, string code, string host);
 
         Task SendSignUpWelcomeEmailAsync(string operatorIdentity);
 

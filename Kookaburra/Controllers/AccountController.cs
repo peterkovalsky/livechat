@@ -122,7 +122,7 @@ namespace Kookaburra.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        [HttpGet, Route("reset-password/{code}/{email}")]
+        [HttpGet, Route("reset-password")]
         public ActionResult ResetPassword(string code, string email)
         {
             return code == null ? View("Error") : View(new ResetPasswordViewModel { Code = code, Email = email });
@@ -130,7 +130,7 @@ namespace Kookaburra.Controllers
 
         //
         // POST: /Account/ResetPassword
-        [HttpPost]
+        [HttpPost, Route("reset-password")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
