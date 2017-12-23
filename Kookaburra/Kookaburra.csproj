@@ -341,8 +341,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\close.png" />
-    <Content Include="images\customer-service.png" />
-    <Content Include="images\customer-service1.png" />
     <Content Include="images\login.jpg" />
     <Content Include="images\logo-1.png" />
     <Content Include="images\logo-bird.ico" />
@@ -352,15 +350,11 @@
     <Content Include="images\logo.png" />
     <Content Include="images\minimise.png" />
     <Content Include="images\operator-default.png" />
-    <Content Include="images\operator.png" />
-    <Content Include="images\operator2.png" />
-    <Content Include="images\operator3.png" />
     <Content Include="images\placeholder.png" />
     <Content Include="images\sign-up.jpg" />
     <Content Include="images\subscribe.png" />
     <Content Include="images\user-1.png" />
     <Content Include="images\user-2.png" />
-    <Content Include="images\user-4.png" />
     <Content Include="images\user-5.png" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2036,7 +2030,7 @@
     <Content Include="Views\Widget\_ThankYouEndChat.cshtml" />
     <Content Include="Views\Account\UserProfile.cshtml" />
     <Content Include="Views\Account\_UserDetails.cshtml" />
-    <Content Include="Views\Account\_ResetPassword.cshtml" />
+    <Content Include="Views\Account\_ResetUserPassword.cshtml" />
     <Content Include="Views\Shared\_Alert.cshtml" />
     <Content Include="Views\Shared\_TrialExpired.cshtml" />
     <Content Include="Views\Shared\_LayoutPublic.cshtml" />
